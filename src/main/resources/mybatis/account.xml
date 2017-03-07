@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.healthdata.webapp.hospital.dao.account.AccountDao">
+	<resultMap id="AccountResultMap" type="cn.healthdata.webapp.hospital.vo.LoginVO">
+        <result column="user_id" property="user_id" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="phone_number" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="login_count" property="login_count" />
+    </resultMap>
+    
+    
+    <select id="getLoginUserInfo" resultMap="AccountResultMap" parameterType="java.lang.String">
+        select * from user where user_phone=#{user_phone}
+    </select>
+    
+     <insert id="insertLoginInfo" parameterType="cn.healthdata.webapp.hospital.vo.LoginVO">
+        insert into user(user_phone,login_count, age, gender) values
+        (#{phone_number}, #{login_count}, #{age}, #{gender})
+    </insert>
+    
+     <update id="updateLoginInfo" parameterType="cn.healthdata.webapp.hospital.vo.LoginVO">
+        update user set login_count = #{login_count} where user_id=#{user_id}
+    </update>
+    
+    <select id="getInviteCode" resultType="java.lang.String" parameterType="java.lang.String">
+        select invite_code from system_invite_code where invite_code=#{invite_code}
+    </select>
+</mapper>
