@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.starters.StartersDAO">
+	<resultMap id="StartersResultMap" type="cn.sportsdata.webapp.youth.common.vo.starters.StartersVO">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="tactics_id" property="tacticsId" jdbcType="CHAR"/>
+        <result column="creator_id" property="creator_id" jdbcType="CHAR"/>
+        <result column="formation_id" property="formation_id" jdbcType="INTEGER"/>
+        <result column="formation_name" property="formationTypeName" jdbcType="VARCHAR"/>
+        <result column="imgName" property="imgName" jdbcType="VARCHAR"/>
+        <result column="org_id" property="org_id" jdbcType="CHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="tactics_type_id" property="tactics_type_id" jdbcType="INTEGER"/>
+        <result column="created_time" property="created_time" javaType="String" jdbcType="TIMESTAMP"/>
+        <result column="last_update" property="last_update" javaType="String" jdbcType="TIMESTAMP"/>
+        <result column="playground_id" property="playground_id" jdbcType="INTEGER"/>
+        <result column="tacticsdata" property="tacticsdata" jdbcType="VARCHAR"/>
+	</resultMap>
+    
+    <resultMap id="StartersPreviewMap" type="cn.sportsdata.webapp.youth.common.vo.starters.StartersPreviewsVO">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="tactics_id" property="tacticsId" jdbcType="CHAR"/>
+        <result column="imgName" property="imgName" jdbcType="VARCHAR"/>
+        <result column="formation_id" property="formation_id" jdbcType="INTEGER"/>
+        <result column="formation_name" property="formationTypeName" jdbcType="VARCHAR"/>
+        <result column="last_update" property="last_update" javaType="String" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+    <resultMap id="MatchStartersResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchStartersResultVO">
+    	<result column="starters_id" property="startersId" jdbcType="CHAR"/>
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="result" property="result" jdbcType="VARCHAR"/>
+    	<result column="goal_for" property="goalFor" jdbcType="INTEGER"/>
+    	<result column="goal_against" property="goalAgainst" jdbcType="INTEGER"/>
+	</resultMap>
+	
+    <insert id="createStarters" parameterType="cn.sportsdata.webapp.youth.common.vo.starters.StartersVO">
+		insert into starters(tactics_id, formation_id) 
+		values(#{tacticsId},  #{formation_id})
+    </insert>
+    
+    <select id="getStartersByID" resultMap="StartersResultMap" parameterType="java.lang.String">
+        select A.*, B.*, C.name as formation_name from starters A 
+        join tactics B on A.tactics_id = B.id 
+        join formation_type C on C.id = A.formation_id
+        where A.tactics_id = #{tactics_id} and B.status = 'active' and A.status = 'active'
+    </select>
+    
+    <select id="getStartersMatchInfoById" resultMap="MatchStartersResultMap" parameterType="java.lang.String">
+       	select A.id as match_id, C.tactics_id as starters_id, result, goal_for, goal_against from `match` A
+		join match_tactics_association B on A.id = B.match_id
+		join starters C  on C.tactics_id = B.tactics_id
+		join match_result D on D.match_id = A.id
+		where C.tactics_id = #{tacticsId} and is_end = 1 and B.status = 'active' and A.status = 'active' order by A.date desc, A.time desc
+    </select>
+    
+    <select id="getMatchStartersByOrgId" resultMap="MatchStartersResultMap" parameterType="java.util.Map">
+       	select A.id as match_id, C.tactics_id as starters_id, result, goal_for, goal_against from `match` A
+		join match_tactics_association B on A.id = B.match_id
+		join starters C  on C.tactics_id = B.tactics_id
+		join match_result D on D.match_id = A.id
+		where org_id = #{org_id} and is_end = 1 and B.status = 'active' and A.status = 'active' order by A.date desc, A.time desc
+    </select>
+    
+    <select id="getMatchStartersByOrgIdAndFormation" resultMap="MatchStartersResultMap" parameterType="java.util.Map">
+       	select A.id as match_id, C.tactics_id as starters_id, result, goal_for, goal_against from `match` A 
+		join match_tactics_association B on A.id = B.match_id
+		join starters C on C.tactics_id = B.tactics_id
+		join match_result D on D.match_id = A.id
+		where org_id = #{org_id} and is_end = 1 and B.status = 'active' and formation_id = #{formation_id} and A.status = 'active' order by A.date desc, A.time desc
+    </select>
+    
+    <select id="getStartersByUserId" resultMap="StartersPreviewMap" parameterType="java.util.Map">
+       	select tactics_id, B.*, C.id as formation_id, C.name as formation_name from starters A 
+       	join tactics B on A.tactics_id = B.id 
+       	join formation_type C on C.id = A.formation_id
+       	where C.category=#{category} and B.status = 'active'  and A.status = 'active'
+       	and B.creator_id = #{creator_id} and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <select id="getStartersByUserIdAndFormation" resultMap="StartersPreviewMap" parameterType="java.util.Map">
+    	select tactics_id, B.*, C.id as formation_id, C.name as formation_name from starters A 
+    	join tactics B on A.tactics_id = B.id 
+    	join formation_type C on C.id = A.formation_id
+       	where A.formation_id =#{formation_id} and B.status = 'active'  and A.status = 'active'
+       	and B.creator_id = #{creator_id} and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <select id="getStartersByOrg" resultMap="StartersPreviewMap" parameterType="java.util.Map">
+       	select tactics_id, B.*, C.id as formation_id, C.name as formation_name from starters A 
+       	join tactics B on A.tactics_id = B.id 
+       	join formation_type C on C.id = A.formation_id
+       	where C.category=#{category} and B.status = 'active'  and A.status = 'active'
+       	and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <select id="getStartersByOrgAndFormation" resultMap="StartersPreviewMap" parameterType="java.util.Map">
+    	select tactics_id, B.*, C.id as formation_id, C.name as formation_name from starters A 
+    	join tactics B on A.tactics_id = B.id 
+    	join formation_type C on C.id = A.formation_id
+       	where A.formation_id =#{formation_id} and B.status = 'active'  and A.status = 'active'
+       	and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <insert id="saveStartersPlayer">
+		INSERT into starters_players_association (starters_id, player_id, status, created_time) values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.startersId}, #{item.playerId}, 'active', now())
+		</foreach>
+	</insert>
+	
+	<delete id="clearStartersPlayer" parameterType="java.lang.String">
+		delete from starters_players_association where starters_id = #{startersId} 
+	</delete>
+	
+    <update id="updateStarters" parameterType="java.util.Map">
+		update starters A set A.formation_id=#{formation_id} where A.tactics_id=#{tactics_id};
+	</update>
+	
+	<update id="deleteStarters" parameterType="java.lang.String">
+		update starters A set A.status='deleted' where A.tactics_id=#{tactics_id};
+	</update>
+</mapper>

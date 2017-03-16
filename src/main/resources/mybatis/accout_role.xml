@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.syncdao.account.AccountRoleSyncDaoImpl">
+    <resultMap id="AccountRoleResultMap" type="cn.sportsdata.webapp.youth.common.vo.account.AccountRoleVO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="accout_role" property="accout_role" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="created_time" property="created_time" jdbcType="TIMESTAMP"/>
+        <result column="last_update" property="last_update" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getNewAccountRole" resultMap="AccountRoleResultMap" parameterType="java.sql.Timestamp">
+        SELECT * FROM accout_role where last_update &gt; #{last_update}
+    </select>
+
+    <insert id="insertAccountRole" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into accout_role( accout_role, status, created_time) values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.accout_role}, 'active', now()})
+        </foreach>
+    </insert>
+
+    <update id="updateAccountRole" parameterType="java.util.List">
+        replace into accout_role(id, accout_role, status) values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id}, #{item.accout_role}, #{item.status}})
+        </foreach>
+    </update>
+
+    <delete id="deleteAccountRole" parameterType="java.util.List">
+        UPDATE accout_role set satatus='deleted' where id in (
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item})
+        </foreach>)
+    </delete>
+
+</mapper>

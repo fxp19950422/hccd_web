@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.singletraining.SingleTrainingDAO">
+	<resultMap id="SingleTrainingResultMap" type="cn.sportsdata.webapp.youth.common.vo.SingleTrainingVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="player_count" property="player_count" jdbcType="INTEGER"/>
+        <result column="goalkeeper_count" property="goalkeeper_count" jdbcType="INTEGER"/>
+        <result column="yard_width" property="yard_width" jdbcType="INTEGER"/>
+        <result column="yard_long" property="yard_long" jdbcType="INTEGER"/>
+        <result column="org_id" property="orgID" jdbcType="CHAR"/>
+        <result column="tactics_id" property="tacticsId" jdbcType="CHAR"/>
+        
+        <collection property="singleTrainingExtInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.SingleTrainingExtVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+         <collection property="singleTrainingEquipmentInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.SingleTrainingEquipmentVO">
+        	<result column="equipment_id" property="equipmentId" jdbcType="CHAR"/>
+        	<result column="equ_name" property="equipmentName" jdbcType="VARCHAR"/>
+        	<result column="count" property="count" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectSingleTrainingList" resultMap="SingleTrainingResultMap" parameterType="java.lang.String">
+        select A.id, A.name, A.description, A.player_count,A.goalkeeper_count,A.yard_width,A.yard_long, A.org_id, A.tactics_id, B.item_name, B.item_value  
+        from single_training A left outer join single_training_ext B on A.id = B.single_training_id 
+        where A.status = 'active' and A.org_id = #{orgID}
+    </select>
+    
+     <select id="getSingleTrainingByID" resultMap="SingleTrainingResultMap" parameterType="java.lang.String">
+        select A.org_id, A.id, A.name, A.description, A.player_count,A.goalkeeper_count,A.yard_width,A.yard_long, A.tactics_id, B.item_name, B.item_value ,f.e_id equipment_id, f.e_name equ_name,f.e_count count 
+        from single_training A left outer join single_training_ext B on A.id = B.single_training_id 
+        left outer join (select e.id e_id,e.name e_name,s.count e_count,s.single_training_id st_id from equipment e inner join single_training_equipment_association s on s.equipment_id=e.id and s.status = 'active' and e.status = 'active') f on f.st_id=A.id 
+        where A.id = #{id} and A.status = 'active'  
+    </select>
+    
+    <select id="getSingleTrainingEquipmentListByTd" resultMap="SingleTrainingResultMap" parameterType="java.lang.String">
+        select A.org_id, A.id, A.name, A.description, A.player_count,A.goalkeeper_count,A.yard_width,A.yard_long, A.tactics_id, B.item_name, B.item_value ,f.e_id equipment_id, f.e_name equ_name,f.e_count count 
+        from single_training A left outer join single_training_ext B on A.id = B.single_training_id 
+        left outer join (select e.id e_id,e.name e_name,s.count e_count,s.single_training_id st_id from equipment e inner join single_training_equipment_association s on s.equipment_id=e.id ) f on f.st_id=A.id 
+        where A.id = #{id} and A.status = 'active'  
+    </select>
+    
+    <insert id="insertSingleTrainingBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.SingleTrainingVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into single_training(id, name,description,player_count,goalkeeper_count,yard_width,yard_long,created_time, last_update, org_id,tactics_id) 
+    	values(#{id}, #{name}, #{description}, #{player_count}, #{goalkeeper_count}, #{yard_width}, #{yard_long},now(),now(), #{orgID},#{tacticsId})
+    </insert>
+    
+    <insert id="insertSingleTrainingExtData" parameterType="java.util.Map">
+    	insert into single_training_ext(single_training_id, item_name, item_value,created_time, last_update) values 
+    	<foreach collection="singleTrainingExtList" item="item" index="index" separator="," >
+    		(#{id}, #{item.itemName}, #{item.itemValue},now(),now())
+    	</foreach>
+    </insert>
+    
+    <insert id="insertSingleTrainingEquipmentData" parameterType="java.util.Map">
+    	insert into single_training_equipment_association(single_training_id, equipment_id, count,created_time, last_update) values 
+    	<foreach collection="singleTrainingEquipmentList" item="item" index="index" separator="," >
+    		(#{id}, #{item.equipmentId}, #{item.count},now(),now())
+    	</foreach>
+    </insert>
+    
+    <update id="updateSingleTrainingBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.SingleTrainingVO">
+        update single_training set name=#{name}, description=#{description}, player_count=#{player_count}, goalkeeper_count=#{goalkeeper_count}, yard_width=#{yard_width}, yard_long=#{yard_long},tactics_id=#{tacticsId}, last_update=now()  
+        where id = #{id}  and status = 'active'
+    </update>
+    
+    <insert id="updateSingleTrainingExtData" parameterType="java.util.Map">
+    	insert into single_training_ext(single_training_id, item_name, item_value) values 
+    	<foreach collection="singleTrainingExtList" item="item" index="index" separator="," >
+    		(#{id}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    	 on duplicate key update item_value=values(item_value)  
+    </insert>
+
+	<insert id="updateSingleTrainingEquipmentData" parameterType="java.util.Map">
+    	insert into single_training_equipment_association(single_training_id, equipment_id, count,status) values 
+    	<foreach collection="singleTrainingEquipmentList" item="item" index="index" separator="," >
+    		(#{id}, #{item.equipmentId}, #{item.count},'active')
+    	</foreach>
+    	 on duplicate key update count=values(count) , status=values(status)
+    </insert>
+    <insert id="deteleSingleTrainingEquipmentData" parameterType="java.util.Map">
+    	insert into single_training_equipment_association(single_training_id, equipment_id, status) values 
+    	<foreach collection="singleTrainingEquipmentList" item="item" index="index" separator="," >
+    		(#{id}, #{item.equipmentId}, 'deleted')
+    	</foreach>
+    	 on duplicate key update status=values(status)  
+    </insert>
+	
+	<select id="getSingleTrainingExtBySingleTrainingId"  resultType="java.lang.Integer"  parameterType="java.lang.String">
+        select count(1) from single_training_ext  where single_training_id = #{id} and status = 'active'
+    </select>
+    
+    <select id="getSingleTrainingEquipmentBySingleTrainingId" resultType="java.lang.Integer"  parameterType="java.lang.String">
+        select count(1) from single_training_equipment_association  where single_training_id = #{id} and status = 'active'
+    </select>
+    
+    <update id="deleteSingleTrainingById" parameterType="java.lang.String">
+        update single_training set status='deleted' where id = #{id} and status = 'active'
+    </update>
+    
+ 	<update id="deleteSingleTrainingExtBySingleTrainingId" parameterType="java.lang.String">
+		update single_training_ext set status='deleted' where single_training_id=#{id} and status = 'active'
+	</update>
+	
+	<update id="deleteSingleTrainingEquipmentBySingleTrainingId" parameterType="java.lang.String">
+		update single_training_equipment_association set status='deleted' where single_training_id=#{id} and status = 'active' 
+	</update>
+	
+</mapper>

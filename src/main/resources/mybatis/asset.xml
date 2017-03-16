@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.asset.AssetDAO">
+	<resultMap id="AssetResultMap"
+		type="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+		<result column="id" property="id" jdbcType="CHAR" />
+		<result column="display_name" property="display_name" jdbcType="VARCHAR" />
+		<result column="storage_name" property="storage_name" jdbcType="VARCHAR" />
+		<result column="created_time" property="created_time" javaType="String" jdbcType="TIMESTAMP" />
+		<result column="last_update" property="last_update" javaType="String" jdbcType="TIMESTAMP" />
+		<result column="size" property="size" jdbcType="INTEGER" />
+		<result column="file_extension" property="file_extension" jdbcType="VARCHAR" />
+		<result column="creator_id" property="creator_id" jdbcType="CHAR" />
+		<result column="org_id" property="org_id" jdbcType="CHAR" />
+		<result column="privacy" property="privacy" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getAssetByID" resultMap="AssetResultMap"
+		parameterType="java.lang.String">
+		select A.* from asset A where A.id = #{id} and A.status != 'deleted'
+	</select>
+
+	<insert id="insertAsset" parameterType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+		<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+		insert into asset(id, display_name, storage_name, size, file_extension, privacy, creator_id,
+		org_id, created_time, status)
+		values(#{id}, #{display_name}, #{storage_name}, #{size},
+		#{file_extension}, #{privacy}, #{creator_id}, #{org_id}, current_timestamp(),'active')
+	</insert>
+
+	<update id="updateAsset" parameterType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+		update asset set display_name=#{display_name}, storage_name=#{storage_name}, size=#{size}, last_update=current_timestamp(), 
+		file_extension=#{file_extension}, privacy=#{privacy}, creator_id=#{creator_id}, org_id=#{org_id}, status=#{status} where id=#{id}
+	</update>
+
+	<update id="replaceAsset" parameterType="cn.sportsdata.webapp.youth.common.vo.AssetVO"
+		useGeneratedKeys="true" keyProperty="id">
+		replace into asset(id, display_name, storage_name, size, file_extension, privacy, creator_id,
+		org_id, created_time, last_update, status)
+		values(#{id}, #{display_name}, #{storage_name}, #{size},
+		#{file_extension}, #{privacy}, #{creator_id}, #{org_id}, current_timestamp(),current_timestamp(),'active')
+	</update>
+	
+	<update id="deleteAsset" parameterType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+		update asset A set A.status='deleted' where A.id=#{id};
+	</update>
+
+</mapper>

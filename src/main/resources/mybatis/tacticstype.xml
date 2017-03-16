@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.tacticstype.TacticsTypeDAO">
+	<resultMap id="TacticsTypeResultMap" type="cn.sportsdata.webapp.youth.common.vo.TacticsTypeVO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="category" property="category" jdbcType="VARCHAR"/>
+        <result column="creator_id" property="creator_id" jdbcType="INTEGER"/>
+        <result column="org_id" property="org_id" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    
+    <select id="getTacticsTypeByID" resultMap="TacticsTypeResultMap" parameterType="java.lang.Long">
+        select A.* from tactics_type A where A.id = #{id}
+    </select>
+    
+    <select id="getTacticsTypeCommon" resultMap="TacticsTypeResultMap" parameterType="java.lang.String">
+        select A.* from tactics_type A where A.category =#{category} and A.org_id is NULL order by id
+    </select>
+    
+    <select id="getTacticsTypeByOrgId" resultMap="TacticsTypeResultMap" parameterType="java.util.Map">
+        select A.* from tactics_type A where A.category =#{category} and A.org_id = #{org_id} order by id
+    </select>
+</mapper>

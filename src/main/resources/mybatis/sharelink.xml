@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.share.ShareLinkDAO">
+
+	<resultMap id="shareLinkMap"
+		type="cn.sportsdata.webapp.youth.common.vo.share.ShareLinkVO">
+		<result column="id" property="id" jdbcType="CHAR" />
+		<result column="guid" property="guid" jdbcType="VARCHAR" />
+		<result column="sha256" property="sha256" jdbcType="VARCHAR" />
+		<result column="request_json" property="requestJSON" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert id="insertShareLink" parameterType="cn.sportsdata.webapp.youth.common.vo.share.ShareLinkVO">
+	    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+		insert into share_link(id, guid, sha256, request_json)
+		values(#{id}, #{guid}, #{sha256}, #{requestJSON})
+	</insert>
+	
+	
+	<select id="selectShareLinkBysha256" resultMap="shareLinkMap" parameterType="java.lang.String">
+        select A.id, A.guid, A.sha256, A.request_json from share_link A where sha256 = #{shareLink}
+    </select>
+    
+	
+	<select id="getShareLinkByGUID" resultMap="shareLinkMap" parameterType="java.lang.String">
+        select A.id, A.guid, A.sha256, A.request_json from share_link A where guid = #{guid}
+    </select>
+    
+	<delete id="deleteShareLinkBysha256" parameterType="java.lang.String">
+		delete from share_link where sha256 = #{shareLink}
+	</delete>
+	
+
+</mapper>

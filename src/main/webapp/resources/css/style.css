@@ -1,0 +1,112 @@
+@font-face {
+    font-family: 'icomoon';
+    src:    url('../fonts/icomoon.eot?ed9iw4');
+    src:    url('../fonts/icomoon.eot?ed9iw4#iefix') format('embedded-opentype'),
+        url('../fonts/icomoon.ttf?ed9iw4') format('truetype'),
+        url('../fonts/icomoon.woff?ed9iw4') format('woff'),
+        url('../fonts/icomoon.svg?ed9iw4#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1px;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/*people management*/
+.icon-people-manage:before {
+    content: "\e902";
+    font-size: inherit;
+}
+.icon-account-manage:before {
+    content: "\e90a";
+    font-size: inherit;
+}
+.icon-player_manage:before {
+    content: "\e908";
+    font-size: inherit;
+}
+.icon-coach_manage:before {
+    content: "\e906";
+    font-size: inherit;
+}
+.icon-test:before {
+    content: "\e909";
+    font-size: inherit;
+}
+.icon-gohealthdata_icon:before {
+    content: "\e907";
+    font-size: inherit;
+}
+
+/*daily management*/
+.icon-regular-manage:before {
+    content: "\e900";
+    font-size: inherit;
+}
+.icon-show-calendar:before {
+    content: "\e90d";
+    font-size: inherit;
+}
+.icon-show-single-training-list:before {
+    content: "\e912";
+    font-size: inherit;
+}
+
+/*match management*/
+.icon-match-manage:before {
+    content: "\e90c";
+    font-size: inherit;
+}
+.icon-show-match-list:before {
+    content: "\e904";
+    font-size: inherit;
+}
+.icon-show-match-result-list:before {
+    content: "\e90f";
+    font-size: inherit;
+}
+
+/*system manage*/
+.icon-auxiliary-manage:before {
+    content: "\e901";
+    font-size: inherit;
+}
+.icon-show-tactics-list:before {
+    content: "\e90b";
+    font-size: inherit;
+}
+.icon-show-equipment-list:before {
+    content: "\e905";
+    font-size: inherit;
+}
+
+/*tactics manage*/
+.icon-tactics-manage:before {
+    content: "\e903";
+    font-size: inherit;
+}
+.icon-starters-setting:before {
+    content: "\e910";
+    font-size: inherit;
+}
+.icon-place-kick:before {
+    content: "\e90e";
+    font-size: inherit;
+}
+
+/*dashboard page*/
+.icon-dashboard:before {
+    content: "\e914";
+    font-size: inherit;
+}

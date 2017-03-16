@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.user.UserDAO">
+	<resultMap id="UserResultMap" type="cn.sportsdata.webapp.youth.common.vo.UserVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result column="home_address" property="homeAddress" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="avatar_id" property="avatarId" jdbcType="VARCHAR"/>
+        <result column="passport" property="passport" jdbcType="VARCHAR"/>
+        <result column="nationality" property="nationality" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="birth_place" property="birthPlace" jdbcType="VARCHAR"/>
+        
+        <collection property="userExtInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.UserExtVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    
+    <resultMap id="UserOrgRoleResultMap" type="cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO">
+    	<result column="user_id" property="userId" jdbcType="CHAR"/>
+    	<result column="org_id" property="orgId" jdbcType="CHAR"/>
+    	<result column="role_id" property="roleId" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="PlayerMatchStatisticsMap" type="cn.sportsdata.webapp.youth.common.vo.match.PlayerMatchStatisticsVO">
+    	<result column="user_id" property="userId" jdbcType="CHAR"/>
+    	<result column="org_id" property="orgId" jdbcType="CHAR"/>
+    	<result column="goalCount" property="goalCount" jdbcType="INTEGER"/>
+    	<result column="assistCount" property="assistCount" jdbcType="INTEGER"/>
+    	<result column="starterCount" property="starterCount" jdbcType="INTEGER"/>
+    	<result column="substituteCount" property="substituteCount" jdbcType="INTEGER"/>
+    </resultMap>
+	
+    <select id="getPlayersMatchGoalCount" resultMap="PlayerMatchStatisticsMap" parameterType="java.lang.String">
+    	select count(*) as goalCount, player_id as user_id, A.org_id from match_goal
+    	join `match` A on A.id = match_goal.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' and A.is_end = 1
+    	and match_goal.status = 'active' and player_id is not null group by player_id
+    </select>
+    
+    <select id="getPlayersMatchAssistCount" resultMap="PlayerMatchStatisticsMap" parameterType="java.lang.String">
+    	select count(*) as assistCount, assist_player_id as user_id, A.org_id from match_goal 
+    	join `match` A on A.id = match_goal.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' and A.is_end = 1
+    	and match_goal.status = 'active' and assist_player_id is not null group by assist_player_id
+    </select>
+    
+    <select id="getPlayersMatchStarterCount" resultMap="PlayerMatchStatisticsMap" parameterType="java.lang.String">
+    	select count(*) as starterCount, player_id as user_id from match_starters 
+    	join `match` A on A.id = match_starters.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' and match_starters.status='active' and A.is_end = 1 and player_id is not null group by player_id
+    </select>
+    
+    <select id="getPlayersMatchSubstituteCount" resultMap="PlayerMatchStatisticsMap" parameterType="java.lang.String">
+    	select count(*) as substituteCount, on_player_id as user_id from match_substitution
+    	join `match` A on A.id = match_substitution.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' and A.is_end = 1 
+    	and match_substitution.status = 'active' and on_player_id is not null group by on_player_id
+    </select>
+    
+    <select id="getUserByID" resultMap="UserResultMap" parameterType="java.lang.String">
+        select A.id, A.name, A.tel, A.email, A.birthday, A.home_address, A.avatar,A.avatar_id, A.passport, A.nationality, A.id_card, A.birth_place, B.item_name, B.item_value 
+        from user A 
+        left outer join user_ext B on A.id = B.user_id 
+        where A.id = #{userId} and A.status = 'active'
+    </select>
+    
+    <select id="getPlayersByOrgId" resultMap="UserResultMap" parameterType="java.lang.String">
+    	select A.id, A.name, A.tel, A.email, A.birthday, A.home_address, A.avatar,A.avatar_id, A.passport, A.nationality, A.id_card, A.birth_place, D.item_name, D.item_value 
+        from user A, user_org_association B, role C, user_ext D 
+        where B.org_id = #{orgId} and A.id = B.user_id and A.status = 'active' and B.role_id = C.id and C.name = 'player' and D.user_id = B.user_id
+        order by A.id desc
+    </select>
+    
+    <insert id="insertUserBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.UserVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into user(id, name, tel, birthday, email, home_address, avatar,avatar_id, passport, nationality, id_card, birth_place, created_time) 
+    	values(#{id},  #{name}, #{tel}, #{birthday}, #{email}, #{homeAddress}, #{avatar},#{avatarId}, #{passport}, #{nationality}, #{idCard}, #{birthPlace}, now())
+    </insert>
+    
+    <insert id="insertUserExtData" parameterType="java.util.Map">
+    	insert into user_ext(user_id, item_name, item_value) values 
+    	<foreach collection="userExtList" item="item" index="index" separator="," >
+    		(#{userId}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    </insert>
+    
+    <update id="updateUserBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.UserVO">
+        update user set name=#{name}, tel=#{tel}, birthday=#{birthday}, email=#{email}, home_address=#{homeAddress}, avatar=#{avatar}, 
+        passport=#{passport}, nationality=#{nationality}, id_card=#{idCard}, birth_place=#{birthPlace} 
+        <if test="avatarId != null and avatarId != '' ">
+    	,avatar_id=#{avatarId}
+    	</if>
+        where id = #{id}
+    </update>
+    
+    <insert id="updateUserExtData" parameterType="java.util.Map">
+    	insert into user_ext(user_id, item_name, item_value) values 
+    	<foreach collection="userExtList" item="item" index="index" separator="," >
+    		(#{userId}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    	 on duplicate key update item_value=values(item_value)
+    </insert>
+    
+    <select id="getRoleIdByRoleName" resultType="java.lang.Long" parameterType="java.lang.String">
+        select id from role where name = #{roleName}
+    </select>
+    
+    <insert id="insertUserOrgRole" parameterType="cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO">
+    	insert into user_org_association(user_id, org_id, role_id) 
+    	values(#{userId}, #{orgId}, #{roleId})
+    </insert>
+    
+
+    <select id="getCoachsByOrgId" resultMap="UserResultMap" parameterType="java.lang.String">
+    	select A.id, A.name, A.tel, A.email, A.birthday, A.home_address, A.avatar,A.avatar_id, A.passport, A.nationality, A.id_card, A.birth_place, D.item_name, D.item_value 
+        from user A, user_org_association B, role C, user_ext D 
+        where B.org_id = #{orgId} and A.id = B.user_id and B.role_id = C.id and C.name = 'coach' and D.user_id = B.user_id and D.item_name = 'coach_type' and A.status = 'active'
+        order by A.id desc
+    </select>
+
+    <update id="deleteUserById" parameterType="java.lang.String">
+        update user set status='deleted' where id = #{userId}
+    </update>
+    
+    <select id="getPlayerIdByJerseyNumberAndNameAndOrgID" resultType="java.lang.String" parameterType="java.util.Map">
+    	select A.id 
+        from user A left outer join user_ext B on A.id = B.user_id, user_org_association C, role D 
+        where A.name = #{player_name} and A.status = 'active' and C.org_id = #{org_id} and A.id = C.user_id and C.role_id = D.id and D.name = 'player' and B.item_name = 'professional_jersey_number' and B.item_value = #{jersey_number}
+        order by A.id desc
+    </select>
+
+    <select id="getUserOrgAssociationByUserId" resultMap="UserOrgRoleResultMap" parameterType="java.lang.String">
+        SELECT * from user_org_association where user_id=#{userId} and status='active' order by user_id desc
+    </select>
+</mapper>

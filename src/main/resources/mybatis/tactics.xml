@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.tactics.TacticsDAO">
+	<resultMap id="TacticsResultMap"
+		type="cn.sportsdata.webapp.youth.common.vo.TacticsVO">
+		<result column="id" property="id" jdbcType="CHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="tactics_type_id" property="tactics_type_id"
+			jdbcType="INTEGER" />
+		<result column="created_time" property="created_time" javaType="String"
+			jdbcType="TIMESTAMP" />
+		<result column="last_update" property="last_update" javaType="String"
+			jdbcType="TIMESTAMP" />
+		<result column="playground_id" property="playground_id"
+			jdbcType="INTEGER" />
+		<result column="imgName" property="imgName" jdbcType="VARCHAR" />
+		<result column="creator_id" property="creator_id" jdbcType="CHAR" />
+		<result column="org_id" property="org_id" jdbcType="CHAR" />
+		<result column="tacticsdata" property="tacticsdata" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+
+		<association property="tacticsType"
+			javaType="cn.sportsdata.webapp.youth.common.vo.TacticsTypeVO"
+			resultMap="TacticsTypeResultMap1" />
+		<association property="tacticsPlayground"
+			javaType="cn.sportsdata.webapp.youth.common.vo.TacticsPlaygroundVO"
+			resultMap="TacticsPlaygroundResultMap1" />
+		<association property="dataAssetVo"
+			javaType="cn.sportsdata.webapp.youth.common.vo.AssetVO"
+			resultMap="AssetResultMap1" />
+		<association property="imgAssetVo"
+			javaType="cn.sportsdata.webapp.youth.common.vo.AssetVO"
+			resultMap="AssetResultMap2" />
+	</resultMap>
+
+	<resultMap id="TacticsTypeResultMap1"
+		type="cn.sportsdata.webapp.youth.common.vo.TacticsTypeVO">
+		<result column="type_id" property="id" jdbcType="INTEGER" />
+		<result column="type_name" property="name" jdbcType="VARCHAR" />
+		<result column="type_category" property="category" jdbcType="VARCHAR" />
+		<result column="type_creator_id" property="creator_id"
+			jdbcType="CHAR" />
+		<result column="type_org_id" property="org_id" jdbcType="CHAR" />
+	</resultMap>
+
+	<resultMap id="TacticsPlaygroundResultMap1"
+		type="cn.sportsdata.webapp.youth.common.vo.TacticsPlaygroundVO">
+		<result column="p_id" property="id" jdbcType="INTEGER" />
+		<result column="p_name" property="name" jdbcType="VARCHAR" />
+		<result column="p_abbr" property="abbr" jdbcType="VARCHAR" />
+		<result column="p_backgroundimg" property="backgroundimg"
+			jdbcType="VARCHAR" />
+		<result column="p_category" property="category" jdbcType="VARCHAR" />
+		<result column="p_width_in_meter" property="width_in_meter"
+			jdbcType="INTEGER" />
+		<result column="p_height_in_meter" property="height_in_meter"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="AssetResultMap1"
+		type="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+		<result column="img_id" property="id" jdbcType="CHAR" />
+		<result column="img_display_name" property="display_name" jdbcType="VARCHAR" />
+		<result column="img_storage_name" property="storage_name" jdbcType="VARCHAR" />
+		<result column="img_created_time" property="created_time" javaType="String" jdbcType="TIMESTAMP" />
+		<result column="img_last_update" property="last_update" javaType="String" jdbcType="TIMESTAMP" />
+		<result column="img_size" property="size" jdbcType="INTEGER" />
+		<result column="img_file_extension" property="file_extension" jdbcType="VARCHAR" />
+		<result column="img_creator_id" property="creator_id" jdbcType="CHAR" />
+		<result column="img_org_id" property="org_id" jdbcType="CHAR" />
+		<result column="img_privacy" property="privacy" jdbcType="VARCHAR" />
+		<result column="img_status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="AssetResultMap2"
+		type="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+		<result column="data_id" property="id" jdbcType="CHAR" />
+		<result column="data_display_name" property="display_name" jdbcType="VARCHAR" />
+		<result column="data_storage_name" property="storage_name" jdbcType="VARCHAR" />
+		<result column="data_created_time" property="created_time" javaType="String" jdbcType="TIMESTAMP" />
+		<result column="data_last_update" property="last_update" javaType="String" jdbcType="TIMESTAMP" />
+		<result column="data_size" property="size" jdbcType="INTEGER" />
+		<result column="data_file_extension" property="file_extension" jdbcType="VARCHAR" />
+		<result column="data_creator_id" property="creator_id" jdbcType="CHAR" />
+		<result column="data_org_id" property="org_id" jdbcType="CHAR" />
+		<result column="data_privacy" property="privacy" jdbcType="VARCHAR" />
+		<result column="data_status" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getTacticsByID" resultMap="TacticsResultMap"
+		parameterType="java.lang.String">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where A.id = #{id} and A.status != 'deleted'
+	</select>
+
+	<select id="getTacticsByOrgId" resultMap="TacticsResultMap"
+		parameterType="java.util.Map">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where B.category =#{category} and A.org_id=#{org_id} and A.status !=
+		'deleted' order by A.created_time desc
+	</select>
+
+	<select id="getTacticsByUserId" resultMap="TacticsResultMap"
+		parameterType="java.util.Map">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where B.category =#{category} and A.creator_id=#{creator_id} and A.status
+		!= 'deleted' order by A.created_time desc
+	</select>
+
+	<select id="getTacticsByUserAndOrgId" resultMap="TacticsResultMap"
+		parameterType="java.util.Map">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where B.category =#{category} and A.creator_id=#{creator_id} and
+		A.org_id=#{org_id} and A.status != 'deleted'
+		order by A.created_time desc
+	</select>
+
+	<select id="getTacticsByTypeAndOrgId" resultMap="TacticsResultMap"
+		parameterType="java.util.Map">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where A.org_id=#{org_id} and A.tactics_type_id =#{tactics_type_id} and
+		A.status != 'deleted' order by A.created_time
+		desc
+	</select>
+
+	<select id="getTacticsByTypeAndUserId" resultMap="TacticsResultMap"
+		parameterType="java.util.Map">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where A.creator_id=#{creator_id} and A.tactics_type_id =#{tactics_type_id}
+		and A.status != 'deleted' order by
+		A.created_time desc
+	</select>
+
+	<select id="getTacticsByTypeUserAndOrgId" resultMap="TacticsResultMap"
+		parameterType="java.util.Map">
+		select A.*,
+		B.id as type_id, B.name as type_name, B.category as type_category,
+		B.creator_id as type_creator_id, B.org_id as type_org_id,
+		C.id as p_id, C.name as p_name, C.abbr as p_abbr, C.backgroundimg as
+		p_backgroundimg, C.category as p_category, C.width_in_meter as
+		p_width_in_meter, C.height_in_meter as p_height_in_meter,
+		D.id as img_id, D.display_name as img_display_name, D.storage_name as img_storage_name,D.created_time as img_created_time,
+		D.last_update as img_last_update,
+		D.size as img_size,D.file_extension as img_file_extension,D.creator_id as img_creator_id,D.org_id as img_org_id,D.privacy as img_privacy,D.status as img_status,
+		E.id as data_id, E.display_name as data_display_name, E.storage_name as data_storage_name,E.created_time as data_created_time,
+		E.last_update as data_last_update,
+		E.size as data_size,E.file_extension as data_file_extension,E.creator_id as data_creator_id,E.org_id as data_org_id,E.privacy as data_privacy,E.status as data_status
+		from tactics A left join tactics_type B on B.id = A.tactics_type_id left
+		join tactics_playground C on C.id=A.playground_id
+		left join asset D on D.id= A.imgName
+		left join asset E on E.id= A.tacticsdata
+		where A.creator_id=#{creator_id} and A.tactics_type_id =#{tactics_type_id}
+		and A.org_id=#{org_id} and A.status != 'deleted'
+		order by A.created_time desc
+	</select>
+
+	<select id="lastinsertid" resultType="java.lang.Long">
+		select last_insert_id()
+	</select>
+
+	<insert id="createTactics" parameterType="cn.sportsdata.webapp.youth.common.vo.TacticsVO">
+	    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+		insert into tactics(id, name,
+		description, tactics_type_id, playground_id, imgName, creator_id,
+		org_id, tacticsdata, created_time, last_update, status)
+		values(#{id}, #{name}, #{description}, #{tactics_type_id}, #{playground_id},
+		#{imgName}, #{creator_id}, #{org_id}, #{tacticsdata}, current_timestamp(),current_timestamp(),
+		'active')
+	</insert>
+
+	<update id="updateTactics" parameterType="cn.sportsdata.webapp.youth.common.vo.TacticsVO">
+		update tactics set name
+		=#{name}, description=#{description}, last_update=current_timestamp(),
+		tactics_type_id=#{tactics_type_id}, playground_id=#{playground_id},
+		imgName=#{imgName}, creator_id=#{creator_id}, org_id=#{org_id},
+		tacticsdata=#{tacticsdata} where
+		tactics.id=#{id};
+	</update>
+
+	<update id="deleteTactics" parameterType="cn.sportsdata.webapp.youth.common.vo.TacticsVO">
+		update tactics A set
+		A.status='deleted'  where A.id=#{id};
+	</update>
+
+	<select id="getTacticsByMatchId" resultMap="TacticsResultMap"
+		parameterType="java.lang.String">
+		select A.*
+		from tactics A, match_tactics_association B
+		where B.match_id = #{matchId} and A.id = B.tactics_id and B.status = 'active' and A.status = 'active'
+	</select>
+</mapper>

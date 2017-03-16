@@ -1,0 +1,26 @@
+.bootstrap-table .sprotsdatatable{
+	border : solid 1px #CBCBCB;
+}
+.sprotsdatatable.table-striped > tbody > tr:nth-of-type(odd){
+	background-color: #efefef;
+}
+.sprotsdatatable.table-striped > tbody > tr:nth-of-type(even){
+	background-color: #ffffff;
+}
+
+.sprotsdatatable thead th:first-child {
+	border-top-left-radius: 0px;
+}
+
+.fixed-table-container tbody .selected td{
+	background-color: transparent;
+}
+.bootstrap-table .table.table-no-bordered.sprotsdatatable>tbody>tr>td, .bootstrap-table .table.table-no-bordered.sprotsdatatable>thead>tr>th{
+	border:none;
+}
+
+.bootstrap-table .sprotsdatatable > thead > tr > th{
+	color: #FFFFFF;
+	background-color: #067DC2;
+	padding-right: 5px;
+}

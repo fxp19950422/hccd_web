@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.syncdao.SingleTableSync">
+
+    <select id="getNewRecords" resultType="java.util.HashMap" parameterType="java.util.Map">
+        ${sqlState}
+    </select>
+
+    <update id="replaceRecords"  parameterType="java.util.Map">
+        ${sqlState}
+    </update>
+
+    <update id="updateRecords" parameterType="java.util.Map">
+        ${sqlState}
+    </update>
+
+    <insert id="insertRecords"  useGeneratedKeys="true" keyProperty="id">
+        ${sqlState}
+    </insert>
+
+    <delete id="deleteRecords" parameterType="java.util.Map">
+        ${sqlState}
+    </delete>
+
+    <select id="getColumnsUnderCondition" resultType="java.util.HashMap" parameterType="java.util.Map">
+        ${sqlState}
+    </select>
+
+</mapper>

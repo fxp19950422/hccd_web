@@ -1,0 +1,842 @@
+{
+  "equipment": {
+    "table_name": "equipment",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "description",
+      "avatar",
+      "created_time",
+      "last_update",
+      "status",
+      "org_id"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "formation_type": {
+    "table_name": "formation_type",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "player_count",
+      "org_id",
+      "creator_id",
+      "category",
+      "status",
+      "created_time",
+      "last_update"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "healthdata": {
+    "table_name": "healthdata",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "height",
+      "weight",
+      "BMI",
+      "oxygen_content",
+      "shoulder",
+      "haunch",
+      "chest",
+      "waist",
+      "morning_pulse",
+      "lactate",
+      "waistfat",
+      "created_time",
+      "user_id",
+      "creator_id",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "HealthSyncACPolicyImpl"
+  },
+  "match": {
+    "table_name": "match",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "org_id",
+      "creator_id",
+      "opponent",
+      "date",
+      "time",
+      "location",
+      "type",
+      "dress",
+      "field_type",
+      "is_end",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_assets": {
+    "table_name": "match_assets",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "match_id",
+      "type",
+      "path",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_data": {
+    "table_name": "match_data",
+    "primary_key": [
+      "match_id",
+      "player_id",
+      "item_name"
+    ],
+    "other_fields": [
+      "item_value",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_data_log": {
+    "table_name": "match_data_log",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "match_id",
+      "player_id",
+      "time",
+      "item_name",
+      "item_value",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_foul": {
+    "table_name": "match_foul",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "match_id",
+      "org_id",
+      "player_id",
+      "player_name",
+      "type",
+      "time",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_goal": {
+    "table_name": "match_goal",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "match_id",
+      "org_id",
+      "player_id",
+      "assist_player_id",
+      "player_name",
+      "assist_player_name",
+      "time",
+      "type",
+      "mode",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_result": {
+    "table_name": "match_result",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "match_id",
+      "result",
+      "goal_for",
+      "goal_against",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_starters": {
+    "table_name": "match_starters",
+    "primary_key": [
+      "match_id",
+      "player_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_substitution": {
+    "table_name": "match_substitution",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "match_id",
+      "org_id",
+      "on_player_id",
+      "off_player_id",
+      "on_player_name",
+      "off_player_name",
+      "time",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "match_tactics_association": {
+    "table_name": "match_tactics_association",
+    "primary_key": [
+      "match_id",
+      "tactics_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "org": {
+    "table_name": "org",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "description",
+      "status",
+      "created_time",
+      "last_update"
+    ],
+    "ac_policy": "OrgSyncACPolicyImpl"
+  },
+  "place_kick": {
+    "table_name": "place_kick",
+    "primary_key": [
+      "place_kick_type_id",
+      "tactics_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "PlaceKickSyncACPolicyImpl"
+  },
+  "place_kick_type": {
+    "table_name": "place_kick_type",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "org_id",
+      "creator_id",
+      "category",
+      "status",
+      "created_time",
+      "last_update"
+    ],
+    "ac_policy": "PlaceKickSyncACPolicyImpl"
+  },
+  "privilege": {
+    "table_name": "privilege",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "parent_id",
+      "item_name",
+      "item_value",
+      "description",
+      "created_time",
+      "last_update",
+      "type",
+      "status"
+    ],
+    "ac_policy": ""
+  },
+  "role": {
+    "table_name": "role",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "created_time",
+      "last_update",
+      "role_type",
+      "status"
+    ],
+    "ac_policy": ""
+  },
+  "role_privilege_association": {
+    "table_name": "role_privilege_association",
+    "primary_key": [
+      "role_id",
+      "privilege_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": ""
+  },
+  "single_test": {
+    "table_name": "single_test",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status",
+      "org_id",
+      "creator_id",
+      "test_item_id",
+      "test_category_id",
+      "test_batch_id",
+      "test_time"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "single_training": {
+    "table_name": "single_training",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "description",
+      "player_count",
+      "goalkeeper_count",
+      "type",
+      "playbook_type",
+      "target",
+      "yard_width",
+      "yard_long",
+      "created_time",
+      "last_update",
+      "status",
+      "tactics_id",
+      "org_id"
+    ],
+    "ac_policy": "SingleTrainingSyncACPolicyImpl"
+  },
+  "single_training_equipment_association": {
+    "table_name": "single_training_equipment_association",
+    "primary_key": [
+      "single_training_id",
+      "equipment_id"
+    ],
+    "other_fields": [
+      "count",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "SingleTrainingSyncACPolicyImpl"
+  },
+  "single_training_ext": {
+    "table_name": "single_training_ext",
+    "primary_key": [
+      "single_training_id",
+      "item_name"
+    ],
+    "other_fields": [
+      "item_value",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "SingleTrainingSyncACPolicyImpl"
+  },
+  "starters": {
+    "table_name": "starters",
+    "primary_key": [
+      "formation_id",
+      "tactics_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "StartersSyncACPolicyImpl"
+  },
+  "starters_players_association": {
+    "table_name": "starters_players_association",
+    "primary_key": [
+      "starters_id",
+      "player_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "StartersPlayersSyncACPolicyImpl"
+  },
+  "tactics": {
+    "table_name": "tactics",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "description",
+      "tactics_type_id",
+      "org_id",
+      "created_time",
+      "last_update",
+      "creator_id",
+      "imgName",
+      "tacticsdata",
+      "playground_id",
+      "status",
+      "type"
+    ],
+    "ac_policy": "TacticsSyncACPolicyImpl"
+  },
+  "tactics_playground": {
+    "table_name": "tactics_playground",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "abbr",
+      "backgroundimg",
+      "width_in_meter",
+      "height_in_meter",
+      "category",
+      "status",
+      "created_time",
+      "last_update"
+    ],
+    "ac_policy": "TacticsSyncACPolicyImpl"
+  },
+  "tactics_type": {
+    "table_name": "tactics_type",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "creator_id",
+      "org_id",
+      "name",
+      "category",
+      "status",
+      "created_time",
+      "last_update"
+    ],
+    "ac_policy": "TacticsSyncACPolicyImpl"
+  },
+  "test_batch": {
+    "table_name": "test_batch",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status",
+      "title",
+      "creator_id",
+      "org_id"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "test_category": {
+    "table_name": "test_category",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status",
+      "name",
+      "description"
+    ],
+    "ac_policy": ""
+  },
+  "test_data": {
+    "table_name": "test_data",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "status",
+      "test_item_id",
+      "user_id",
+      "test_result",
+      "created_time",
+      "last_update",
+      "org_id",
+      "score",
+      "additional_score",
+      "test_time",
+      "single_test_id",
+      "test_batch_id"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "test_item": {
+    "table_name": "test_item",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status",
+      "title",
+      "test_category_id",
+      "best_order",
+      "test_standard_id",
+      "test_unit_id",
+      "test_method_id",
+      "range_min",
+      "range_max"
+    ],
+    "ac_policy": "TestItemSyncACPolicyImpl"
+  },
+  "test_item_org_mapping": {
+    "table_name": "test_item_org_mapping",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "test_item_id",
+      "org_id"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "test_method": {
+    "table_name": "test_method",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "method",
+      "name",
+      "duration"
+    ],
+    "ac_policy": ""
+  },
+  "test_standard": {
+    "table_name": "test_standard",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "description",
+      "best_order",
+      "test_unit_id",
+      "test_category_id",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": ""
+  },
+  "test_unit": {
+    "table_name": "test_unit",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "unit",
+      "name"
+    ],
+    "ac_policy": ""
+  },
+  "training": {
+    "table_name": "training",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "start_date",
+      "end_date",
+      "location",
+      "color",
+      "goal",
+      "evaluation",
+      "org_id",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "training_task": {
+    "table_name": "training_task",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "title",
+      "task_date",
+      "task_time",
+      "location",
+      "type",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "TrainingTaskSyncACPolicyImpl"
+  },
+  "training_task_evaluation": {
+    "table_name": "training_task_evaluation",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "task_id",
+      "user_id",
+      "evaluation",
+      "score",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "TrainingTaskSyncACPolicyImpl"
+  },
+  "training_task_evaluation_ext": {
+    "table_name": "training_task_evaluation_ext",
+    "primary_key": [
+      "task_evaluation_id",
+      "item_name"
+    ],
+    "other_fields": [
+      "item_value",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "TrainingTaskSyncACPolicyImpl"
+  },
+  "training_task_ext": {
+    "table_name": "training_task_ext",
+    "primary_key": [
+      "task_id",
+      "item_name"
+    ],
+    "other_fields": [
+      "item_value",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "TrainingTaskSyncACPolicyImpl"
+  },
+  "training_task_single_training_association": {
+    "table_name": "training_task_single_training_association",
+    "primary_key": [
+      "training_task_id",
+      "single_training_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "SingleTrainingSyncACPolicyImpl"
+  },
+  "training_training_task_association": {
+    "table_name": "training_training_task_association",
+    "primary_key": [
+      "training_id",
+      "training_task_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "TrainingSyncACPolicyImpl"
+  },
+  "training_task_match_association": {
+    "table_name": "training_task_match_association",
+    "primary_key": [
+      "training_task_id",
+      "match_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "MatchSyncACPolicyImpl"
+  },
+  "user": {
+    "table_name": "user",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "name",
+      "status",
+      "tel",
+      "birthday",
+      "email",
+      "home_address",
+      "avatar",
+      "passport",
+      "nationality",
+      "id_card",
+      "birth_place",
+      "created_time",
+      "last_update"
+    ],
+    "ac_policy": "UserSyncACPolicyImpl"
+  },
+  "user_ext": {
+    "table_name": "user_ext",
+    "primary_key": [
+      "user_id",
+      "item_name"
+    ],
+    "other_fields": [
+      "item_value",
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "UserSyncACPolicyImpl"
+  },
+  "user_org_association": {
+    "table_name": "user_org_association",
+    "primary_key": [
+      "user_id",
+      "org_id",
+      "role_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "SimpleOrgBasedACPolicyImpl"
+  },
+  "user_training_association": {
+    "table_name": "user_training_association",
+    "primary_key": [
+      "user_id",
+      "training_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "UserSyncACPolicyImpl"
+  },
+
+  "note": {
+    "table_name": "note",
+    "primary_key": [
+      "id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "NoteSyncACPolicyImpl"
+  },
+  "note_match_association": {
+    "table_name": "note_match_association",
+    "primary_key": [
+      "note_id",
+      "match_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "NoteSyncACPolicyImpl"
+  },
+  "note_tactics_association": {
+    "table_name": "note_tactics_association",
+    "primary_key": [
+      "note_id",
+      "tactics_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "NoteSyncACPolicyImpl"
+  },
+  "note_task_association": {
+    "table_name": "note_task_association",
+    "primary_key": [
+      "note_id",
+      "task_id"
+    ],
+    "other_fields": [
+      "created_time",
+      "last_update",
+      "status"
+    ],
+    "ac_policy": "NoteSyncACPolicyImpl"
+  },
+
+  "asset": {
+      "table_name": "asset",
+      "primary_key": [
+        "id"
+      ],
+      "other_fields": [
+      "file_name",
+      "storage_path",
+      "size",
+      "type",
+      "privacy",
+      "status",
+      "created_time",
+      "last_update",
+      "creator_id",
+      "org_id"
+    ],
+    "ac_policy": "AssetSyncACPolicyImpl"
+  }
+}

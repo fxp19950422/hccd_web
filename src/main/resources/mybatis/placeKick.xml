@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.placeKick.PlaceKickDAO">
+	<resultMap id="PlaceKickResultMap" type="cn.sportsdata.webapp.youth.common.vo.PlaceKickVO">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="creator_id" property="creator_id" jdbcType="CHAR"/>
+        <result column="place_kick_type_id" property="placeKickTypeId" jdbcType="INTEGER"/>
+        <result column="place_kick_type_name" property="placeKickTypeName" jdbcType="VARCHAR"/>
+        <result column="imgName" property="imgName" jdbcType="VARCHAR"/>
+        <result column="org_id" property="org_id" jdbcType="CHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="tactics_type_id" property="tactics_type_id" jdbcType="INTEGER"/>
+        <result column="created_time" property="created_time" javaType="String" jdbcType="TIMESTAMP"/>
+        <result column="last_update" property="last_update" javaType="String" jdbcType="TIMESTAMP"/>
+        <result column="playground_id" property="playground_id" jdbcType="INTEGER"/>
+        <result column="tacticsdata" property="tacticsdata" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+    <insert id="createPlaceKick" parameterType="cn.sportsdata.webapp.youth.common.vo.PlaceKickVO">
+		insert into place_kick (tactics_id, place_kick_type_id) 
+		values(#{id},  #{placeKickTypeId})
+    </insert>
+    
+    <select id="getPlaceKickByID" resultMap="PlaceKickResultMap" parameterType="java.lang.String">
+        select A.place_kick_type_id, B.*, C.name as place_kick_type_name from place_kick A 
+        join tactics B on tactics_id = id 
+        join place_kick_type C on C.id = A.place_kick_type_id
+        where tactics_id = #{tactics_id} and B.status = 'active' and A.status = 'active'
+    </select>
+    
+    <select id="getPlaceKickByUserId" resultMap="PlaceKickResultMap" parameterType="java.util.Map">
+       	select A.place_kick_type_id, B.*, C.name as place_kick_type_name from place_kick A 
+       	join tactics B on A.tactics_id = B.id 
+       	join place_kick_type C on C.id = place_kick_type_id
+       	where C.category=#{category} and B.status = 'active' and A.status = 'active'
+       	and B.creator_id = #{creator_id} and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <select id="getPlaceKickByUserIdAndType" resultMap="PlaceKickResultMap" parameterType="java.util.Map">
+    	select A.place_kick_type_id, B.*, C.name as place_kick_type_name from place_kick A 
+    	join tactics B on A.tactics_id = B.id 
+    	join place_kick_type C on C.id = place_kick_type_id
+       	where A.place_kick_type_id =#{place_kick_type_id} and B.status = 'active' and A.status = 'active'
+       	and B.creator_id = #{creator_id} and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <select id="getPlaceKickByOrg" resultMap="PlaceKickResultMap" parameterType="java.util.Map">
+       	select A.place_kick_type_id, B.*, C.name as place_kick_type_name from place_kick A 
+       	join tactics B on A.tactics_id = B.id 
+       	join place_kick_type C on C.id = place_kick_type_id
+       	where C.category=#{category} and B.status = 'active' and A.status = 'active'
+       	and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <select id="getPlaceKickByOrgAndType" resultMap="PlaceKickResultMap" parameterType="java.util.Map">
+    	select A.place_kick_type_id, B.*, C.name as place_kick_type_name from place_kick A 
+    	join tactics B on A.tactics_id = B.id 
+    	join place_kick_type C on C.id = place_kick_type_id
+       	where A.place_kick_type_id =#{place_kick_type_id} and B.status = 'active' and A.status = 'active'
+       	and B.org_id = #{org_id} order by B.created_time desc
+    </select>
+    
+    <update id="updatePlaceKick" parameterType="java.util.Map">
+		update place_kick A set A.place_kick_type_id=#{place_kick_type_id}, A.last_update=current_timestamp() where A.tactics_id=#{tactics_id};
+	</update>
+	
+	<update id="deletePlaceKick" parameterType="java.lang.String">
+		update place_kick A set A.status='deleted' where A.tactics_id=#{tacticsId};
+	</update>
+</mapper>

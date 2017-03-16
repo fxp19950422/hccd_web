@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.utraining.UtrainingDAO">
+
+	<resultMap id="UtrainingResultMap"
+		type="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingVO">
+		<result column="id" property="id" jdbcType="CHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="start_date" property="startDate" javaType="java.sql.Timestamp"
+			jdbcType="TIMESTAMP" />
+		<result column="end_date" property="endDate" javaType="java.sql.Timestamp"
+			jdbcType="TIMESTAMP" />
+		<result column="location" property="location" jdbcType="VARCHAR" />
+		<result column="color" property="color" jdbcType="VARCHAR" />
+		<result column="goal" property="goal" jdbcType="VARCHAR" />
+		<result column="evaluation" property="evaluation" jdbcType="VARCHAR" />
+		<result column="org_id" property="orgId" jdbcType="CHAR" />
+	</resultMap>
+	
+	
+	<resultMap id="UtrainingTaskResultMap"
+		type="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskVO">
+		<result column="training_id" property="trainingId" jdbcType="CHAR"/>
+		<result column="id" property="id" jdbcType="CHAR"/>
+		<result column="temp_id" property="tempId" jdbcType="CHAR"/>
+		<result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="task_time" property="taskTime" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="task_date" property="taskDate" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        
+        <collection property="extList" ofType="cn.sportsdata.webapp.youth.common.vo.utraining.TrainingExtVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+	</resultMap>
+	
+	<resultMap id="UtrainingTaskEvaResultMap"
+		type="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskEvaluationVO">
+		<result column="id" property="id" jdbcType="CHAR"/>
+		<result column="task_id" property="taskId" jdbcType="CHAR"/>
+		<result column="user_id" property="userId" jdbcType="CHAR"/>
+        <result column="evaluation" property="evaluation" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="VARCHAR"/>
+        
+        <collection property="evaExtList" ofType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskEvaluationExtVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+	</resultMap>
+	
+	<resultMap id="MatchTaskResultMap" type="cn.sportsdata.webapp.youth.common.vo.utraining.MatchTaskVO">
+        <result column="training_task_id" property="trainingTaskId" jdbcType="CHAR"/>
+        <result column="match_id" property="matchID" jdbcType="CHAR"/>
+        <result column="opponent" property="opponent" jdbcType="VARCHAR"/>
+        <result column="date" property="date" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result column="time" property="time" jdbcType="VARCHAR"/>
+        <result column="dress" property="dress" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+    </resultMap>
+	
+	<select id="getPlayersLatestEvaluation" resultMap="UtrainingTaskEvaResultMap" parameterType="java.lang.String">
+		select E.* from (SELECT A.* FROM training_task_evaluation A       
+				join training_training_task_association B on B.training_task_id = A.task_id        
+				join training_task C on C.id = A.task_id       
+				join training D on B.training_id = D.id 
+				where D.org_id = #{orgId} and C.type = "training" and A.status = "active" 
+				and A.evaluation is not null and length(A.evaluation) > 0
+				ORDER BY C.task_date desc, C.task_time desc) E 
+		group by E.user_id
+	</select>
+	
+	<select id="selectUtrainingYears" resultType="String"
+		parameterType="java.lang.String">
+		select distinct(date_format(start_date,'%Y')) from training where
+		org_id=#{orgId} and status='active' 
+	</select>
+
+	<select id="getPlayerInTraining" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select user_id from user_training_association where
+		training_id=#{trainingId} and status='active' 
+	</select>
+
+
+	<insert id="addNewUtraining" parameterType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingVO" >
+	    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+		insert into training(id, name,
+		start_date, end_date,
+		location,color,goal,evaluation,org_id,created_time)
+		values(#{id}, #{name},
+		#{startDate},#{endDate},#{location},#{color},#{goal},#{evaluation},#{orgId},now())
+	</insert>
+
+	<sql id="utraining_base_column_list">
+		id, name, start_date, end_date, location, color, goal, evaluation, org_id
+	</sql>
+
+	<select id="getUtrainingsInOneYear" parameterType="java.util.Map"
+		resultMap="UtrainingResultMap">
+		select 
+    	<include refid="utraining_base_column_list" />	
+		from
+    	training
+		where
+    	(date_format(start_date, '%Y') = #{year}
+    	or (date_format(end_date, '%Y') = #{year} and date_format(start_date, '%Y') != #{year}))
+        and org_id = #{orgId} and status='active' 
+		order by start_date
+	</select>
+	
+	
+	<resultMap id="TrainingMatchResultMap" type="cn.sportsdata.webapp.youth.common.vo.utraining.TrainingMatchVO">
+		<result column="id" property="trainingID" jdbcType="CHAR" />
+		<result column="name" property="trainingName" jdbcType="VARCHAR" />
+		<result column="date" property="matchDate" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+		<result column="opponent" property="opponent" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getUtrainingMatchInOneYear" parameterType="java.util.Map" resultMap="TrainingMatchResultMap">
+    	SELECT A.opponent,A.date,D.id,D.name FROM `match` A, training_task_match_association B, training_training_task_association C, training D 
+    	WHERE (date_format(A.date , '%Y')) = #{year} and A.status='active' and A.org_id = #{orgID}
+    		and A.id = B.match_id
+			and C.training_task_id=B.training_task_id and C.training_id = D.id 
+			and (date_format(D.start_date, '%Y') = #{year} or (date_format(D.end_date, '%Y') = #{year} and date_format(D.start_date, '%Y') != #{year}))
+			and D.status='active' and D.org_id = #{orgID}
+	</select>
+
+	<select id="getUtrainingsByUserId" parameterType="java.lang.String"
+		resultMap="UtrainingResultMap">
+		select A.id, A.name, A.start_date, A.end_date, A.location, A.color, A.goal,
+		A.evaluation, A.org_id
+		from training A, user_training_association B
+		where B.user_id = #{userId} and A.id = B.training_id and A.status='active' and B.status='active' order by start_date desc
+	</select>
+
+	<select id="getUtrainingById" parameterType="java.lang.String" resultMap="UtrainingResultMap">
+		select
+		<include refid="utraining_base_column_list" />
+		from training
+		where id=#{utrainingId} and status='active' 
+	</select>
+
+	<delete id="deleteUtrainingById" parameterType="java.lang.String">
+<!-- 		delete from training where id=#{utrainingId} -->
+		update training set status='deleted' where id=#{utrainingId}
+	</delete>
+
+	<update id="updateUtrainingById" parameterType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingVO">
+		update training
+		set
+		name=#{name},start_date=#{startDate},end_date=#{endDate},location=#{location},
+		color=#{color},goal=#{goal},evaluation=#{evaluation} where id=#{id}
+	</update>
+
+	<delete id="deletePlayerUtriningRelation" parameterType="java.lang.String">
+		update user_training_association set status='deleted' where training_id=#{utrainingId}
+	</delete>
+
+	<insert id="insertPlayerUtriningRelation" parameterType="java.util.Map">
+		replace into
+		user_training_association(user_id,training_id,created_time,status)
+		values
+		<foreach collection="playerList" item="item" index="index"
+			separator=",">
+			(#{item},#{utrainingId},now(),'active')
+		</foreach>
+	</insert>
+	
+	
+	<insert id="insertTaskBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskVO">
+	    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into training_task(id, title, task_date, task_time, location, type, created_time) 
+    	values(#{id}, #{title}, #{taskDate}, #{taskTime}, #{location}, #{type}, now())
+    </insert>
+    
+    <insert id="insertTaskExtData" parameterType="java.util.Map">
+    	insert into training_task_ext(task_id, item_name, item_value) values 
+    	<foreach collection="taskExtList" item="item" index="index" separator="," >
+    		(#{taskId}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    </insert>
+    
+    <update id="updateTaskBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskVO">
+        update training_task set title=#{title}, task_date=#{taskDate}, task_time=#{taskTime}, location=#{location}, type=#{type}
+        where id = #{id}
+    </update>
+    
+    <insert id="updateTaskExtData" parameterType="java.util.Map">
+    	insert into training_task_ext(task_id, item_name, item_value) values 
+    	<foreach collection="taskExtList" item="item" index="index" separator="," >
+    		(#{taskId}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    	 on duplicate key update item_value=values(item_value)
+    </insert>
+    
+    <delete id="deleteTaskUtriningRelation" parameterType="java.lang.String">
+		update  training_training_task_association set status='deleted' where training_id=#{utrainingId}
+	</delete>
+	
+    <update id="softDeleteTaskSingleTriningRelation" parameterType="java.lang.String">
+		update  training_task_single_training_association set status='deleted' where training_task_id=#{taskID}
+	</update>
+
+	<insert id="insertTaskUtriningRelation" parameterType="java.util.Map">
+		replace into
+		training_training_task_association(training_task_id,training_id,created_time,status)
+		values
+		<foreach collection="taskList" item="item" index="index"
+			separator=",">
+			(#{item},#{utrainingId},now(),'active')
+		</foreach>
+	</insert>
+	
+	<insert id="insertTaskSingleTriningRelation" parameterType="java.util.Map">
+		replace into
+		training_task_single_training_association(training_task_id,single_training_id,created_time,status)
+		values
+		<foreach collection="singleTrainingIDs" item="item" index="index"
+			separator=",">
+			(#{taskID},#{item},now(),'active')
+		</foreach>
+	</insert>
+	
+	<select id="getTaskInTraining" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select training_task_id from training_training_task_association where
+		training_id=#{trainingId} and status='active'
+	</select>
+	
+	<select id="getTaskInfoByIds" resultMap="UtrainingTaskResultMap">
+        select A.id, A.title, A.location, A.type, A.task_time, A.task_date,
+        CONCAT(date_format(A.task_date,'%Y%m%d'),replace(A.task_time,':','')) temp_id,
+        B.item_name, B.item_value 
+        from training_task A 
+        left outer join training_task_ext B on A.id = B.task_id 
+        where A.status='active' and B.status='active' and  A.id in 
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+    </select>
+    
+	
+    
+	<select id="getMatchTaskInfoByIds" resultMap="MatchTaskResultMap">
+        select B.training_task_id, B.match_id, C.date, C.time, C.location,C.opponent,C.dress
+        from training_task A, training_task_match_association B, `match` C
+        where A.status='active' and A.type='match' and A.id = B.training_task_id and C.id = B.match_id  and  A.id in 
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+    </select>
+    
+    <delete id="deleteUtrainingTaskByTaskId">
+		update training_task set status='deleted' where id in 
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+	</delete>
+	
+	<delete id="deleteUtrainingTaskRalationByTrainingId" parameterType="java.lang.String">
+		update training_training_task_association set status='deleted' where training_id=#{trainingId}
+	</delete>
+	
+	
+	<delete id="deleteUtrainingTaskRalationByTrainingIdAndTaskId" parameterType="java.util.Map">
+		update training_training_task_association set status='deleted' where training_id=#{trainingId} and training_task_id in
+		<foreach item="item" index="index" collection="taskList" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach>
+	</delete>
+	
+	<insert id="insertTaskEvaBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskEvaluationVO">
+	    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into training_task_evaluation(id, task_id, user_id, evaluation, score, created_time) 
+    	values(#{id}, #{taskId}, #{userId}, #{evaluation}, #{score}, now())
+    </insert>
+    
+    <insert id="insertTaskEvaExtData" parameterType="java.util.Map">
+    	insert into training_task_evaluation_ext(task_evaluation_id, item_name, item_value) values 
+    	<foreach collection="taskEvaExtList" item="item" index="index" separator="," >
+    		(#{taskEvaId}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    </insert>
+    
+    <update id="updateTaskEvaBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskEvaluationVO">
+        update training_task_evaluation set task_id=#{taskId}, user_id=#{userId}, evaluation=#{evaluation}, score=#{score}
+        where id = #{id}
+    </update>
+    
+    <insert id="updateTaskEvaExtData" parameterType="java.util.Map">
+    	insert into training_task_evaluation_ext(task_evaluation_id, item_name, item_value) values 
+    	<foreach collection="taskEvaExtList" item="item" index="index" separator="," >
+    		(#{taskEvaId}, #{item.itemName}, #{item.itemValue})
+    	</foreach>
+    	 on duplicate key update item_value=values(item_value)
+    </insert>
+	
+	
+	<select id="getTaskEvaListByTaskId" resultMap="UtrainingTaskEvaResultMap" parameterType="java.lang.String">
+        select A.id, A.task_id, A.user_id, A.evaluation, A.score,
+        B.item_name, B.item_value 
+        from training_task_evaluation A 
+        left outer join training_task_evaluation_ext B on A.id = B.task_evaluation_id 
+        where A.task_id = #{taskId} and A.status='active' and B.status='active'
+    </select>
+    
+	
+	<select id="getSingleTrainingIDListByTaskID" resultType="java.lang.String"  parameterType="java.lang.String">
+        select  single_training_id from training_task_single_training_association where training_task_id = #{taskId} and status='active'
+    </select>
+    
+    
+    <delete id="deleteEvaListByTaskId">
+		update training_task_evaluation set status='deleted'  where task_id in 
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+	</delete>
+	
+	<select id="checkUtrainingDate" resultType="int" parameterType="java.util.Map">
+        select count(1) from training where org_id=#{orgId} and status='active'
+        	<if test="{$utrainingId >0}">
+        		and id!=#{utrainingId}
+        	</if>
+        	and ((start_date between #{startDate} and #{endDate})
+			or (end_date between #{startDate} and #{endDate})
+            or (<![CDATA[start_date<#{startDate}]]> and <![CDATA[end_date>#{endDate}]]>))
+    </select>
+    
+    
+    <delete id="deleteUtrainingTaskExtByTaskId">
+    	update training_task_ext set status='deleted'  where task_id in 
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+    </delete>
+    
+    <delete id="deleteUtrainingTaskEvaluationExtByTaskId">
+    	update training_task_evaluation_ext set status='deleted'  where task_evaluation_id in 
+		 (select task_evaluation_id from training_task_evaluation where task_id in 
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach>)
+    </delete>
+    
+    <select id="getEvaInTask" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select id from training_task_evaluation where
+		task_id=#{taskId} and status='active'
+	</select>
+    
+    <delete id="deleteEvaListByTaskIdAndEvaId">
+		update training_task_evaluation set status='deleted'  where task_id =#{taskId} and id in 
+		 <foreach item="item" index="index" collection="evaIdList" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+	</delete>
+	
+    <delete id="deleteEvaExtListByEvaId">
+		update training_task_evaluation_ext set status='deleted'  where task_evaluation_id in 
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach> 
+	</delete>
+	
+    <insert id="insertTrainingTaskMatchAssociation" parameterType="java.util.Map">
+    	insert into training_task_match_association(training_task_id, match_id, created_time) values 
+    	(#{trainingTaskID}, #{matchID}, now())
+    </insert>
+    
+    <select id="getComingTrainingTask" resultMap="UtrainingTaskResultMap" parameterType="java.lang.String">
+		select A.*, C.id as training_id from training_task A 
+        join training_training_task_association B on B.training_task_id = A.id       
+        join training C on C.id = B.training_id 
+        where C.org_id = #{orgId} and C.status='active' and A.type="training" and A.status='active' and B.status='active'
+        and str_to_date(concat(DATE_FORMAT(A.task_date,'%Y-%m-%d'), A.task_time), '%Y-%m-%d %H:%i:%s') >= now()
+        order by A.task_date, str_to_date(A.task_time,'%H:%i:%s') limit 2;
+    </select>
+    
+    <select id="getLatestTrainingTask" resultMap="UtrainingTaskResultMap" parameterType="java.lang.String">
+        select A.*, C.id as training_id from training_task A 
+        join training_training_task_association B on B.training_task_id = A.id       
+        join training C on C.id = B.training_id 
+        left join training_task_evaluation D on D.task_id = A.id
+        where C.org_id = #{orgId} and C.status='active' and A.type="training" and D.id is not null and D.status='active' and A.status='active' and B.status='active'
+        order by A.task_date desc, str_to_date(A.task_time,'%H:%i:%s') desc limit 1;
+    </select>
+    
+    <select id="getTrainingTaskEvaResults" resultMap="UtrainingTaskEvaResultMap" parameterType="java.lang.String">
+		SELECT * FROM training_task_evaluation 
+		where task_id = #{taskId} and status = 'active' order by convert(score, DECIMAL) desc;
+    </select>
+    
+</mapper>

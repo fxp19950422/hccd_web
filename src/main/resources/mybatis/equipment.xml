@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.equipment.EquipmentDAO">
+	<resultMap id="EquipmentResultMap" type="cn.sportsdata.webapp.youth.common.vo.EquipmentVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="created_time" property="created_time" jdbcType="TIMESTAMP"/>
+        <result column="last_update" property="last_update" jdbcType="TIMESTAMP"/>
+        <result column="org_id" property="orgId" jdbcType="CHAR"/>
+    </resultMap>
+    <select id="selectEquipmentList" resultMap="EquipmentResultMap" parameterType="java.lang.String">
+        select A.id, A.name, A.description, A.avatar,A.org_id from equipment A  where A.org_id = #{orgId} and A.status = 'active'
+    </select>
+    
+    <select id="getEquipmentByID" resultMap="EquipmentResultMap" parameterType="java.lang.String">
+        select A.id, A.name, A.description, A.avatar from equipment A  where A.id = #{id} and A.status = 'active'
+    </select>
+    
+    <insert id="insertEquipmentData" parameterType="cn.sportsdata.webapp.youth.common.vo.EquipmentVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into equipment(id, name, description,avatar, created_time, org_id) 	values(#{id}, #{name}, #{description}, #{avatar}, now(), #{orgId})
+    </insert>
+    
+    <update id="updateEquipmentData" parameterType="cn.sportsdata.webapp.youth.common.vo.EquipmentVO">
+        update equipment set name=#{name}, description=#{description}, avatar=#{avatar}  where id = #{id}
+    </update>
+    
+    <update id="deleteEquipmentById" parameterType="java.lang.String">
+        update equipment set status='deleted' where id = #{id}  and status = 'active'
+    </update>
+    
+    <select id="getSingleTrainingEquipmentByEquipmentId" resultType="java.lang.Integer"  parameterType="java.lang.String">
+        select count(1) from single_training_equipment_association  where equipment_id = #{id} and status = 'active' 
+    </select>
+    
+    <update id="deleteSingleTrainingEquipmentById" parameterType="java.lang.String">
+        update single_training_equipment_association set status='deleted' where equipment_id=#{id} and status = 'active' 
+    </update>
+
+</mapper>
+

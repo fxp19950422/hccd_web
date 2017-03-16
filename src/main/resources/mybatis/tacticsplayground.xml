@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.tacticsplayground.TacticsPlaygroundDAO">
+	<resultMap id="TacticsPlaygroundResultMap" type="cn.sportsdata.webapp.youth.common.vo.TacticsPlaygroundVO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="abbr" property="abbr" jdbcType="VARCHAR"/>
+        <result column="backgroundimg" property="backgroundimg" jdbcType="VARCHAR"/>
+        <result column="category" property="category" jdbcType="VARCHAR"/>
+        <result column="width_in_meter" property="width_in_meter" jdbcType="INTEGER"/>
+        <result column="height_in_meter" property="height_in_meter" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    
+    <select id="getTacticsPlaygroundByID" resultMap="TacticsPlaygroundResultMap" parameterType="java.lang.Long">
+        select A.* from tactics_playground A where A.id = #{id}
+    </select>
+    
+    <select id="getTacticsPlaygroundCommon" resultMap="TacticsPlaygroundResultMap" parameterType="java.lang.String">
+        select A.* from tactics_playground A where A.category =#{category}
+    </select>
+</mapper>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.match.MatchDAO">
+	<resultMap id="MatchBasicResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="opponent" property="opponent" jdbcType="VARCHAR"/>
+        <result column="date" property="date" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result column="time" property="time" jdbcType="VARCHAR"/>
+        <result column="dress" property="dress" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="field_type" property="fieldType" jdbcType="VARCHAR"/>
+        <result column="is_end" property="isEnd" jdbcType="INTEGER"/>
+        <result column="org_id" property="orgId" jdbcType="CHAR"/>
+        <result column="creator_id" property="creatorId" jdbcType="CHAR"/>
+        
+        <result column="home_score" property="homeScore" jdbcType="INTEGER"/>
+        <result column="guest_score" property="guestScore" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="MatchResultBasicResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchResultVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="result" property="result" jdbcType="VARCHAR"/>
+    	<result column="goal_for" property="goalFor" jdbcType="INTEGER"/>
+    	<result column="goal_against" property="goalAgainst" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="MatchGoalResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchGoalVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="org_id" property="orgId" jdbcType="CHAR"/>
+    	<result column="player_id" property="playerId" jdbcType="CHAR"/>
+    	<result column="assist_player_id" property="assistPlayerId" jdbcType="CHAR"/>
+    	<result column="player_name" property="playerLabel" jdbcType="VARCHAR"/>
+    	<result column="assist_player_name" property="assistPlayerLabel" jdbcType="VARCHAR"/>
+    	<result column="type" property="type" jdbcType="VARCHAR"/>
+    	<result column="mode" property="mode" jdbcType="VARCHAR"/>
+    	<result column="time" property="time" jdbcType="INTEGER"/>
+    	
+    	<result column="home_player_name" property="homePlayerName" jdbcType="VARCHAR"/>
+    	<result column="home_assist_player_name" property="homeAssistPlayerName" jdbcType="VARCHAR"/>
+    	<result column="home_player_jersey_number" property="homePlayerJerseyNumber" jdbcType="VARCHAR"/>
+    	<result column="home_assist_player_jersey_number" property="homeAssistPlayerJerseyNumber" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="MatchFoulResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchFoulVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="org_id" property="orgId" jdbcType="CHAR"/>
+    	<result column="player_id" property="playerId" jdbcType="CHAR"/>
+    	<result column="player_name" property="playerLabel" jdbcType="VARCHAR"/>
+    	<result column="type" property="type" jdbcType="VARCHAR"/>
+    	<result column="time" property="time" jdbcType="INTEGER"/>
+    	
+    	<result column="home_player_name" property="homePlayerName" jdbcType="VARCHAR"/>
+    	<result column="home_player_jersey_number" property="homePlayerJerseyNumber" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="MatchSubResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchSubVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="org_id" property="orgId" jdbcType="CHAR"/>
+    	<result column="on_player_id" property="onPlayerId" jdbcType="CHAR"/>
+    	<result column="off_player_id" property="offPlayerId" jdbcType="CHAR"/>
+    	<result column="on_player_name" property="onPlayerLabel" jdbcType="VARCHAR"/>
+    	<result column="off_player_name" property="offPlayerLabel" jdbcType="VARCHAR"/>
+    	<result column="time" property="time" jdbcType="INTEGER"/>
+    	
+    	<result column="home_on_player_name" property="homeOnPlayerName" jdbcType="VARCHAR"/>
+    	<result column="home_on_player_jersey_number" property="homeOnPlayerJerseyNumber" jdbcType="VARCHAR"/>
+    	<result column="home_off_player_name" property="homeOffPlayerName" jdbcType="VARCHAR"/>
+    	<result column="home_off_player_jersey_number" property="homeOffPlayerJerseyNumber" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="MatchDataResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchDataVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="player_id" property="playerId" jdbcType="CHAR"/>
+    	<result column="player_name" property="playerName" jdbcType="VARCHAR"/>
+        <result column="player_jersey_number" property="playerJerseyNumber" jdbcType="VARCHAR"/>
+    	
+    	<collection property="itemList" ofType="cn.sportsdata.webapp.youth.common.vo.match.MatchDataItemVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    
+    <resultMap id="MatchAssetResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchAssetVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="asset_id" property="assetId" jdbcType="CHAR"/>
+    	<result column="type" property="type" jdbcType="VARCHAR"/>
+    	<result column="storage_name" property="path" jdbcType="VARCHAR"/>
+    	<result column="display_name" property="originalFileName" jdbcType="VARCHAR"/>
+    	<result column="file_extension" property="fileExt" jdbcType="VARCHAR"/>
+    	<result column="size" property="fileSize" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="StartersPlayerMap" type="cn.sportsdata.webapp.youth.common.vo.starters.StartersPlayerAssociationVO">
+    	<result column="starters_id" property="startersId" jdbcType="CHAR"/>
+    	<result column="player_id" property="playerId" jdbcType="CHAR"/>
+	</resultMap>
+	
+    <resultMap id="MatchTacticsResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchTacticsVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<collection property="tacticsIds" column="tactics_id" ofType="java.lang.String" />
+    </resultMap>
+    
+    <insert id="insertMatchBasic" parameterType="cn.sportsdata.webapp.youth.common.vo.match.MatchVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into `match`( id, org_id, creator_id, opponent, date, time, type, dress, location, field_type, is_end, created_time) 
+    	values(#{id}, #{orgId}, #{creatorId}, #{opponent}, #{date}, #{time}, #{type}, #{dress}, #{location}, #{fieldType}, #{isEnd}, now())
+    </insert>
+    
+    <insert id="insertMatchResultBasic" parameterType="cn.sportsdata.webapp.youth.common.vo.match.MatchResultVO">
+    	insert into match_result(match_id, result, goal_for, goal_against, created_time) 
+    	values(#{matchId}, #{result}, #{goalFor}, #{goalAgainst}, now())
+    </insert>
+    
+    <select id="getMatchesByOrgId" resultMap="MatchBasicResultMap" parameterType="java.lang.String">
+    	select A.id, A.opponent, A.date, A.time, A.dress, A.location, A.type, A.field_type, A.is_end, A.org_id, A.creator_id, B.goal_for as home_score, B.goal_against as guest_score 
+    	from `match` A 
+    	left outer join match_result B on A.id = B.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' 
+    	order by A.date desc
+    </select>
+    
+    <select id="getMatchById" resultMap="MatchBasicResultMap" parameterType="java.lang.String">
+    	select A.id, A.opponent, A.date, A.time, A.dress, A.location, A.type, A.field_type, A.is_end, A.org_id, A.creator_id, B.goal_for as home_score, B.goal_against as guest_score 
+    	from `match` A 
+    	left outer join match_result B on A.id = B.match_id 
+    	where A.id = #{matchId} and A.status = 'active'
+    </select>
+    
+    <update id="deleteMatchById" parameterType="java.lang.String">
+        update `match` set status='deleted' where id = #{matchId}
+    </update>
+    
+    <select id="getMatchResultBasicByMatchId" resultMap="MatchResultBasicResultMap" parameterType="java.lang.String">
+    	select match_id, result, goal_for, goal_against 
+    	from match_result 
+    	where match_id = #{matchId}
+    </select>
+    
+    <update id="updateMatchBasic" parameterType="cn.sportsdata.webapp.youth.common.vo.match.MatchVO">
+        update `match` set opponent=#{opponent}, date=#{date}, time=#{time}, dress=#{dress}, location=#{location},
+        type=#{type}, field_type=#{fieldType}, is_end=#{isEnd} 
+        where id = #{id}
+    </update>
+    
+    <update id="updateMatchResultBasic" parameterType="cn.sportsdata.webapp.youth.common.vo.match.MatchResultVO">
+        update match_result set result=#{result}, goal_for=#{goalFor}, goal_against=#{goalAgainst} 
+        where match_id = #{matchId}
+    </update>
+    
+    <select id="getMatchTacticsByMatchId" resultMap="MatchTacticsResultMap" parameterType="java.lang.String">
+    	select match_id, tactics_id from match_tactics_association where match_id = #{matchId} and status = 'active'
+    </select>
+    
+    <insert id="insertMatchTactics" parameterType="java.util.Map">
+    	insert into match_tactics_association(id, match_id, tactics_id, created_time) values 
+    	<foreach collection="taticsIdList" item="item" index="index" separator="," >
+    		(UUID(), #{matchId}, #{item}, now())
+    	</foreach>
+    </insert>
+    
+    <update id="deleteMatchTacticsByMatchId" parameterType="java.lang.String">
+    	update match_tactics_association set status = 'deleted' where match_id = #{matchId} 
+    </update>
+    
+    <select id="getMatchStartPlayerList" resultMap="StartersPlayerMap" >
+         select player_id, starters_id as tactics_id from starters_players_association join user on player_id = user.id
+         where user.status = 'active' and starters_id in (
+         <foreach item="item" index="index" collection="list" separator=",">
+                 "${item}"
+         </foreach>
+         )
+  	</select> 
+    
+    <insert id="saveMatchStartPlayerList" parameterType="java.util.Map">
+		INSERT into match_starters (id, match_id, player_id, status, created_time) values
+		<foreach collection="playerList" item="item" separator=",">
+			(UUID(), #{matchId}, #{item.playerId}, 'active', now())
+		</foreach>
+	</insert>
+	
+	<update id="clearMatchStartPlayerList" parameterType="java.lang.String">
+		update match_starters set status = 'deleted'  where match_id = #{matchId} 
+	</update>
+	
+	<select id="getMatchGoalsByMatchId" resultMap="MatchGoalResultMap" parameterType="java.lang.String">
+    	select A.match_id, A.org_id, A.player_id, A.assist_player_id, A.player_name, A.assist_player_name, A.type, A.mode, A.time, 
+    		   B.name as home_player_name, C.name as home_assist_player_name, D.item_value as home_player_jersey_number, E.item_value as home_assist_player_jersey_number  
+    	from match_goal A
+    	left outer join user B on A.player_id = B.id 
+    	left outer join user_ext D on B.id = D.user_id and D.item_name = 'professional_jersey_number' 
+    	left outer join user C on A.assist_player_id = C.id 
+    	left outer join user_ext E on C.id = E.user_id and E.item_name = 'professional_jersey_number' 
+    	where A.match_id = #{matchId} and A.status = 'active' 
+    	order by A.time, A.created_time
+    </select>
+    
+    <select id="getMatchFoulsByMatchId" resultMap="MatchFoulResultMap" parameterType="java.lang.String">
+    	select A.match_id, A.org_id, A.player_id, A.player_name, A.type, A.time, B.name as home_player_name, C.item_value as home_player_jersey_number 
+    	from match_foul A 
+    	left outer join user B on A.player_id = B.id 
+    	left outer join user_ext C on B.id = C.user_id and C.item_name = 'professional_jersey_number' 
+    	where A.match_id = #{matchId} and A.status = 'active' 
+    	order by A.time, A.created_time
+    </select>
+    
+    <select id="getMatchSubsByMatchId" resultMap="MatchSubResultMap" parameterType="java.lang.String">
+    	select A.match_id, A.org_id, A.on_player_id, A.off_player_id, A.on_player_name, A.off_player_name, A.time, 
+    		   B.name as home_on_player_name, C.item_value as home_on_player_jersey_number, 
+    		   D.name as home_off_player_name, E.item_value as home_off_player_jersey_number 
+    	from match_substitution A 
+    	left outer join user B on A.on_player_id = B.id 
+    	left outer join user_ext C on B.id = C.user_id and C.item_name = 'professional_jersey_number' 
+    	left outer join user D on A.off_player_id = D.id 
+    	left outer join user_ext E on D.id = E.user_id and E.item_name = 'professional_jersey_number' 
+    	where A.match_id = #{matchId} and A.status = 'active' 
+    	order by A.time, A.created_time
+    </select>
+    
+    <select id="getMatchDataByMatchId" resultMap="MatchDataResultMap" parameterType="java.lang.String">
+    	select A.match_id, A.player_id, A.item_name, A.item_value, B.name as player_name, C.item_value as player_jersey_number 
+    	from match_data A 
+    	left outer join user B on A.player_id = B.id 
+    	left outer join user_ext C on B.id = C.user_id and C.item_name = 'professional_jersey_number' 
+    	where A.match_id = #{matchId} and A.status = 'active'
+    </select>
+    
+    <select id="getMatchDataLogByMatchId" resultMap="MatchDataResultMap" parameterType="java.lang.String">
+    	select match_id, player_id, item_name, item_value from match_data_log where match_id = #{matchId} and status = 'active'
+    </select>
+    
+    <select id="getMatchAssetsByMatchId" resultMap="MatchAssetResultMap" parameterType="java.lang.String">
+    	select A.match_id, A.asset_id, A.type, B.display_name, B.storage_name, B.size, B.file_extension 
+    	from match_asset_association A, asset B 
+    	where A.match_id = #{matchId} and A.status = 'active' and A.asset_id = B.id and B.status = 'active'
+    </select>
+    
+    <update id="deleteMatchGoalsByMatchId" parameterType="java.lang.String">
+		update match_goal set status = 'deleted'  where match_id = #{matchId} 
+	</update>
+	
+	<update id="deleteMatchFoulsByMatchId" parameterType="java.lang.String">
+		update match_foul set status = 'deleted' where match_id = #{matchId} 
+	</update>
+	
+	<update id="deleteMatchSubsByMatchId" parameterType="java.lang.String">
+		update match_substitution set status = 'deleted' where match_id = #{matchId} 
+	</update>
+	
+	<update id="deleteMatchDataByMatchId" parameterType="java.lang.String">
+		update match_data set status = 'deleted' where match_id = #{matchId} 
+	</update>
+	
+	<update id="deleteMatchDataLogByMatchId" parameterType="java.lang.String">
+		update match_data_log set status = 'deleted' where match_id = #{matchId} 
+	</update>
+	
+	<update id="deleteMatchAssetRelationsByMatchId" parameterType="java.lang.String">
+		update match_asset_association set status = 'deleted' where match_id = #{matchId} 
+	</update>
+	
+	<update id="deleteMatchAssets" parameterType="java.util.List">
+		update asset set status = 'deleted' where id in (
+			<foreach collection="list" item="matchAsset" separator=",">
+				#{matchAsset.assetId}
+			</foreach>
+		)
+	</update>
+	
+	<insert id="insertMatchGoals" parameterType="java.util.List">
+		insert into match_goal (id, match_id, org_id, player_id, assist_player_id, player_name, assist_player_name, type, mode, time, created_time) values 
+		<foreach collection="list" item="goal" separator=",">
+			(UUID(), #{goal.matchId}, 
+			<choose><when test="goal.orgId != null">#{goal.orgId}</when><otherwise>null</otherwise></choose>, 
+			<choose><when test="goal.playerId != null">#{goal.playerId}</when><otherwise>null</otherwise></choose>, 
+			<choose><when test="goal.assistPlayerId != null">#{goal.assistPlayerId}</when><otherwise>null</otherwise></choose>, 
+			#{goal.playerLabel}, #{goal.assistPlayerLabel}, 
+			<choose><when test="goal.type != null">#{goal.type}</when><otherwise>null</otherwise></choose>, 
+			<choose><when test="goal.mode != null">#{goal.mode}</when><otherwise>null</otherwise></choose>, 
+			#{goal.time}, now())
+		</foreach>
+	</insert>
+	
+	<insert id="insertMatchFouls" parameterType="java.util.List">
+		insert into match_foul (id, match_id, org_id, player_id, player_name, type, time, created_time) values 
+		<foreach collection="list" item="foul" separator=",">
+			(UUID(), #{foul.matchId}, 
+			<choose><when test="foul.orgId != null">#{foul.orgId}</when><otherwise>null</otherwise></choose>, 
+			<choose><when test="foul.playerId != null">#{foul.playerId}</when><otherwise>null</otherwise></choose>, 
+			#{foul.playerLabel}, #{foul.type}, #{foul.time}, now())
+		</foreach>
+	</insert>
+	
+	<insert id="insertMatchSubs" parameterType="java.util.List">
+		insert into match_substitution (id, match_id, org_id, on_player_id, off_player_id, on_player_name, off_player_name, time, created_time) values 
+		<foreach collection="list" item="sub" separator=",">
+			(UUID(), #{sub.matchId}, 
+			<choose><when test="sub.orgId != null">#{sub.orgId}</when><otherwise>null</otherwise></choose>, 
+			<choose><when test="sub.onPlayerId != null">#{sub.onPlayerId}</when><otherwise>null</otherwise></choose>, 
+			<choose><when test="sub.offPlayerId != null">#{sub.offPlayerId}</when><otherwise>null</otherwise></choose>, 
+			#{sub.onPlayerLabel}, #{sub.offPlayerLabel}, #{sub.time}, now())
+		</foreach>
+	</insert>
+	
+	<insert id="insertMatchData" parameterType="java.util.List">
+		insert into match_data (id, match_id, player_id, item_name, item_value, created_time) values 
+		<foreach collection="list" item="data" separator=",">
+			<foreach collection="data.itemList" item="item" separator=",">
+				(UUID(), #{data.matchId}, #{data.playerId}, #{item.itemName}, #{item.itemValue}, now())
+			</foreach>
+		</foreach>
+	</insert>
+	
+	<insert id="insertMatchDataLog" parameterType="java.util.List">
+		insert into match_data_log (id, match_id, player_id, time, item_name, item_value, created_time) values 
+		<foreach collection="list" item="data" separator=",">
+			<foreach collection="data.itemList" item="item" separator=",">
+				(UUID(), #{data.matchId}, #{data.playerId}, -1, #{item.itemName}, #{item.itemValue}, now())
+			</foreach>
+		</foreach>
+	</insert>
+	
+	<insert id="insertMatchAssets" parameterType="java.util.List">
+		insert into asset (id, display_name, storage_name, size, file_extension, privacy, created_time, creator_id, org_id) values 
+		<foreach collection="list" item="asset" separator=",">
+			(#{asset.assetId}, #{asset.originalFileName}, #{asset.path}, #{asset.fileSize}, #{asset.fileExt}, 'protected', now(), #{asset.creatorId}, #{asset.orgId})
+		</foreach>
+	</insert>
+	
+	<insert id="insertMatchAssetRelations" parameterType="java.util.List">
+		insert into match_asset_association (id, match_id, asset_id, type, created_time) values 
+		<foreach collection="list" item="asset" separator=",">
+			(UUID(), #{asset.matchId}, #{asset.assetId}, #{asset.type}, now())
+		</foreach>
+	</insert>
+	
+	<update id="updateMatchEndStatus" parameterType="java.util.Map">
+        update `match` set is_end=#{isEnd} where id = #{matchId}
+    </update>
+    
+    <select id="getLatestEndedMatchByOrgId" resultMap="MatchBasicResultMap" parameterType="java.lang.String">
+    	select A.id, A.opponent, A.date, A.time, A.dress, A.location, A.type, A.field_type, A.is_end, A.org_id, A.creator_id, B.goal_for as home_score, B.goal_against as guest_score 
+    	from `match` A 
+    	left outer join match_result B on A.id = B.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' and A.is_end = 1 
+    	order by A.date desc limit 1
+    </select>
+    
+    <select id="getComingMatchesByOrgId" resultMap="MatchBasicResultMap" parameterType="java.lang.String">
+    	select A.id, A.opponent, A.date, A.time, A.dress, A.location, A.type, A.field_type, A.is_end, A.org_id, A.creator_id, B.goal_for as home_score, B.goal_against as guest_score 
+    	from `match` A 
+    	left outer join match_result B on A.id = B.match_id 
+    	where A.org_id = #{orgId} and A.status = 'active' and A.is_end = 0 and (A.date > curdate() or (A.date = curdate() and A.time > left(curtime(), 5))) 
+    	order by A.date asc
+    </select>
+</mapper>

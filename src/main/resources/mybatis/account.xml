@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.account.AccountDao">
+	<resultMap id="AccountResultMap" type="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="display_name" property="name" jdbcType="VARCHAR"/>
+        <result column="user_name" property="username" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="avatarId" property="avatar_id" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="OrgResultMap" type="cn.sportsdata.webapp.youth.common.vo.OrgVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="getOrgsByAccountID" resultMap="OrgResultMap" parameterType="java.lang.String">
+    	SELECT distinct B.* FROM user_role_mapping A, hospital B where A.hospital_id = B.id and A.user_id=#{loginId} order by B.id desc
+    </select>
+    
+      <select id="getOrgsByAccountIDOrgID" resultMap="OrgResultMap" parameterType="java.util.Map">
+        SELECT B.* FROM account_org_role_mapping A, org B where A.org_id = B.id and A.login_id=#{loginID} and B.id=#{orgID} order by B.id desc
+    </select>
+    
+    <select id="getAccountsByOrg" resultMap="AccountResultMap" parameterType="java.lang.String">
+        select A.*
+        from  login A, org B, account_org_role_mapping C 
+        where A.id= C.login_id and B.id = C.org_id  and B.id=#{orgId} order by A.id desc
+    </select>
+    
+    <select id="getAccountByAccountIDOrgId" resultMap="AccountResultMap" parameterType="java.lang.String">
+        select A.id, A.name, A.account, A.email, A.birthday, A.avatar
+        from  login A, org B, account_org_role_mapping C 
+        where A.id= C.login_id and B.id = C.org_id  and B.id=#{orgID} and A.id=#{loginID}
+    </select>
+    
+     <select id="getAccountById" resultMap="AccountResultMap" parameterType="java.lang.String">
+        select A.*
+        from  user A 
+        where A.id = #{id} order by A.id desc
+    </select>
+    
+  
+    
+     <select id="getAccountByUsername" resultMap="AccountResultMap" parameterType="java.lang.String">
+        select A.*
+        from  user A 
+        where A.user_name = #{account}
+    </select>
+    
+     <insert id="insertAccount" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into login(id, account, password, email, birthday, name, avatar,avatar_id, status, created_time) values (#{id},
+			#{username}, #{password}, #{email}, #{birthday}, #{name}, #{avatar},#{avatarId}, 'active', now()
+		)
+    </insert>
+    
+    <update id="updateAccount" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
+    	update user set email = #{email}, birthday=#{birthday}, display_name=#{name}, avatar=#{avatar}, last_update=now()
+    	<if test="password != null and password != '' ">
+    	,password=#{password}
+    	</if>
+    	 where id = #{id}
+    </update>
+    
+    <update id="updatePwd" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
+    	update login set  password=#{password}, last_update=now() where id = #{id}
+    </update>
+    
+    <delete id="deleteAccount" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
+    	delete from login where id = #{id}
+    </delete>
+    
+    <delete id="deleteRelationShipInOrg" parameterType="java.util.Map">
+    	delete from account_org_role_mapping where login_id = #{id} and org_id=#{orgId}
+    </delete>
+    
+     <insert id="insertAccountOrgRoleMapping" parameterType="java.util.Map" >
+    	insert into account_org_role_mapping( login_id, org_id, account_role_id) values (
+			#{loginId}, #{orgId}, #{accountRoleId}
+		)
+    </insert>
+    
+</mapper>

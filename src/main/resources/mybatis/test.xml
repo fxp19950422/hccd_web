@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.test.TestDao">
+
+	<resultMap id="TestBatchRenderVO" type="cn.sportsdata.webapp.youth.common.vo.test.TestBatchRenderVO">
+		<result column="id" property="id" jdbcType="CHAR"/>
+		<result column="org_id" property="org_id" jdbcType="CHAR"/>
+		<result column="creator_id" property="creator_id" jdbcType="CHAR"/>
+		<result column="test_item_id" property="test_item_id" jdbcType="INTEGER"/>
+		<result column="test_category_id" property="test_category_id" jdbcType="INTEGER"/>
+		<result column="test_batch_id" property="test_batch_id" jdbcType="CHAR"/>
+		<result column="test_time" property="test_time" javaType="java.util.Date" jdbcType="DATE"/>
+		<result column="creator_name" property="creator_name" jdbcType="VARCHAR"/>
+		<result column="test_item_title" property="test_item_title" jdbcType="VARCHAR"/>
+		<result column="test_category_name" property="test_category_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="TestItemSelectorVO" type="cn.sportsdata.webapp.youth.common.vo.test.TestItemSelectorVO">
+		<result column="id" property="id" jdbcType="INTEGER"/>
+		<result column="title" property="title" jdbcType="VARCHAR"/>
+		<result column="test_category_id" property="test_category_id" jdbcType="INTEGER"/>
+		<result column="best_order" property="best_order" jdbcType="INTEGER"/>
+		<result column="test_standard_id" property="test_standard_id" jdbcType="INTEGER"/>
+		<result column="test_unit_id" property="test_unit_id" jdbcType="INTEGER"/>
+		<result column="test_method_id" property="test_method_id" jdbcType="INTEGER"/>
+		<result column="range_min" property="range_min" jdbcType="FLOAT"/>
+		<result column="range_max" property="range_max" jdbcType="FLOAT"/>
+		<result column="test_category_name" property="test_category_name" jdbcType="VARCHAR"/>
+		<result column="test_unit_name" property="test_unit_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<resultMap id="SingleTestPO" type="cn.sportsdata.webapp.youth.common.vo.test.SingleTestPO">
+		<result column="id" property="id" jdbcType="CHAR"/>
+		<result column="org_id" property="org_id" jdbcType="CHAR"/>
+		<result column="creator_id" property="creator_id" jdbcType="CHAR"/>
+		<result column="test_item_id" property="test_item_id" jdbcType="INTEGER"/>
+		<result column="test_category_id" property="test_category_id" jdbcType="INTEGER"/>
+		<result column="test_batch_id" property="test_batch_id" jdbcType="INTEGER"/>
+		<result column="test_time" property="test_time" javaType="java.util.Date" jdbcType="DATE"/>
+	</resultMap>
+	
+	<resultMap id="TestDataPO" type="cn.sportsdata.webapp.youth.common.vo.test.TestDataPO">
+		<result column="id" property="id" jdbcType="CHAR"/>
+		<result column="test_item_id" property="test_item_id" jdbcType="INTEGER"/>
+		<result column="user_id" property="user_id" jdbcType="CHAR"/>
+		<result column="test_result" property="test_result" jdbcType="FLOAT"/>
+		<result column="org_id" property="org_id" jdbcType="CHAR"/>
+		<result column="score" property="score" jdbcType="FLOAT"/>
+		<result column="additional_score" property="additional_score" jdbcType="FLOAT"/>
+		<result column="test_time" property="test_time" javaType="java.util.Date" jdbcType="DATE"/>
+		<result column="single_test_id" property="single_test_id" jdbcType="CHAR"/>
+		<result column="test_batch_id" property="test_batch_id" jdbcType="CHAR"/>
+	</resultMap>
+	
+	
+	<resultMap id="PlayerWithTest" type="cn.sportsdata.webapp.youth.common.vo.test.PlayerWithTest">
+		<result column="user_id" property="user_id" jdbcType="CHAR"/>
+		<result column="user_name" property="user_name" jdbcType="VARCHAR"/>
+		<result column="jersey_number" property="jersey_number" jdbcType="INTEGER"/>
+		<result column="test_item_title" property="test_item_title" jdbcType="VARCHAR"/>
+		<result column="test_unit_name" property="test_unit_name" jdbcType="VARCHAR"/>
+		<result column="test_result" property="test_result" jdbcType="FLOAT"/>
+	</resultMap>
+	
+	<resultMap id="SimpleTestResult" type="cn.sportsdata.webapp.youth.common.vo.test.TestDataPO">
+		<result column="user_id" property="user_id" jdbcType="CHAR"/>
+		<result column="test_result" property="test_result" jdbcType="FLOAT"/>
+	</resultMap>
+	
+	<resultMap id="SimpleTestItem" type="cn.sportsdata.webapp.youth.common.vo.test.TestItemPO">
+		<result column="test_item_id" property="id" jdbcType="INTEGER"/>
+		<result column="title" property="title" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="PlayerChartData" type="cn.sportsdata.webapp.youth.common.vo.test.PlayerChartData">
+		<result column="test_unit_name" property="test_unit_name" jdbcType="VARCHAR"/>
+		<result column="test_time_str" property="test_time_str" jdbcType="VARCHAR"/>
+		<result column="test_result" property="test_result" jdbcType="FLOAT"/>
+	</resultMap>
+	
+	<select id="queryTestBatchListByOrgID" resultMap="TestBatchRenderVO">
+        select s.id ,s.org_id,s.creator_id,s.test_item_id,s.test_category_id,s.test_batch_id,s.test_time, 
+        u.name as creator_name,i.title as test_item_title,c.name as test_category_name from 
+        single_test s, user u,test_item i,test_category c where 
+        s.status = 'active' and s.org_id = #{orgId} and s.creator_id = u.id and s.test_item_id = i.id and s.test_category_id = c.id 
+        order by s.test_time desc 
+    </select>
+    
+    <select id="searchTestBatchList" resultMap="TestBatchRenderVO">
+        select s.id ,s.org_id,s.creator_id,s.test_item_id,s.test_category_id,s.test_batch_id,s.test_time, 
+        u.name as creator_name,i.title as test_item_title,c.name as test_category_name from 
+        single_test s, user u,test_item i,test_category c where 
+        s.status = 'active' and s.org_id = #{orgId} and s.creator_id = u.id and s.test_item_id = i.id and s.test_category_id = c.id 
+        and s.test_time &gt;= #{start_date} and s.test_time &lt; #{end_date} 
+        order by s.test_time desc 
+    </select>
+    
+    
+    <select id="searchTestBatchListWithItemLike" resultMap="TestBatchRenderVO">
+        select s.id ,s.org_id,s.creator_id,s.test_item_id,s.test_category_id,s.test_batch_id,s.test_time, 
+        u.name as creator_name,i.title as test_item_title,c.name as test_category_name from 
+        single_test s, user u,test_item i,test_category c where 
+        s.status = 'active' and s.org_id = #{orgId} and s.creator_id = u.id and s.test_item_id = i.id and s.test_category_id = c.id 
+        and s.test_time &gt;= #{start_date} and s.test_time &lt; #{end_date} and upper(i.title) like #{test_item_title_like} 
+        order by s.test_time desc 
+    </select>
+    
+    <select id="queryTestItemList" resultMap="TestItemSelectorVO">
+        select i.id,i.title,i.test_category_id,i.best_order,i.test_standard_id,i.test_unit_id,i.test_method_id,i.range_min,i.range_max,
+        c.name as test_category_name, u.name as test_unit_name from test_item i, test_category c, test_unit u where 
+        i.status = 'active' and i.test_category_id = c.id and i.test_unit_id = u.id 
+        order by i.test_category_id asc
+    </select>
+    
+    <select id="querySingleTestByID" resultMap="SingleTestPO">
+        select id,org_id,creator_id,test_item_id,test_category_id,test_batch_id,test_time from single_test where id = #{singleTestID}
+    </select>
+    
+    <select id = "queryPlayersWithTestItemByOrgIDAndTestItemID" resultMap="PlayerWithTest">
+    	select A.id as user_id, A.name as user_name, F.item_value+0 as jersey_number,D.title as test_item_title,E.name as test_unit_name, null as test_result 
+		from user A, user_org_association B, role C,user_ext F 
+		left join test_item D on D.id = #{testItemID}  
+		left join test_unit E on E.id = D.test_unit_id 
+		where B.org_id = #{orgId} and A.id = B.user_id and A.status = 'active' and B.role_id = C.id and C.name = 'player' 
+		and F.user_id = A.id and F.item_name = 'professional_jersey_number' 
+		order by jersey_number asc 
+    </select>
+    
+    <select id = "querySimpleTestDataResult" resultMap="SimpleTestResult">
+    	select user_id,test_result from test_data where single_test_id = #{singleTestID} and test_batch_id = #{testBatchID} and 
+        test_item_id = #{testItemID} and org_id = #{orgId} and status= 'active' 
+    </select>
+    
+    
+    <insert id ="insertTestBatch" parameterType="cn.sportsdata.webapp.youth.common.vo.test.TestBatchPO">
+         <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into test_batch(id, created_time, last_update, title, creator_id, org_id)  
+    	values(#{id}, now(), now(), '批量测试', #{creator_id}, #{org_id})
+    </insert>
+    
+    <insert id ="insertSingleTest" parameterType="cn.sportsdata.webapp.youth.common.vo.test.SingleTestPO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into single_test(id, created_time, last_update, creator_id, org_id, test_item_id, test_category_id,test_batch_id, test_time)  
+    	values(#{id}, now(), now(), #{creator_id}, #{org_id}, #{test_item_id},#{test_category_id},#{test_batch_id},#{test_time}) 
+    </insert>
+    
+    <insert id ="insertTestData" parameterType="cn.sportsdata.webapp.youth.common.vo.test.TestDataPO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into test_data(id, created_time, last_update, test_item_id, user_id, test_result, org_id, test_time,single_test_id,test_batch_id)  
+    	values(#{id}, now(), now(), #{test_item_id}, #{user_id} ,#{test_result}, #{org_id}, #{test_time},#{single_test_id},#{test_batch_id}) 
+    </insert>
+    
+    <update id ="updateSingleTestByID" parameterType="cn.sportsdata.webapp.youth.common.vo.test.SingleTestPO">
+    	update single_test set last_update = now(),test_item_id = #{test_item_id},test_category_id = #{test_category_id} 
+    	,test_time = #{test_time}, creator_id = #{creator_id} where id = #{id} 
+    </update>
+    
+    <delete id = "deleteTestDataByOrgAndBatchAndSingleTest">
+    	delete from test_data where test_batch_id = #{test_batch_id} and single_test_id = #{single_test_id} and org_id =#{org_id} 
+    </delete>
+    
+    <delete id = "deleteSingleTestByID">
+    	delete from single_test where id = #{id} 
+    </delete>
+    
+    <delete id = "deleteTestBatchByID">
+    	delete from test_batch where id = #{id} 
+    </delete>
+    
+    <select id = "querySingleTestCountByOrgAndBatch" resultType="java.lang.Integer">
+    	select count(*) from single_test where org_id = #{org_id} and test_batch_id = #{test_batch_id}
+    </select>
+    
+    
+    <select id = "queryUserLatest3TestItems" resultMap = "SimpleTestItem">
+    	select d.test_item_id as test_item_id, t.title FROM 
+    	test_data d, test_item t where 
+    	d.user_id = #{user_id} and d.org_id = #{org_id} and d.test_item_id = t.id 
+    	group by d.test_item_id order by max(d.test_time) desc,d.test_item_id asc limit 0,3     
+    </select>
+    
+    
+    <select id = "queryUserChartData" resultMap="PlayerChartData">
+    	select 
+			DATE_FORMAT(D.test_time,'%Y-%m-%d') as test_time_str, 
+		    D.test_result as test_result, 
+		    U.name as test_unit_name 
+		    from test_data D,test_item I ,test_unit U 
+		    where D.org_id = #{org_id} and D.user_id = #{user_id} and D.test_item_id = #{test_item_id} 
+		    and D.test_item_id = I.id and I.test_unit_id = U.id 
+		    and D.test_time &gt;= #{start_date} and D.test_time &lt; #{end_date}
+			order by D.test_time asc			
+    </select>
+    
+    
+	<select id = "getFirstListSingleTestDataByOrgID" resultMap="PlayerWithTest">
+    	select a.user_id as user_id,u.name as user_name,b.title as test_item_title,a.test_result as test_result,c.name as test_unit_name 
+    	from test_data a inner join test_item b on a.test_item_id=b.id inner join user u on a.user_id=u.id 
+    	left join test_unit c on c.id = b.test_unit_id where a.single_test_id=
+    	(select t.single_test_id from test_data t where t.org_id=#{orgId} and t.status='active' order by t.test_time desc  limit 1)
+    </select>
+    
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.match.MatchDataDAO">
+	
+    
+    <resultMap id="MatchDataResultMap" type="cn.sportsdata.webapp.youth.common.vo.match.MatchDataVO">
+    	<result column="match_id" property="matchId" jdbcType="CHAR"/>
+    	<result column="player_id" property="playerId" jdbcType="CHAR"/>
+    	
+    	<collection property="itemList" ofType="cn.sportsdata.webapp.youth.common.vo.match.MatchDataItemVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    
+
+    
+   <!--  <insert id="insertMatchBasic" parameterType="cn.sportsdata.webapp.youth.common.vo.match.MatchVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into `match`( id, org_id, creator_id, opponent, date, time, type, dress, location, field_type, is_end, created_time) 
+    	values(#{id}, #{orgId}, #{creatorId}, #{opponent}, #{date}, #{time}, #{type}, #{dress}, #{location}, #{fieldType}, #{isEnd}, now())
+    </insert>
+    
+    <insert id="insertMatchResultBasic" parameterType="cn.sportsdata.webapp.youth.common.vo.match.MatchResultVO">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into match_result(id, match_id, result, goal_for, goal_against, created_time) 
+    	values(#{id}, #{matchId}, #{result}, #{goalFor}, #{goalAgainst}, now())
+    </insert> -->
+    
+    <select id="getMatchDataByMatchIds" resultMap="MatchDataResultMap">
+    	
+    	SELECT match_id,player_id, item_name, count(1) as item_value FROM soccerpro.match_data_log where item_name != 'totaltime' and item_name != 'awaytime' and item_name != 'hometime' and match_id in 
+    	(
+    	<foreach item="item" index="index" collection="list" separator=",">
+                 "${item}"
+         </foreach>
+    	) group by match_id,player_id, item_name
+    	union 
+    	SELECT match_id,player_id, item_name, item_value FROM soccerpro.match_data_log where (item_name = 'totaltime' or item_name = 'awaytime' or item_name = 'hometime') and match_id in 
+    	(
+    	<foreach item="item" index="index" collection="list" separator=",">
+                 "${item}"
+         </foreach>
+    	) group by match_id,player_id, item_name
+    </select>
+    
+     <select id="getMatchTimeDataByMatchIds" resultMap="MatchDataResultMap">
+    	
+    	SELECT match_id,player_id, item_name, item_value FROM soccerpro.match_data_log where (item_name = 'totaltime' or item_name = 'awaytime' or item_name = 'hometime') and match_id in 
+    	(
+    	<foreach item="item" index="index" collection="list" separator=",">
+                 "${item}"
+         </foreach>
+    	) group by match_id,player_id, item_name
+    	
+    </select>
+   
+</mapper>

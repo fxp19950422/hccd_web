@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.login.UserDeviceAssociationDao">
+	<resultMap id="UserDeviceAssociationResultMap" type="cn.sportsdata.webapp.youth.common.vo.login.UserDeviceAssociationVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="user_id" property="userID" jdbcType="CHAR"/>
+        <result column="device_guid" property="deviceGUID" jdbcType="VARCHAR"/>
+        <result column="device_identifier" property="deviceIdentifier" jdbcType="TINYINT"/>
+        <result column="login_count" property="loginCount" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="created_time" property="created_time" jdbcType="TIMESTAMP"/>
+        <result column="last_update" property="last_update" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <select id="selectAllDevicesForUser" resultMap="UserDeviceAssociationResultMap" parameterType="java.lang.String">
+        SELECT * FROM user_device_association where user_id=#{userID} and status='active'
+    </select>
+    
+    <update id="updateDeviceIdentifier" parameterType="cn.sportsdata.webapp.youth.common.vo.login.UserDeviceAssociationVO">
+    	update user_device_association set last_update=CURRENT_TIMESTAMP, login_count = login_count + 1
+    	 where id = #{id}
+    </update>
+
+    
+    <delete id="deleteDeviceIdentifier" parameterType="cn.sportsdata.webapp.youth.common.vo.login.UserDeviceAssociationVO">
+    	update user_device_association set status='active' where id = #{id}
+    </delete>
+    
+    <insert id="insertDeviceIdentifier" parameterType="cn.sportsdata.webapp.youth.common.vo.login.UserDeviceAssociationVO">
+    	insert into user_device_association( id, user_id, device_guid, device_identifier, created_time, last_update, login_count) values (
+			0, #{user_id}, #{device_guid}, #{device_identifier}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1)
+    </insert>
+    
+</mapper>

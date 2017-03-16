@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="cn.sportsdata.webapp.youth">
+        <context:exclude-filter type="regex" expression="cn\.sportsdata\.webapp\.youth\.web\..*"/>
+    </context:component-scan>
+    
+	<!--production configuration -->
+     <!-- <context:property-placeholder location="file:/etc/soccerpro/config.properties"/> -->
+	  <context:property-placeholder location="classpath:config.properties"/> 
+		
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${mysql.driverClassName}"/>
+        <property name="url" value="${mysql.url}"/>
+        <property name="username" value="${mysql.username}"/>
+        <property name="password" value="${mysql.password}"/>
+        <property name="initialSize" value="${mysql.initialSize}"/>
+        <property name="maxWaitMillis" value="${mysql.maxWaitMillis}"/>
+        <property name="minIdle" value="${mysql.minIdle}"/>
+        <property name="maxIdle" value="${mysql.maxIdle}"/>
+        <property name="maxTotal" value="${mysql.maxTotal}"/>
+    </bean>
+    
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:mybatis/*.xml"/>
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+   
+  <!--  <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+      
+        <property name="durability" value="true" />  
+          
+        <property name="jobClass" value="cn.sportsdata.webapp.youth.job.MatchDataAnalysisJob"></property>
+        
+          
+           
+        <property name="jobDataAsMap">  
+            <map>  
+                <entry key="service"><value>simple is the beat</value></entry>  
+            </map>  
+        </property>
+           
+    </bean>
+	
+	<bean id="myTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="name" value="work_default_name" />
+		<property name="group" value="work_default" />
+		<property name="jobDetail">
+			<ref bean="jobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0 * 0/500 * * ?</value>
+		</property>
+	</bean>
+	
+	 <bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false" autowire="no">
+		 <property name="dataSource" ref="dataSource"/>
+		<property name="quartzProperties"> 
+                <props> 
+                    <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop> 
+                    <prop key="org.quartz.threadPool.threadCount">1</prop> 
+                   <prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop> 
+                    <prop key="org.quartz.jobStore.misfireThreshold">60000</prop> 
+                </props> 
+            </property> 
+		 <property name="triggers">
+			<list>
+				<ref bean="myTrigger" />
+			</list>
+		</property>
+	</bean> -->
+</beans>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.version.VersionDao">
+	<resultMap id="VersionResultMap" type="cn.sportsdata.webapp.youth.common.vo.VersionVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="mandatory_version" property="mandatory_version" jdbcType="VARCHAR"/>
+        <result column="latest_version" property="latest_version" jdbcType="VARCHAR"/>
+        <result column="min_version" property="min_version" jdbcType="VARCHAR"/>
+        <result column="apk_download_url" property="apk_download_url" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+   
+    
+    <select id="selectVersion" resultMap="VersionResultMap">
+        SELECT * FROM version order by last_update desc limit 1
+    </select>
+    
+    
+</mapper>

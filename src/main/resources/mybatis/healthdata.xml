@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.healthdata.HealthDao">
+	<resultMap id="HealthDataResultMap" type="cn.sportsdata.webapp.youth.common.vo.healthdata.HealthDataVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="height" property="height" jdbcType="FLOAT"/>
+        <result column="weight" property="weight" jdbcType="FLOAT"/>
+        <result column="BMI" property="bmi" jdbcType="FLOAT"/>
+        <result column="oxygen_content" property="oxygen_content" jdbcType="FLOAT"/>
+        <result column="shoulder" property="shoulder" jdbcType="FLOAT"/>
+        <result column="haunch" property="haunch" jdbcType="FLOAT"/>
+        <result column="chest" property="chest" jdbcType="FLOAT"/>
+        <result column="waist" property="waist" jdbcType="FLOAT"/>
+        <result column="morning_pulse" property="morning_pulse" jdbcType="INTEGER"/>
+        <result column="lactate" property="lactate" jdbcType="FLOAT"/>
+        <result column="waistfat" property="waistfat" jdbcType="FLOAT"/>
+        <result column="created_time" property="create_time" javaType="java.sql.Date" jdbcType="DATE"/>
+        <result column="user_id" property="user_id" jdbcType="CHAR"/>
+        <result column="creator_id" property="creator_id" jdbcType="CHAR"/>
+      <!--   <association  property="user" column="user_id" javaType="cn.sportsdata.webapp.youth.common.vo.UserVO" select="selectuser"/>
+        <association  property="creator"  column="creator_id" javaType="cn.sportsdata.webapp.youth.common.vo.UserVO" select="selectuser"/> -->
+    </resultMap>
+    <resultMap id="UserResultMap" type="cn.sportsdata.webapp.youth.common.vo.UserVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+        <result column="home_address" property="homeAddress" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="passport" property="passport" jdbcType="VARCHAR"/>
+        <result column="nationality" property="nationality" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="birth_place" property="birthPlace" jdbcType="VARCHAR"/>
+        
+        <collection property="userExtInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.UserExtVO">
+        	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+  <select id="getHealthDataListByUserId" resultMap="HealthDataResultMap" parameterType="java.lang.String">
+        select * from healthdata A where A.user_id=#{user_id} order by created_time desc
+  </select>
+  <select id="getOneHealthDataId" resultMap="HealthDataResultMap" parameterType="java.lang.String">
+        select * from healthdata A where A.id=#{id}
+  </select>
+  <select id="getHealthDataChart" resultType="java.util.HashMap" parameterType="java.util.Map">
+        select created_time , ${colum} from healthdata A where A.user_id=#{userid} and A.created_time &gt;= #{start_date} and A.created_time &lt;= #{end_date}
+			order by A.created_time asc
+  </select>
+  <select id="selectuser" resultMap="UserResultMap">
+     select A.id, A.name, A.tel, A.email, A.birthday, A.home_address, A.avatar, A.passport, A.nationality, A.id_card, A.birth_place, B.item_name, B.item_value 
+        from user A 
+        left outer join user_ext B on A.id = B.user_id 
+        where A.id = #{userId} and A.status = 'active'
+  </select>
+  <insert id="insertOneHealthData" parameterType="cn.sportsdata.webapp.youth.web.controller.healthdata.request.HealthDataReqVO">
+      	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into healthdata(id, height, weight, BMI, oxygen_content, shoulder, haunch, chest, waist, morning_pulse, lactate, waistfat, created_time,user_id,creator_id) 
+    	values(#{id}, #{height}, #{weight}, #{bmi}, #{oxygen_content}, #{shoulder}, #{haunch}, #{chest}, #{waist}, #{morning_pulse}, #{lactate},#{waistfat},#{create_time},#{user_id},#{creator_id})
+  </insert>
+  <delete id="deleteOneHealthdataById"  parameterType="java.lang.String">
+  	delete from healthdata where id=#{id}
+  </delete>
+  <update id="updateOneHealthData" parameterType="cn.sportsdata.webapp.youth.web.controller.healthdata.request.HealthDataReqVO">
+        update healthdata set height=#{height}, weight=#{weight}, BMI=#{bmi}, oxygen_content=#{oxygen_content}, shoulder=#{shoulder}, haunch=#{haunch}, 
+        chest=#{chest}, waist=#{waist}, morning_pulse=#{morning_pulse}, lactate=#{lactate},waistfat=#{waistfat},created_time=#{create_time} ,user_id=#{user_id}  ,creator_id=#{creator_id}  
+        where id = #{id}
+  </update>
+</mapper>

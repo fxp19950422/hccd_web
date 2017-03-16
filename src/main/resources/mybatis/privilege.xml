@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.privilege.PrivilegeDAO">
+	<resultMap id="ResultMapPrivilege"
+		type="cn.sportsdata.webapp.youth.common.vo.privilege.PrivilegeVO">
+		<id column="id" property="id" javaType="long" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentID"
+			javaType="long" jdbcType="INTEGER" />
+		<result column="privilege_name" property="itemName" javaType="String"
+			jdbcType="VARCHAR" />
+		<result column="privilege_value" property="itemValue" javaType="String"
+			jdbcType="VARCHAR" />
+		<result column="type" property="type" javaType="String"
+			jdbcType="VARCHAR" />
+		<result column="privilege_action" property="action" javaType="String"
+			jdbcType="VARCHAR" />
+		<result column="privilege_icon" property="icon" javaType="String"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getUserPrivileges" resultMap="ResultMapPrivilege" parameterType="java.util.Map">
+		select 
+			D.* 
+		from user A, 
+			user_role_mapping B, 
+			role_privilege_association C, 
+			privilege D 
+		where 
+			A.id = B.user_id 
+			and B.role_id=C.role_id 
+			and C.privilege_id = D.id 
+			and B.hospital_id=#{orgID} and B.user_id=#{userID} and B.department_id='1'
+	</select>
+
+</mapper>
