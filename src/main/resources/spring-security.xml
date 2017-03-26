@@ -19,6 +19,8 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 		<sec:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
 		<sec:intercept-url pattern="/api/v1/token" access="permitAll" />
 		<sec:intercept-url pattern="/api/v1/version" access="permitAll" />
+		<sec:intercept-url pattern="/api/v1/patientRecords" access="permitAll" />
+		<sec:intercept-url pattern="/api/v1/doctorLogin" access="permitAll" />
 		<sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
 		
 	</sec:http>

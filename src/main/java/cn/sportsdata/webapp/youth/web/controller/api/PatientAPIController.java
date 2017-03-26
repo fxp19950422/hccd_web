@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +20,26 @@ import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
-import cn.sportsdata.webapp.youth.web.api.vo.ApiToken;
 
 @RestController
 @RequestMapping("/api/v1/")
-public class TokenAPIController {
-	
+public class PatientAPIController {
+
 	@Autowired
 	private AccountService loginService;
 	
 	@Autowired
 	PatientService patientService;
+
+	@RequestMapping(value = "/patientRecords", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
+	public ResponseEntity<Response> patientRecord(String hospitalId, String doctorId, String recordType) {
+		
+		List<PatientRecordBO> list = patientService.getPatientRecordByDoctor(hospitalId, doctorId, recordType);
+		
+		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+	}
 	
-	@RequestMapping(value = "/token",  method = RequestMethod.POST)
+	@RequestMapping(value = "/doctorLogin",  method = RequestMethod.POST)
 	public ResponseEntity<Response> token(HttpServletRequest request, HttpServletResponse resp, String username, String password) {
 		
 		AccountVO account = loginService.getAccountByUserName(username);
@@ -51,5 +57,5 @@ public class TokenAPIController {
 		} else {
 			return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
 		}
-	}	
+	}
 }

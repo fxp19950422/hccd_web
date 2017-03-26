@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.hospital.PatientDAO">
+    
+    <select id="getPatientRecordByDoctor" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO" parameterType="java.util.Map">
+    	select A.id as recordId, C.name as departmentName, D.real_name as patientName,
+    		A.start_time as startTime, A.end_time as endTime, D.gender as gender
+	    	from hospital_patient_record A
+	       	join department C on C.id = A.department_id
+	       	join patient D on D.id = A.patient_id
+	       	where A.doctor_id=#{doctor_id} and A.hospital_id=#{hospital_id} and A.type=#{type} 
+	       	and A.status = 'active' order by start_time desc
+    </select>
+    
+    <select id="getMedicalRecord" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientMedicalRecordBO" parameterType="java.util.Map">
+
+    </select>
+    
+    <select id="getOperationRecord" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientOperationRecordBO" parameterType="java.util.Map">
+
+    </select>
+    
+    <select id="getResidentRecord" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO" parameterType="java.util.Map">
+
+    </select>
+    
+    <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.AssetVO" parameterType="java.util.Map">
+
+    </select>
+    
+</mapper>
