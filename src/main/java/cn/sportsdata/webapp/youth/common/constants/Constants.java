@@ -11,6 +11,15 @@ public class Constants {
 	public static final String STRING_FALSE = "false";
 	public static final String STRING_TRUE = "true";
 	
+	public static final String ROLE_SYSTEM_ADMIN = "system_admin";
+	public static final String ROLE_HOSPITAL_ADMIN = "hospital_admin";
+	public static final String ROLE_DEPARTMENT_ADMIN = "department_admin";
+	public static final String ROLE_DIRECTOR = "director";
+	public static final String ROLE_DOCTOR = "doctor";
+	public static final String ROLE_PATIENT = "patient";
+	
+	
+	
 	public static final String CHIEF_COACH = "chiefCoach";
 	public static final String ASSISTANT_COACH = "assistantCoach";
 	public static final String FITNESS_COACH = "fitnessCoach";

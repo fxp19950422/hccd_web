@@ -94,12 +94,12 @@ public class AuthController {
 			e.printStackTrace();
 		}
 //		jMSProducer.sendMessage(queueDestination, "test");
-        if (bVeryCodeCorrect == false) {
-        	model.addAttribute("validationFailed", true);
-        	model.addAttribute("validationFailedMsg", "验证码有误");
-        	model.addAttribute("loginVO", loginVO);
-        	return "/auth/login";
-        }
+//        if (bVeryCodeCorrect == false) {
+//        	model.addAttribute("validationFailed", true);
+//        	model.addAttribute("validationFailedMsg", "验证码有误");
+//        	model.addAttribute("loginVO", loginVO);
+//        	return "/auth/login";
+//        }
         
         AccountVO accountVO = accountService.getAccountByUserName(loginVO.getUserName());
         if (accountVO != null){

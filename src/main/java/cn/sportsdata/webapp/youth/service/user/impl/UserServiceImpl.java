@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.UserExtVO;
+import cn.sportsdata.webapp.youth.common.vo.UserHospitalDepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO;
 import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.match.PlayerMatchStatisticsVO;
@@ -65,12 +66,19 @@ public class UserServiceImpl implements UserService {
 		if(!isStep1Success)  return false;
 		
 		uorVO.setUserId(basicData.getId());
-		return userDAO.insertUserOrgRole(uorVO);
+		boolean b = userDAO.insertUserOrgRole(uorVO);
+		UserHospitalDepartmentVO uhdVO = new UserHospitalDepartmentVO();
+		uhdVO.setUserId(basicData.getId());
+		uhdVO.setHospitalId( uorVO.getHospitalId());
+		uhdVO.setDepartmentId("1");
+		userDAO.insertUserHospitalDepartment(uhdVO);
+		
+		return true;
 	}
 
 	@Override
 	@Transactional
-	public boolean updateUser(UserVO basicData, List<UserExtVO> userExtList, AssetVO asset) {
+	public boolean updateUser(UserVO basicData, List<UserExtVO> userExtList,UserOrgRoleVO uorVO, AssetVO asset) {
 		 if (asset != null ){
 			 String avatarId = null;
 			 if (!StringUtils.isEmpty(asset.getId())){
@@ -81,7 +89,13 @@ public class UserServiceImpl implements UserService {
 			 }
 
 		 }
-		return userDAO.handleUser(basicData, userExtList, false);
+		 userDAO.handleUser(basicData, userExtList, false);
+		 
+//		 UserOrgRoleVO uorVO = new UserOrgRoleVO();
+//		 uorVO.setUserId(basicData.getId());
+		 
+		 userDAO.updateUserOrgRole(uorVO);
+		 return true;
 	}
 
 	@Override
