@@ -13,6 +13,13 @@ public class UserVO extends BaseVO implements Serializable {
 	
 	private String id;
 	private String name;
+	private String phone;
+	private String mobile;
+	private String address;
+	private String gender;
+	
+	private String role;
+
 	private String tel;
 	private Timestamp birthday;
 	private String email;
@@ -24,8 +31,72 @@ public class UserVO extends BaseVO implements Serializable {
 	private String idCard;
 	private String birthPlace;
 	
+	private String userName;
+	
+	private String password;
+	
+	
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	private List<UserExtVO> userExtInfoList;
 	
+	
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public String getId() {
 		return id;
 	}

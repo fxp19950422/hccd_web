@@ -29,7 +29,7 @@
 			A.id = B.user_id 
 			and B.role_id=C.role_id 
 			and C.privilege_id = D.id 
-			and B.hospital_id=#{orgID} and B.user_id=#{userID} and B.department_id='1'
+			and B.hospital_id=#{orgID} and B.user_id=#{userID}
 	</select>
 
 </mapper>

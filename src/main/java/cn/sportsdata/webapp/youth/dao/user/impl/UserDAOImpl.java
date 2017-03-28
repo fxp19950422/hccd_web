@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import cn.sportsdata.webapp.youth.common.vo.UserExtVO;
+import cn.sportsdata.webapp.youth.common.vo.UserHospitalDepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO;
 import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.match.PlayerMatchStatisticsVO;
@@ -18,6 +19,9 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 	private static final String GET_BY_ID = "getUserByID";
 	private static final String GET_PLAYERS_BY_ORG_ID = "getPlayersByOrgId";
 	private static final String INSERT_USER_BASIC_DATA = "insertUserBasicData";
+	private static final String INSERT_USER_HOSPITAL_DEPARTMENT = "insertUserHospitalDepart";
+	private static final String UPDATE_USER_ORG_ROLE = "updateUserOrgRole";
+	
 	private static final String INSERT_USER_EXT_DATA = "insertUserExtData";
 	private static final String UPDATE_USER_BASIC_DATA = "updateUserBasicData";
 	private static final String UPDATE_USER_EXT_DATA = "updateUserExtData";
@@ -48,19 +52,19 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 	public boolean handleUser(UserVO user, List<UserExtVO> userExtList, boolean isCreate) {
 		int affectedFormNum = sqlSessionTemplate.insert(getSqlNameSpace(isCreate ? INSERT_USER_BASIC_DATA : UPDATE_USER_BASIC_DATA), user);
 		
-		if(affectedFormNum != 1) {
-			return false;
-		}
+//		if(affectedFormNum != 1) {
+//			return false;
+//		}
+//		
+//		if(userExtList == null || userExtList.size() == 0) {
+//			return true;
+//		}
+//		
+//		Map<String, Object> paramList = new HashMap<String, Object>();
+//		paramList.put("userId", user.getId());
+//		paramList.put("userExtList", userExtList);
 		
-		if(userExtList == null || userExtList.size() == 0) {
-			return true;
-		}
-		
-		Map<String, Object> paramList = new HashMap<String, Object>();
-		paramList.put("userId", user.getId());
-		paramList.put("userExtList", userExtList);
-		
-		sqlSessionTemplate.insert(getSqlNameSpace(isCreate ? INSERT_USER_EXT_DATA : UPDATE_USER_EXT_DATA), paramList);
+//		sqlSessionTemplate.insert(getSqlNameSpace(isCreate ? INSERT_USER_EXT_DATA : UPDATE_USER_EXT_DATA), paramList);
 		return true;
 	}
 
@@ -119,5 +123,17 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 	@Override
 	public List<UserOrgRoleVO> getUserOrgAssociationByUserId(String userId) {
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_USER_ORG_ASSOCIATION_BY_USERID), userId );
+	}
+
+	@Override
+	public boolean insertUserHospitalDepartment(UserHospitalDepartmentVO uorVO) {
+		int affectedFormNum = sqlSessionTemplate.insert(getSqlNameSpace(INSERT_USER_HOSPITAL_DEPARTMENT), uorVO);
+		return affectedFormNum > 0;
+	}
+
+	@Override
+	public boolean updateUserOrgRole(UserOrgRoleVO uorVO) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.update(getSqlNameSpace(UPDATE_USER_ORG_ROLE), uorVO) > 0;
 	}
 }

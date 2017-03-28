@@ -34,16 +34,7 @@
 			<div class="profileDetailData">
 				<span><%= age %></span>
 				<span>&nbsp;/&nbsp;</span>
-				<span>
-					<c:choose>
-						<c:when test="${ !empty coach.nationality }">
-							${ coach.nationality }
-						</c:when>
-						<c:otherwise>
-							暂无国籍信息
-						</c:otherwise>
-					</c:choose>
-				</span>
+				
 				<span>&nbsp;/&nbsp;</span>
 				<span>
 					<c:choose>
@@ -60,7 +51,7 @@
 		</div>
 		<div class="profileAction coach_detail_button_area">
 			<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
-			<button id="create_account_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">创建账号</button>
+			<!-- <button id="create_account_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">创建账号</button> -->
 			<button id="delete_btn" class="btn btn-danger" style="float: right; margin-left: 10px;">删除</button>
 			<button id="back_btn" class="btn btn-default" style="float: right; margin-left: 10px;">返回</button>
 			
@@ -82,20 +73,20 @@
 				
 				<div class="row profileDetailItemLine">
 					<div class="col-md-1 profileDetailItemTitle">电话</div>
-					<div class="col-md-3 profileDetailItemContent">${ coach.tel }</div>
+					<div class="col-md-3 profileDetailItemContent">${ coach.phone }</div>
 					<div class="col-md-1 profileDetailItemTitle">邮箱</div>
 					<div class="col-md-3 profileDetailItemContent">${ coach.email }</div>
-					<div class="col-md-1 profileDetailItemTitle">护照号</div>
-					<div class="col-md-3 profileDetailItemContent">${ coach.passport }</div>
+					<div class="col-md-1 profileDetailItemTitle">用户名</div>
+					<div class="col-md-3 profileDetailItemContent">${ coach.userName }</div>
 				</div>
 				
 				<div class="row profileDetailItemLine">
-					<div class="col-md-1 profileDetailItemTitle">国籍</div>
-					<div class="col-md-3 profileDetailItemContent">${ coach.nationality }</div>
-					<div class="col-md-1 profileDetailItemTitle">出生地</div>
-					<div class="col-md-3 profileDetailItemContent">${ coach.birthPlace }</div>
 					<div class="col-md-1 profileDetailItemTitle">地址</div>
-					<div class="col-md-3 profileDetailItemContent">${ coach.homeAddress }</div>
+					<div class="col-md-11 profileDetailItemContent">${ coach.address }</div>
+					<!-- <div class="col-md-1 profileDetailItemTitle"></div>
+					<div class="col-md-3 profileDetailItemContent"></div>
+					<div class="col-md-1 profileDetailItemTitle"></div>
+					<div class="col-md-3 profileDetailItemContent"></div> -->
 				</div>
 			</sa-panel>
 			

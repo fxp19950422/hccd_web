@@ -144,14 +144,14 @@ public class UserController extends BaseController {
 			
 			if(isCreate) {
 				AssetVO asset = null ;
-				long roleId = userService.getRoleIdByRoleName(userBO.getBasicData().getRoleName());
+				long roleId = userService.getRoleIdByRoleName(userBO.getBasicData().getRole());
 				if(roleId == 0) {
 					return Response.toFailure(500, "error user basic data");
 				}
 				
 				UserOrgRoleVO uorVO = new UserOrgRoleVO();
 				OrgVO orgVO = getCurrentOrg(request);
-				uorVO.setOrgId(orgVO.getId()); // should be current org
+				uorVO.setHospitalId(orgVO.getId()); // should be current org
 				uorVO.setRoleId(roleId);
 				
 				if (!StringUtils.isEmpty(user.getAvatar())){
@@ -166,7 +166,19 @@ public class UserController extends BaseController {
 				if (!user.getAvatar().equals(originalUser.getAvatar())){
 					asset = getAssetVOFromUser(user.getAvatar(), originalUser.getAvatarId(), request);
 				}
-				isSuccess = userService.updateUser(user, userBO.getUserItemList(), asset);
+				
+				long roleId = userService.getRoleIdByRoleName(userBO.getBasicData().getRole());
+				if(roleId == 0) {
+					return Response.toFailure(500, "error user basic data");
+				}
+				
+				UserOrgRoleVO uorVO = new UserOrgRoleVO();
+				OrgVO orgVO = getCurrentOrg(request);
+				uorVO.setUserId(userBO.getBasicData().getId());
+				uorVO.setHospitalId(orgVO.getId()); // should be current org
+				uorVO.setRoleId(roleId);
+				
+				isSuccess = userService.updateUser(user, userBO.getUserItemList(),uorVO, asset);
 			}
 			
 			return isSuccess ? Response.toSussess(String.valueOf(user.getId())) : Response.toFailure(500, isCreate ? "insert new user error" : "update user " + playerId + " error");
@@ -201,27 +213,27 @@ public class UserController extends BaseController {
 		List<UserVO> tacticsCoachList = new ArrayList<UserVO>();
 		
 		for(UserVO coach : coachList) {
-			String position = coach.getUserExtInfoMap().get("coach_type");
+			String position = coach.getRole();
 			
 			switch(position) {
-				case Constants.CHIEF_COACH:
+				case Constants.ROLE_DIRECTOR:
 					chiefCoachList.add(coach);
 					break;
-				case Constants.ASSISTANT_COACH:
+				case Constants.ROLE_DOCTOR:
 					assistantCoachList.add(coach);
 					break;
-				case Constants.FITNESS_COACH:
-					fitnessCoachList.add(coach);
-					break;
-				case Constants.GOALKEEPER_COACH:
-					goalKeeperCoachList.add(coach);
-					break;
-				case Constants.RESEARCH_COACH:
-					researchCoachList.add(coach);
-					break;
-				case Constants.TACTICS_COACH:
-					tacticsCoachList.add(coach);
-					break;
+//				case Constants.FITNESS_COACH:
+//					fitnessCoachList.add(coach);
+//					break;
+//				case Constants.GOALKEEPER_COACH:
+//					goalKeeperCoachList.add(coach);
+//					break;
+//				case Constants.RESEARCH_COACH:
+//					researchCoachList.add(coach);
+//					break;
+//				case Constants.TACTICS_COACH:
+//					tacticsCoachList.add(coach);
+//					break;
 				default:
 					break;
 			}

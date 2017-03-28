@@ -6,7 +6,7 @@ public class UserOrgRoleVO extends BaseVO implements Serializable {
 	private static final long serialVersionUID = -6103938737922583642L;
 	
 	private String userId;
-	private String orgId;
+	private String hospitalId;
 
 	private long roleId;
 	
@@ -18,12 +18,12 @@ public class UserOrgRoleVO extends BaseVO implements Serializable {
 		this.userId = userId;
 	}
 	
-	public String getOrgId() {
-		return orgId;
+	public String getHospitalId() {
+		return hospitalId;
 	}
 	
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
+	public void setHospitalId(String orgId) {
+		this.hospitalId = orgId;
 	}
 
 	public long getRoleId() {

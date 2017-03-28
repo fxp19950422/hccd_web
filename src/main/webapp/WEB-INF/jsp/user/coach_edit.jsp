@@ -21,8 +21,6 @@
 	<div class="clearfix"></div>
 	<div class="profileEditContent">
 		<form id="player_form">
-			
-			
 				<div role="tabpanel" class="tab-pane active" id="basic_tab">
 					<sa-panel title="基本信息">
 						<div class="row">
@@ -58,13 +56,10 @@
 									</div>
 									<div class="col-md-1 inputLabel">职务</div>
 									<div class="col-md-3">
-										<select class="profileEditInput" id="coach_type" name="coach_type" style="width: 100%;">
-											<option value="chiefCoach">主教练</option>
-											<option value="assistantCoach">助理教练</option>
-											<option value="fitnessCoach">体能教练</option>
-											<option value="goalkeeperCoach">守门员教练</option>
-											<option value="researchCoach">科研教练</option>
-											<option value="tacticsCoach">战术教练</option>
+										<select class="profileEditInput" id="coach_type" name="role" style="width: 100%;">
+											<option value="director">主任</option>
+											<option value="doctor">医生</option>
+											<option value="nurse">护士</option>
 										</select>
 									</div>
 									<div class="col-md-1 inputLabel">生日</div>
@@ -85,6 +80,44 @@
 										</c:choose>
 									</div>
 								</div>
+								
+								<div class="row profileEditItemLine">
+									<div class="col-md-1 inputLabel">用户名</div>
+									<div class="col-md-3">
+										<c:choose>
+											<c:when test="${isCreate}">
+											<div class="form-group">
+												<input type="text" class="profileEditInput form-control" id="userName" data-bv-field="userName" name="userName" />
+											</div>
+											</c:when>
+											<c:otherwise>
+											<div class="form-group">
+												<input type="text" class="profileEditInput form-control" id="userName" data-bv-field="userName"  name="userName" value="${ coach.userName }" />
+											</div>
+											</c:otherwise>
+										</c:choose>
+									</div>
+									<div class="col-md-1 inputLabel">密码</div>
+									<div class="col-md-3">
+										<c:choose>
+											<c:when test="${isCreate}">
+											<div class="form-group">
+												<input type="text" class="profileEditInput form-control" id="password" data-bv-field="password" name="password" />
+											</div>
+											</c:when>
+											<c:otherwise>
+											<div class="form-group">
+												<input type="text" class="profileEditInput form-control" id="password" data-bv-field="password" name="password" value="${ coach.password }" />
+											</div>
+											</c:otherwise>
+										</c:choose>
+									</div>
+									<div class="col-md-1 inputLabel"> </div>
+									<div class="col-md-3">
+										  
+									</div>
+								</div>
+								
 								<div class="row profileEditItemLine">
 									<div class="col-md-1 inputLabel" style="padding-right: 0px;">身份证号</div>
 									<div class="col-md-3">
@@ -106,12 +139,12 @@
 										<c:choose>
 											<c:when test="${isCreate}">
 											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="tel" data-bv-field="tel" name="tel" />
+												<input type="text" class="profileEditInput form-control" id="phone" data-bv-field="phone" name="phone" />
 											</div>
 											</c:when>
 											<c:otherwise>
 											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="tel" data-bv-field="tel" name="tel" value="${ coach.tel }" />
+												<input type="text" class="profileEditInput form-control" id="phone" data-bv-field="phone" name="phone" value="${ coach.phone }" />
 											</div>
 											</c:otherwise>
 										</c:choose>
@@ -133,64 +166,17 @@
 									</div>
 								</div>
 								<div class="row profileEditItemLine">
-									<div class="col-md-1 inputLabel">出生地</div>
-									<div class="col-md-3">
-										<c:choose>
-											<c:when test="${isCreate}">
-											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="birthPlace" data-bv-field="birthPlace" name="birthPlace" />
-											</div>
-											</c:when>
-											<c:otherwise>
-											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="birthPlace" data-bv-field="birthPlace"  name="birthPlace" value="${ coach.birthPlace }" />
-											</div>
-											</c:otherwise>
-										</c:choose>
-									</div>
-									<div class="col-md-1 inputLabel">国籍</div>
-									<div class="col-md-3">
-										<c:choose>
-											<c:when test="${isCreate}">
-											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="nationality" data-bv-field="nationality" name="nationality" />
-											</div>
-											</c:when>
-											<c:otherwise>
-											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="nationality" data-bv-field="nationality" name="nationality" value="${ coach.nationality }" />
-											</div>
-											</c:otherwise>
-										</c:choose>
-									</div>
-									<div class="col-md-1 inputLabel">护照号</div>
-									<div class="col-md-3">
-										<c:choose>
-											<c:when test="${isCreate}">
-											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="passport" data-bv-field="passport" name="passport" />
-											</div>
-											</c:when>
-											<c:otherwise>
-											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="passport" data-bv-field="passport" name="passport" value="${ coach.passport }" />
-											</div>
-											</c:otherwise>
-										</c:choose>
-									</div>
-								</div>
-								<div class="row profileEditItemLine">
 									<div class="col-md-1 inputLabel">住址</div>
 									<div class="col-md-7">
 										<c:choose>
 											<c:when test="${isCreate}">
 											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="homeAddress" data-bv-field="homeAddress" name="homeAddress" />
+												<input type="text" class="profileEditInput form-control" id="address" data-bv-field="address" name="address" />
 											</div>
 											</c:when>
 											<c:otherwise>
 											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="homeAddress" name="homeAddress" data-bv-field="homeAddress" value="${ coach.homeAddress }" />
+												<input type="text" class="profileEditInput form-control" id="address" name="address" data-bv-field="address" value="${ coach.address }" />
 											</div>
 											</c:otherwise>
 										</c:choose>
@@ -278,14 +264,15 @@
 		
 		$('#save_btn').click(function() {
 			$("#player_form").data('bootstrapValidator').validate();
+			
 			if(!$("#player_form").data('bootstrapValidator').isValid()){
 				return;
 			}
 			var form_data = $('#player_form').serializeArray();
 			var converted_ext_data = [];
-			var converted_base_data = {'id': '<%=userId%>', 'roleName': 'coach', 'avatar': $('#user_avatar').data('encryptFileName') || ''};
+			var converted_base_data = {'id': '<%=userId%>', 'avatar': $('#user_avatar').data('encryptFileName') || ''};
 			var need_convert_multi_fields = [];
-			var basic_user_fields = ['name', 'birthday', 'passport', 'nationality', 'birthPlace', 'idCard', 'email', 'tel', 'homeAddress']; 
+			var basic_user_fields = ['name', 'birthday', 'userName', 'password', 'birthPlace', 'idCard', 'email', 'phone', 'address', 'role']; 
 			var date_fields = ['birthday'];
 			
 			$.each(form_data, function(index, item) {
@@ -366,33 +353,43 @@
 		                    }
 		                }
 	        	},
-	        	birthPlace:{
-	        		message: '出生地不合法',
-		           	 validators: {
-		           		stringLength: {
-		           			max: 500,
-		                    message: '出生地不合法'
-		                  }
-		             }
-	        	},
-	        	passport:{
-	        		message: '护照号不合法',
-		           	 validators: {
-		           		stringLength: {
-		           			max: 500,
-		                    message: '护照号不合法'
-		                }
-		           }
-	        	},
-	        	nationality:{
-	        		message: '国籍不合法',
-		           	 validators: {
-		           		stringLength: {
-		           			max: 500,
-		                    message: '国籍不合法'
-		                }
-		            }
-	        	},
+	        	 userName:{
+	            	 message: '账号不合法',
+	            	 validators: {
+	                     notEmpty: {
+	                         message: '账号是必填项，请正确填写账号。'
+	                     },
+	                     stringLength: {
+	                    	 min:6,
+	                         max: 30,
+	                         message: '请输入6-18字符以内的账号。'
+	                     },
+	                     regexp: {
+	                         regexp: /^[a-zA-Z0-9_]+$/,
+	                         message: '账号只允许由字母，数字，下划线构成。'
+	                     }
+	                 }
+	            },
+	            password: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '密码不能为空'
+	                    },
+	                    stringLength: {
+	                   	   min:6,
+	                        max: 30,
+	                        message: '请输入6-30字符以内的密码。'
+	                    },
+	                  /*   identical: {
+	                        field: 'repassword',
+	                        message: '两次密码不一致'
+	                    }, */
+	                    different: {
+	                        field: 'username',
+	                        message: '账号和密码不能相同'
+	                    }
+	                }
+	            },
 	        	idCard:{
 	        		message: '身份证号不合法',
 	        		 validators: {
@@ -402,7 +399,7 @@
 			                }
 			            }
 	        	},
-	        	tel:{
+	        	phone:{
 	        		message: '电话号码不合法',
 		           	validators: {
 			           	 regexp: {
@@ -411,7 +408,7 @@
 	                     }
 		            }
 	        	},
-	        	homeAddress:{
+	        	address:{
 	        		message: '家庭住址不合法',
 		           	 validators: {
 		           		stringLength: {

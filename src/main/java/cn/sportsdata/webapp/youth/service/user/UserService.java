@@ -14,7 +14,7 @@ public interface UserService {
 	List<UserVO> getPlayersByOrgId(String orgId);
 
 	boolean createUser(UserVO basicData, List<UserExtVO> userExtList, UserOrgRoleVO uorVO , AssetVO asset);
-	boolean updateUser(UserVO basicData, List<UserExtVO> userExtList, AssetVO asset);
+	boolean updateUser(UserVO basicData, List<UserExtVO> userExtList,UserOrgRoleVO uorVO, AssetVO asset);
 	long getRoleIdByRoleName(String roleName);
 	
 	/**

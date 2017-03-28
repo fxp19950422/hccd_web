@@ -4,26 +4,25 @@
 	<resultMap id="UserResultMap" type="cn.sportsdata.webapp.youth.common.vo.UserVO">
         <result column="id" property="id" jdbcType="CHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="tel" property="tel" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="birthday" property="birthday" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
-        <result column="home_address" property="homeAddress" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
-        <result column="avatar_id" property="avatarId" jdbcType="VARCHAR"/>
-        <result column="passport" property="passport" jdbcType="VARCHAR"/>
-        <result column="nationality" property="nationality" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
         <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
-        <result column="birth_place" property="birthPlace" jdbcType="VARCHAR"/>
         
-        <collection property="userExtInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.UserExtVO">
+       <!--  <collection property="userExtInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.UserExtVO">
         	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
         	<result column="item_value" property="itemValue" jdbcType="VARCHAR"/>
-        </collection>
+        </collection> -->
     </resultMap>
     
     <resultMap id="UserOrgRoleResultMap" type="cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO">
     	<result column="user_id" property="userId" jdbcType="CHAR"/>
-    	<result column="org_id" property="orgId" jdbcType="CHAR"/>
+    	<result column="hospital_id" property="hospitalId" jdbcType="CHAR"/>
     	<result column="role_id" property="roleId" jdbcType="INTEGER"/>
     </resultMap>
     
@@ -64,10 +63,10 @@
     </select>
     
     <select id="getUserByID" resultMap="UserResultMap" parameterType="java.lang.String">
-        select A.id, A.name, A.tel, A.email, A.birthday, A.home_address, A.avatar,A.avatar_id, A.passport, A.nationality, A.id_card, A.birth_place, B.item_name, B.item_value 
-        from user A 
-        left outer join user_ext B on A.id = B.user_id 
-        where A.id = #{userId} and A.status = 'active'
+        select A.id, A.user_name, A.password, A.display_name as name, A.phone, A.email, A.birthday, A.address, A.avatar, A.id_card 
+        from user A ,
+        user_role_mapping B 
+        where A.id = B.user_id and B.hospital_id = '1' and A.id= #{userId} and A.status = 'active'
     </select>
     
     <select id="getPlayersByOrgId" resultMap="UserResultMap" parameterType="java.lang.String">
@@ -81,8 +80,8 @@
         <selectKey keyProperty="id" resultType="String" order="BEFORE">  
             select UUID() from dual  
         </selectKey>
-    	insert into user(id, name, tel, birthday, email, home_address, avatar,avatar_id, passport, nationality, id_card, birth_place, created_time) 
-    	values(#{id},  #{name}, #{tel}, #{birthday}, #{email}, #{homeAddress}, #{avatar},#{avatarId}, #{passport}, #{nationality}, #{idCard}, #{birthPlace}, now())
+    	insert into user(id, user_name, password, display_name, phone, birthday, email, address, avatar, id_card, created_time) 
+    	values(#{id},  #{userName}, #{password}, #{name}, #{phone}, #{birthday}, #{email}, #{address}, #{avatar}, #{idCard},  now())
     </insert>
     
     <insert id="insertUserExtData" parameterType="java.util.Map">
@@ -93,12 +92,14 @@
     </insert>
     
     <update id="updateUserBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.UserVO">
-        update user set name=#{name}, tel=#{tel}, birthday=#{birthday}, email=#{email}, home_address=#{homeAddress}, avatar=#{avatar}, 
-        passport=#{passport}, nationality=#{nationality}, id_card=#{idCard}, birth_place=#{birthPlace} 
-        <if test="avatarId != null and avatarId != '' ">
-    	,avatar_id=#{avatarId}
-    	</if>
+        update user set display_name=#{name}, phone=#{phone}, birthday=#{birthday}, email=#{email}, address=#{address}, avatar=#{avatar}, 
+        user_name=#{userName}, password=#{password}, id_card=#{idCard}
         where id = #{id}
+    </update>
+    
+    <update id="updateUserOrgRole" parameterType="cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO">
+        update user_role_mapping set role_id=#{roleId}
+        where user_id = #{userId} and hospital_id=#{hospitalId}
     </update>
     
     <insert id="updateUserExtData" parameterType="java.util.Map">
@@ -114,16 +115,22 @@
     </select>
     
     <insert id="insertUserOrgRole" parameterType="cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO">
-    	insert into user_org_association(user_id, org_id, role_id) 
-    	values(#{userId}, #{orgId}, #{roleId})
+    	insert into user_role_mapping(user_id, hospital_id, role_id) 
+    	values(#{userId}, #{hospitalId}, #{roleId})
+    </insert>
+    
+    <insert id="insertUserHospitalDepart" parameterType="cn.sportsdata.webapp.youth.common.vo.UserHospitalDepartmentVO">
+    	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+            select UUID() from dual  
+        </selectKey>
+    	insert into user_hospital_department(id, user_id, hospital_id, department_id) 
+    	values(#{id},#{userId}, #{hospitalId}, #{departmentId})
     </insert>
     
 
     <select id="getCoachsByOrgId" resultMap="UserResultMap" parameterType="java.lang.String">
-    	select A.id, A.name, A.tel, A.email, A.birthday, A.home_address, A.avatar,A.avatar_id, A.passport, A.nationality, A.id_card, A.birth_place, D.item_name, D.item_value 
-        from user A, user_org_association B, role C, user_ext D 
-        where B.org_id = #{orgId} and A.id = B.user_id and B.role_id = C.id and C.name = 'coach' and D.user_id = B.user_id and D.item_name = 'coach_type' and A.status = 'active'
-        order by A.id desc
+    	select A.id, A.user_name, A.display_name as name, A.email, A.phone, A.mobile,A.avatar, A.birthday, A.address, A.gender, C.name as role from user A, user_role_mapping B, role C, user_hospital_department D
+			where A.id = B.user_id and B.role_id = C.id and A.id = D.user_id and B.hospital_id = D.hospital_id and A.status = 'active'
     </select>
 
     <update id="deleteUserById" parameterType="java.lang.String">
