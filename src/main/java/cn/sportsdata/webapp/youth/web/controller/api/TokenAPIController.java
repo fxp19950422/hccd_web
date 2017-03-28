@@ -43,8 +43,20 @@ public class TokenAPIController {
 		LoginVO loginVO = new LoginVO(account);
 		if (loginVO != null && !StringUtils.isEmpty(password)){
 			
-			if (SecurityUtils.verifyPassword(password, loginVO.getPassword())){				
-				return new ResponseEntity<Response>(Response.toSussess(loginVO), HttpStatus.OK);
+			if (SecurityUtils.verifyPassword(password, loginVO.getPassword())){
+				JSONObject json = new JSONObject();
+				json.put("userid", loginVO.getId());
+				json.put("username", loginVO.getUserName());
+				json.put("email", loginVO.getEmail());
+				json.put("name", loginVO.getName());
+				json.put("avatar", loginVO.getAvatar());
+				json.put("avatar_id", loginVO.getAvatar_id());
+				json.put("birthday", loginVO.getBirthday());
+				
+				String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
+				ApiToken token = new ApiToken();
+				token.setToken(tokeninfo);
+				return new ResponseEntity<Response>(Response.toSussess(token), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
 			}

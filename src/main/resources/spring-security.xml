@@ -14,13 +14,9 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 		<sec:csrf disabled="true" />
 		<sec:headers disabled="true"></sec:headers>
 		<!--路径'/admin/*'需要权限ROLE_ADMIN -->
-
-		
 		<sec:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
 		<sec:intercept-url pattern="/api/v1/token" access="permitAll" />
 		<sec:intercept-url pattern="/api/v1/version" access="permitAll" />
-		<sec:intercept-url pattern="/api/v1/patientRecords" access="permitAll" />
-		<sec:intercept-url pattern="/api/v1/doctorLogin" access="permitAll" />
 		<sec:intercept-url pattern="/api/**" access="isAuthenticated()" />
 		
 	</sec:http>
@@ -52,7 +48,6 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 	<bean class="cn.sportsdata.webapp.youth.web.api.auth.TokenAuthenticationFilter"
 	    id="authenticationTokenProcessingFilter">
-	  
 	</bean>
 
 	<bean class="cn.sportsdata.webapp.youth.web.api.auth.RestAuthenticationEntryPoint"
