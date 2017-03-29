@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO">
+	 <resultMap id="UserResultMap" type="cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="hospitalId" property="hospitalId" jdbcType="VARCHAR"/>
+        <result column="departmentId" property="departmentId" jdbcType="VARCHAR"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="hospitalUserId" property="hospitalUserId" jdbcType="VARCHAR"/>
+        <result column="loginUserId" property="loginUserId" jdbcType="VARCHAR"/>
+        
+        <collection property="patients" ofType="cn.sportsdata.webapp.youth.common.vo.patient.PatientVO">
+        	<!-- <result column="id" property="id" jdbcType="VARCHAR"/> -->
+        	<result column="patient_hospital_id" property="hospital_id" jdbcType="VARCHAR"/>
+        	<result column="patient_number" property="patient_number" jdbcType="VARCHAR"/>
+        	<result column="real_name" property="real_name" jdbcType="VARCHAR"/>
+        	<result column="phone_number" property="phone_number" jdbcType="VARCHAR"/>
+        	<result column="gender" property="gender" jdbcType="VARCHAR"/>
+        	<result column="identity_card" property="identity_card" jdbcType="VARCHAR"/>
+        	<!-- <result column="hospital_id" property="hospital_id" jdbcType="VARCHAR"/>
+        	<result column="hospital_id" property="hospital_id" jdbcType="VARCHAR"/>
+        	<result column="hospital_id" property="hospital_id" jdbcType="VARCHAR"/>
+        	<result column="hospital_id" property="hospital_id" jdbcType="VARCHAR"/> -->
+        </collection>
+    </resultMap> 
+    
+    <resultMap id="MedicalRecordType" type="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="illness_desc" property="illness_desc" jdbcType="VARCHAR"/>
+        <result column="med_history" property="med_history" jdbcType="VARCHAR"/>
+        <result column="body_exam" property="body_exam" jdbcType="VARCHAR"/>
+        <result column="diag_desc" property="diag_desc" jdbcType="VARCHAR"/>
+        <result column="treatment" property="treatment" jdbcType="VARCHAR"/>
+        <result column="suggestion" property="suggestion" jdbcType="VARCHAR"/>
+        <result column="patient_id" property="patient_id" jdbcType="VARCHAR"/>
+        <result column="visit_date" property="visit_date" jdbcType="VARCHAR"/>
+        <result column="real_name" property="patient_name" jdbcType="VARCHAR"/>
+        
+    </resultMap> 
+	
+    <select id="getDoctors" resultMap="UserResultMap" parameterType="java.util.Map">
+    	select B.*,D.id as patient_id,D.hospital_id as patient_hospital_id, D.patient_number, D.real_name, D.phone_number, D.gender, D .birthday, D.identity_card, D.address from 
+    	(SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code
+			where A.department_code = '100001')
+		 A inner join doctor B on (A.department_code = B.department_id) 
+		  left outer join resident_record C on (B.user_id = C.doctor_id) 
+		 left outer join patient D on (C.patient_id = D.patient_number)
+    </select>
+    
+    <select id="getPatients" resultMap="UserResultMap" parameterType="java.util.Map">
+    	select B.*,D.id as patient_id,D.hospital_id as patient_hospital_id, D.patient_number, D.real_name, D.phone_number, D.gender, D .birthday, D.identity_card, D.address from 
+    	(SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code
+			where A.department_code = '100001')
+		 A inner join doctor B on (A.department_code = B.department_id) 
+		 left outer join resident_record C on (B.user_id = C.doctor_id) 
+		 left outer join patient D on (C.patient_id = D.patient_number)
+    </select>
+    
+    <select id="getMedicalRecordByPatientIds" resultMap="MedicalRecordType" parameterType="java.util.Map">
+    	select * from medical_record A,( select patient_id, max(visit_date) as visit_date from  medical_record  group by patient_id ) B, patient C 
+			where A.patient_id = B.patient_id and A.visit_date = B.visit_date and A.patient_id in (
+			<foreach item="item" index="index" collection="list" separator=",">
+                 "${item}"
+         	</foreach>
+			) and A.patient_id = C.patient_number
+    </select>
+   
+</mapper>
