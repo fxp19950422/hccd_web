@@ -82,47 +82,34 @@
 				</div>
 				<div>
 					<sa-panel title="术后照片">
-						
+						<div style="width:50%;float:left" >
+							<img class="starterAvator"    src="<%=serverUrl%>resources/images/test.png"></img>
+						</div>	
+						<div style="width:50%;float:left">
+							<img class="starterAvator"  src="<%=serverUrl%>resources/images/test.png"></img>
+						</div>	
+						<div style="width:50%;float:left">
+							<img class="starterAvator"  src="<%=serverUrl%>resources/images/test.png"></img>
+						</div>
+						<div style="width:50%;float:left">
+							<img class="starterAvator"  src="<%=serverUrl%>resources/images/test.png"></img>
+						</div>
 					</sa-panel>
 					
 				</div>
-				<div>
-					
-					<div class="panel panel-default"> ' + 
-						<div class="panel-heading" style="background-color:#067DC2;color:white">
-							<div style="float: left;font-size:16px;color:#FFFFFF;">fdsafda</div>
-							<div style="float: right;"><a href="javascript:void(0);" style="color: white;" ng-click="callback()" ng-show="isShowLink">fdsa</a></div> +
-							<div class="clearfix"></div>
-						</div>
-						<div class="panel-body table-responsive" >
-							<div>
-							<img class="starterAvator"  style="width:50%" src="<%=serverUrl%>resources/images/test.png"></img>
-						</div>	
-						<div>
-							<img class="starterAvator"  style="width:50%" src="<%=serverUrl%>resources/images/test.png"></img>
-						</div>	
-						<div>
-							<img class="starterAvator"  style="width:50%" src="<%=serverUrl%>resources/images/test.png"></img>
-						</div>	
-						<div>
-							<img class="starterAvator"  style="width:50%" src="<%=serverUrl%>resources/images/test.png"></img>
-						</div>	
-						<div>
-							<img class="starterAvator"  style="width:50%" src="<%=serverUrl%>resources/images/test.png"></img>
-						</div>	
-						<div>
-							<img class="starterAvator"  style="width:50%" src="<%=serverUrl%>resources/images/test.png"></img>
-						</div>	
-						</div>
-					
-				</div>
-			</div>
 		</li>
 		</c:forEach>
 
   </ul>
 </div>
-
+<<style>
+<!--
+.flex-viewport {
+    max-height: 8000px;
+    transition: all 1s ease 0s;
+}
+-->
+</style>
 <script type="text/javascript">
 	$(function() {
 		initEvent();
