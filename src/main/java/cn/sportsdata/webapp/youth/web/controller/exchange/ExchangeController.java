@@ -1,5 +1,6 @@
 package cn.sportsdata.webapp.youth.web.controller.exchange;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,34 +13,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.sportsdata.webapp.youth.common.utils.StringUtil;
-import cn.sportsdata.webapp.youth.common.vo.OrgVO;
-import cn.sportsdata.webapp.youth.common.vo.UserVO;
-import cn.sportsdata.webapp.youth.common.vo.test.PlayerChartData;
-import cn.sportsdata.webapp.youth.common.vo.test.PlayerChartRenderData;
-import cn.sportsdata.webapp.youth.common.vo.test.PlayerOptResp;
-import cn.sportsdata.webapp.youth.common.vo.test.PlayerWithTest;
-import cn.sportsdata.webapp.youth.common.vo.test.SingleTestPO;
-import cn.sportsdata.webapp.youth.common.vo.test.TestBatchRenderVO;
-import cn.sportsdata.webapp.youth.common.vo.test.TestItemPO;
-import cn.sportsdata.webapp.youth.common.vo.test.TestItemSelectorRenderVO;
-import cn.sportsdata.webapp.youth.common.vo.test.TestManagePageRenderVO;
-import cn.sportsdata.webapp.youth.service.test.TestService;
-import cn.sportsdata.webapp.youth.service.user.UserService;
+import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
+import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/exchange")
 public class ExchangeController extends BaseController{
 	private static Logger logger = Logger.getLogger(ExchangeController.class);
 	
+	@Autowired
+	ExchangeService exchangeService;
 	
 	@RequestMapping(value = "/exchange_list",method = RequestMethod.GET)
     public String toTestManagePage(HttpServletRequest request, Model model, @RequestParam(required=false,defaultValue = "0") int radio) {
 		
+		List<DoctorVO> doctors = exchangeService.getDoctors("100001");
+		
+		
+		model.addAttribute("doctors", doctors);
 		return "exchange/exchange_list";
 	}
 
+	@RequestMapping(value = "/exchange_detail",method = RequestMethod.POST)
+    public String toExchangeDetail(HttpServletRequest request, Model model,  @RequestBody JSONObject obj) {
+		
+		JSONArray array = obj.getJSONArray("uids");
+		List<String> uids = new ArrayList<String>();
+		
+		for (int i = 0; i < array.size();i++){
+			uids.add(array.getString(i));
+		}
+		
+		List<MedicalRecordVO> medicalRecords = exchangeService.getMedicalRecordByPatientIds(uids);
+		for (int i =0; i < 10; i++){
+			MedicalRecordVO vo = new MedicalRecordVO();
+			vo.setPatient_name("王爷"+i);
+			medicalRecords.add(vo);
+		}
+		
+		model.addAttribute("medicalrecords", medicalRecords);
+		return "exchange/exchange_detail";
+	}
 }

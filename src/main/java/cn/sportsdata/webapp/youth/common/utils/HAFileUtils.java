@@ -72,7 +72,7 @@ public final class HAFileUtils {
 		String folderType = getFolderType(fileName);
 
 		StringBuffer filePath = new StringBuffer().append(uploadRootPath).append(File.separator)
-				.append(File.separator).append(orgID)
+				
 				.append(File.separator).append(loginID)
 				.append(File.separator).append(folderType)
 				.append(File.separator).append(fileName);

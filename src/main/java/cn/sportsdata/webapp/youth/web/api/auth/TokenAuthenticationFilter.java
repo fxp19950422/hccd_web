@@ -57,6 +57,7 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
 		
 		if (httpRequest.getRequestURL().indexOf("/api/v1/token") == -1 
 				&& httpRequest.getRequestURL().indexOf("/api/v1/version") == -1
+				&& httpRequest.getRequestURL().indexOf("/api/v1/asset") == -1
 				){
 			checkToken(httpRequest, httpResponse);
 		}

@@ -36,6 +36,7 @@
 <link href="<%=basePath%>resources/css/bootstrap-table.min.css" rel="stylesheet">
 <link href="<%=basePath%>resources/css/sportsdata.table.css" rel="stylesheet">
 <link href="<%=basePath%>resources/css/sweet-alert.css" rel="stylesheet">
+<link href="<%=basePath%>resources/css/flexslider.css" rel="stylesheet">
 <!-- END FOOTER -->
 	<script src="<%=basePath%>resources/js/jquery-1.11.1.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/sweet-alert.min.js" type="text/javascript"></script>
@@ -68,6 +69,7 @@
 	<script type="text/javascript" src="<%=basePath%>resources/js/swfobject.js" /></script>
 	<script type="text/javascript" src="<%=basePath%>resources/js/imageUploader.js" /></script>
 	<script type="text/javascript" src="<%=basePath%>resources/js/echarts.min.js" /></script>
+	<script type="text/javascript" src="<%=basePath%>resources/js/jquery.flexslider-min.js" /></script>
 	<script src="<%=basePath%>resources/js/fileupload.js" type="text/javascript"></script>
 	
 	<!--[if lt IE 9]>
