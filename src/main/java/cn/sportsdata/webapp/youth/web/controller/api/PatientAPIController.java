@@ -39,9 +39,17 @@ public class PatientAPIController {
 
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
-			String hospitalId, String doctorCode, String recordType) {
+			String hospitalId, String doctorCode, String recordType, String date) {
 		if (recordType.equalsIgnoreCase("medical")) {
-			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode);
+			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
+			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+		}
+		if (recordType.equalsIgnoreCase("operation")) {
+			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
+			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+		}
+		if (recordType.equalsIgnoreCase("resident")) {
+			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 		}
 		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);

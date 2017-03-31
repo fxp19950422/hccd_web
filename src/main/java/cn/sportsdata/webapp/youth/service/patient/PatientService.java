@@ -13,7 +13,9 @@ import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 
 public interface PatientService {
-	List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode);
+	List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode, String date);
+	List<PatientRecordBO> getOperationRecordList(String hospitalId, String doctorCode, String date);
+	List<PatientRecordBO> getResidentRecordList(String hospitalId, String doctorCode, String date);
 	PatientMedicalRecordBO getMedicalRecord(String recordId);
 	PatientOperationRecordBO getOperationRecord(String recordId);
 	PatientResidentRecordBO getResidentRecord(String recordId);

@@ -14,7 +14,11 @@ import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 
 public interface PatientDAO {
 	List<PatientRecordBO> getMedicalRecordList(@Param("hospital_id") String hospitalId, 
-			@Param("doctor_code") String doctorCode);
+			@Param("doctor_code") String doctorCode, @Param("date") String date);
+	List<PatientRecordBO> getOperationRecordList(@Param("hospital_id") String hospitalId, 
+			@Param("doctor_code") String doctorCode, @Param("date") String date);
+	List<PatientRecordBO> getResidentRecordList(@Param("hospital_id") String hospitalId, 
+			@Param("doctor_code") String doctorCode, @Param("date") String date);
 	
 	PatientMedicalRecordBO getMedicalRecord(@Param("record_id") String recordId);
 	PatientOperationRecordBO getOperationRecord(@Param("record_id") String recordId);

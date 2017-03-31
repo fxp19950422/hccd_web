@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.sportsdata.webapp.youth.dao.hospital.PatientDAO">
+
+    <select id="getRegisteRecordList" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO" parameterType="java.util.Map">
+    	select A.id as recordId, D.real_name as patientName,
+    		A.VISIT_DATE as startTime, D.gender as gender
+	    	from medical_record A
+	       	left join patient D on D.patient_number = A.PATIENT_ID and D.hospital_id = #{hospital_id}
+	       	where A.DOCTOR_NO=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' and to_days(VISIT_DATE) = to_days(STR_TO_DATE('2017-03-26',"%Y-%m-%d"))
+	       	order by VISIT_DATE desc, VISIT_NO
+    </select>
     
     <select id="getMedicalRecordList" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO" parameterType="java.util.Map">
     	select A.id as recordId, D.real_name as patientName,
@@ -8,8 +18,14 @@
 	    	from medical_record A
 	       	left join patient D on D.patient_number = A.PATIENT_ID and D.hospital_id = #{hospital_id}
 	       	where A.DOCTOR_NO=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and to_days(VISIT_DATE) = to_days(now())
+	       	and A.status = 'active' and to_days(VISIT_DATE) = to_days(STR_TO_DATE('2017-03-26',"%Y-%m-%d"))
 	       	order by VISIT_DATE desc, VISIT_NO
+    </select>
+    
+    <select id="getOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO" parameterType="java.util.Map">
+    </select>
+    
+    <select id="getResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO" parameterType="java.util.Map">
     </select>
     
     <select id="getMedicalRecord" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientMedicalRecordBO" parameterType="java.util.Map">

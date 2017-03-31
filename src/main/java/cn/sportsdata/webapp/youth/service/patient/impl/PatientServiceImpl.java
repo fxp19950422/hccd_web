@@ -28,10 +28,10 @@ public class PatientServiceImpl implements PatientService {
 	private AssetDAO assetDAO;
 	
 	@Override
-	public List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode) {
+	public List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode, String date) {
 		List<PatientRecordBO> patientRecordList = null;
 		try {
-			patientRecordList = patientDAO.getMedicalRecordList(hospitalId, doctorCode);
+			patientRecordList = patientDAO.getMedicalRecordList(hospitalId, doctorCode, date);
 			if(patientRecordList == null) {
 				patientRecordList = new ArrayList<PatientRecordBO>();
 			}
@@ -93,5 +93,17 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public DoctorVO getDoctorInfoByUsername(String username) {
 		return patientDAO.getDoctorInfoByUsername(username);
+	}
+
+	@Override
+	public List<PatientRecordBO> getOperationRecordList(String hospitalId, String doctorCode, String date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PatientRecordBO> getResidentRecordList(String hospitalId, String doctorCode, String date) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
