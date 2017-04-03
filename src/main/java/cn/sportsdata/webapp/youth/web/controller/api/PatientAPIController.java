@@ -23,6 +23,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
@@ -39,18 +40,18 @@ public class PatientAPIController {
 
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
-			String hospitalId, String doctorCode, String recordType, String date) {
+			String hospitalId, String doctorCode, String doctorName, String recordType, String date) {
 		if (recordType.equalsIgnoreCase("medical")) {
 			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 		}
 		if (recordType.equalsIgnoreCase("operation")) {
-			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
-			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+			Map<String, Object> result = patientService.getOperationRecordList(hospitalId, doctorCode, doctorName, date);
+			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
 		if (recordType.equalsIgnoreCase("resident")) {
-			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
-			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, date);
+			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
 		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);
 	}
