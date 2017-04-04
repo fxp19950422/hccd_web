@@ -81,7 +81,7 @@ public class PatientAPIController {
 		List<HospitalRecordTypeVO> array = new ArrayList<HospitalRecordTypeVO>();
 		//medical
 		List<String> sectionNameList1 = Arrays.asList(new String[] {"主诉", "病史", "查体", "初步诊断", "诊治项目","建议"});
-		List<String> SectionList1 = Arrays.asList(new String[] {"chief_complaint", "medical_history","examnination","primary_diagnosis", "treatment", "suggestion"});
+		List<String> SectionList1 = Arrays.asList(new String[] {"illnessDesc", "medHistory","bodyExam","diagDesc", "treatment", "suggestion"});
 		HospitalRecordTypeVO record1 = new HospitalRecordTypeVO();
 		record1.setRecordType("medical");
 		record1.setRecordTypeName("门诊病历");
