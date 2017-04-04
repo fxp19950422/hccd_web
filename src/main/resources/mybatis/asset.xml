@@ -55,7 +55,7 @@
 		insert into hospital_record_asset(id, hospital_id, hospital_record_id, asset_id, created_time, last_updated, record_type,
 		record_asset_type_id, status)
 		values(#{id}, #{hospital_id}, #{hospital_record_id}, #{asset_id},
-		current_timestamp(), current_timestamp(), #{record_type}, #{record_asset_type_id})
+		current_timestamp(), current_timestamp(), #{record_type}, #{record_asset_type_id}, 'active')
 	</insert>
 
 </mapper>

@@ -112,9 +112,13 @@
 											</c:otherwise>
 										</c:choose>
 									</div>
-									<div class="col-md-1 inputLabel"> </div>
+									<div class="col-md-1 inputLabel">部门</div>
 									<div class="col-md-3">
-										  
+										<select class="profileEditInput" id="selDepartment" name="departmentCode" style="width: 100%;">
+											<c:forEach items="${departments}" var="department">
+												<option value="${department.departmentCode}">${department.name}</option>
+											</c:forEach>
+										</select>
 									</div>
 								</div>
 								

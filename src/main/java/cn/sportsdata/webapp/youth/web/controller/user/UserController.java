@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +29,7 @@ import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.utils.StringUtil;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
+import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO;
@@ -39,6 +39,7 @@ import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.role.RoleVO;
 import cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
+import cn.sportsdata.webapp.youth.service.department.DepartmentService;
 import cn.sportsdata.webapp.youth.service.user.UserService;
 import cn.sportsdata.webapp.youth.service.utraining.UtrainingService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
@@ -57,6 +58,9 @@ public class UserController extends BaseController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private DepartmentService departService;
 	
 	@Autowired
 	private UtrainingService trainingService;
@@ -259,6 +263,8 @@ public class UserController extends BaseController {
 			UserVO coach = userService.getUserByID(userID);
 			model.addAttribute("coach", coach);
 		}
+		List<DepartmentVO> departmentList = departService.getDepartmentList("1", "100001");
+		model.addAttribute("departments", departmentList);
 		
 		return "user/coach_edit";
 	}
