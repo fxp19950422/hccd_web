@@ -8,4 +8,6 @@ public interface AssetDAO {
     boolean updateAsset(AssetVO assetVo);
     boolean deleteAsset(AssetVO assetVo);
     boolean replaceAsset(AssetVO assetVo);
+    
+    String insertHospitalRecordAsset(String hospitalId, String hospitalRecordId, String assetId, String type, String typeId);
 }

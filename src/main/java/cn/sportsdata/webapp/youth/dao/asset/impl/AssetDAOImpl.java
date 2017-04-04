@@ -1,5 +1,8 @@
 package cn.sportsdata.webapp.youth.dao.asset.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import cn.sportsdata.webapp.youth.common.utils.StringUtil;
@@ -47,6 +50,19 @@ public class AssetDAOImpl extends BaseDAO implements AssetDAO {
 	public boolean replaceAsset(AssetVO assetVo) {
 		long affectedRowNum = sqlSessionTemplate.update(getSqlNameSpace(replaceAsset), assetVo);
 		return affectedRowNum>0;
+	}
+
+	@Override
+	public String insertHospitalRecordAsset(String hospitalId, String hospitalRecordId, String assetId, String type,
+			String typeId) {
+		Map<String, String> hashMap = new HashMap<String, String>();
+		hashMap.put("hospital_id", hospitalId);
+		hashMap.put("hospital_record_id", hospitalRecordId);
+		hashMap.put("asset_id", assetId);
+		hashMap.put("record_type", type);
+		hashMap.put("record_asset_type_id", typeId);
+		int num = sqlSessionTemplate.insert(getSqlNameSpace(replaceAsset), hashMap);
+		return String.valueOf(num);
 	}
 
 }
