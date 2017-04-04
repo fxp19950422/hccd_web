@@ -7,6 +7,14 @@ import java.util.Date;
 public class PatientVO implements Serializable {
 	private static final long serialVersionUID = 8628757275474528838L;
 	
+	private String visitNo;
+	
+	public String getVisitNo() {
+		return visitNo;
+	}
+	public void setVisitNo(String visitNo) {
+		this.visitNo = visitNo;
+	}
 	public String getId() {
 		return id;
 	}
@@ -92,7 +100,15 @@ public class PatientVO implements Serializable {
 	private Date birthday;
 	private String identity_card;
 	private String address;
+	private Date admissionDateTime;
 	
+	public Date getAdmissionDateTime() {
+		return admissionDateTime;
+	}
+	public void setAdmissionDateTime(Date admissionDateTime) {
+		this.admissionDateTime = admissionDateTime;
+	}
+
 	private String status;
 	private Timestamp created_time;
 	private Timestamp last_update;

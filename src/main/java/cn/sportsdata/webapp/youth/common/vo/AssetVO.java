@@ -27,7 +27,15 @@ public class AssetVO extends BaseVO implements Serializable {
 	private String file_extension;
 	private String privacy;
 	private String creator_id;
+	private String assetTypeName;
 	
+	
+	public String getAssetTypeName() {
+		return assetTypeName;
+	}
+	public void setAssetTypeName(String assetTypeName) {
+		this.assetTypeName = assetTypeName;
+	}
 	public String getId() {
 		return id;
 	}

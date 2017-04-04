@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
 import net.sf.json.JSONArray;
@@ -32,10 +33,11 @@ public class ExchangeController extends BaseController{
 	@RequestMapping(value = "/exchange_list",method = RequestMethod.GET)
     public String toTestManagePage(HttpServletRequest request, Model model, @RequestParam(required=false,defaultValue = "0") int radio) {
 		
-		List<DoctorVO> doctors = exchangeService.getDoctors("100001");
+		List<DoctorVO> doctors = exchangeService.getDoctors("100001", radio == 1);
 		
 		
 		model.addAttribute("doctors", doctors);
+		model.addAttribute("radio", radio);
 		return "exchange/exchange_list";
 	}
 
@@ -46,14 +48,14 @@ public class ExchangeController extends BaseController{
 		List<String> uids = new ArrayList<String>();
 		
 		for (int i = 0; i < array.size();i++){
-			uids.add(array.getString(i));
+			uids.add(array.getJSONObject(i).getString("uid"));
 		}
 		
-		List<MedicalRecordVO> medicalRecords = exchangeService.getMedicalRecordByPatientIds(uids);
+		List<ResidentRecord> medicalRecords = exchangeService.getMedicalRecordByPatientIds(uids);
 		if (medicalRecords.size() <= 0){
 			for (int i =0; i < 10; i++){
-				MedicalRecordVO vo = new MedicalRecordVO();
-				vo.setPatient_name("王爷"+i);
+				ResidentRecord vo = new ResidentRecord();
+				vo.setName("王爷"+i);
 				medicalRecords.add(vo);
 			}
 		}

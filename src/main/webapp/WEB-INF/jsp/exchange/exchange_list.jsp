@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="xss" uri="http://www.sportsdata.cn/xss"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn"%> 
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="cn.sportsdata.webapp.youth.common.utils.CommonUtils" %>
 
 <%
@@ -10,9 +10,27 @@
 %>
 
 
-<div class="button_area">
+<!-- <div class="button_area">
 	<button id="add_btn" class="btn btn-primary"  style="float: right;">交班</button>
 </div>
+
+<div class="button_area">
+	
+</div> -->
+
+<section class="top_control_area">
+	<label > 
+		<input type="radio" name="testViewMode" class="model" value="0" <c:if test="${radio == 0}">checked</c:if>> 查看昨天入院病人
+	</label>
+	<label > 
+		<input type="radio" name="testViewMode" class="model" value="1" <c:if test="${radio == 1}">checked</c:if>> 查看所有住院病人
+	</label> 
+	 
+	<button id="add_btn" class="btn btn-primary test-btn-right">交班</button>
+	<div class="clearfix"></div>
+</section>
+
+
 <div class="clearfix" style="height:15px;"></div>
 <div class=" doctorPatientList">
 <c:forEach items="${doctors}" var="doctor">
@@ -23,7 +41,7 @@
 				</c:when>
 				<c:otherwise>
 					 <c:forEach items="${doctor.patients}" var="patient">
-						<div class="profileCard" uid="${ patient.patient_number }">
+						<div class="profileCard" uid="${ patient.patient_number }" visitNo="${ patient.visitNo }">
 							<%--  <c:choose>
 								<c:when test="${ !empty patient.name }">
 									<img class="profileAvatar" src="<%=serverUrl%>file/downloadFile?fileName=${ coach.avatar }"></img>
@@ -44,6 +62,17 @@
 									</c:otherwise>
 								</c:choose>
 							</div>
+							<div class="profileData">
+								
+								<c:choose>
+									<c:when test="${ !empty patient.admissionDateTime }">
+										入院时间 : <fmt:formatDate value="${patient.admissionDateTime}" pattern="yyyy年MM月dd日"/>
+									</c:when>
+									<c:otherwise>
+										入院时间 : 未知
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
 					</c:forEach>
 				</c:otherwise>
@@ -57,6 +86,10 @@
 			border-style:solid;
   			border-color:#007EC1;
   			border-width:2px;
+		}
+		.profileCard{
+			width: 240px;
+			height:100px;
 		}
 	</style>
 	<script type="text/javascript">
@@ -76,13 +109,31 @@
 
 		});
 		
+		$('input.model:radio').change(function(){
+			
+			sa.ajax({
+				type : "get",
+				url : "<%=serverUrl%>exchange/exchange_list?radio=" + $(this).val(),
+				success : function(data) {
+					AngularHelper.Compile($('#content'), data);
+				},
+				error: function() {
+					alert("打开首页失败");
+				}
+			});
+		}); 
+		
 		$('#add_btn').click(function() {
 			if ($("div.profileCard.selected").length <= 0){
 				alert("请选择需要交班的病人");
 			} else {
 				var uidArray = new Array();
 				$("div.profileCard.selected").each(function(){
-					uidArray.push($(this).attr("uid"));
+					var param = {
+							uid:$(this).attr("uid"),
+							visitNo:$(this).attr("visitNo")
+					}
+					uidArray.push(param);
 				})
 				
 				var postdata = {};
