@@ -40,17 +40,17 @@ public class PatientAPIController {
 
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
-			String hospitalId, String doctorCode, String doctorName, String recordType, String date) {
+			String hospitalId, String doctorCode, String doctorName, String recordType, long year, long month, long day) {
 		if (recordType.equalsIgnoreCase("medical")) {
-			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, date);
+			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 		}
 		if (recordType.equalsIgnoreCase("operation")) {
-			Map<String, Object> result = patientService.getOperationRecordList(hospitalId, doctorCode, doctorName, date);
+			Map<String, Object> result = patientService.getOperationRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
 		if (recordType.equalsIgnoreCase("resident")) {
-			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, date);
+			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
 		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);
@@ -61,23 +61,17 @@ public class PatientAPIController {
 			String recordId, String recordType) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		if (recordType.equalsIgnoreCase("medical")) {
-			PatientMedicalRecordBO record = patientService.getMedicalRecord(recordId);
-			result.put("recordData", record);
-		}
-		if (recordType.equalsIgnoreCase("operation")) {
-			PatientOperationRecordBO record = patientService.getOperationRecord(recordId);
-			result.put("recordData", record);
-		}
-		if (recordType.equalsIgnoreCase("resident")) {
-			PatientResidentRecordBO record = patientService.getResidentRecord(recordId);
-			result.put("recordData", record);
-		}
-		
 		List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
 		result.put("assetList", assetList);
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/searchPatientRecord",  method = RequestMethod.POST)
+	public ResponseEntity<Response> searchPatientRecord(HttpServletRequest request, HttpServletResponse resp, 
+			String hospitalId, String patientName, String doctorCode, String doctorName, String recordType) {
+		List<PatientRecordBO> list = patientService.searchPatientRecord(hospitalId, patientName, doctorName, doctorCode, recordType);
+		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/globalConfig",  method = RequestMethod.POST)

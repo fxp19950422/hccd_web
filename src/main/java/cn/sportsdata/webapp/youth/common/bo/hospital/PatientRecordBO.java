@@ -3,9 +3,10 @@ package cn.sportsdata.webapp.youth.common.bo.hospital;
 import java.io.Serializable;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
-import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 
 public class PatientRecordBO implements Serializable{
 	
@@ -13,6 +14,8 @@ public class PatientRecordBO implements Serializable{
 	private PatientRegistRecord registRecord = null;
 	private MedicalRecordVO medicalRecord = null;
 	private PatientInfoVO patient = null;
+	private ResidentRecord residentRecord = null;
+	private OpertaionRecord operationRecord = null;
 	private String patientId;
 	
 	public String getPatientId() {
@@ -38,5 +41,17 @@ public class PatientRecordBO implements Serializable{
 	}
 	public void setPatient(PatientInfoVO patient) {
 		this.patient = patient;
+	}
+	public ResidentRecord getResidentRecord() {
+		return residentRecord;
+	}
+	public void setResidentRecord(ResidentRecord residentRecord) {
+		this.residentRecord = residentRecord;
+	}
+	public OpertaionRecord getOperationRecord() {
+		return operationRecord;
+	}
+	public void setOperationRecord(OpertaionRecord operationRecord) {
+		this.operationRecord = operationRecord;
 	}
 }
