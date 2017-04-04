@@ -28,7 +28,7 @@
 		insert into asset(id, display_name, storage_name, size, file_extension, privacy, creator_id,
 		org_id, created_time, status)
 		values(#{id}, #{display_name}, #{storage_name}, #{size},
-		#{file_extension}, #{privacy}, #{creator_id}, #{org_id}, current_timestamp(),'active')
+		#{file_extension}, #{privacy}, #{creator_id}, #{org_id}, current_timestamp(),'active' )
 	</insert>
 
 	<update id="updateAsset" parameterType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
