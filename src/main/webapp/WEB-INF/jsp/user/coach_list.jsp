@@ -14,7 +14,7 @@
 </div>
 <div class="clearfix" style="height:15px;"></div>
 <div class=" userCoachList">
-	<sa-panel-card title="主教练">
+	<sa-panel-card title="主任">
 		<c:forEach items="${chiefCoachList}" var="coach">
 			<div class="profileCard" uid="${ coach.id }">
 				<c:choose>
@@ -40,7 +40,7 @@
 			</div>
 		</c:forEach>
 	</sa-panel-card>
-	<sa-panel-card title="助理教练">
+	<sa-panel-card title="医生">
 		<c:forEach items="${assistantCoachList}" var="coach">
 			<div class="profileCard" uid="${ coach.id }">
 				<c:choose>
@@ -66,86 +66,8 @@
 			</div>
 		</c:forEach>
 	</sa-panel-card>
-	<sa-panel-card title="体能教练">
+	<sa-panel-card title="护士">
 		<c:forEach items="${fitnessCoachList}" var="coach">
-			<div class="profileCard" uid="${ coach.id }">
-				<c:choose>
-					<c:when test="${ !empty coach.avatar }">
-						<img class="profileAvatar" src="<%=serverUrl%>file/downloadFile?fileName=${ coach.avatar }"></img>
-					</c:when>
-					<c:otherwise>
-						<img class="profileAvatar" src="<%=serverUrl%>resources/images/user_avatar.png"></img>
-					</c:otherwise>
-				</c:choose>
-				
-				<div class="profileName"><xss:xssFilter text="${coach.name}" filter="html"/></div>
-				<div class="profileData">
-					<c:choose>
-						<c:when test="${ !empty coach.tel }">
-							${ coach.tel }
-						</c:when>
-						<c:otherwise>
-							暂无联系方式
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-		</c:forEach>
-	</sa-panel-card>
-	<sa-panel-card title="守门员教练">
-		<c:forEach items="${goalKeeperCoachList}" var="coach">
-			<div class="profileCard" uid="${ coach.id }">
-				<c:choose>
-					<c:when test="${ !empty coach.avatar }">
-						<img class="profileAvatar" src="<%=serverUrl%>file/downloadFile?fileName=${ coach.avatar }"></img>
-					</c:when>
-					<c:otherwise>
-						<img class="profileAvatar" src="<%=serverUrl%>resources/images/user_avatar.png"></img>
-					</c:otherwise>
-				</c:choose>
-				
-				<div class="profileName"><xss:xssFilter text="${coach.name}" filter="html"/></div>
-				<div class="profileData">
-					<c:choose>
-						<c:when test="${ !empty coach.tel }">
-							${ coach.tel }
-						</c:when>
-						<c:otherwise>
-							暂无联系方式
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-		</c:forEach>
-	</sa-panel-card>
-	<sa-panel-card title="科研教练">
-		<c:forEach items="${researchCoachList}" var="coach">
-			<div class="profileCard" uid="${ coach.id }">
-				<c:choose>
-					<c:when test="${ !empty coach.avatar }">
-						<img class="profileAvatar" src="<%=serverUrl%>file/downloadFile?fileName=${ coach.avatar }"></img>
-					</c:when>
-					<c:otherwise>
-						<img class="profileAvatar" src="<%=serverUrl%>resources/images/user_avatar.png"></img>
-					</c:otherwise>
-				</c:choose>
-				
-				<div class="profileName"><xss:xssFilter text="${coach.name}" filter="html"/></div>
-				<div class="profileData">
-					<c:choose>
-						<c:when test="${ !empty coach.tel }">
-							${ coach.tel }
-						</c:when>
-						<c:otherwise>
-							暂无联系方式
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-		</c:forEach>
-	</sa-panel-card>
-	<sa-panel-card title="战术教练">
-		<c:forEach items="${tacticsCoachList}" var="coach">
 			<div class="profileCard" uid="${ coach.id }">
 				<c:choose>
 					<c:when test="${ !empty coach.avatar }">

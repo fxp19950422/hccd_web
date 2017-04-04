@@ -17,6 +17,8 @@ public class AssetDAOImpl extends BaseDAO implements AssetDAO {
 	private static final String updateAsset = "updateAsset";
 	private static final String replaceAsset = "replaceAsset";
 	private static final String deleteAsset = "deleteAsset";
+	
+	private static final String insertHospitalRecordAsset = "insertHospitalRecordAsset";
 	@Override
 	public AssetVO getAssetByID(String id) {
 		if(StringUtil.isBlank(id)) {
@@ -61,7 +63,7 @@ public class AssetDAOImpl extends BaseDAO implements AssetDAO {
 		hashMap.put("asset_id", assetId);
 		hashMap.put("record_type", type);
 		hashMap.put("record_asset_type_id", typeId);
-		int num = sqlSessionTemplate.insert(getSqlNameSpace(replaceAsset), hashMap);
+		int num = sqlSessionTemplate.insert(getSqlNameSpace(insertHospitalRecordAsset), hashMap);
 		return String.valueOf(num);
 	}
 

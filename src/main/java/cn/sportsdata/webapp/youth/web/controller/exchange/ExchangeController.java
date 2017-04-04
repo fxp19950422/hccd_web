@@ -50,10 +50,12 @@ public class ExchangeController extends BaseController{
 		}
 		
 		List<MedicalRecordVO> medicalRecords = exchangeService.getMedicalRecordByPatientIds(uids);
-		for (int i =0; i < 10; i++){
-			MedicalRecordVO vo = new MedicalRecordVO();
-			vo.setPatient_name("王爷"+i);
-			medicalRecords.add(vo);
+		if (medicalRecords.size() <= 0){
+			for (int i =0; i < 10; i++){
+				MedicalRecordVO vo = new MedicalRecordVO();
+				vo.setPatient_name("王爷"+i);
+				medicalRecords.add(vo);
+			}
 		}
 		
 		model.addAttribute("medicalrecords", medicalRecords);
