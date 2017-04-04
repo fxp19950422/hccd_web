@@ -191,7 +191,7 @@ public class HealthDataFileUploadController extends BaseController {
 	// below upload/download methods are used by pure PlUpload plugin
 	@ResponseBody
 	@RequestMapping(value="/fileUpload", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
-	public String fileUpload(HttpServletRequest request, @RequestParam MultipartFile uploadedFile) {
+	public String fileUpload(HttpServletRequest request, @RequestParam MultipartFile uploadedFile, String hospitalId, String hospitalRecordId, String type, String typeId) {
 		try {
 //			LoginVO loginVO = getCurrentUser(request);
 //			OrgVO orgVO = getCurrentOrg(request);
@@ -230,7 +230,7 @@ public class HealthDataFileUploadController extends BaseController {
 	        vo.setStatus("active");
 	        vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
 
-	        String id = assetservice.insertAsset(vo);
+	        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, typeId);
 			vo.setId(id);
 			json.put("asset_id", id);
 			return json.toString();
