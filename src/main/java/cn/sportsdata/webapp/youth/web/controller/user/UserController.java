@@ -222,6 +222,9 @@ public class UserController extends BaseController {
 				case Constants.ROLE_DOCTOR:
 					assistantCoachList.add(coach);
 					break;
+				case Constants.ROLE_NURSE:
+					fitnessCoachList.add(coach);
+					break;
 //				case Constants.FITNESS_COACH:
 //					fitnessCoachList.add(coach);
 //					break;
@@ -242,9 +245,6 @@ public class UserController extends BaseController {
 		model.addAttribute("chiefCoachList", chiefCoachList);
 		model.addAttribute("assistantCoachList", assistantCoachList);
 		model.addAttribute("fitnessCoachList", fitnessCoachList);
-		model.addAttribute("goalKeeperCoachList", goalKeeperCoachList);
-		model.addAttribute("researchCoachList", researchCoachList);
-		model.addAttribute("tacticsCoachList", tacticsCoachList);
 		
 		return "user/coach_list";
 	}

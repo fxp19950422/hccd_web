@@ -47,7 +47,7 @@
     	(SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code
 			where A.department_code = '100001')
 		 A inner join doctor B on (A.department_code = B.department_id) 
-		  left outer join resident_record C on (B.user_id = C.doctor_id) 
+		  left outer join patient_in_hospital C on (B.user_id = C.doctor_id) 
 		 left outer join patient D on (C.patient_id = D.patient_number)
     </select>
     
@@ -56,7 +56,7 @@
     	(SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code
 			where A.department_code = '100001')
 		 A inner join doctor B on (A.department_code = B.department_id) 
-		 left outer join resident_record C on (B.user_id = C.doctor_id) 
+		 left outer join patient_in_hospital C on (B.user_id = C.doctor_id) 
 		 left outer join patient D on (C.patient_id = D.patient_number)
     </select>
     
