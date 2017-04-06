@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -16,8 +17,22 @@ public class PatientRecordBO implements Serializable{
 	private PatientInfoVO patient = null;
 	private ResidentRecord residentRecord = null;
 	private OpertaionRecord operationRecord = null;
+	private PatientInHospital patientInhospital = null;
 	private String patientId;
+	private String recordType;
 	
+	public PatientInHospital getPatientInhospital() {
+		return patientInhospital;
+	}
+	public void setPatientInhospital(PatientInHospital patientInhospital) {
+		this.patientInhospital = patientInhospital;
+	}
+	public String getRecordType() {
+		return recordType;
+	}
+	public void setRecordType(String recordType) {
+		this.recordType = recordType;
+	}
 	public String getPatientId() {
 		return patientId;
 	}

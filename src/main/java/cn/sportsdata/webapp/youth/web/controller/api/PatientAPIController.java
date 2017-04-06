@@ -53,16 +53,30 @@ public class PatientAPIController {
 			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
+		if (recordType.equalsIgnoreCase("patientInhospital")) {
+			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, doctorName, year, month, day);
+			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+		}
 		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/recordDetails",  method = RequestMethod.POST)
 	public ResponseEntity<Response> getRecordDetails(HttpServletRequest request, HttpServletResponse resp, 
-			String recordId, String recordType) {
+			String recordId, String recordType, String patientName, String patientId, String hospitalId) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
-		result.put("assetList", assetList);
+		if (recordType.equalsIgnoreCase("medical")) {
+			List<PatientRecordBO> list = patientService.getPatientRecords(recordId, patientName, patientId, hospitalId);
+			result.put("historyRecordList", list);
+		}
+		if (recordType.equalsIgnoreCase("operation")) {
+			List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
+			result.put("assetList", assetList);
+			result.put("residentRecord", patientService.getResidentRecordByOperation(recordId, hospitalId, patientId));
+		}
+		if (recordType.equalsIgnoreCase("resident")) {
+			result.put("operationRecordList", patientService.getOperationsByResident(recordId, hospitalId, patientId));
+		}
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}
@@ -94,7 +108,7 @@ public class PatientAPIController {
 		List<String> SectionNameList2 = Arrays.asList(new String[] {"术前诊断", "术后诊断", "手术名称", "手术经过", "手术体位",
 				"手术切口","探查所见", "手术步骤", "引流物", "术毕病人情况"});
 		List<String> sectionList2 = Arrays.asList(new String[] {"before_diagnosis", "after_diagnosis",
-				"name","process", "posture", "incision","exploratory", "steps", "drainage", "finished_condition"});
+				"operationDesc","process", "posture", "incision","exploratory", "steps", "drainage", "finished_condition"});
 		HospitalRecordTypeVO record2 = new HospitalRecordTypeVO();
 		record2.setRecordType("operation");
 		record2.setRecordTypeName("手术记录");
@@ -110,11 +124,17 @@ public class PatientAPIController {
 				"in_wes_diagnosis","process", "out_chi_diagnosis", "out_wes_diagnosis", "out_state", "suggestion"});
 		HospitalRecordTypeVO record3 = new HospitalRecordTypeVO();
 		record3.setRecordType("resident");
-		record3.setRecordTypeName("住院记录");
+		record3.setRecordTypeName("出院记录");
 		record3.setSectionList(sectionList3);
 		record3.setSectionNameList(SectionNameList3);
 		record3.setAssetTypeList(patientService.getRecordAssetTypeList("resident"));
 		array.add(record3);
+		
+		//patient in hospital
+		HospitalRecordTypeVO record4 = new HospitalRecordTypeVO();
+		record4.setRecordType("patientInhospital");
+		record4.setRecordTypeName("住院患者");
+		array.add(record4);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("recordTypeList", array);

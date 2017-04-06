@@ -23,35 +23,42 @@
     <select id="getCurMyOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A
         	left join resident_record B on B.patient_id = A.patient_id
-	       	where (A.OPERATOR=#{doctor_code} or A.OPERATOR=#{doctor_name}) and A.hospital_id=#{hospital_id} 
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
     </select>
     
     <select id="getMyOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-        select A.* from operation A left join resident_record B on B.patient_id = A.patient_id
-	       	where (A.OPERATOR=#{doctor_code} or A.OPERATOR=#{doctor_name}) and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
+        select A.* from operation A
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
     <select id="getFirstAsistOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-        select A.* from operation A left join resident_record B on B.patient_id = A.patient_id
+        select A.* from operation A
 	       	where A.FIRST_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and  B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
     <select id="getSecondAsistOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-        select A.* from operation A left join resident_record B on B.patient_id = A.patient_id
+        select A.* from operation A
 	       	where A.SECOND_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
     <select id="getAnesthesiaOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-        select A.* from operation A left join resident_record B on B.patient_id = A.patient_id
+        select A.* from operation A
 	       	where A.ANESTHESIA_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
     <!-- 查询住院记录 -->
+    <select id="getCurPatientsInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+        select A.* from patient_in_hospital A
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' order by ADMISSION_DATE_TIME desc
+    </select>
+    
+    <!-- 查询出院记录 -->
     <select id="getCurMyResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
@@ -61,19 +68,68 @@
     <select id="getMyResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 0 order by ADMISSION_DATE desc
+	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc
     </select>
     
     <select id="getDirectResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.DIRECTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 0 order by ADMISSION_DATE desc
+	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc
     </select>
     
     <select id="getAttendingResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.ATTENDING_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 0 order by ADMISSION_DATE desc
+	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc
+    </select>
+    
+    <!-- 查询单个病人所有记录 -->
+   	<select id="getOperationById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select A.* from operation A where A.id = #{id}
+    </select>
+    
+   	<select id="getResidentById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    	select A.* from resident_record A where A.id = #{id}
+    </select>
+    
+    <select id="getResidentRecordByOperation" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    	select A.* from resident_record A 
+	       	where A.patient_id=#{patient_id} and A.hospital_id=#{hospital_id} and A.status = 'active' 
+	       	and #{operating_date} &gt; A.ADMISSION_DATE 
+	       	and (#{operating_date} &lt; A.discharge_date_time or A.discharge_date_time is null)
+	       	order by ADMISSION_DATE desc
+    </select>
+    
+    <select id="getOperationsByResident" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select A.* from operation A 
+	       	where A.patient_id=#{patient_id} and A.hospital_id=#{hospital_id} and A.status = 'active' 
+	       	and OPERATING_DATE &gt; #{admission_date} 
+	       	and OPERATING_DATE &lt; #{discharge_date}
+	       	order by OPERATING_DATE desc
+    </select>
+    
+    <select id="getPatientOperationRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select A.* from operation A 
+	       	where A.patient_id in (select patient_number FROM patient where real_name = #{patient_name})
+	       	and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' and A.id != #{record_id} order by OPERATING_DATE desc
+    </select>
+    
+    <select id="getPatientResidentRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+        select A.* from resident_record A
+	       	where A.patient_id in (SELECT patient_number FROM patient where real_name = #{patient_name})
+	       	and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' and A.id != #{record_id} order by ADMISSION_DATE desc
+    </select>
+    
+    <select id="getPatientMedicalRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
+    	select A.* from medical_record A
+	       	where  A.patient_id in (SELECT patient_number FROM patient where real_name = #{patient_name})
+        	and A.patient_id=#{patient_id}
+	       	and A.status = 'active' and A.id != #{record_id} order by VISIT_DATE desc, VISIT_NO
     </select>
     
     <!-- 医生查询自己的病人，按名字查询病人信息 -->
@@ -86,22 +142,18 @@
     
     <select id="searchPatientOperationRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A left join patient B on B.patient_number = A.PATIENT_ID 
-	       	where (A.OPERATOR=#{doctor_code} or A.FIRST_ASSISTANT=#{doctor_name} 
-	       	or A.SECOND_ASSISTANT=#{doctor_name} or A.ANESTHESIA_DOCTOR=#{doctor_name})
-	       	 and A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
+	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
 	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
-    <select id="searchPatientResidentRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    <select id="searchPatientResidentRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
         select A.* from resident_record A
-	       	where (A.doctor_id=#{doctor_code} or A.DIRECTOR=#{doctor_name} or A.ATTENDING_DOCTOR=#{doctor_name}) 
-	       	and A.hospital_id=#{hospital_id} and A.NAME = #{patient_name}
+	       	where A.hospital_id=#{hospital_id} and A.NAME = #{patient_name}
 	       	and A.status = 'active' order by ADMISSION_DATE desc
     </select>
 
-        
     <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO" parameterType="java.util.Map">
-		select A.record_asset_type_id as asset_type_id, B.*, C.name as asset_type_name from hospital_record_asset A 
+		select A.record_asset_type_id as asset_type_id, B.*, C.name as asset_type_name, A.created_time from hospital_record_asset A 
 		join asset B on B.id = A.asset_id 
 		join record_asset_type C on C.id = A.record_asset_type_id
 		where A.hospital_record_id=#{record_id} and A.status = 'active' order by A.created_time desc
@@ -125,9 +177,9 @@
     
  	<select id="getPatients" parameterType="java.util.List" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO">
         select * from patient where patient_number in
-        <foreach collection="patientIdList" item="employeeId" index="index"
+        <foreach collection="patientIdList" item="id" index="index"
             open="(" close=")" separator=",">
-            #{employeeId}
+            #{id}
         </foreach>
     </select>
 </mapper>

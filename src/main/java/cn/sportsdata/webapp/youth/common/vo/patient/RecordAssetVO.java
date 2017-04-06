@@ -17,7 +17,14 @@ public class RecordAssetVO implements Serializable {
 	private String creatorId;
 	private String assetTypeId;
 	private String assetTypeName;
+	private Date createdTime;
 	
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 	public String getId() {
 		return id;
 	}

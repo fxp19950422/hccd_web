@@ -1,6 +1,7 @@
 package cn.sportsdata.webapp.youth.service.patient.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
@@ -41,6 +43,7 @@ public class PatientServiceImpl implements PatientService {
 			List<String> patientIdList = new ArrayList<String>();
 			for (MedicalRecordVO record:medicalRecordList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("medical");
 				patientRecord.setMedicalRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientIdList.add(record.getPatientId());
@@ -57,6 +60,7 @@ public class PatientServiceImpl implements PatientService {
 					}
 				} else {
 					PatientRecordBO patientRecord = new PatientRecordBO();
+					patientRecord.setRecordType("medical");
 					patientRecord.setRegistRecord(record);
 					patientIdList.add(record.getPatientId());
 					patientRecord.setPatientId(record.getPatientId());
@@ -126,10 +130,11 @@ public class PatientServiceImpl implements PatientService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> operationList = patientDAO.getCurMyOperationRecordList(hospitalId, doctorName, doctorCode);
+			List<OpertaionRecord> operationList = patientDAO.getMyOperationRecordList(hospitalId, doctorName, doctorCode);
 			List<String> patientIdList = new ArrayList<String>();
 			for (OpertaionRecord operationRecord:operationList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(operationRecord);
 				patientRecord.setPatientId(operationRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -140,6 +145,7 @@ public class PatientServiceImpl implements PatientService {
 			List<OpertaionRecord> firstAssitList = patientDAO.getFirstAsistOperationRecordList(hospitalId, doctorName, year, month, day);
 			for (OpertaionRecord operationRecord:firstAssitList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(operationRecord);
 				patientRecord.setPatientId(operationRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -150,6 +156,7 @@ public class PatientServiceImpl implements PatientService {
 			List<OpertaionRecord> secondAssitList = patientDAO.getSecondAsistOperationRecordList(hospitalId, doctorName, year, month, day);
 			for (OpertaionRecord operationRecord:secondAssitList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(operationRecord);
 				patientRecord.setPatientId(operationRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -160,6 +167,7 @@ public class PatientServiceImpl implements PatientService {
 			List<OpertaionRecord> anesthesiaList = patientDAO.getAnesthesiaOperationRecordList(hospitalId, doctorName, year, month, day);
 			for (OpertaionRecord operationRecord:anesthesiaList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(operationRecord);
 				patientRecord.setPatientId(operationRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -213,11 +221,35 @@ public class PatientServiceImpl implements PatientService {
 			long year, long month, long day) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
+			/*
+			List<PatientRecordBO> chargedPatientList = new ArrayList<PatientRecordBO>();
+			List<PatientInHospital> patientInHosList = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode);
 			List<ResidentRecord> chargedList = patientDAO.getCurMyResidentRecordList(hospitalId, doctorCode);
+			List<String> patientIdList = new ArrayList<String>();
+			for (PatientInHospital patientInhospital:patientInHosList) {
+				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("resident");
+				patientRecord.setPatientInhospital(patientInhospital);
+				patientRecord.setPatientId(patientInhospital.getPatientId());
+				patientIdList.add(patientRecord.getPatientId());
+				
+				for (ResidentRecord residentRecord:chargedList) {
+					if (residentRecord.getPatientId().equalsIgnoreCase(patientInhospital.getPatientId())) {
+						patientRecord.setResidentRecord(residentRecord);
+						chargedList.remove(residentRecord);
+						break;
+					}
+				}
+				
+				chargedPatientList.add(patientRecord);
+			}
+			*/
+			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
+			List<ResidentRecord> chargedList = patientDAO.getMyResidentRecordList(hospitalId, doctorCode, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
 			for (ResidentRecord residentRecord:chargedList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("resident");
 				patientRecord.setResidentRecord(residentRecord);
 				patientRecord.setPatientId(residentRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -228,6 +260,7 @@ public class PatientServiceImpl implements PatientService {
 			List<ResidentRecord> directList = patientDAO.getDirectResidentRecordList(hospitalId, doctorName, year, month, day);
 			for (ResidentRecord residentRecord:directList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("resident");
 				patientRecord.setResidentRecord(residentRecord);
 				patientRecord.setPatientId(residentRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -238,6 +271,7 @@ public class PatientServiceImpl implements PatientService {
 			List<ResidentRecord> attendingList = patientDAO.getAttendingResidentRecordList(hospitalId, doctorName, year, month, day);
 			for (ResidentRecord residentRecord:attendingList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("resident");
 				patientRecord.setResidentRecord(residentRecord);
 				patientRecord.setPatientId(residentRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
@@ -289,6 +323,7 @@ public class PatientServiceImpl implements PatientService {
 			List<MedicalRecordVO> list = patientDAO.searchPatientMedicalRecord(hospitalId, patientName, doctorName, doctorCode);
 			for (MedicalRecordVO record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("medical");
 				patientRecord.setMedicalRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientRecordList.add(patientRecord);
@@ -299,6 +334,7 @@ public class PatientServiceImpl implements PatientService {
 			List<OpertaionRecord> list = patientDAO.searchPatientOperationRecord(hospitalId, patientName, doctorName, doctorCode);
 			for (OpertaionRecord record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientRecordList.add(patientRecord);
@@ -309,6 +345,7 @@ public class PatientServiceImpl implements PatientService {
 			List<ResidentRecord> list = patientDAO.searchPatientResidentRecord(hospitalId, patientName, doctorName, doctorCode);
 			for (ResidentRecord record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("resident");
 				patientRecord.setResidentRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientRecordList.add(patientRecord);
@@ -330,5 +367,111 @@ public class PatientServiceImpl implements PatientService {
 		}
 		
 		return patientRecordList;
+	}
+
+	@Override
+	public List<PatientRecordBO> getPatientRecords(String recordId, String patientName, String patientId, String hospitalId) {
+		try {
+			List<MedicalRecordVO> medicalRecords = patientDAO.getPatientMedicalRecords(recordId, patientName, patientId, hospitalId);
+			List<ResidentRecord> residentRecords = patientDAO.getPatientResidentRecords(recordId, patientName, patientId, hospitalId);
+			List<OpertaionRecord> operationRecords = patientDAO.getPatientOperationRecords(recordId, patientName, patientId, hospitalId);
+			List<PatientRecordBO> resultList = new ArrayList<PatientRecordBO>();
+			for (MedicalRecordVO record:medicalRecords) {
+				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("medical");
+				patientRecord.setMedicalRecord(record);
+				patientRecord.setPatientId(record.getPatientId());
+				resultList.add(patientRecord);
+			}
+			for (ResidentRecord record:residentRecords) {
+				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("resident");
+				patientRecord.setResidentRecord(record);
+				patientRecord.setPatientId(record.getPatientId());
+				resultList.add(patientRecord);
+			}
+			for (OpertaionRecord record:operationRecords) {
+				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("operation");
+				patientRecord.setOperationRecord(record);
+				patientRecord.setPatientId(record.getPatientId());
+				resultList.add(patientRecord);
+			}
+			return resultList;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, String doctorName,
+			long year, long month, long day) {
+		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
+		try {
+			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode);
+			List<String> patientIdList = new ArrayList<String>();
+			for (PatientInHospital record:list) {
+				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("medical");
+				patientRecord.setPatientInhospital(record);
+				patientRecord.setPatientId(record.getPatientId());
+				patientIdList.add(record.getPatientId());
+				patientRecordList.add(patientRecord);
+			}
+			
+			if (!patientIdList.isEmpty()) {
+				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
+				for (PatientRecordBO patientRecord:patientRecordList) {
+					for (PatientInfoVO patient:patientList) {
+						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
+							patientRecord.setPatient(patient);
+							break;
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return patientRecordList;
+	}
+
+	@Override
+	public ResidentRecord getResidentRecordByOperation(String recordId, String hospitalId, String patientId) {
+		try {
+			OpertaionRecord operation = patientDAO.getOperationById(recordId);
+			List<ResidentRecord> list = patientDAO.getResidentRecordByOperation(hospitalId, patientId, operation.getOperatingDate());
+			if (list != null && !list.isEmpty()) {
+				return list.get(0);
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public List<OpertaionRecord> getOperationsByResident(String recordId, String hospitalId, String patientId) {
+		try {
+			ResidentRecord record = patientDAO.getResidentById(recordId);
+			Date dischargeDate = record.getDischargeDateTime();
+			if (dischargeDate == null) {
+				dischargeDate = record.getAdmissionDate();
+				dischargeDate.setYear(2030);
+			}
+			List<OpertaionRecord> list = patientDAO.getOperationsByResident(hospitalId, 
+					patientId, record.getAdmissionDate(), record.getDischargeDateTime());
+			return list;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
