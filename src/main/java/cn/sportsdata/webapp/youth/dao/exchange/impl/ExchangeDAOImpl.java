@@ -7,8 +7,8 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.dao.BaseDAO;
 import cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO;
 
@@ -29,14 +29,15 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 	}
 
 	@Override
-	public List<DoctorVO> getDoctors(String departmentId) {
+	public List<DoctorVO> getDoctors(String departmentId,boolean isAll) {
 		Map map = new HashMap();
 		map.put("departmentId", departmentId);
+		map.put("isAll", isAll);
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_DOCTORS), map);
 	}
 
 	@Override
-	public List<MedicalRecordVO> getMedicalRecordByPatientIds(List<String> uids) {
+	public List<ResidentRecord> getMedicalRecordByPatientIds(List<String> uids) {
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_MEDICAL_RECORDS_BY_PATIENT_IDS), uids);
 	}
 	

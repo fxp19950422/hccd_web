@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 
@@ -23,12 +23,12 @@ public class ExchangeServiceImpl implements ExchangeService {
 		return exchangeDao.getPatients(departmentId, doctorCode);
 	}
 	@Override
-	public List<DoctorVO> getDoctors(String departmentId) {
+	public List<DoctorVO> getDoctors(String departmentId, boolean isAll) {
 		// TODO Auto-generated method stub
-		return exchangeDao.getDoctors(departmentId);
+		return exchangeDao.getDoctors(departmentId, isAll);
 	}
 	@Override
-	public List<MedicalRecordVO> getMedicalRecordByPatientIds(List<String> uids) {
+	public List<ResidentRecord> getMedicalRecordByPatientIds(List<String> uids) {
 		// TODO Auto-generated method stub
 		return exchangeDao.getMedicalRecordByPatientIds(uids);
 	}
