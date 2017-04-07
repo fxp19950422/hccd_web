@@ -82,8 +82,8 @@
 					<c:forEach items="${operation.assetTypes}" var="assetType">
 						<sa-panel title="${assetType.assetTypeName}">
 							<c:forEach items="${assetType.assets}" var="asset">
-								<div style="width:50%;float:left" >
-									<img class="starterAvator" sytle="height:100px" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+								<div style="width:100%;float:left" >
+									<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 								</div>	
 							</c:forEach>
 						</sa-panel>
