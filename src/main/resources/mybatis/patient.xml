@@ -152,8 +152,10 @@
 	       	and A.status = 'active' order by ADMISSION_DATE desc
     </select>
 
+
     <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO" parameterType="java.util.Map">
-		select A.record_asset_type_id as asset_type_id, B.*, C.name as asset_type_name, A.created_time from hospital_record_asset A 
+		select A.id as id, A.record_asset_type_id as asset_type_id, B.id as asset_id, 
+		C.name as asset_type_name, A.created_time from hospital_record_asset A 
 		join asset B on B.id = A.asset_id 
 		join record_asset_type C on C.id = A.record_asset_type_id
 		where A.hospital_record_id=#{record_id} and A.status = 'active' order by A.created_time desc
