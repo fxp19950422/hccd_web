@@ -131,6 +131,10 @@
     max-height: 8000px;
     transition: all 1s ease 0s;
 }
+
+.flexslider .slides > li {
+height:auto !important;
+}
 -->
 </style>
 <script type="text/javascript">
@@ -139,12 +143,10 @@
 	});
 	
 	function initEvent() {
-		 $('.flexslider').flexslider({
-			    animation: "slide",
-			    pausePlay: true,
-			    smoothHeight:true
-		 });
-		 
-		 
+			 $('.flexslider').flexslider({
+				    animation: "slide",
+				    pausePlay: true,
+				    smoothHeight:true
+			 }); 
 	}
 </script>
