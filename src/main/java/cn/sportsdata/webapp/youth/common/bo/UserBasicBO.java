@@ -19,9 +19,15 @@ public class UserBasicBO implements Serializable {
 	private String role;
 	private String userName;
 	private String password;
+	private String doctorCode;
 	
 	
-	
+	public String getDoctorCode() {
+		return doctorCode;
+	}
+	public void setDoctorCode(String doctorCode) {
+		this.doctorCode = doctorCode;
+	}
 	public String getUserName() {
 		return userName;
 	}

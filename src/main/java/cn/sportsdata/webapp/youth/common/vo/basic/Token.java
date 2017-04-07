@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.sportsdata.webapp.youth.common.bo.UserPrivilege;
 import cn.sportsdata.webapp.youth.common.utils.SpringUtils;
+import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.privilege.PrivilegeVO;
@@ -12,7 +13,16 @@ import cn.sportsdata.webapp.youth.service.privilege.PrivilegeService;
 public class Token {
 	private LoginVO loginVO;
 	private OrgVO orgVO;
-//	private UserPrivilege userPrivilegeMgr;
+	private DepartmentVO departmentVO;
+public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
+
+	//	private UserPrivilege userPrivilegeMgr;
 //	private static PrivilegeService privilegeService = SpringUtils.getBean(PrivilegeService.class);
 	private UserPrivilege userPrivilegeMgr;
 	private static PrivilegeService privilegeService = SpringUtils.getBean(PrivilegeService.class);
@@ -56,4 +66,5 @@ public class Token {
 		this.orgVO = orgVO;
 	}
 
+	
 }

@@ -32,6 +32,11 @@ public class ExchangeServiceImpl implements ExchangeService {
 		// TODO Auto-generated method stub
 		return exchangeDao.getMedicalRecordByPatientIds(uids);
 	}
+	@Override
+	public List<DoctorVO> getAllDoctors(String departmentId) {
+		// TODO Auto-generated method stub
+		return exchangeDao.getAllDoctors(departmentId);
+	}
 	
 	
 }

@@ -30,12 +30,21 @@ public class UserVO extends BaseVO implements Serializable {
 	private String nationality;
 	private String idCard;
 	private String birthPlace;
+	private String doctorCode;
 	
+	
+
 	private String userName;
 	
 	private String password;
 	
-	
+	public String getDoctorCode() {
+		return doctorCode;
+	}
+
+	public void setDoctorCode(String doctorCode) {
+		this.doctorCode = doctorCode;
+	}
 	
 	public String getUserName() {
 		return userName;

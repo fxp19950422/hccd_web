@@ -14,12 +14,21 @@ public class DepartmentDAOImpl extends BaseDAO implements DepartmentDAO{
 
 	private static final String GET_DEPARTMENT_LIST = "getDepartmentList";
 	
+	private static final String GET_DEPARTMENT_FROM_LOGIN_ID = "getDepartmentFromLoginId";
+	
 	@Override
 	public List<DepartmentVO> getDepartmentList(String hospitalId, String departmentId) {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("hospitalId", hospitalId);
 		param.put("departmentId", departmentId);
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_DEPARTMENT_LIST),param);
+	}
+
+	@Override
+	public DepartmentVO getDepartmentFromLoginId(String userId) {
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("userId", userId);
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(GET_DEPARTMENT_FROM_LOGIN_ID),param);
 	}
 	
 

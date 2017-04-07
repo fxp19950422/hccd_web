@@ -36,10 +36,12 @@ import cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO;
 import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.role.RoleVO;
 import cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.department.DepartmentService;
+import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.service.user.UserService;
 import cn.sportsdata.webapp.youth.service.utraining.UtrainingService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
@@ -61,6 +63,9 @@ public class UserController extends BaseController {
 	
 	@Autowired
 	private DepartmentService departService;
+	
+	@Autowired
+	private ExchangeService exchangeService;
 	
 	@Autowired
 	private UtrainingService trainingService;
@@ -268,11 +273,16 @@ public class UserController extends BaseController {
 			model.addAttribute("isCreate", false);
 			
 			UserVO coach = userService.getUserByID(userID);
+			coach.setPassword(coach.getPassword().substring(START_POSITION_OF_SUB_PASSWORD, END_POSITION_OF_SUB_PASSWORD));
 			model.addAttribute("coach", coach);
 		}
+		
+		
+		DepartmentVO department = this.getCurrentDepartment(request);
+		List<DoctorVO> doctors = exchangeService.getAllDoctors(department.getDepartmentCode());
 		List<DepartmentVO> departmentList = departService.getDepartmentList("1", "100001");
 		model.addAttribute("departments", departmentList);
-		
+		model.addAttribute("doctors", doctors);
 		return "user/coach_edit";
 	}
 	

@@ -13,5 +13,7 @@ public interface ExchangeService {
 	
 	public List<ResidentRecord> getMedicalRecordByPatientIds(List<String> uids);
 	
+	List<DoctorVO> getAllDoctors(String departmentId);
+	
 	
 }
