@@ -293,6 +293,15 @@ public class HealthDataFileUploadController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/deleteHospitalAsset", method = RequestMethod.POST)
+	public Response deleteHospitalAsset(HttpServletRequest request,  String hostpitalAssetId) {
+		
+		boolean isSuccess = assetservice.deleteHospitalAsset(hostpitalAssetId);
+		
+		return Response.toSussess(null);
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/fileDelete", method = RequestMethod.POST)
 	public Response deleteFile(HttpServletRequest request, @RequestParam String fileNameArray) {
 		JSONArray files = JSONArray.fromObject(fileNameArray);

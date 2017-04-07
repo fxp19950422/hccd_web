@@ -48,4 +48,12 @@ public class AssetServiceImpl implements AssetService {
 		// TODO Auto-generated method stub
 		return assetDAO.replaceAsset(assetVo);
 	}
+
+	@Override
+	public boolean deleteHospitalAsset(String hostpitalAssetId) {
+		// TODO Auto-generated method stub
+		return assetDAO.deleteHospitalAsset(hostpitalAssetId);
+	}
+
+
 }

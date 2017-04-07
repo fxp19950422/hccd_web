@@ -8,4 +8,5 @@ public interface AssetService {
 	boolean updateAsset(AssetVO assetVo);
 	boolean deleteAsset(AssetVO assetVo);
 	boolean replaceAsset(AssetVO assetVo);
+	boolean deleteHospitalAsset(String hostpitalAssetId);
 }

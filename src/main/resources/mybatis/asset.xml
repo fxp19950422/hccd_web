@@ -58,4 +58,7 @@
 		current_timestamp(), current_timestamp(), #{record_type}, #{record_asset_type_id}, 'active')
 	</insert>
 
+	<update id="deleteHospitalRecordAsset" parameterType="java.util.Map">
+		update hospital_record_asset A set A.status='deleted' where A.id = #{hospital_asset_id}
+	</update>
 </mapper>
