@@ -14,8 +14,10 @@ import cn.sportsdata.webapp.youth.common.vo.UserHospitalDepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO;
 import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.match.PlayerMatchStatisticsVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskEvaluationVO;
 import cn.sportsdata.webapp.youth.dao.asset.AssetDAO;
+import cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO;
 import cn.sportsdata.webapp.youth.dao.user.UserDAO;
 import cn.sportsdata.webapp.youth.dao.utraining.UtrainingDAO;
 import cn.sportsdata.webapp.youth.service.user.UserService;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private AssetDAO assetDao;
+	
+	@Autowired
+	private ExchangeDAO exchangeDao;
 	
 	@Override
 	public UserVO getUserByID(String userId) {
@@ -62,8 +67,12 @@ public class UserServiceImpl implements UserService {
 			String assetID = assetDao.insertAsset(asset);
 			basicData.setAvatarId(assetID);
 		}
+		DoctorVO doctor = exchangeDao.getDoctorById(basicData.getDoctorCode());
+		 
+		basicData.setName(doctor.getName());
 		boolean isStep1Success = userDAO.handleUser(basicData, userExtList, true);
 		if(!isStep1Success)  return false;
+		exchangeDao.updateDoctorLoginId( doctor.getUserId(), basicData.getId());
 		
 		uorVO.setUserId(basicData.getId());
 		boolean b = userDAO.insertUserOrgRole(uorVO);
@@ -89,6 +98,12 @@ public class UserServiceImpl implements UserService {
 			 }
 
 		 }
+		 DoctorVO doctor = exchangeDao.getDoctorById(basicData.getDoctorCode());
+		 
+		 basicData.setName(doctor.getName());
+		 
+		 exchangeDao.updateDoctorLoginId( doctor.getUserId(), basicData.getId());
+		 
 		 userDAO.handleUser(basicData, userExtList, false);
 		 
 //		 UserOrgRoleVO uorVO = new UserOrgRoleVO();

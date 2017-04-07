@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO">
 	 <resultMap id="UserResultMap" type="cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO">
-        <result column="id" property="id" jdbcType="CHAR"/>
-        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="CHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="hospitalId" property="hospitalId" jdbcType="VARCHAR"/>
         <result column="departmentId" property="departmentId" jdbcType="VARCHAR"/>
         <result column="education" property="education" jdbcType="VARCHAR"/>
@@ -86,26 +86,39 @@
         </collection>
     </resultMap> 
 	
+	 <select id="getDoctorById" resultMap="UserResultMap" parameterType="java.util.Map">
+    	select * from doctor where doctor.user_id=#{userId}
+    </select>
+    
+     <update id="updateDoctorLoginId"  parameterType="java.util.Map">
+    	update doctor set login_user_id = #{loginId} where doctor.user_id=#{doctorId}
+    </update>
+	
     <select id="getDoctors" resultMap="UserResultMap" parameterType="java.util.Map">
     	select B.*,D.id as patient_id,D.hospital_id as patient_hospital_id, D.patient_number, D.real_name, D.phone_number, D.gender, D .birthday, D.identity_card, D.address, C.visit_id,C.admission_date_time from 
-    	(SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code
-			where A.department_code = '100001')
+    	(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
+			where A.department_code = #{departmentId}
+			union 
+		SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code where A.department_code = #{departmentId}
+			)
 		 A inner join doctor B on (A.department_code = B.department_id) 
 		  inner join patient_in_hospital C on (B.user_id = C.doctor_id
-		  <if test="isAll == false">
-		 	<![CDATA[and C.admission_date_time < CURDATE() 
-		 	and C.admission_date_time > date_sub(curdate(),interval 1 day)]]> 
-		 </if>
-		  
 		  ) 
 		 left outer join patient D on (C.patient_id = D.patient_number)
+		 
+		 <if test="isAll == false">
+		 	<![CDATA[inner join operation E on C.patient_id = E.patient_id and E.operating_date < CURDATE() 
+		 	and E.operating_date > date_sub(curdate(),interval 1 day)]]> 
+		 </if>
 		 
     </select>
     
     <select id="getPatients" resultMap="UserResultMap" parameterType="java.util.Map">
     	select B.*,D.id as patient_id,D.hospital_id as patient_hospital_id, D.patient_number, D.real_name, D.phone_number, D.gender, D .birthday, D.identity_card, D.address from 
-    	(SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code
-			where A.department_code = '100001')
+    	(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
+			where A.department_code = #{departmentId}
+		union 
+		SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code where A.department_code = #{departmentId})
 		 A inner join doctor B on (A.department_code = B.department_id) 
 		 left outer join patient_in_hospital C on (B.user_id = C.doctor_id) 
 		 left outer join patient D on (C.patient_id = D.patient_number)

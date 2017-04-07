@@ -14,4 +14,8 @@
     <select id="getDepartmentList" resultMap="departmentResultMap" parameterType="java.lang.String">
         SELECT * FROM medical.department where parent_department_id = #{departmentId} or department_code = #{departmentId} 
     </select>
+    
+    <select id="getDepartmentFromLoginId" resultMap="departmentResultMap" parameterType="java.lang.String">
+        SELECT B.* FROM doctor A, medical.department B where A.department_id = B.department_code and A.login_user_id =#{userId}
+    </select>
 </mapper>

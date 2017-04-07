@@ -16,4 +16,10 @@ public interface ExchangeDAO {
 	List<DoctorVO> getDoctors(@Param("department_id") String departmentId, boolean isAll);
 	
 	List<ResidentRecord> getMedicalRecordByPatientIds(List<String> uids);
+	
+	List<DoctorVO> getAllDoctors(String departmentId); 
+	
+	DoctorVO getDoctorById(String doctorId);
+	
+	boolean updateDoctorLoginId(String doctorId, String loginId);
 }

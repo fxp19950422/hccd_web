@@ -41,7 +41,7 @@
 								<div class="row">
 									<div class="col-md-1 inputLabel">姓名</div>
 									<div class="col-md-3">
-										<c:choose>
+										<%-- <c:choose>
 											<c:when test="${isCreate}">
 											<div class="form-group">
 												<input type="text" class="profileEditInput form-control" data-bv-field="name"  id="name" name="name" />
@@ -52,7 +52,15 @@
 												<input type="text" class="profileEditInput form-control" id="name" data-bv-field="name"  name="name" value="${ coach.name }" />
 											</div>
 											</c:otherwise>
-										</c:choose>
+										</c:choose> --%>
+										
+										<select class="profileEditInput" id="selDoctor" name="doctorCode" style="width: 100%;">
+											<c:forEach items="${doctors}" var="doctor">
+												
+												<option value="${doctor.userId}" <c:if test="${coach.doctorCode eq doctor.userId}">selected</c:if>>${doctor.name}</option>
+											</c:forEach>
+										</select>
+										
 									</div>
 									<div class="col-md-1 inputLabel">职务</div>
 									<div class="col-md-3">
@@ -112,13 +120,13 @@
 											</c:otherwise>
 										</c:choose>
 									</div>
-									<div class="col-md-1 inputLabel">部门</div>
+									<div class="col-md-1 inputLabel"></div>
 									<div class="col-md-3">
-										<select class="profileEditInput" id="selDepartment" name="departmentCode" style="width: 100%;">
+										<%-- <select class="profileEditInput" id="selDepartment" name="departmentCode" style="width: 100%;">
 											<c:forEach items="${departments}" var="department">
 												<option value="${department.departmentCode}">${department.name}</option>
 											</c:forEach>
-										</select>
+										</select> --%>
 									</div>
 								</div>
 								
@@ -226,6 +234,10 @@
 				minimumResultsForSearch : Infinity
 			});
 		});
+		
+		$("#selDoctor").select2({
+			
+		});
 	}
 	
 	function initEvent() {
@@ -276,7 +288,7 @@
 			var converted_ext_data = [];
 			var converted_base_data = {'id': '<%=userId%>', 'avatar': $('#user_avatar').data('encryptFileName') || ''};
 			var need_convert_multi_fields = [];
-			var basic_user_fields = ['name', 'birthday', 'userName', 'password', 'birthPlace', 'idCard', 'email', 'phone', 'address', 'role']; 
+			var basic_user_fields = ['doctorCode', 'birthday', 'userName', 'password', 'birthPlace', 'idCard', 'email', 'phone', 'address', 'role']; 
 			var date_fields = ['birthday'];
 			
 			$.each(form_data, function(index, item) {
@@ -381,8 +393,8 @@
 	                    },
 	                    stringLength: {
 	                   	   min:6,
-	                        max: 30,
-	                        message: '请输入6-30字符以内的密码。'
+	                        max: 180,
+	                        message: '请输入6-180字符以内的密码。'
 	                    },
 	                  /*   identical: {
 	                        field: 'repassword',

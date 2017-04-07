@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +25,7 @@ import cn.sportsdata.webapp.youth.common.constants.Constants;
 import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.CookieUtils;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
+import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
@@ -33,6 +34,7 @@ import cn.sportsdata.webapp.youth.common.vo.basic.Token;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.account.ActionAuthenticationService;
+import cn.sportsdata.webapp.youth.service.department.DepartmentService;
 import cn.sportsdata.webapp.youth.web.utils.EmailUtils;
 @Controller
 @RequestMapping("/auth")
@@ -41,6 +43,9 @@ public class AuthController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private DepartmentService departmentService;
 	
 	@Autowired
 	private ActionAuthenticationService actionAuthenticationService;
@@ -133,10 +138,15 @@ public class AuthController {
 		}
 		
 		List<OrgVO> orgs = accountService.getOrgsByAccount(obj.getLoginVO().getId());
+		
 		if (orgs.size() <= 0){
-			return "auth/login";
-		} else if (orgs.size() == 1) {
+			orgs.add(new OrgVO());
+		}  
+		
+		if (orgs.size() == 1) {
 			obj.setOrgVO(orgs.get(0));
+			DepartmentVO department = departmentService.getDepartmentFromLoginId(obj.getLoginVO().getId());
+			obj.setDepartmentVO(department);
 			obj.initPrivilege();
 			CookieUtils.setHagkCookie(response, obj);
 			return "redirect:/system/system/index";
@@ -162,6 +172,9 @@ public class AuthController {
 			return "auth/login";
 		}
 		OrgVO org = accountService.getOrgsByAccountOrgID(obj.getLoginVO().getId(), orgID);
+		
+		DepartmentVO department = departmentService.getDepartmentFromLoginId(obj.getLoginVO().getId());
+		obj.setDepartmentVO(department);
 		obj.setOrgVO(org);
 		obj.initPrivilege();
 		CookieUtils.setHagkCookie(response, obj);

@@ -13,6 +13,7 @@
         <result column="gender" property="gender" jdbcType="VARCHAR"/>
         <result column="role" property="role" jdbcType="VARCHAR"/>
         <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="doctorId" property="doctorCode" jdbcType="VARCHAR"/>
         
        <!--  <collection property="userExtInfoList" ofType="cn.sportsdata.webapp.youth.common.vo.UserExtVO">
         	<result column="item_name" property="itemName" jdbcType="VARCHAR"/>
@@ -63,8 +64,8 @@
     </select>
     
     <select id="getUserByID" resultMap="UserResultMap" parameterType="java.lang.String">
-        select A.id, A.user_name, A.password, A.display_name as name, A.phone, A.email, A.birthday, A.address, A.avatar, A.id_card 
-        from user A ,
+        select A.id, A.user_name, A.password, A.display_name as name, A.phone, A.email, A.birthday, A.address, A.avatar, A.id_card, C.user_id as doctorId
+        from user A left outer join doctor C on  (A.id = C.login_user_id),
         user_role_mapping B 
         where A.id = B.user_id and B.hospital_id = '1' and A.id= #{userId} and A.status = 'active'
     </select>

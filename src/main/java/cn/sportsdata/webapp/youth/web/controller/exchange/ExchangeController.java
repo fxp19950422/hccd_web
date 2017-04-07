@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -33,7 +34,8 @@ public class ExchangeController extends BaseController{
 	@RequestMapping(value = "/exchange_list",method = RequestMethod.GET)
     public String toTestManagePage(HttpServletRequest request, Model model, @RequestParam(required=false,defaultValue = "0") int radio) {
 		
-		List<DoctorVO> doctors = exchangeService.getDoctors("100001", radio == 1);
+		DepartmentVO department = this.getCurrentDepartment(request);
+		List<DoctorVO> doctors = exchangeService.getDoctors(department.getDepartmentCode(), radio == 1);
 		
 		
 		model.addAttribute("doctors", doctors);

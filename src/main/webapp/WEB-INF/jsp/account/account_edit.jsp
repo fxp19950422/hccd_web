@@ -46,7 +46,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="col-md-3 inputLabel">
-								<span >姓名</span>
+								<span>姓名</span>
 							</div>
 							<div class="col-md-9">
 								<div class="form-group ">

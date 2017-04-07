@@ -31,6 +31,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return departDAO.getDepartmentList(hospitalId, departmentId);
 	}
 
+	@Override
+	public DepartmentVO getDepartmentFromLoginId(String userId) {
+		// TODO Auto-generated method stub
+		return departDAO.getDepartmentFromLoginId(userId);
+	}
+
 	
 	
 }
