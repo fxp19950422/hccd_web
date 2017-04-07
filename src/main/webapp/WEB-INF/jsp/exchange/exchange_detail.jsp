@@ -37,7 +37,7 @@
 						
 						<div class="row profileDetailItemLine">
 							<div class="col-md-1 profileDetailItemTitle">收治医师</div>
-							<div class="col-md-3 profileDetailItemContent">夜间波</div>
+							<div class="col-md-3 profileDetailItemContent">${record.doctorName}</div>
 							<div class="col-md-1 profileDetailItemTitle">住院号</div>
 							<div class="col-md-3 profileDetailItemContent">${record.admissionNumber}</div>
 							<div class="col-md-1 profileDetailItemTitle"></div>
@@ -84,7 +84,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">术者</div>
-							<div class="col-md-11 profileDetailItemContent">${operation.operator}</div>
+							<div class="col-md-11 profileDetailItemContent">${operation.operatorName}</div>
 						</div>
 					</sa-panel>
 					<c:forEach items="${operation.assetTypes}" var="assetType">

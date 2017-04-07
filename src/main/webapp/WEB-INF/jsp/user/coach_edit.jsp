@@ -102,12 +102,12 @@
 										<c:choose>
 											<c:when test="${isCreate}">
 											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="password" data-bv-field="password" name="password" />
+												<input type="password" class="profileEditInput form-control" id="password" data-bv-field="password" name="password" />
 											</div>
 											</c:when>
 											<c:otherwise>
 											<div class="form-group">
-												<input type="text" class="profileEditInput form-control" id="password" data-bv-field="password" name="password" value="${ coach.password }" />
+												<input type="password" class="profileEditInput form-control" id="password" data-bv-field="password" name="password" value="${ coach.password }" />
 											</div>
 											</c:otherwise>
 										</c:choose>

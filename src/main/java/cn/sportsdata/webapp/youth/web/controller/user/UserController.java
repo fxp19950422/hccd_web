@@ -161,6 +161,7 @@ public class UserController extends BaseController {
 				if (!StringUtils.isEmpty(user.getAvatar())){
 					asset = getAssetVOFromUser(user.getAvatar(), null, request);
 				}
+				user.setPassword(SecurityUtils.generateHashPassword(user.getPassword()));
 				
 				isSuccess = userService.createUser(user, userBO.getUserItemList(), uorVO , asset);
 				
@@ -174,6 +175,12 @@ public class UserController extends BaseController {
 				long roleId = userService.getRoleIdByRoleName(userBO.getBasicData().getRole());
 				if(roleId == 0) {
 					return Response.toFailure(500, "error user basic data");
+				}
+				
+				if (!user.getPassword().equals(originalUser.getPassword().substring(START_POSITION_OF_SUB_PASSWORD, END_POSITION_OF_SUB_PASSWORD))) {
+					user.setPassword(SecurityUtils.generateHashPassword(user.getPassword()));
+				} else {
+					user.setPassword(originalUser.getPassword());
 				}
 				
 				UserOrgRoleVO uorVO = new UserOrgRoleVO();
