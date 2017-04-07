@@ -414,7 +414,7 @@ public class PatientServiceImpl implements PatientService {
 			List<String> patientIdList = new ArrayList<String>();
 			for (PatientInHospital record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("medical");
+				patientRecord.setRecordType("patientInhospital");
 				patientRecord.setPatientInhospital(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientIdList.add(record.getPatientId());
