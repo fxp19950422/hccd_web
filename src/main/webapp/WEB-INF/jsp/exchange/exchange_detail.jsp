@@ -83,7 +83,7 @@
 						<sa-panel title="${assetType.assetTypeName}">
 							<c:forEach items="${assetType.assets}" var="asset">
 								<div style="width:50%;float:left" >
-									<img class="starterAvator"    src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+									<img class="starterAvator" sytle="height:100px" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 								</div>	
 							</c:forEach>
 						</sa-panel>

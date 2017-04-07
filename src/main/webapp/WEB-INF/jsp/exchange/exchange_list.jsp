@@ -20,7 +20,7 @@
 
 <section class="top_control_area">
 	<label > 
-		<input type="radio" name="testViewMode" class="model" value="0" <c:if test="${radio == 0}">checked</c:if>> 查看昨天入院病人
+		<input type="radio" name="testViewMode" class="model" value="0" <c:if test="${radio == 0}">checked</c:if>> 查看昨天手术病人
 	</label>
 	<label > 
 		<input type="radio" name="testViewMode" class="model" value="1" <c:if test="${radio == 1}">checked</c:if>> 查看所有住院病人

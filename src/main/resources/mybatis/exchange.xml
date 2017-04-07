@@ -131,7 +131,7 @@
             "${item}"
          </foreach>
 		)  group by patient_id ) B on (A.patient_id = B.patient_id and A.ADMISSION_DATE = B.visit_date) left outer join doctor H on (A.doctor_id = H.user_id)
-		 left outer join operation D on (B.patient_id = D.patient_id  <![CDATA[  and D.OPERATING_DATE > A.ADMISSION_DATE   ]]>  ) left outer join doctor G on (D.doctor_id = G.user_id) left outer join hospital_record_asset E on (D.id = E.hospital_record_id and E.record_type='operation') left outer join record_asset_type F on (E.record_asset_type_id = F.id)
+		 left outer join operation D on (B.patient_id = D.patient_id  <![CDATA[  and D.OPERATING_DATE > A.ADMISSION_DATE   ]]>  ) left outer join doctor G on (D.doctor_id = G.user_id) left outer join hospital_record_asset E on (D.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id)
     </select>
    
 </mapper>
