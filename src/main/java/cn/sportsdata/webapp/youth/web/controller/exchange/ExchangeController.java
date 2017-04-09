@@ -66,7 +66,7 @@ public class ExchangeController extends BaseController{
 	
 	@RequestMapping(value = "/exchange_detail",method = RequestMethod.GET)
     public String toExchangeDetail(HttpServletRequest request, Model model,  String obj) {
-		
+		System.out.println(obj);
 		JSONObject jsonObj = JSONObject.fromObject(obj);
 		JSONArray array = jsonObj.getJSONArray("uids");
 		List<String> uids = new ArrayList<String>();
@@ -76,6 +76,7 @@ public class ExchangeController extends BaseController{
 		}
 		
 		List<ResidentRecord> medicalRecords = exchangeService.getMedicalRecordByPatientIds(uids);
+		System.out.println("the size of the records is " + medicalRecords.size());
 		if (medicalRecords.size() <= 0){
 			for (int i =0; i < 10; i++){
 				ResidentRecord vo = new ResidentRecord();
