@@ -152,7 +152,7 @@
 						alert("打开创建球员页面失败");
 					}
 				}); --%>
-				window.open("<%=serverUrl%>exchange/exchange_detail?obj=" + JSON.stringify(postdata));
+				window.open("<%=serverUrl%>exchange/exchange_detail?obj=" + Base64.encode(JSON.stringify(postdata)));
 				
 			}
 		});

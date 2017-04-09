@@ -40,7 +40,7 @@
 <link href="<%=basePath%>resources/css/flexslider.css" rel="stylesheet">
 <!-- END FOOTER -->
 	<script src="<%=basePath%>resources/js/jquery-1.11.1.min.js" type="text/javascript"></script>
-	
+	<script src="<%=basePath%>resources/js/base64.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/sweet-alert.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/jquery.toolbar.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/bootstrap.js" type="text/javascript"></script>
