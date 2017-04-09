@@ -321,7 +321,8 @@ height:auto !important;
 	function initEvent() {
 		Reveal.initialize({
 			autoSlide: 5000,
-			mouseWheel: true
+			mouseWheel: true,
+			loop: true
 		  });
 			/*  $('.flexslider').flexslider({
 				    animation: "slide",
