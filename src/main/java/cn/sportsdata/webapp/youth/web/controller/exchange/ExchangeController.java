@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
@@ -68,7 +67,7 @@ public class ExchangeController extends BaseController{
 //	}
 	
 	@RequestMapping(value = "/exchange_detail",method = RequestMethod.GET)
-    public String toExchangeDetail(HttpServletRequest request, Model model,  String obj) throws Base64DecodingException {
+    public String toExchangeDetail(HttpServletRequest request, Model model,  String obj) throws Exception {
 		
 		
 		String document = new String(Base64.decode(obj));
