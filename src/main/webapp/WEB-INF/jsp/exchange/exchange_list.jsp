@@ -139,7 +139,7 @@
 				var postdata = {};
 				postdata.uids=uidArray;
 				
-				sa.ajax({
+				<%-- sa.ajax({
 					type : "post",
 					url : "<%=serverUrl%>exchange/exchange_detail",
 					data: JSON.stringify(postdata),
@@ -151,7 +151,9 @@
 					error: function() {
 						alert("打开创建球员页面失败");
 					}
-				});
+				}); --%>
+				window.open("<%=serverUrl%>exchange/exchange_detail?obj=" + JSON.stringify(postdata));
+				
 			}
 		});
 	}

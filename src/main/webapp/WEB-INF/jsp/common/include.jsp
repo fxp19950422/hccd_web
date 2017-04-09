@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="<%=basePath%>resources/css/jquery.fileupload.css" />
 <link rel="stylesheet" href="<%=basePath%>resources/css/jquery.crop.css" />
 <link rel="stylesheet" href="<%=basePath%>resources/css/simple-slider.css" />
+
 <link rel="stylesheet" type="text/css" href="<%=basePath%>resources/css/style.css">
 <link rel="shortcut icon" href="<%=basePath%>resources/media/image/favicon.ico" />
 <link href="<%=basePath%>resources/css/bootstrap-table.min.css" rel="stylesheet">
@@ -39,6 +40,7 @@
 <link href="<%=basePath%>resources/css/flexslider.css" rel="stylesheet">
 <!-- END FOOTER -->
 	<script src="<%=basePath%>resources/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+	
 	<script src="<%=basePath%>resources/js/sweet-alert.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/jquery.toolbar.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/bootstrap.js" type="text/javascript"></script>

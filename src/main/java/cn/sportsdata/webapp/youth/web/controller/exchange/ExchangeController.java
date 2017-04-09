@@ -9,14 +9,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
@@ -43,10 +41,34 @@ public class ExchangeController extends BaseController{
 		return "exchange/exchange_list";
 	}
 
-	@RequestMapping(value = "/exchange_detail",method = RequestMethod.POST)
-    public String toExchangeDetail(HttpServletRequest request, Model model,  @RequestBody JSONObject obj) {
+//	@RequestMapping(value = "/exchange_detail",method = RequestMethod.POST)
+//    public String toExchangeDetail(HttpServletRequest request, Model model,  @RequestBody JSONObject obj) {
+//		
+//		JSONArray array = obj.getJSONArray("uids");
+//		List<String> uids = new ArrayList<String>();
+//		
+//		for (int i = 0; i < array.size();i++){
+//			uids.add(array.getJSONObject(i).getString("uid"));
+//		}
+//		
+//		List<ResidentRecord> medicalRecords = exchangeService.getMedicalRecordByPatientIds(uids);
+//		if (medicalRecords.size() <= 0){
+//			for (int i =0; i < 10; i++){
+//				ResidentRecord vo = new ResidentRecord();
+//				vo.setName("王爷"+i);
+//				medicalRecords.add(vo);
+//			}
+//		}
+//		
+//		model.addAttribute("medicalrecords", medicalRecords);
+//		return "exchange/exchange_detail";
+//	}
+	
+	@RequestMapping(value = "/exchange_detail",method = RequestMethod.GET)
+    public String toExchangeDetail(HttpServletRequest request, Model model,  String obj) {
 		
-		JSONArray array = obj.getJSONArray("uids");
+		JSONObject jsonObj = JSONObject.fromObject(obj);
+		JSONArray array = jsonObj.getJSONArray("uids");
 		List<String> uids = new ArrayList<String>();
 		
 		for (int i = 0; i < array.size();i++){
