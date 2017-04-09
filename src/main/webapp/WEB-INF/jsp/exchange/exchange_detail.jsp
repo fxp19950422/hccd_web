@@ -180,6 +180,7 @@
 						
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
+								<H3>${assetType.assetTypeName}</H3>
 								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 							</section>
 						</c:forEach>
@@ -319,6 +320,8 @@ height:auto !important;
 	
 	function initEvent() {
 		Reveal.initialize({
+			autoSlide: 5000,
+			mouseWheel: true
 		  });
 			/*  $('.flexslider').flexslider({
 				    animation: "slide",
