@@ -26,6 +26,7 @@ public class OpertaionRecord implements Serializable {
 	private String steps;
 	private String drainage;
 	private String finishedCondition;
+	private String doctorId;
 	
 	
     /**
@@ -963,5 +964,13 @@ public class OpertaionRecord implements Serializable {
 
 	public void setFinishedCondition(String finishedCondition) {
 		this.finishedCondition = finishedCondition;
+	}
+
+	public String getDoctorId() {
+		return doctorId;
+	}
+
+	public void setDoctorId(String doctorId) {
+		this.doctorId = doctorId;
 	}
 }

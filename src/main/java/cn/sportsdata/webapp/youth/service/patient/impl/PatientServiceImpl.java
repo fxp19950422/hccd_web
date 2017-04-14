@@ -502,7 +502,6 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public MedicalRecordVO getMedicalRecordVOById(String id) {
-		// TODO Auto-generated method stub
 		return patientDAO.getMedicalRecordById(id);
 	}
 }

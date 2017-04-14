@@ -150,7 +150,7 @@ public class PatientAPIController {
 	public ResponseEntity<Response> updateRecords(HttpServletRequest request, HttpServletResponse resp, 
 			String recordId, String recordType, @RequestBody PatientRecordBO record) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
+		recordType = record.getRecordType();
 		if (recordType.equalsIgnoreCase("medical")) {
 			MedicalRecordVO medicalRecordVO = patientService
 					.getMedicalRecordVOById(record.getMedicalRecord().getId());
