@@ -95,6 +95,10 @@
     	select A.* from resident_record A where A.id = #{id}
     </select>
     
+    <select id="getMedicalRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
+    	select A.* from medical_record A where A.id = #{id}
+    </select>
+    
     <select id="getResidentRecordByOperation" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     	select A.* from resident_record A 
 	       	where A.patient_id=#{patient_id} and A.hospital_id=#{hospital_id} and A.status = 'active' 
@@ -184,4 +188,55 @@
             #{id}
         </foreach>
     </select>
+    
+<!--     <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO"> -->
+<!--     	update medical_record set   -->
+<!--     	yb_icd_name = #{}, -->
+<!-- 		visit_no = #{}, -->
+<!-- 		visit_date = #{}, -->
+<!-- 		user_id = #{}, -->
+<!-- 		treatment = #{}, -->
+<!-- 		tooth = #{}, -->
+<!-- 		suggestion = #{}, -->
+<!-- 		status = #{}, -->
+<!-- 		physician_secondary_number = #{}, -->
+<!-- 		physician_primary_number = #{}, -->
+<!-- 		physician_name = #{}, -->
+<!-- 		physician_email = #{}, -->
+<!-- 		ordinal = #{}, -->
+<!-- 		operation_record = #{}, -->
+<!-- 		menses4 = #{}, -->
+<!-- 		menses3 = #{}, -->
+<!-- 		menses2 = #{}, -->
+<!-- 		menses = #{}, -->
+<!-- 		memo = #{}, -->
+<!-- 		medical_record = #{}, -->
+<!-- 		medical_condition = #{}, -->
+<!-- 		med_history = #{}, -->
+<!-- 		maternity = #{}, -->
+<!-- 		marrital = #{}, -->
+<!-- 		insurance_provider_number = #{}, -->
+<!-- 		insurance_provider_name = #{}, -->
+<!-- 		insurance_policy_number = #{}, -->
+<!-- 		insurance_policy_holder = #{}, -->
+<!-- 		individual = #{}, -->
+<!-- 		illness_desc = #{}, -->
+<!-- 		illness_date = #{}, -->
+<!-- 		hospital_id = #{}, -->
+<!-- 		family_ill = #{}, -->
+<!-- 		doctor_no = #{}, -->
+<!-- 		doctor = #{}, -->
+<!-- 		diag_yb_db = #{}, -->
+<!-- 		diag_desc = #{}, -->
+<!-- 		created_time = #{}, -->
+<!-- 		cfz_flag = #{}, -->
+<!-- 		cdiag = #{}, -->
+<!-- 		body_exam = #{}, -->
+<!-- 		assistant_exam = #{}, -->
+<!-- 		anamnesis = #{}, -->
+<!-- 		allergies = #{}, -->
+<!-- 		advice = #{}, -->
+<!--     	where id = #{id} -->
+<!--     </update> -->
+    
 </mapper>

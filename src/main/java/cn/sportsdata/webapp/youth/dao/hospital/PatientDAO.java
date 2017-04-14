@@ -94,4 +94,9 @@ public interface PatientDAO {
 	List<OpertaionRecord> getPatientOperationRecords(
 			@Param("record_id") String recordId, @Param("patient_name") String patientName, 
 			@Param("patient_id") String patientId, @Param("hospital_id") String hospitalId);
+	
+	
+	int updateMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
+	int updateOperationRecord(@Param("opertaionRecord") OpertaionRecord opertaionRecord);
+	int updateResidentRecord(@Param("residentRecord") ResidentRecord residentRecord);
 }
