@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +24,10 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 
@@ -139,6 +142,27 @@ public class PatientAPIController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("recordTypeList", array);
 		result.put("doctor", doctor);
+		
+		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/updateRecords",  method = RequestMethod.POST)
+	public ResponseEntity<Response> updateRecords(HttpServletRequest request, HttpServletResponse resp, 
+			String recordId, String recordType,@RequestBody PatientRecordBO record) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		if (recordType.equalsIgnoreCase("medical")) {
+			MedicalRecordVO medicalRecordVO = new MedicalRecordVO();
+			int count = patientService.updateMedicalRecord(medicalRecordVO);
+		}
+		if (recordType.equalsIgnoreCase("operation")) {
+			OpertaionRecord opertaionRecord = new OpertaionRecord();
+			int count = patientService.updateOperationRecord(opertaionRecord);
+		}
+		if (recordType.equalsIgnoreCase("resident")) {
+			ResidentRecord residentRecord = new ResidentRecord();
+			int count = patientService.updateResidentRecord(residentRecord);
+		}
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}

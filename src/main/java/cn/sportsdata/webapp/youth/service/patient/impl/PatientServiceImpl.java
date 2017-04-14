@@ -474,4 +474,19 @@ public class PatientServiceImpl implements PatientService {
 
 		return null;
 	}
+
+	@Override
+	public int updateMedicalRecord(MedicalRecordVO medicalRecordVO) {
+		return patientDAO.updateMedicalRecord(medicalRecordVO);
+	}
+
+	@Override
+	public int updateOperationRecord(OpertaionRecord opertaionRecord) {
+		return patientDAO.updateOperationRecord(opertaionRecord);
+	}
+
+	@Override
+	public int updateResidentRecord(ResidentRecord residentRecord) {
+		return patientDAO.updateResidentRecord(residentRecord);
+	}
 }
