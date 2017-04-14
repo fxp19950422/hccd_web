@@ -54,7 +54,7 @@ public class PatientServiceImpl implements PatientService {
 				String patientId = record.getPatientId();
 				if (patientIdList.contains(patientId)) {
 					for (PatientRecordBO patientRecord:patientRecordList) {
-						if (patientRecord.getMedicalRecord().getPatientId().equalsIgnoreCase(patientId)) {
+						if (patientRecord.getMedicalRecord()!=null&&patientRecord.getMedicalRecord().getPatientId().equalsIgnoreCase(patientId)) {
 							patientRecord.setRegistRecord(record);
 						}
 					}
