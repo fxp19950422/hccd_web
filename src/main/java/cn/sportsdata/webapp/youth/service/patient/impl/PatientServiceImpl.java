@@ -489,4 +489,20 @@ public class PatientServiceImpl implements PatientService {
 	public int updateResidentRecord(ResidentRecord residentRecord) {
 		return patientDAO.updateResidentRecord(residentRecord);
 	}
+
+	@Override
+	public OpertaionRecord getOperationRecordById(String id) {
+		return patientDAO.getOperationById(id);
+	}
+
+	@Override
+	public ResidentRecord getResidentRecordById(String id) {
+		return patientDAO.getResidentById(id);
+	}
+
+	@Override
+	public MedicalRecordVO getMedicalRecordVOById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -99,4 +99,6 @@ public interface PatientDAO {
 	int updateMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
 	int updateOperationRecord(@Param("opertaionRecord") OpertaionRecord opertaionRecord);
 	int updateResidentRecord(@Param("residentRecord") ResidentRecord residentRecord);
+	
+	MedicalRecordVO getMedicalRecordById(@Param("id") String recordId);
 }
