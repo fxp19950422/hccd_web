@@ -199,7 +199,7 @@ public class HealthDataFileUploadController extends BaseController {
 		    
 		    for(MultipartFile uploadFile:uploadedFile){
 		    	
-		    	assetTypeId = uploadFile.getName();
+		    	assetTypeId = uploadFile.getOriginalFilename();
 		    	
 		    	String originFileName = uploadFile.getOriginalFilename();
 

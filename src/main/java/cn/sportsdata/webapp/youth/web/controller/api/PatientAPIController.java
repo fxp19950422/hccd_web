@@ -110,8 +110,8 @@ public class PatientAPIController {
 		//operation
 		List<String> SectionNameList2 = Arrays.asList(new String[] {"术前诊断", "术后诊断", "手术名称", "手术经过", "手术体位",
 				"手术切口","探查所见", "手术步骤", "引流物", "术毕病人情况"});
-		List<String> sectionList2 = Arrays.asList(new String[] {"before_diagnosis", "after_diagnosis",
-				"operationDesc","process", "posture", "incision","exploratory", "steps", "drainage", "finished_condition"});
+		List<String> sectionList2 = Arrays.asList(new String[] {"beforeDiagnosis", "afterDiagnosis",
+				"operationDescription","process", "posture", "incision","exploratory", "steps", "drainage", "finishedCondition"});
 		HospitalRecordTypeVO record2 = new HospitalRecordTypeVO();
 		record2.setRecordType("operation");
 		record2.setRecordTypeName("手术记录");
@@ -123,8 +123,8 @@ public class PatientAPIController {
 		//resident
 		List<String> SectionNameList3 = Arrays.asList(new String[] {"入院情况", "入院中医诊断", "入院西医诊断", 
 				"诊疗经过", "出院中医诊断","出院西医诊断", "出院情况", "出院医嘱"});
-		List<String> sectionList3 = Arrays.asList(new String[] {"in_state", "in_chi_diagnosis",
-				"in_wes_diagnosis","process", "out_chi_diagnosis", "out_wes_diagnosis", "out_state", "suggestion"});
+		List<String> sectionList3 = Arrays.asList(new String[] {"inState", "inChiDiagnosis",
+				"inWesDiagnosis","process", "outChiDiagnosis", "outWesDiagnosis", "outState", "suggestion"});
 		HospitalRecordTypeVO record3 = new HospitalRecordTypeVO();
 		record3.setRecordType("resident");
 		record3.setRecordTypeName("出院记录");
@@ -148,9 +148,9 @@ public class PatientAPIController {
 	
 	@RequestMapping(value = "/updateRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> updateRecords(HttpServletRequest request, HttpServletResponse resp, 
-			String recordId, String recordType, @RequestBody PatientRecordBO record) {
+			String recordType, @RequestBody PatientRecordBO record) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
+		recordType = record.getRecordType();
 		if (recordType.equalsIgnoreCase("medical")) {
 			MedicalRecordVO medicalRecordVO = patientService
 					.getMedicalRecordVOById(record.getMedicalRecord().getId());

@@ -238,7 +238,7 @@
     	where id = #{id}
     </update>
     
-     <update id="updateOpertaionRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
+     <update id="updateOperationRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
      	update operation set  
      	wound_grade = #{woundGrade},
 		visit_id = #{visitId},
