@@ -194,7 +194,7 @@
     	yb_icd_name = #{medicalRecordVO.ybIcdName},
 		visit_no = #{medicalRecordVO.visitNo},
 		visit_date = #{medicalRecordVO.visitDate},
-		user_id = #{medicalRecordVO.userId},
+		patient_id = #{medicalRecordVO.patientId},
 		treatment = #{medicalRecordVO.treatment},
 		tooth = #{medicalRecordVO.tooth},
 		suggestion = #{medicalRecordVO.suggestion},

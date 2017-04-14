@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import cn.sportsdata.webapp.youth.common.vo.AssetTypeVO;
-import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 
 public class OpertaionRecord implements Serializable {
 	public static final long OPERATOR_DOCTOR = 0x0001;
