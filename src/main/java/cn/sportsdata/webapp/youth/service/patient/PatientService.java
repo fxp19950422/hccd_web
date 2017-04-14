@@ -37,4 +37,8 @@ public interface PatientService {
 	int updateMedicalRecord(MedicalRecordVO medicalRecordVO);
 	int updateOperationRecord(OpertaionRecord opertaionRecord);
 	int updateResidentRecord(ResidentRecord residentRecord);
+	
+	OpertaionRecord getOperationRecordById(String id);
+	ResidentRecord getResidentRecordById(String id);
+	MedicalRecordVO getMedicalRecordVOById(String id);
 }

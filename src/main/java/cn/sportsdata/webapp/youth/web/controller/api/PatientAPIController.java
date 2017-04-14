@@ -148,22 +148,50 @@ public class PatientAPIController {
 	
 	@RequestMapping(value = "/updateRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> updateRecords(HttpServletRequest request, HttpServletResponse resp, 
-			String recordId, String recordType,@RequestBody PatientRecordBO record) {
+			String recordId, String recordType, @RequestBody PatientRecordBO record) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+
 		if (recordType.equalsIgnoreCase("medical")) {
-			MedicalRecordVO medicalRecordVO = new MedicalRecordVO();
+			MedicalRecordVO medicalRecordVO = patientService
+					.getMedicalRecordVOById(record.getMedicalRecord().getId());
+			medicalRecordVO.setIllnessDesc(record.getMedicalRecord().getIllnessDesc());
+			medicalRecordVO.setMedHistory(record.getMedicalRecord().getMedHistory());
+			medicalRecordVO.setBodyExam(record.getMedicalRecord().getBodyExam());
+			medicalRecordVO.setDiagDesc(record.getMedicalRecord().getDiagDesc());
+			medicalRecordVO.setTreatment(record.getMedicalRecord().getTreatment());
+			medicalRecordVO.setSuggestion(record.getMedicalRecord().getSuggestion());
 			int count = patientService.updateMedicalRecord(medicalRecordVO);
 		}
 		if (recordType.equalsIgnoreCase("operation")) {
-			OpertaionRecord opertaionRecord = new OpertaionRecord();
+			OpertaionRecord opertaionRecord = patientService
+					.getOperationRecordById(record.getOperationRecord().getId());
+			opertaionRecord.setBeforeDiagnosis(record.getOperationRecord().getBeforeDiagnosis());
+			opertaionRecord.setAfterDiagnosis(record.getOperationRecord().getAfterDiagnosis());
+			opertaionRecord.setOperationDesc(record.getOperationRecord().getOperationDesc());
+			opertaionRecord.setProcess(record.getOperationRecord().getProcess());
+			opertaionRecord.setPosture(record.getOperationRecord().getPosture());
+			opertaionRecord.setIncision(record.getOperationRecord().getIncision());
+			opertaionRecord.setExploratory(record.getOperationRecord().getExploratory());
+			opertaionRecord.setSteps(record.getOperationRecord().getSteps());
+			opertaionRecord.setDrainage(record.getOperationRecord().getDrainage());
+			opertaionRecord.setFinishedCondition(record.getOperationRecord().getFinishedCondition());
+
 			int count = patientService.updateOperationRecord(opertaionRecord);
 		}
 		if (recordType.equalsIgnoreCase("resident")) {
-			ResidentRecord residentRecord = new ResidentRecord();
+			ResidentRecord residentRecord = patientService.getResidentRecordById(record.getResidentRecord().getId());
+			residentRecord.setInState(record.getResidentRecord().getInState());
+			residentRecord.setInChiDiagnosis(record.getResidentRecord().getInChiDiagnosis());
+			residentRecord.setInWesDiagnosis(record.getResidentRecord().getInWesDiagnosis());
+			residentRecord.setProcess(record.getResidentRecord().getProcess());
+			residentRecord.setOutChiDiagnosis(record.getResidentRecord().getOutChiDiagnosis());
+			residentRecord.setOutWesDiagnosis(record.getResidentRecord().getOutWesDiagnosis());
+			residentRecord.setOutState(record.getResidentRecord().getOutState());
+			residentRecord.setSuggestion(record.getResidentRecord().getSuggestion());
+
 			int count = patientService.updateResidentRecord(residentRecord);
 		}
-		
+
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}
 }

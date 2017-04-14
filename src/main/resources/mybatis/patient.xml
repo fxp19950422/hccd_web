@@ -189,54 +189,137 @@
         </foreach>
     </select>
     
-<!--     <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO"> -->
-<!--     	update medical_record set   -->
-<!--     	yb_icd_name = #{}, -->
-<!-- 		visit_no = #{}, -->
-<!-- 		visit_date = #{}, -->
-<!-- 		user_id = #{}, -->
-<!-- 		treatment = #{}, -->
-<!-- 		tooth = #{}, -->
-<!-- 		suggestion = #{}, -->
-<!-- 		status = #{}, -->
-<!-- 		physician_secondary_number = #{}, -->
-<!-- 		physician_primary_number = #{}, -->
-<!-- 		physician_name = #{}, -->
-<!-- 		physician_email = #{}, -->
-<!-- 		ordinal = #{}, -->
-<!-- 		operation_record = #{}, -->
-<!-- 		menses4 = #{}, -->
-<!-- 		menses3 = #{}, -->
-<!-- 		menses2 = #{}, -->
-<!-- 		menses = #{}, -->
-<!-- 		memo = #{}, -->
-<!-- 		medical_record = #{}, -->
-<!-- 		medical_condition = #{}, -->
-<!-- 		med_history = #{}, -->
-<!-- 		maternity = #{}, -->
-<!-- 		marrital = #{}, -->
-<!-- 		insurance_provider_number = #{}, -->
-<!-- 		insurance_provider_name = #{}, -->
-<!-- 		insurance_policy_number = #{}, -->
-<!-- 		insurance_policy_holder = #{}, -->
-<!-- 		individual = #{}, -->
-<!-- 		illness_desc = #{}, -->
-<!-- 		illness_date = #{}, -->
-<!-- 		hospital_id = #{}, -->
-<!-- 		family_ill = #{}, -->
-<!-- 		doctor_no = #{}, -->
-<!-- 		doctor = #{}, -->
-<!-- 		diag_yb_db = #{}, -->
-<!-- 		diag_desc = #{}, -->
-<!-- 		created_time = #{}, -->
-<!-- 		cfz_flag = #{}, -->
-<!-- 		cdiag = #{}, -->
-<!-- 		body_exam = #{}, -->
-<!-- 		assistant_exam = #{}, -->
-<!-- 		anamnesis = #{}, -->
-<!-- 		allergies = #{}, -->
-<!-- 		advice = #{}, -->
-<!--     	where id = #{id} -->
-<!--     </update> -->
+    <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
+    	update medical_record set  
+    	yb_icd_name = #{ybIcdName},
+		visit_no = #{visitNo},
+		visit_date = #{visitDate},
+		user_id = #{userId},
+		treatment = #{treatment},
+		tooth = #{tooth},
+		suggestion = #{suggestion},
+		status = #{status},
+		physician_secondary_number = #{physicianSecondaryNumber},
+		physician_primary_number = #{physicianPrimaryNumber},
+		physician_name = #{physicianName},
+		physician_email = #{physicianEmail},
+		ordinal = #ordinal},
+		operation_record = #{operationRecord},
+		menses4 = #{menses4},
+		menses3 = #{menses3},
+		menses2 = #{menses2},
+		menses = #{menses},
+		memo = #{memo},
+		medical_record = #{medicalRecord},
+		medical_condition = #{medicalCondition},
+		med_history = #{medHistory},
+		maternity = #{maternity},
+		marrital = #{marrital},
+		insurance_provider_number = #{insuranceProviderNumber},
+		insurance_provider_name = #{insuranceProviderName},
+		insurance_policy_number = #{insurancePolicyNumber},
+		insurance_policy_holder = #{insurancePolicyHolder},
+		individual = #{individual},
+		illness_desc = #{illnessDesc},
+		illness_date = #{illnessDate},
+		hospital_id = #{hospitalId},
+		family_ill = #{familyIll},
+		doctor_no = #{doctorNo},
+		doctor = #{doctor},
+		diag_yb_db = #{diagYbDb},
+		diag_desc = #{diagDesc},
+		cfz_flag = #{cfzFlag},
+		cdiag = #{cdiag},
+		body_exam = #{bodyExam},
+		assistant_exam = #{assistantExam},
+		anamnesis = #{anamnesis},
+		allergies = #{allergies},
+		advice = #{advice}
+    	where id = #{id}
+    </update>
+    
+     <update id="updateOpertaionRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
+     	update operation set  
+     	wound_grade = #{woundGrade},
+		visit_id = #{visitId},
+		status = #{status},
+		second_assistant = #{secondAssistant},
+		patient_id = #{patientId},
+		optype_primary = #{optypePrimary},
+		operator = #{operator},
+		operation_stop_date = #{operationStopDate},
+		operation_start_date = #{operationStartDate},
+		operation_scale = #{operationScale},
+		operation_nurse = #{operationNurse},
+		operation_no = #{operationNo},
+		operation_emer_indicator = #{operationEmerIndicator},
+		operation_desc = #{operationDescription},
+		operation_code = #{operationCode},
+		operating_end_date = #{operatingEndDate},
+		operating_date = #{operatingDate},
+		op_primary = #{opPrimary},
+		if_gck = #{ifGck},
+		hospital_id = #{hospitalId},
+		heal = #{heal},
+		first_assistant = #{firstAssistant},
+		doctor_id = #{doctorId},
+		before_oper = #{beforeOper},
+		anesthesia_doctor = #{anesthesiaDoctor},
+		anaesthesia_method = #{anaesthesiaMethod},
+		before_diagnosis = #{beforeDiagnosis},
+		after_diagnosis = #{afterDiagnosis},
+		operationDesc = #{operationDesc},
+		process = #{process},
+		posture = #{posture},
+		incision = #{incision},
+		exploratory = #{exploratory},
+		steps = #{steps},
+		drainage = #{drainage},
+		finished_condition = #{finishedCondition}
+     	where id = #{id}
+     	
+     </update>
+     
+     <update id="updateResidentRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord">
+     	update resident_record set  
+		hospital_id = #{hospitalId},
+		patient_id = #{patientId},
+		doctor_id = #{doctorId},
+		create_time = #{createTime},
+		last_update = #{lastUpdate},
+		status = #{status},
+		start_time = #{startTime},
+		end_time = #{endTime},
+		department_id = #{departmentId},
+		name = #{name},
+		admission_number = #{admissionNumber},
+		gender = #{gender},
+		age = #{age},
+		fee_type = #{feeType},
+		patients_section_code = #{patientsSectionCode},
+		discharge_date_time = #{dischargeDateTime},
+		in_out_status = #{inOutStatus},
+		hospital_beds = #{hospitalBeds},
+		admission_date = #{admissionDate},
+		section_date = #{sectionDate},
+		diagnose = #{diagnose},
+		nurse_level = #{nurseLevel},
+		critical_level = #{criticalLevel},
+		doctor_in_charge = #{doctorInCharge},
+		resident_id = #{residentId},
+		director = #{director},
+		attending_doctor = #{attendingDoctor},
+		update_date = #{updateDate},
+		in_state = #{inState},
+		in_chi_diagnosis = #{inChiDiagnosis},
+		in_wes_diagnosis = #{inWesDiagnosis},
+		process = #{process},
+		out_chi_diagnosis = #{outChiDiagnosis},
+		out_wes_diagnosis = #{outWesDiagnosis},
+		out_state = #{outState},
+		suggestion = #{suggestion}
+     	where id = #{id}
+     	
+     </update>
     
 </mapper>
