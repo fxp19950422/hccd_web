@@ -199,11 +199,11 @@
 		tooth = #{medicalRecordVO.tooth},
 		suggestion = #{medicalRecordVO.suggestion},
 		status = #{medicalRecordVO.status},
-		physician_secondary_number = #{medicalRecordVO.physicianSecondaryNumber},
-		physician_primary_number = #{medicalRecordVO.physicianPrimaryNumber},
-		physician_name = #{medicalRecordVO.physicianName},
-		physician_email = #{medicalRecordVO.physicianEmail},
-		ordinal = #ordinal},
+<!-- 		physician_secondary_number = #{medicalRecordVO.physicianSecondaryNumber}, -->
+<!-- 		physician_primary_number = #{medicalRecordVO.physicianPrimaryNumber}, -->
+<!-- 		physician_name = #{medicalRecordVO.physicianName}, -->
+<!-- 		physician_email = #{medicalRecordVO.physicianEmail}, -->
+		ordinal = #{medicalRecordVO.ordinal},
 		operation_record = #{medicalRecordVO.operationRecord},
 		menses4 = #{medicalRecordVO.menses4},
 		menses3 = #{medicalRecordVO.menses3},
@@ -211,14 +211,14 @@
 		menses = #{medicalRecordVO.menses},
 		memo = #{medicalRecordVO.memo},
 		medical_record = #{medicalRecordVO.medicalRecord},
-		medical_condition = #{medicalRecordVO.medicalCondition},
+<!-- 		medical_condition = #{medicalRecordVO.medicalCondition}, -->
 		med_history = #{medicalRecordVO.medHistory},
 		maternity = #{medicalRecordVO.maternity},
 		marrital = #{medicalRecordVO.marrital},
-		insurance_provider_number = #{medicalRecordVO.insuranceProviderNumber},
-		insurance_provider_name = #{medicalRecordVO.insuranceProviderName},
-		insurance_policy_number = #{medicalRecordVO.insurancePolicyNumber},
-		insurance_policy_holder = #{medicalRecordVO.insurancePolicyHolder},
+<!-- 		insurance_provider_number = #{medicalRecordVO.insuranceProviderNumber}, -->
+<!-- 		insurance_provider_name = #{medicalRecordVO.insuranceProviderName}, -->
+<!-- 		insurance_policy_number = #{medicalRecordVO.insurancePolicyNumber}, -->
+<!-- 		insurance_policy_holder = #{medicalRecordVO.insurancePolicyHolder}, -->
 		individual = #{medicalRecordVO.individual},
 		illness_desc = #{medicalRecordVO.illnessDesc},
 		illness_date = #{medicalRecordVO.illnessDate},
@@ -233,7 +233,7 @@
 		body_exam = #{medicalRecordVO.bodyExam},
 		assistant_exam = #{medicalRecordVO.assistantExam},
 		anamnesis = #{medicalRecordVO.anamnesis},
-		allergies = #{medicalRecordVO.allergies},
+<!-- 		allergies = #{medicalRecordVO.allergies}, -->
 		advice = #{medicalRecordVO.advice}
     	where id = #{medicalRecordVO.id}
     </update>
