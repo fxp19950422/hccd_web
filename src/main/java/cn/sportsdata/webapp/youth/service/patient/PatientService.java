@@ -41,4 +41,6 @@ public interface PatientService {
 	OpertaionRecord getOperationRecordById(String id);
 	ResidentRecord getResidentRecordById(String id);
 	MedicalRecordVO getMedicalRecordVOById(String id);
+	
+	List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId);
 }

@@ -54,7 +54,12 @@
     <!-- 查询住院记录 -->
     <select id="getCurPatientsInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.* from patient_in_hospital A
-	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	where (A.doctor_id=#{doctor_code} or A.dept_code in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            ) and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' order by ADMISSION_DATE_TIME desc
     </select>
     

@@ -1,6 +1,7 @@
 package cn.sportsdata.webapp.youth.service.patient.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -410,7 +411,8 @@ public class PatientServiceImpl implements PatientService {
 			long year, long month, long day) {
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		try {
-			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode);
+			List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
+			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode, departmentIdList);
 			List<String> patientIdList = new ArrayList<String>();
 			for (PatientInHospital record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
@@ -503,5 +505,25 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public MedicalRecordVO getMedicalRecordVOById(String id) {
 		return patientDAO.getMedicalRecordById(id);
+	}
+
+	@Override
+	public List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId) {
+		if (doctorCode.equalsIgnoreCase("1701")) {
+			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317"});
+		}
+		if (doctorCode.equalsIgnoreCase("1702")) {
+			return Arrays.asList(new String[] {"0309"});
+		}
+		if (doctorCode.equalsIgnoreCase("1705")) {
+			return Arrays.asList(new String[] {"0317"});
+		}
+		if (doctorCode.equalsIgnoreCase("1703")) {
+			return Arrays.asList(new String[] {"0316"});
+		}
+		if (doctorCode.equalsIgnoreCase("1765")) {
+			return Arrays.asList(new String[] {"0321"});
+		}
+		return Arrays.asList(new String[] {"-1"});
 	}
 }

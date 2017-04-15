@@ -43,7 +43,7 @@ public interface PatientDAO {
 	//住院记录
 	ResidentRecord getResidentById(@Param("id") String recordId);
 	List<PatientInHospital> getCurPatientsInHospital(@Param("hospital_id") String hospitalId, 
-			@Param("doctor_code") String doctorCode);
+			@Param("doctor_code") String doctorCode, @Param("departmentIdList") List<String> departmentIdList);
 	//出院记录
 	List<ResidentRecord> getResidentRecordByOperation(@Param("hospital_id") String hospitalId, 
 			@Param("patient_id") String patientId, @Param("operating_date") Date operatingDate);
