@@ -476,6 +476,20 @@ public class PatientServiceImpl implements PatientService {
 
 		return null;
 	}
+	
+	@Override
+	public List<OpertaionRecord> getOperationsDuringInHospital(String recordId, String hospitalId, String patientId) {
+		try {
+			List<OpertaionRecord> list = patientDAO.getOperationsDuringInHospital(hospitalId, 
+					patientId, recordId);
+			return list;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	@Override
 	public int updateMedicalRecord(MedicalRecordVO medicalRecordVO) {

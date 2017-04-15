@@ -51,6 +51,13 @@
 	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
+    <select id="getOperationsDuringInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+        select A.* from operation A
+        	left join patient_in_hospital B on B.patient_id = A.patient_id
+	       	where A.OPERATING_DATE > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	        and A.patient_id =#{patient_id} and A.status = 'active' order by OPERATING_DATE desc
+    </select>
+    
     <!-- 查询住院记录 -->
     <select id="getCurPatientsInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.* from patient_in_hospital A

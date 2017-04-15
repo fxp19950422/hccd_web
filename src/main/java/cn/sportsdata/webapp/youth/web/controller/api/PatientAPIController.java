@@ -80,6 +80,9 @@ public class PatientAPIController {
 		if (recordType.equalsIgnoreCase("resident")) {
 			result.put("operationRecordList", patientService.getOperationsByResident(recordId, hospitalId, patientId));
 		}
+		if (recordType.equalsIgnoreCase("patientInhospital")) {
+			result.put("operationRecordList", patientService.getOperationsDuringInHospital(recordId, hospitalId, patientId));
+		}
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}
@@ -134,9 +137,14 @@ public class PatientAPIController {
 		array.add(record3);
 		
 		//patient in hospital
+		List<String> SectionNameList4 = Arrays.asList(new String[] {"入院诊断", "病人情况", "护理级别"});
+		List<String> sectionList4 = Arrays.asList(new String[] {"diagnosis", "patientCondition",
+				"nursingClass"});
 		HospitalRecordTypeVO record4 = new HospitalRecordTypeVO();
 		record4.setRecordType("patientInhospital");
 		record4.setRecordTypeName("住院患者");
+		record4.setSectionList(sectionList4);
+		record4.setSectionNameList(SectionNameList4);
 		array.add(record4);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
