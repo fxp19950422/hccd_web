@@ -1,5 +1,7 @@
 package cn.sportsdata.webapp.youth.service.patient.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -484,6 +486,15 @@ public class PatientServiceImpl implements PatientService {
 		return patientDAO.getHospitalMedicalRecordList(doctorId, startDate, endDate, name, idNumber, hospitalId, departCode);
 	}
 
+	private Date getTime(String test_time_str){
+		SimpleDateFormat sdmf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			return sdmf.parse(test_time_str);
+		} catch (ParseException e) {
+			return new Date();
+		}
+	}
+	
 	@Override
 	public MedicalRecordVO getMedicalRecordById(String recordId) {
 		// TODO Auto-generated method stub

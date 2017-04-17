@@ -37,11 +37,17 @@
     			and A.DOCTOR_NO=#{doctor_code}
     		</if>
     		<if test="name != null and name != '' ">
-    			and A.name like '${name}%'
+    			and B.real_name like '${name}%'
     		</if>
-    		<!-- <if test="idNumber != null and idNumber != '' ">
-    			and A.id like '${idNumber}%'
-    		</if> -->
+    		<if test="idNumber != null and idNumber != '' ">
+    			and B.identity_card like '${idNumber}%'
+    		</if>
+    		<if test="startDate != null and startDate != '' ">
+    			<![CDATA[ and A.VISIT_DATE >= #{startDate} ]]>
+    		</if>
+    		<if test="endDate != null and endDate != '' ">
+    			<![CDATA[ and A.VISIT_DATE <= #{endDate} ]]>
+    		</if>
 	       	order by VISIT_DATE desc, VISIT_NO
     </select>
     

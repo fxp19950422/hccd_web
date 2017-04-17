@@ -19,6 +19,7 @@
 </div> -->
 
 <div>
+<form id="player_form">
 	<div class="row">
 		<div class="col-md-1 inputLabel">姓名</div>
 		<div class="col-md-3">
@@ -46,7 +47,7 @@
 			</div>	
 			</div>
 	</div>
-	
+	</form>
 	<!-- <div class="row" style="margin-top:10px">
 			<div class="col-md-3 inputLabel"></div>
 			<div class="col-md-6 inputLabel" >
@@ -56,7 +57,7 @@
 			<div class="col-md-3"></div>
 	</div> -->
 	<div style="margin:0 auto;width:200px">
-		<button id="save_btn" class="btn btn-primary">检索</button>
+		<button id="search_btn" class="btn btn-primary">检索</button>
 		<button id="cancle_btn" class="btn btn-default">取消</button>
 	</div>
 </div>
@@ -121,8 +122,31 @@
 	}
 	
 	function initEvent() {
+		
+		$("#careTimeStart").datepicker({
+			format : "yyyy-mm-dd",
+			language : "zh-CN",
+			autoclose : true,
+			todayHighlight : true,
+			toggleActive : true,
+			zIndexOffset:1031
+		});
+		
+		$("#careTimeEnd").datepicker({
+			format : "yyyy-mm-dd",
+			language : "zh-CN",
+			autoclose : true,
+			todayHighlight : true,
+			toggleActive : true,
+			zIndexOffset:1031
+		});
+		
 		$("#table").bootstrapTable();
 		
 		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/care/medical_records?rnd=" + Math.random()});
+		
+	    $("#search_btn").click(function(){
+			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/care/medical_records?" + $("#player_form").serialize()});
+		});
 	}
 </script>
