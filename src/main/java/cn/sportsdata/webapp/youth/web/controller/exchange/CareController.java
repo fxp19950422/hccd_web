@@ -1,15 +1,27 @@
 package cn.sportsdata.webapp.youth.web.controller.exchange;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sportsdata.webapp.youth.common.utils.DateUtil;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
@@ -74,6 +87,89 @@ public class CareController extends BaseController{
 		model.addAttribute("id", id);
 		return "care/medical_record_edit";
 	}
+	
+	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)
+	public ResponseEntity<byte[]> download(HttpServletRequest request, String id, HttpServletResponse response) throws IOException{
+		
+		MedicalRecordVO record = patientService.getMedicalRecordById(id);
+
+        // 获取模板文件
+       
+        InputStream is = this.getClass().getResourceAsStream("/templates/medical_record_template.doc" );
+        ByteArrayOutputStream ostream = null;
+        try {
+//            FileInputStream in = new FileInputStream(templateFile);
+        	HWPFDocument hwpfDocument = new HWPFDocument(is);
+            // 替换读取到的 word 模板内容的指定字段
+            Map<String,String> params = new HashMap<>();
+            
+         
+            
+            params.put("${name}", record.getRealName());  
+            params.put("${gender}", "female".equalsIgnoreCase(record.getGender())?"女":"男");  
+            params.put("${age}", getAge(record.getBirthday()));
+            params.put("${visitDate}", DateUtil.date2String(record.getVisitDate(), "yyyy-MM-dd"));
+            params.put("${illnessDesc}", record.getIllnessDesc());
+            params.put("${medHistory}", record.getMedHistory());
+            params.put("${bodyExam}", record.getBodyExam());
+            params.put("${diagDesc}", record.getDiagDesc());
+            params.put("${treatment}", record.getTreatment());
+            params.put("${suggestion}", record.getSuggestion());
+            params.put("${pDate}", DateUtil.date2String(new Date(), "yyyy-MM-dd"));
+            params.put("${doctorName}", record.getName());
+            Range range = hwpfDocument.getRange();
+            for(Map.Entry<String,String> entry:params.entrySet()){
+                range.replaceText(entry.getKey(),entry.getValue());
+            }
+            // 输出 word 内容文件流，提供下载
+            ostream = new ByteArrayOutputStream();
+         
+//            OutputStream servletOS = response.getOutputStream();
+            String name = record.getRealName() + "_" + DateUtil.date2String(record.getVisitDate(), "yyyy-MM-dd") + ".doc";
+            hwpfDocument.write(ostream);
+            String dfileName = new String( name.getBytes("gbk"), "iso8859-1"); 
+           
+            HttpHeaders headers = new HttpHeaders(); headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); 
+            headers.setContentDispositionFormData("attachment", dfileName);
+//           
+            return new ResponseEntity<byte[]>(ostream.toByteArray(), headers, HttpStatus.CREATED);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+		 
+	}
+	
+	public  String getAge(Date birthDay)  {  
+		if (birthDay == null) return "未知";
+		
+        Calendar cal = Calendar.getInstance();  
+  
+        if (cal.before(birthDay)) {  
+        	 return "未知"; 
+        }  
+        int yearNow = cal.get(Calendar.YEAR);  
+        int monthNow = cal.get(Calendar.MONTH);  
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);  
+        cal.setTime(birthDay);  
+  
+        int yearBirth = cal.get(Calendar.YEAR);  
+        int monthBirth = cal.get(Calendar.MONTH);  
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);  
+  
+        int age = yearNow - yearBirth;  
+  
+        if (monthNow <= monthBirth) {  
+            if (monthNow == monthBirth) {  
+                if (dayOfMonthNow < dayOfMonthBirth) age--;  
+            }else{  
+                age--;  
+            }  
+        }  
+        return String.valueOf(age);  
+    }  
 	
 	@ResponseBody
 	@RequestMapping(value = "/save_record", method = RequestMethod.POST)

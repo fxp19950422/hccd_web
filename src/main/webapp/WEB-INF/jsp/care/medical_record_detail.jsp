@@ -14,6 +14,7 @@
 <div class="profileEditContainer">
 	<div class="coach_edit_button_area">
 		<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
+		<button id="export_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">导出病历</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>
 	<div class="clearfix"></div>
@@ -77,7 +78,9 @@ pre, code {
 		$('#cancle_btn').click(function(){
 			$('#content').loadAngular("<%=serverUrl%>care/care_list" );
 		});
-		
+		$("#export_btn").click(function(){
+			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
+		});
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",
