@@ -21,6 +21,9 @@ public interface PatientDAO {
 	List<MedicalRecordVO> getMedicalRecordList(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_code") String doctorCode, @Param("year") long year, @Param("month") long month, @Param("day") long day);
 	
+	List<MedicalRecordVO> getHospitalMedicalRecordList(@Param("doctor_code") String doctorId, 
+			@Param("startDate") String startDate, @Param("endDate") String endDate, @Param("name") String name, @Param("idNumber") String idNumber, @Param("hospital_id") String hospitalId, @Param("depart_code") String departCode);
+	
 	//手术记录
 	OpertaionRecord getOperationById(@Param("id") String recordId);
 	List<OpertaionRecord> getCurMyOperationRecordList(@Param("hospital_id") String hospitalId, 
@@ -94,4 +97,14 @@ public interface PatientDAO {
 	List<OpertaionRecord> getPatientOperationRecords(
 			@Param("record_id") String recordId, @Param("patient_name") String patientName, 
 			@Param("patient_id") String patientId, @Param("hospital_id") String hospitalId);
+	
+	MedicalRecordVO getMedicalRecordByID(
+			@Param("record_id") String recordId);
+	
+	int updateMedicalRecordById(@Param("record_id") String recordId, @Param("illness_desc") String illness_desc,
+			@Param("med_history") String med_history,
+			@Param("body_exam") String body_exam,
+			@Param("diag_desc") String diag_desc,
+			@Param("treatment") String treatment,
+			@Param("suggestion") String suggestion);
 }

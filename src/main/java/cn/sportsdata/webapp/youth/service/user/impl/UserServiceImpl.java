@@ -13,9 +13,11 @@ import cn.sportsdata.webapp.youth.common.vo.UserExtVO;
 import cn.sportsdata.webapp.youth.common.vo.UserHospitalDepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.UserOrgRoleVO;
 import cn.sportsdata.webapp.youth.common.vo.UserVO;
+import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.match.PlayerMatchStatisticsVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.utraining.UtrainingTaskEvaluationVO;
+import cn.sportsdata.webapp.youth.dao.account.AccountDao;
 import cn.sportsdata.webapp.youth.dao.asset.AssetDAO;
 import cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO;
 import cn.sportsdata.webapp.youth.dao.user.UserDAO;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private ExchangeDAO exchangeDao;
+	
+	@Autowired
+	private AccountDao accoutnDao;
 	
 	@Override
 	public UserVO getUserByID(String userId) {
@@ -67,22 +72,28 @@ public class UserServiceImpl implements UserService {
 			String assetID = assetDao.insertAsset(asset);
 			basicData.setAvatarId(assetID);
 		}
-		DoctorVO doctor = exchangeDao.getDoctorById(basicData.getDoctorCode());
-		 
-		basicData.setName(doctor.getName());
-		boolean isStep1Success = userDAO.handleUser(basicData, userExtList, true);
-		if(!isStep1Success)  return false;
-		exchangeDao.updateDoctorLoginId( doctor.getUserId(), basicData.getId());
 		
-		uorVO.setUserId(basicData.getId());
-		boolean b = userDAO.insertUserOrgRole(uorVO);
-		UserHospitalDepartmentVO uhdVO = new UserHospitalDepartmentVO();
-		uhdVO.setUserId(basicData.getId());
-		uhdVO.setHospitalId( uorVO.getHospitalId());
-		uhdVO.setDepartmentId("1");
-		userDAO.insertUserHospitalDepartment(uhdVO);
-		
-		return true;
+		AccountVO existAccount = accoutnDao.getAccountByUserName(basicData.getUserName());
+		if (existAccount == null){
+			DoctorVO doctor = exchangeDao.getDoctorById(basicData.getDoctorCode());
+			
+			basicData.setName(doctor.getName());
+			boolean isStep1Success = userDAO.handleUser(basicData, userExtList, true);
+			if(!isStep1Success)  return false;
+			exchangeDao.updateDoctorLoginId( doctor.getUserId(), basicData.getId());
+			
+			uorVO.setUserId(basicData.getId());
+			boolean b = userDAO.insertUserOrgRole(uorVO);
+			UserHospitalDepartmentVO uhdVO = new UserHospitalDepartmentVO();
+			uhdVO.setUserId(basicData.getId());
+			uhdVO.setHospitalId( uorVO.getHospitalId());
+			uhdVO.setDepartmentId("1");
+			userDAO.insertUserHospitalDepartment(uhdVO);
+			
+			return true;
+		} else {
+			throw new RuntimeException("账号冲突");
+		}
 	}
 
 	@Override
@@ -97,6 +108,13 @@ public class UserServiceImpl implements UserService {
 				 basicData.setAvatarId(avatarId);
 			 }
 
+		 }
+		
+		 List<DoctorVO> doctors = exchangeDao.getDoctorByLoginId(basicData.getId());
+		 if (doctors.size() > 0){
+			 for (int i = 0; i < doctors.size(); i++){
+				 exchangeDao.updateDoctorLoginId( doctors.get(i).getUserId(), "");
+			 }
 		 }
 		 DoctorVO doctor = exchangeDao.getDoctorById(basicData.getDoctorCode());
 		 

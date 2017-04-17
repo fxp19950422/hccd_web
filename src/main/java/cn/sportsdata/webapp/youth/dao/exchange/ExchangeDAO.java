@@ -22,4 +22,6 @@ public interface ExchangeDAO {
 	DoctorVO getDoctorById(String doctorId);
 	
 	boolean updateDoctorLoginId(String doctorId, String loginId);
+	
+	List<DoctorVO> getDoctorByLoginId(String loginId);
 }

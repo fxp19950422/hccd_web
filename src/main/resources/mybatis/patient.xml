@@ -19,6 +19,32 @@
 	       	order by VISIT_DATE desc, VISIT_NO
     </select>
     
+      <!-- 查询门诊记录 -->
+    <select id="getHospitalMedicalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
+    	select A.*, B.real_name, B.identity_card from patient B, medical_record A 
+   		<if test="depart_code != null and depart_code != '' ">
+	   		inner join doctor C on (A.doctor_no = C.user_id)
+	    	inner join (SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
+				where A.department_code = #{depart_code}
+				union 
+			SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code where A.department_code = #{depart_code}
+				) D   on (C.department_id = D.department_code)
+   		</if>
+	       	where 
+            A.patient_id = B.patient_number 
+            and A.status = 'active'
+	       	<if test="doctor_code != null and doctor_code != '' ">
+    			and A.DOCTOR_NO=#{doctor_code}
+    		</if>
+    		<if test="name != null and name != '' ">
+    			and A.name like '${name}%'
+    		</if>
+    		<!-- <if test="idNumber != null and idNumber != '' ">
+    			and A.id like '${idNumber}%'
+    		</if> -->
+	       	order by VISIT_DATE desc, VISIT_NO
+    </select>
+    
     <!-- 查询手术记录 -->
     <select id="getCurMyOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A
@@ -132,6 +158,11 @@
 	       	and A.status = 'active' and A.id != #{record_id} order by VISIT_DATE desc, VISIT_NO
     </select>
     
+    <select id="getMedicalRecordByID" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
+    	SELECT * FROM medical.medical_record A, patient B, doctor C where A.patient_id = B.patient_number
+ 		and A.doctor_no = C.user_id and A.id = #{record_id}
+    </select>
+    
     <!-- 医生查询自己的病人，按名字查询病人信息 -->
     <select id="searchPatientMedicalRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
     	select A.* from medical_record A left join patient B on B.patient_number = A.PATIENT_ID
@@ -169,6 +200,11 @@
     <insert id="insertRecordAsset" parameterType="java.util.Map">
 		insert into hospital_record_asset (id, hospital_id, hospital_record_id, asset_id, medical_data_type_id) 
 		values(uuid(),  #{hospital_id},  #{hospital_record_id},  #{asset_id},  #{medical_data_type_id})
+    </insert>
+    
+     <insert id="updateMedicalRecordById" parameterType="java.util.Map">
+		update medical_record set illness_desc=#{illness_desc}, med_history=#{med_history},body_exam=#{body_exam},diag_desc=#{diag_desc},treatment=#{treatment},
+		suggestion=#{suggestion} where id=#{record_id}
     </insert>
     
     <select id="getDoctorInfoByUsername" resultType="cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO" parameterType="java.util.Map">

@@ -23,6 +23,8 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 	
 	private static final String UPDATE_DOCTOR_LOGIN_ID = "updateDoctorLoginId";
 	
+	private static final String GET_DOCTORS_BY_LOGIN_ID = "getDoctorsByLoginId";
+	
 	@Override
 	public List<PatientVO> getPatients(String departmentId, String doctorCode) {
 		Map map = new HashMap();
@@ -66,6 +68,13 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 		map.put("doctorId", doctorId);
 		map.put("loginId", loginId);
 		return sqlSessionTemplate.update(getSqlNameSpace(UPDATE_DOCTOR_LOGIN_ID), map) > 0;
+	}
+
+	@Override
+	public List<DoctorVO> getDoctorByLoginId(String loginId) {
+		Map map = new HashMap();
+		map.put("loginId", loginId);
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_DOCTORS_BY_LOGIN_ID), map);
 	}
 	
 }

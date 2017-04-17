@@ -314,7 +314,8 @@
 				contentType: "application/json",
 				success : function(data) {
 					if(!data.status) {
-						alert("提交教练信息异常");
+						alert(JSON.stringify(data));
+						alert("提交教练信息异常,请确保用户名唯一。");
 						return;
 					}
 					

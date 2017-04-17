@@ -474,4 +474,24 @@ public class PatientServiceImpl implements PatientService {
 
 		return null;
 	}
+
+	@Override
+	public List<MedicalRecordVO> getHospitalMedicalRecordList(String doctorId, String startDate, String endDate,
+			String name, String idNumber, String hospitalId, String departCode) {
+		// TODO Auto-generated method stub
+		return patientDAO.getHospitalMedicalRecordList(doctorId, startDate, endDate, name, idNumber, hospitalId, departCode);
+	}
+
+	@Override
+	public MedicalRecordVO getMedicalRecordById(String recordId) {
+		// TODO Auto-generated method stub
+		return patientDAO.getMedicalRecordByID(recordId);
+	}
+
+	@Override
+	public int updateMedicalRecordById(String recordId, String illness_desc, String med_history, String body_exam,
+			String diag_desc, String treatment, String suggestion) {
+		// TODO Auto-generated method stub
+		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment, suggestion);
+	}
 }

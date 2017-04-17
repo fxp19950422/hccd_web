@@ -1,6 +1,5 @@
 package cn.sportsdata.webapp.youth.service.patient;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
@@ -32,4 +32,15 @@ public interface PatientService {
 	List<PatientRecordBO> getPatientRecords(String recordId, String patientName, String patientId, String hospitalId);
 	ResidentRecord getResidentRecordByOperation(String recordId, String hospitalId, String patientId);
 	List<OpertaionRecord> getOperationsByResident(String recordId, String hospitalId, String patientId);
+	
+	List<MedicalRecordVO> getHospitalMedicalRecordList(String doctorId, String startDate, String endDate, String name, String idNumber, String hospitalId, String departCode);
+	
+	MedicalRecordVO getMedicalRecordById(String recordId);
+	
+	int updateMedicalRecordById( String recordId,  String illness_desc,
+			String med_history,
+			 String body_exam,
+			 String diag_desc,
+			 String treatment,
+			 String suggestion);
 }

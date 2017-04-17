@@ -90,6 +90,10 @@
     	select * from doctor where doctor.user_id=#{userId}
     </select>
     
+    <select id="getDoctorsByLoginId" resultMap="UserResultMap" parameterType="java.util.Map">
+    	select * from doctor where doctor.login_user_id=#{loginId}
+    </select>
+    
      <update id="updateDoctorLoginId"  parameterType="java.util.Map">
     	update doctor set login_user_id = #{loginId} where doctor.user_id=#{doctorId}
     </update>
