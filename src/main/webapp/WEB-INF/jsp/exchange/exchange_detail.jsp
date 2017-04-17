@@ -174,13 +174,10 @@
 					
 					</section>
 					<c:forEach items="${operation.assetTypes}" var="assetType">
-						<section>
-							<H1>${assetType.assetTypeName}</H1>
-						</section>
 						
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
-								<H3>${assetType.assetTypeName}</H3>
+								<span style="font-size:20px">${assetType.assetTypeName}<span><br/>
 								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 							</section>
 						</c:forEach>

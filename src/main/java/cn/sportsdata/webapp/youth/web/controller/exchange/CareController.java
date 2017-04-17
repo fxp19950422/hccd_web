@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
@@ -103,20 +104,18 @@ public class CareController extends BaseController{
             // 替换读取到的 word 模板内容的指定字段
             Map<String,String> params = new HashMap<>();
             
-         
-            
-            params.put("${name}", record.getRealName());  
+            params.put("${name}", StringUtils.isEmpty(record.getRealName())?"":record.getRealName());
             params.put("${gender}", "female".equalsIgnoreCase(record.getGender())?"女":"男");  
             params.put("${age}", getAge(record.getBirthday()));
             params.put("${visitDate}", DateUtil.date2String(record.getVisitDate(), "yyyy-MM-dd"));
-            params.put("${illnessDesc}", record.getIllnessDesc());
-            params.put("${medHistory}", record.getMedHistory());
-            params.put("${bodyExam}", record.getBodyExam());
-            params.put("${diagDesc}", record.getDiagDesc());
-            params.put("${treatment}", record.getTreatment());
-            params.put("${suggestion}", record.getSuggestion());
+            params.put("${illnessDesc}", StringUtils.isEmpty(record.getIllnessDesc())?"":record.getIllnessDesc());
+            params.put("${medHistory}", StringUtils.isEmpty(record.getMedHistory())?"":record.getMedHistory());
+            params.put("${bodyExam}", StringUtils.isEmpty(record.getBodyExam())?"":record.getBodyExam());
+            params.put("${diagDesc}", StringUtils.isEmpty(record.getDiagDesc())?"":record.getDiagDesc());
+            params.put("${treatment}", StringUtils.isEmpty(record.getTreatment())?"":record.getTreatment());
+            params.put("${suggestion}", StringUtils.isEmpty(record.getSuggestion())?"":record.getSuggestion());
             params.put("${pDate}", DateUtil.date2String(new Date(), "yyyy-MM-dd"));
-            params.put("${doctorName}", record.getName());
+            params.put("${doctorName}", StringUtils.isEmpty(record.getName())?"":record.getName());
             Range range = hwpfDocument.getRange();
             for(Map.Entry<String,String> entry:params.entrySet()){
                 range.replaceText(entry.getKey(),entry.getValue());
