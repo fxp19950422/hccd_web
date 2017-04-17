@@ -11,6 +11,16 @@ public class ResidentRecord implements Serializable {
 	
 	private static final long serialVersionUID = 8628757275474528838L;
 	
+	
+	private String inState;
+	private String inChiDiagnosis;
+	private String inWesDiagnosis;
+	private String process;
+	private String outChiDiagnosis;
+	private String outWesDiagnosis;
+	private String outState;
+	private String suggestion;
+	
 	private String doctorInCharge;
 	
 	  public String getDoctorInCharge() {
@@ -969,4 +979,68 @@ public class ResidentRecord implements Serializable {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+
+	public String getInState() {
+		return inState;
+	}
+
+	public void setInState(String inState) {
+		this.inState = inState;
+	}
+
+	public String getInChiDiagnosis() {
+		return inChiDiagnosis;
+	}
+
+	public void setInChiDiagnosis(String inChiDiagnosis) {
+		this.inChiDiagnosis = inChiDiagnosis;
+	}
+
+	public String getInWesDiagnosis() {
+		return inWesDiagnosis;
+	}
+
+	public void setInWesDiagnosis(String inWesDiagnosis) {
+		this.inWesDiagnosis = inWesDiagnosis;
+	}
+
+	public String getProcess() {
+		return process;
+	}
+
+	public void setProcess(String process) {
+		this.process = process;
+	}
+
+	public String getOutChiDiagnosis() {
+		return outChiDiagnosis;
+	}
+
+	public void setOutChiDiagnosis(String outChiDiagnosis) {
+		this.outChiDiagnosis = outChiDiagnosis;
+	}
+
+	public String getOutWesDiagnosis() {
+		return outWesDiagnosis;
+	}
+
+	public void setOutWesDiagnosis(String outWesDiagnosis) {
+		this.outWesDiagnosis = outWesDiagnosis;
+	}
+
+	public String getOutState() {
+		return outState;
+	}
+
+	public void setOutState(String outState) {
+		this.outState = outState;
+	}
+
+	public String getSuggestion() {
+		return suggestion;
+	}
+
+	public void setSuggestion(String suggestion) {
+		this.suggestion = suggestion;
+	}
 }

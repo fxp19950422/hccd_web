@@ -1,6 +1,7 @@
 package cn.sportsdata.webapp.youth.service.patient.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ public class PatientServiceImpl implements PatientService {
 				String patientId = record.getPatientId();
 				if (patientIdList.contains(patientId)) {
 					for (PatientRecordBO patientRecord:patientRecordList) {
-						if (patientRecord.getMedicalRecord().getPatientId().equalsIgnoreCase(patientId)) {
+						if (patientRecord.getMedicalRecord()!=null&&patientRecord.getMedicalRecord().getPatientId().equalsIgnoreCase(patientId)) {
 							patientRecord.setRegistRecord(record);
 						}
 					}
@@ -410,7 +411,8 @@ public class PatientServiceImpl implements PatientService {
 			long year, long month, long day) {
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		try {
-			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode);
+			List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
+			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode, departmentIdList);
 			List<String> patientIdList = new ArrayList<String>();
 			for (PatientInHospital record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
@@ -493,5 +495,69 @@ public class PatientServiceImpl implements PatientService {
 			String diag_desc, String treatment, String suggestion) {
 		// TODO Auto-generated method stub
 		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment, suggestion);
+	}
+	
+	@Override
+	public List<OpertaionRecord> getOperationsDuringInHospital(String recordId, String hospitalId, String patientId) {
+		try {
+			List<OpertaionRecord> list = patientDAO.getOperationsDuringInHospital(hospitalId, 
+					patientId, recordId);
+			return list;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public int updateMedicalRecord(MedicalRecordVO medicalRecordVO) {
+		return patientDAO.updateMedicalRecord(medicalRecordVO);
+	}
+
+	@Override
+	public int updateOperationRecord(OpertaionRecord opertaionRecord) {
+		return patientDAO.updateOperationRecord(opertaionRecord);
+	}
+
+	@Override
+	public int updateResidentRecord(ResidentRecord residentRecord) {
+		return patientDAO.updateResidentRecord(residentRecord);
+	}
+
+	@Override
+	public OpertaionRecord getOperationRecordById(String id) {
+		return patientDAO.getOperationById(id);
+	}
+
+	@Override
+	public ResidentRecord getResidentRecordById(String id) {
+		return patientDAO.getResidentById(id);
+	}
+
+	@Override
+	public MedicalRecordVO getMedicalRecordVOById(String id) {
+		return patientDAO.getMedicalRecordById(id);
+	}
+
+	@Override
+	public List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId) {
+		if (doctorCode.equalsIgnoreCase("1701")) {
+			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317"});
+		}
+		if (doctorCode.equalsIgnoreCase("1702")) {
+			return Arrays.asList(new String[] {"0309"});
+		}
+		if (doctorCode.equalsIgnoreCase("1705")) {
+			return Arrays.asList(new String[] {"0317"});
+		}
+		if (doctorCode.equalsIgnoreCase("1703")) {
+			return Arrays.asList(new String[] {"0316"});
+		}
+		if (doctorCode.equalsIgnoreCase("1765")) {
+			return Arrays.asList(new String[] {"0321"});
+		}
+		return Arrays.asList(new String[] {"-1"});
 	}
 }

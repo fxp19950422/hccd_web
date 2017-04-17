@@ -42,11 +42,13 @@ public interface PatientDAO {
 	List<OpertaionRecord> getOperationsByResident(@Param("hospital_id") String hospitalId, 
 			@Param("patient_id") String patientId, @Param("admission_date") Date admissionDate,
 			 @Param("discharge_date") Date dischargeDate);
-
+	List<OpertaionRecord> getOperationsDuringInHospital(@Param("hospital_id") String hospitalId, 
+			@Param("patient_id") String patientId, @Param("record_id") String recordId);
+	
 	//住院记录
 	ResidentRecord getResidentById(@Param("id") String recordId);
 	List<PatientInHospital> getCurPatientsInHospital(@Param("hospital_id") String hospitalId, 
-			@Param("doctor_code") String doctorCode);
+			@Param("doctor_code") String doctorCode, @Param("departmentIdList") List<String> departmentIdList);
 	//出院记录
 	List<ResidentRecord> getResidentRecordByOperation(@Param("hospital_id") String hospitalId, 
 			@Param("patient_id") String patientId, @Param("operating_date") Date operatingDate);
@@ -107,4 +109,10 @@ public interface PatientDAO {
 			@Param("diag_desc") String diag_desc,
 			@Param("treatment") String treatment,
 			@Param("suggestion") String suggestion);
+	
+	int updateMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
+	int updateOperationRecord(@Param("opertaionRecord") OpertaionRecord opertaionRecord);
+	int updateResidentRecord(@Param("residentRecord") ResidentRecord residentRecord);
+	
+	MedicalRecordVO getMedicalRecordById(@Param("id") String recordId);
 }

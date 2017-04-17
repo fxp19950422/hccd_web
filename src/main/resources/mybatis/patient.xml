@@ -77,10 +77,22 @@
 	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
+    <select id="getOperationsDuringInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+        select A.* from operation A
+        	left join patient_in_hospital B on B.patient_id = A.patient_id
+	       	where A.OPERATING_DATE > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	        and A.patient_id =#{patient_id} and A.status = 'active' order by OPERATING_DATE desc
+    </select>
+    
     <!-- 查询住院记录 -->
     <select id="getCurPatientsInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.* from patient_in_hospital A
-	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	where (A.doctor_id=#{doctor_code} or A.dept_code in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            ) and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' order by ADMISSION_DATE_TIME desc
     </select>
     
@@ -119,6 +131,10 @@
     
    	<select id="getResidentById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     	select A.* from resident_record A where A.id = #{id}
+    </select>
+    
+    <select id="getMedicalRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
+    	select A.* from medical_record A where A.id = #{id}
     </select>
     
     <select id="getResidentRecordByOperation" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
@@ -220,4 +236,138 @@
             #{id}
         </foreach>
     </select>
+    
+    <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
+    	update medical_record set  
+    	yb_icd_name = #{medicalRecordVO.ybIcdName},
+		visit_no = #{medicalRecordVO.visitNo},
+		visit_date = #{medicalRecordVO.visitDate},
+		patient_id = #{medicalRecordVO.patientId},
+		treatment = #{medicalRecordVO.treatment},
+		tooth = #{medicalRecordVO.tooth},
+		suggestion = #{medicalRecordVO.suggestion},
+		status = #{medicalRecordVO.status},
+<!-- 		physician_secondary_number = #{medicalRecordVO.physicianSecondaryNumber}, -->
+<!-- 		physician_primary_number = #{medicalRecordVO.physicianPrimaryNumber}, -->
+<!-- 		physician_name = #{medicalRecordVO.physicianName}, -->
+<!-- 		physician_email = #{medicalRecordVO.physicianEmail}, -->
+		ordinal = #{medicalRecordVO.ordinal},
+		operation_record = #{medicalRecordVO.operationRecord},
+		menses4 = #{medicalRecordVO.menses4},
+		menses3 = #{medicalRecordVO.menses3},
+		menses2 = #{medicalRecordVO.menses2},
+		menses = #{medicalRecordVO.menses},
+		memo = #{medicalRecordVO.memo},
+		medical_record = #{medicalRecordVO.medicalRecord},
+<!-- 		medical_condition = #{medicalRecordVO.medicalCondition}, -->
+		med_history = #{medicalRecordVO.medHistory},
+		maternity = #{medicalRecordVO.maternity},
+		marrital = #{medicalRecordVO.marrital},
+<!-- 		insurance_provider_number = #{medicalRecordVO.insuranceProviderNumber}, -->
+<!-- 		insurance_provider_name = #{medicalRecordVO.insuranceProviderName}, -->
+<!-- 		insurance_policy_number = #{medicalRecordVO.insurancePolicyNumber}, -->
+<!-- 		insurance_policy_holder = #{medicalRecordVO.insurancePolicyHolder}, -->
+		individual = #{medicalRecordVO.individual},
+		illness_desc = #{medicalRecordVO.illnessDesc},
+		illness_date = #{medicalRecordVO.illnessDate},
+		hospital_id = #{medicalRecordVO.hospitalId},
+		family_ill = #{medicalRecordVO.familyIll},
+		doctor_no = #{medicalRecordVO.doctorNo},
+		doctor = #{medicalRecordVO.doctor},
+		diag_yb_db = #{medicalRecordVO.diagYbDb},
+		diag_desc = #{medicalRecordVO.diagDesc},
+		cfz_flag = #{medicalRecordVO.cfzFlag},
+		cdiag = #{medicalRecordVO.cdiag},
+		body_exam = #{medicalRecordVO.bodyExam},
+		assistant_exam = #{medicalRecordVO.assistantExam},
+		anamnesis = #{medicalRecordVO.anamnesis},
+<!-- 		allergies = #{medicalRecordVO.allergies}, -->
+		advice = #{medicalRecordVO.advice}
+    	where id = #{medicalRecordVO.id}
+    </update>
+    
+     <update id="updateOperationRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
+     	update operation set  
+     	wound_grade = #{opertaionRecord.woundGrade},
+		visit_id = #{opertaionRecord.visitId},
+		status = #{opertaionRecord.status},
+		second_assistant = #{opertaionRecord.secondAssistant},
+		patient_id = #{opertaionRecord.patientId},
+		optype_primary = #{opertaionRecord.optypePrimary},
+		operator = #{opertaionRecord.operator},
+		operation_stop_date = #{opertaionRecord.operationStopDate},
+		operation_start_date = #{opertaionRecord.operationStartDate},
+		operation_scale = #{opertaionRecord.operationScale},
+		operation_nurse = #{opertaionRecord.operationNurse},
+		operation_no = #{opertaionRecord.operationNo},
+		operation_emer_indicator = #{opertaionRecord.operationEmerIndicator},
+		operation_desc = #{opertaionRecord.operationDescription},
+		operation_code = #{opertaionRecord.operationCode},
+		operating_end_date = #{opertaionRecord.operatingEndDate},
+		operating_date = #{opertaionRecord.operatingDate},
+		op_primary = #{opertaionRecord.opPrimary},
+		if_gck = #{opertaionRecord.ifGck},
+		hospital_id = #{opertaionRecord.hospitalId},
+		heal = #{opertaionRecord.heal},
+		first_assistant = #{opertaionRecord.firstAssistant},
+		doctor_id = #{opertaionRecord.doctorId},
+		before_oper = #{opertaionRecord.beforeOper},
+		anesthesia_doctor = #{opertaionRecord.anesthesiaDoctor},
+		anaesthesia_method = #{opertaionRecord.anaesthesiaMethod},
+		before_diagnosis = #{opertaionRecord.beforeDiagnosis},
+		after_diagnosis = #{opertaionRecord.afterDiagnosis},
+		operationDesc = #{opertaionRecord.operationDesc},
+		process = #{opertaionRecord.process},
+		posture = #{opertaionRecord.posture},
+		incision = #{opertaionRecord.incision},
+		exploratory = #{opertaionRecord.exploratory},
+		steps = #{opertaionRecord.steps},
+		drainage = #{opertaionRecord.drainage},
+		finished_condition = #{opertaionRecord.finishedCondition}
+     	where id = #{opertaionRecord.id}
+     	
+     </update>
+     
+     <update id="updateResidentRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord">
+     	update resident_record set  
+		hospital_id = #{residentRecord.hospitalId},
+		patient_id = #{residentRecord.patientId},
+		doctor_id = #{residentRecord.doctorId},
+		create_time = #{residentRecord.createTime},
+		last_update = #{residentRecord.lastUpdate},
+		status = #{residentRecord.status},
+		start_time = #{residentRecord.startTime},
+		end_time = #{residentRecord.endTime},
+		department_id = #{residentRecord.departmentId},
+		name = #{residentRecord.name},
+		admission_number = #{residentRecord.admissionNumber},
+		gender = #{residentRecord.gender},
+		age = #{residentRecord.age},
+		fee_type = #{residentRecord.feeType},
+		patients_section_code = #{residentRecord.patientsSectionCode},
+		discharge_date_time = #{residentRecord.dischargeDateTime},
+		in_out_status = #{residentRecord.inOutStatus},
+		hospital_beds = #{residentRecord.hospitalBeds},
+		admission_date = #{residentRecord.admissionDate},
+		section_date = #{residentRecord.sectionDate},
+		diagnose = #{residentRecord.diagnose},
+		nurse_level = #{residentRecord.nurseLevel},
+		critical_level = #{residentRecord.criticalLevel},
+		doctor_in_charge = #{residentRecord.doctorInCharge},
+		resident_id = #{residentRecord.residentId},
+		director = #{residentRecord.director},
+		attending_doctor = #{residentRecord.attendingDoctor},
+		update_date = #{residentRecord.updateDate},
+		in_state = #{residentRecord.inState},
+		in_chi_diagnosis = #{residentRecord.inChiDiagnosis},
+		in_wes_diagnosis = #{residentRecord.inWesDiagnosis},
+		process = #{residentRecord.process},
+		out_chi_diagnosis = #{residentRecord.outChiDiagnosis},
+		out_wes_diagnosis = #{residentRecord.outWesDiagnosis},
+		out_state = #{residentRecord.outState},
+		suggestion = #{residentRecord.suggestion}
+     	where id = #{residentRecord.id}
+     	
+     </update>
+    
 </mapper>

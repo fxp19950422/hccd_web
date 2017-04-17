@@ -191,49 +191,51 @@ public class HealthDataFileUploadController extends BaseController {
 	// below upload/download methods are used by pure PlUpload plugin
 	@ResponseBody
 	@RequestMapping(value="/fileUpload", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
-	public String fileUpload(HttpServletRequest request, @RequestParam MultipartFile uploadedFile, String hospitalId, String hospitalRecordId, String type, String assetTypeId) {
+	public String fileUpload(HttpServletRequest request, @RequestParam ArrayList<MultipartFile> uploadedFile, String hospitalId, String hospitalRecordId, String type) {
 		try {
-//			LoginVO loginVO = getCurrentUser(request);
-//			OrgVO orgVO = getCurrentOrg(request);
 			LoginVO loginVO = (LoginVO)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		    String accountID = loginVO.getId();
-		        
-			
-			String originFileName = uploadedFile.getOriginalFilename();
+		    String assetTypeId = "";   
+		    
+		    for(MultipartFile uploadFile:uploadedFile){
+		    	
+		    	assetTypeId = uploadFile.getOriginalFilename();
+		    	
+		    	String originFileName = uploadFile.getOriginalFilename();
 
-			String fileExt = HAFileUtils.getFileExtension(originFileName);
+				String fileExt = HAFileUtils.getFileExtension(originFileName);
 
-			String createdFileName =  UUID.randomUUID().toString();
-			if(fileExt != null){
-				createdFileName += ("." + fileExt);
-			}
+				String createdFileName =  UUID.randomUUID().toString();
+				if(fileExt != null){
+					createdFileName += ("." + fileExt);
+				}
 
-			File createdFile = HAFileUtils.createNewAttachmentFile(createdFileName, loginVO.getId(), null, HAFileUtils.PRODUCT_FILE_TYPE);
-			uploadedFile.transferTo(createdFile);
-			
-			JSONObject json = new JSONObject();
-//			json.put("encryptedFileName", SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
-//			json.put("originalFileName", originFileName);
-//			json.put("extName", fileExt);
-//			json.put("size", uploadedFile.getSize());
-			
-			
-			 // add a record to asset
-	        AssetVO vo = new AssetVO();
-	      
-	        vo.setCreator_id(accountID);
-	        vo.setOrg_id("");
-	        vo.setDisplay_name(originFileName);
-	        vo.setFile_extension(fileExt);
-	        vo.setSize(uploadedFile.getSize());
-	        vo.setPrivacy("protected");
-	        vo.setStatus("active");
-	        vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
+				File createdFile = HAFileUtils.createNewAttachmentFile(createdFileName, loginVO.getId(), null, HAFileUtils.PRODUCT_FILE_TYPE);
+				uploadFile.transferTo(createdFile);
+				
+				JSONObject json = new JSONObject();
+				
+				
+				 // add a record to asset
+		        AssetVO vo = new AssetVO();
+		      
+		        vo.setCreator_id(accountID);
+		        vo.setOrg_id("");
+		        vo.setDisplay_name(originFileName);
+		        vo.setFile_extension(fileExt);
+		        vo.setSize(uploadFile.getSize());
+		        vo.setPrivacy("protected");
+		        vo.setStatus("active");
+		        vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
 
-	        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, assetTypeId);
-			vo.setId(id);
-			json.put("asset_id", id);
-			return json.toString();
+		        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, assetTypeId);
+		        vo.setId(id);
+				json.put("asset_id", id);
+		    }
+			
+			
+			
+			return "";
 		} catch(Exception e) {
 			logger.error("Error occurs while uploading file", e);
 		}

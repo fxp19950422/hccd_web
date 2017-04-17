@@ -43,4 +43,14 @@ public interface PatientService {
 			 String diag_desc,
 			 String treatment,
 			 String suggestion);
+	int updateMedicalRecord(MedicalRecordVO medicalRecordVO);
+	int updateOperationRecord(OpertaionRecord opertaionRecord);
+	int updateResidentRecord(ResidentRecord residentRecord);
+	
+	OpertaionRecord getOperationRecordById(String id);
+	ResidentRecord getResidentRecordById(String id);
+	MedicalRecordVO getMedicalRecordVOById(String id);
+	
+	List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId);
+	List<OpertaionRecord> getOperationsDuringInHospital(String recordId, String hospitalId, String patientId);
 }

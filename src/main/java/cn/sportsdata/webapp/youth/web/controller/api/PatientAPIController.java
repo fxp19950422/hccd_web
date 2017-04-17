@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +24,10 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 
@@ -77,6 +80,9 @@ public class PatientAPIController {
 		if (recordType.equalsIgnoreCase("resident")) {
 			result.put("operationRecordList", patientService.getOperationsByResident(recordId, hospitalId, patientId));
 		}
+		if (recordType.equalsIgnoreCase("patientInhospital")) {
+			result.put("operationRecordList", patientService.getOperationsDuringInHospital(recordId, hospitalId, patientId));
+		}
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}
@@ -107,8 +113,8 @@ public class PatientAPIController {
 		//operation
 		List<String> SectionNameList2 = Arrays.asList(new String[] {"术前诊断", "术后诊断", "手术名称", "手术经过", "手术体位",
 				"手术切口","探查所见", "手术步骤", "引流物", "术毕病人情况"});
-		List<String> sectionList2 = Arrays.asList(new String[] {"before_diagnosis", "after_diagnosis",
-				"operationDesc","process", "posture", "incision","exploratory", "steps", "drainage", "finished_condition"});
+		List<String> sectionList2 = Arrays.asList(new String[] {"beforeDiagnosis", "afterDiagnosis",
+				"operationDescription","process", "posture", "incision","exploratory", "steps", "drainage", "finishedCondition"});
 		HospitalRecordTypeVO record2 = new HospitalRecordTypeVO();
 		record2.setRecordType("operation");
 		record2.setRecordTypeName("手术记录");
@@ -120,8 +126,8 @@ public class PatientAPIController {
 		//resident
 		List<String> SectionNameList3 = Arrays.asList(new String[] {"入院情况", "入院中医诊断", "入院西医诊断", 
 				"诊疗经过", "出院中医诊断","出院西医诊断", "出院情况", "出院医嘱"});
-		List<String> sectionList3 = Arrays.asList(new String[] {"in_state", "in_chi_diagnosis",
-				"in_wes_diagnosis","process", "out_chi_diagnosis", "out_wes_diagnosis", "out_state", "suggestion"});
+		List<String> sectionList3 = Arrays.asList(new String[] {"inState", "inChiDiagnosis",
+				"inWesDiagnosis","process", "outChiDiagnosis", "outWesDiagnosis", "outState", "suggestion"});
 		HospitalRecordTypeVO record3 = new HospitalRecordTypeVO();
 		record3.setRecordType("resident");
 		record3.setRecordTypeName("出院记录");
@@ -131,15 +137,69 @@ public class PatientAPIController {
 		array.add(record3);
 		
 		//patient in hospital
+		List<String> SectionNameList4 = Arrays.asList(new String[] {"入院诊断", "病人情况", "护理级别"});
+		List<String> sectionList4 = Arrays.asList(new String[] {"diagnosis", "patientCondition",
+				"nursingClass"});
 		HospitalRecordTypeVO record4 = new HospitalRecordTypeVO();
 		record4.setRecordType("patientInhospital");
 		record4.setRecordTypeName("住院患者");
+		record4.setSectionList(sectionList4);
+		record4.setSectionNameList(SectionNameList4);
 		array.add(record4);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("recordTypeList", array);
 		result.put("doctor", doctor);
 		
+		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/updateRecords",  method = RequestMethod.POST)
+	public ResponseEntity<Response> updateRecords(HttpServletRequest request, HttpServletResponse resp, 
+			String recordType, @RequestBody PatientRecordBO record) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		recordType = record.getRecordType();
+		if (recordType.equalsIgnoreCase("medical")) {
+			MedicalRecordVO medicalRecordVO = patientService
+					.getMedicalRecordVOById(record.getMedicalRecord().getId());
+			medicalRecordVO.setIllnessDesc(record.getMedicalRecord().getIllnessDesc());
+			medicalRecordVO.setMedHistory(record.getMedicalRecord().getMedHistory());
+			medicalRecordVO.setBodyExam(record.getMedicalRecord().getBodyExam());
+			medicalRecordVO.setDiagDesc(record.getMedicalRecord().getDiagDesc());
+			medicalRecordVO.setTreatment(record.getMedicalRecord().getTreatment());
+			medicalRecordVO.setSuggestion(record.getMedicalRecord().getSuggestion());
+			int count = patientService.updateMedicalRecord(medicalRecordVO);
+		}
+		if (recordType.equalsIgnoreCase("operation")) {
+			OpertaionRecord opertaionRecord = patientService
+					.getOperationRecordById(record.getOperationRecord().getId());
+			opertaionRecord.setBeforeDiagnosis(record.getOperationRecord().getBeforeDiagnosis());
+			opertaionRecord.setAfterDiagnosis(record.getOperationRecord().getAfterDiagnosis());
+			opertaionRecord.setOperationDesc(record.getOperationRecord().getOperationDesc());
+			opertaionRecord.setProcess(record.getOperationRecord().getProcess());
+			opertaionRecord.setPosture(record.getOperationRecord().getPosture());
+			opertaionRecord.setIncision(record.getOperationRecord().getIncision());
+			opertaionRecord.setExploratory(record.getOperationRecord().getExploratory());
+			opertaionRecord.setSteps(record.getOperationRecord().getSteps());
+			opertaionRecord.setDrainage(record.getOperationRecord().getDrainage());
+			opertaionRecord.setFinishedCondition(record.getOperationRecord().getFinishedCondition());
+
+			int count = patientService.updateOperationRecord(opertaionRecord);
+		}
+		if (recordType.equalsIgnoreCase("resident")) {
+			ResidentRecord residentRecord = patientService.getResidentRecordById(record.getResidentRecord().getId());
+			residentRecord.setInState(record.getResidentRecord().getInState());
+			residentRecord.setInChiDiagnosis(record.getResidentRecord().getInChiDiagnosis());
+			residentRecord.setInWesDiagnosis(record.getResidentRecord().getInWesDiagnosis());
+			residentRecord.setProcess(record.getResidentRecord().getProcess());
+			residentRecord.setOutChiDiagnosis(record.getResidentRecord().getOutChiDiagnosis());
+			residentRecord.setOutWesDiagnosis(record.getResidentRecord().getOutWesDiagnosis());
+			residentRecord.setOutState(record.getResidentRecord().getOutState());
+			residentRecord.setSuggestion(record.getResidentRecord().getSuggestion());
+
+			int count = patientService.updateResidentRecord(residentRecord);
+		}
+
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}
 }
