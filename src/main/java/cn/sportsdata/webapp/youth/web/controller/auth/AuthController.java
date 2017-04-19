@@ -112,6 +112,7 @@ public class AuthController {
 			boolean verificationPassed = false;
 			verificationPassed = SecurityUtils.verifyPassword(loginVO.getPassword(), userVO.getPassword());
 			if (verificationPassed) {
+				userVO.setHospitalUserInfo(accountService.getHospitalUserInfoById(accountVO.getId()));
 				setToken(request, response, userVO);
 				return "redirect:/auth/OrgSel"; 
 			}

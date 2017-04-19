@@ -376,4 +376,15 @@
      	
      </update>
     
+    <select id="searchRegisteRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord" parameterType="java.util.Map">
+    	select A.* from patient_regist A
+	       	where A.doctor=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' and year(VISIT_DATE) = #{year} 
+	       	and month(VISIT_DATE) =#{month} and day(VISIT_DATE) = #{day}
+	       	<if test="patName != null and patName != '' ">
+    			and A.name like '%${patName}%'
+    		</if>
+	       	order by VISIT_DATE desc, VISIT_NO
+    </select>
+    
 </mapper>

@@ -571,4 +571,10 @@ public class PatientServiceImpl implements PatientService {
 		}
 		return Arrays.asList(new String[] {"-1"});
 	}
+
+	@Override
+	public List<PatientRegistRecord> getRegisteRecordList(String hospitalId, String doctorCode, String patName,
+			long year, long month, long day) {
+		return patientDAO.searchRegisteRecordList(hospitalId, doctorCode,patName, year, month, day);
+	}
 }

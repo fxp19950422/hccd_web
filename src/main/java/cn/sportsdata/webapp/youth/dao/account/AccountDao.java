@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
+import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
 
 public interface AccountDao{
 	
@@ -35,4 +36,6 @@ public interface AccountDao{
 	public int deleteAccount(AccountVO account);
 	
 	public int deleteAccountRelationInOrg(AccountVO account, OrgVO orgVo);
+	
+	HospitalUserInfo getHospitalUserInfoByUserId(String id);
 }

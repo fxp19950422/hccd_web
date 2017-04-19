@@ -27,6 +27,8 @@ public class LoginVO extends BaseVO implements UserDetails,Serializable{
     private String avatar;
     private String avatar_id;
     
+    private HospitalUserInfo hospitalUserInfo;
+    
     public String getAvatar() {
 		return avatar;
 	}
@@ -225,6 +227,14 @@ public class LoginVO extends BaseVO implements UserDetails,Serializable{
 	public String getUsername() {
 		// TODO Auto-generated method stub
 		return this.userName;
+	}
+
+	public HospitalUserInfo getHospitalUserInfo() {
+		return hospitalUserInfo;
+	}
+
+	public void setHospitalUserInfo(HospitalUserInfo hospitalUserInfo) {
+		this.hospitalUserInfo = hospitalUserInfo;
 	}
 
 }

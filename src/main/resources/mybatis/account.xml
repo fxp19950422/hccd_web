@@ -11,6 +11,15 @@
         <result column="avatarId" property="avatar_id" jdbcType="VARCHAR"/>
     </resultMap>
     
+	<resultMap id="HospitalUserInfoMap" type="cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo">
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="name" property="userName" jdbcType="VARCHAR"/>
+        <result column="hospita_id" property="hospitalId" jdbcType="VARCHAR"/>
+        <result column="department_id" property="deptId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userIdinHospital" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
+    
     <resultMap id="OrgResultMap" type="cn.sportsdata.webapp.youth.common.vo.OrgVO">
         <result column="id" property="id" jdbcType="CHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -85,5 +94,11 @@
 			#{loginId}, #{orgId}, #{accountRoleId}
 		)
     </insert>
+    
+    <select id="getHospitalUserInfoByUserId" resultMap="HospitalUserInfoMap" parameterType="java.lang.String">
+        select id,user_id,department_id,hospital_id,type,name from doctor
+        where login_user_id = #{id} and status='active'
+    </select>
+    
     
 </mapper>

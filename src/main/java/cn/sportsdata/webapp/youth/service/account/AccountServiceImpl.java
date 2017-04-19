@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
+import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
 import cn.sportsdata.webapp.youth.dao.account.AccountDao;
 import cn.sportsdata.webapp.youth.dao.asset.AssetDAO;
 
@@ -108,6 +109,12 @@ public class AccountServiceImpl implements AccountService {
 	public AccountVO getAccountByAccountIDOrgId(String loginID, String orgID) {
 		// TODO Auto-generated method stub
 		return accountDao.getAccountByAccountIDOrgId(loginID, orgID);
+	}
+
+	@Override
+	public HospitalUserInfo getHospitalUserInfoById(String id) {
+		// TODO Auto-generated method stub
+		return accountDao.getHospitalUserInfoByUserId(id);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
+import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
 
 public interface AccountService {
 	public List<AccountVO> getAccountsByOrg(String orgID);
@@ -26,4 +27,6 @@ public interface AccountService {
 	public AccountVO getAccountByAccountIDOrgId(String loginID, String orgID);
 	
 	public int deleteAccount(AccountVO account, OrgVO orgVo);
+	
+	public HospitalUserInfo getHospitalUserInfoById(String id);
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
+import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
 
 /**
  * @author king
@@ -51,6 +52,8 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	private static final String DELETE_ACCOUNTS = "deleteAccounts";
 
 	private static final String SELECT_ACCOUNTS_TO_UPDATE = "getRecordsToUpdate";
+	
+	private static final String getHospitalUserInfoByUserId = "getHospitalUserInfoByUserId";
 
 	@Override
 	public List<AccountVO> getAccounts(String orgID) {
@@ -129,6 +132,12 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 		map.put("orgId", orgVo.getId());
 		map.put("id", account.getId());
 		return sqlSessionTemplate.delete(getSqlNameSpace(DELETE_ACCOUNT_IN_ORG), map);
+	}
+
+	@Override
+	public HospitalUserInfo getHospitalUserInfoByUserId(String id) {
+		List<HospitalUserInfo> infos = sqlSessionTemplate.selectList(getSqlNameSpace(getHospitalUserInfoByUserId), id);
+		return infos.get(0);
 	}
 
 }

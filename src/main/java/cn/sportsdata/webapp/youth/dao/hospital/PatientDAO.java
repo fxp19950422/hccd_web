@@ -115,4 +115,8 @@ public interface PatientDAO {
 	int updateResidentRecord(@Param("residentRecord") ResidentRecord residentRecord);
 	
 	MedicalRecordVO getMedicalRecordById(@Param("id") String recordId);
+	
+	List<PatientRegistRecord> searchRegisteRecordList(@Param("hospital_id") String hospitalId,
+			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("year") long year,
+			@Param("month") long month, @Param("day") long day);
 }
