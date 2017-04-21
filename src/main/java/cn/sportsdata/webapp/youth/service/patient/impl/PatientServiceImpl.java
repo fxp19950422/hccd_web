@@ -577,4 +577,10 @@ public class PatientServiceImpl implements PatientService {
 			long year, long month, long day) {
 		return patientDAO.searchRegisteRecordList(hospitalId, doctorCode,patName, year, month, day);
 	}
+
+	@Override
+	public PatientRegistRecord getRegisteRecordById(String id) {
+		// TODO Auto-generated method stub
+		return patientDAO.getRegisteRecordById(id);
+	}
 }

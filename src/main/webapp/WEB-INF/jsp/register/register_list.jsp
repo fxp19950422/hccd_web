@@ -59,7 +59,7 @@
 		data-pagination-next-text="下页" data-pagination-last-text="最后页">
 		<thead>
 			<tr>
-				<th data-field="visitDate" data-align="center">日期</th>
+				<th data-field="visitDate" data-formatter="dateFormatter"  data-align="center">日期</th>
 				<th data-field="name" data-align="center">病人姓名</th>
 				<th data-field="sex" data-align="center">性别</th>
 				<th data-field="age" data-align="center">年龄</th>
@@ -88,11 +88,16 @@
 		return '<span onclick=handle("'+value+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-edit content-color"></i></span>';
 	}
 	
+	
+	function dateFormatter(value, row, index){
+		return new Date(value).Format("yyyy年MM月dd日")
+	}
+	
 	function handle(recordId) {
 		if(recordId==undefined){
 			recordId=0;
 		}
-		var url ="<%=serverUrl%>care/care_detail?id=" + recordId;
+		var url ="<%=serverUrl%>register/register_detail?id=" + recordId;
 		sa.ajax({
 			type : "get",
 			url : url,
@@ -127,7 +132,7 @@
 		
 		$("#table").bootstrapTable();
 		
-		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?rnd=" + Math.random()});
+		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()})
 		
 	    $("#search_btn").click(function(){
 			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()});

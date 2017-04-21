@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
@@ -82,6 +83,31 @@ public class RegisterController extends BaseController{
 				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
 				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 		return recordList;
+	}
+	
+	@RequestMapping(value = "/register_detail",method = RequestMethod.GET)
+	public String toRegistDetail(HttpServletRequest request,String id, Model model){
+		
+		PatientRegistRecord registRecord = patientService.getRegisteRecordById(id);
+		
+		List<PatientRecordBO> list = patientService.getPatientRecords(id, registRecord.getName(),
+				registRecord.getPatientId(), registRecord.getHospitalId());
+		
+		model.addAttribute("record", registRecord);
+		model.addAttribute("list", list);
+		return "register/register_detail";
+	}
+	
+	
+	@RequestMapping(value = "/register_detail_his_list",method = RequestMethod.GET)
+	public List<PatientRecordBO> getRegistDetailHisList(HttpServletRequest request,String recordId, Model model){
+		
+		PatientRegistRecord registRecord = patientService.getRegisteRecordById(recordId);
+		
+		List<PatientRecordBO> list = patientService.getPatientRecords(recordId, registRecord.getName(),
+				registRecord.getPatientId(), registRecord.getHospitalId());
+		
+		return list;
 	}
 	
 	@RequestMapping(value = "/care_detail",method = RequestMethod.GET)

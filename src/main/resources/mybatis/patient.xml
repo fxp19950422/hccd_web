@@ -386,5 +386,9 @@
     		</if>
 	       	order by VISIT_DATE desc, VISIT_NO
     </select>
+    <select id="getRegisteRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord" parameterType="java.util.Map">
+    	select A.* from patient_regist A
+	       	where A.id=#{id}
+    </select>
     
 </mapper>
