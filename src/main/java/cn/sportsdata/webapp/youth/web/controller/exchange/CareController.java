@@ -89,6 +89,25 @@ public class CareController extends BaseController{
 		return "care/medical_record_edit";
 	}
 	
+	@RequestMapping(value = "/resident_detail",method = RequestMethod.GET)
+	public String toResidentRecordDetail(String id, Model model,String registId){
+		
+		ResidentRecord record = patientService.getResidentRecordById(id);
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		return "care/resident_record_detail";
+	}
+	
+	@RequestMapping(value = "/resident_edit",method = RequestMethod.GET)
+	public String toResidentRecordEdit(String id, Model model){
+		
+		ResidentRecord record = patientService.getResidentRecordById(id);
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		return "care/resident_record_edit";
+	}
+	
 	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)
 	public ResponseEntity<byte[]> download(HttpServletRequest request, String id, HttpServletResponse response) throws IOException{
 		
@@ -173,6 +192,14 @@ public class CareController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "/save_record", method = RequestMethod.POST)
 	public Object saveRecord(HttpServletRequest request, MedicalRecordVO record) {
+		
+		patientService.updateMedicalRecordById(record.getId(), record.getIllnessDesc(), record.getMedHistory(), record.getBodyExam(), record.getDiagDesc(),record.getTreatment(), record.getSuggestion());
+		
+		return record;
+	}
+	@ResponseBody
+	@RequestMapping(value = "/save_resident_record", method = RequestMethod.POST)
+	public Object saveResidentRecord(HttpServletRequest request, MedicalRecordVO record) {
 		
 		patientService.updateMedicalRecordById(record.getId(), record.getIllnessDesc(), record.getMedHistory(), record.getBodyExam(), record.getDiagDesc(),record.getTreatment(), record.getSuggestion());
 		

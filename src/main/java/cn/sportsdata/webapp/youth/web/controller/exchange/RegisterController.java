@@ -95,6 +95,7 @@ public class RegisterController extends BaseController{
 		
 		model.addAttribute("record", registRecord);
 		model.addAttribute("list", list);
+		model.addAttribute("registId", id);
 		return "register/register_detail";
 	}
 	

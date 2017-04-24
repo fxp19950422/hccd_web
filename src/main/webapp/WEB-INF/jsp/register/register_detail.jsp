@@ -67,6 +67,7 @@
 						<td>${record.recordType }</td>
 						<td>${record.medicalRecord.illnessDesc }</td>
 						<td>${record.medicalRecord.doctor }</td>
+						<td>${record.medicalRecord.id }</td>
 					</tr>
 				</c:if>
 				<c:if test="${record.recordType == 'resident' }">
@@ -75,6 +76,7 @@
 						<td>${record.recordType }</td>
 						<td>${record.residentRecord.inChiDiagnosis }</td>
 						<td>${record.residentRecord.residentId }</td>
+						<td>${record.residentRecord.id }</td>
 					</tr>
 				</c:if>
 				<c:if test="${record.recordType == 'operation' }">
@@ -85,6 +87,7 @@
 						<td>${record.recordType }</td>
 						<td>${record.operationRecord.operationDescription }</td>
 						<td>${record.operationRecord.operator }</td>
+						<td>${record.operationRecord.id }</td>
 					</tr>
 				</c:if>
 				
@@ -111,9 +114,37 @@ pre, code {
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 	}
 	
+	
+	
 	function actionFormatter(value, row, index){
-		return '<span onclick=handle("'+value+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-edit content-color"></i></span>';
+		return '<span onclick=handle("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
+	
+	function handle(recordId,recordType) {
+		if(recordId==undefined){
+			recordId=0;
+		}
+		var url ;
+		if(recordType=='medical'){
+			url ="<%=serverUrl%>care/care_detail?id=" + recordId;
+		} else if(recordType=='operation'){
+			
+		} else if(recordType=='resident'){
+			url ="<%=serverUrl%>care/resident_detail?id=" + recordId;
+		}
+		sa.ajax({
+			type : "get",
+			url : url,
+			data :{registId:$("#recordId").val()},
+			success : function(data) {
+				AngularHelper.Compile($('#content'), data);
+			},
+			error: function() {
+				alert("页面打开失败");
+			}
+		});
+	}
+	
 	function typeFormatter(value, row, index){
 		if('medical' == value){
 			return "门诊记录";
