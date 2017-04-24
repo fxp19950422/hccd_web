@@ -27,7 +27,8 @@
 					<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
 					<div class="col-md-3 profileDetailItemContent">${record.doctorName}</div>
 					<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-					<div class="col-md-3 profileDetailItemContent">${record.admissionDate}</div>
+					<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${record.admissionDate}" /></div>
 				</div>
 				</sa-panel>
 				<sa-panel title="入院情况"> <textarea id="future_plan"
@@ -75,16 +76,16 @@
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改教练");
+		buildBreadcumb("新增/修改住院信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 		
 		
 	}
 	
 	function initEvent() {
-		
+		var registId = '${registId}';
 		$('#cancle_btn').click(function() {
-			$('#content').loadAngular("<%=serverUrl%>care/resident_detail?id=${id}" );
+			$('#content').loadAngular("<%=serverUrl%>care/resident_detail?id=${id}&registId="+registId );
 		});
 		$('#save_btn').click(function() {
 			
@@ -94,7 +95,7 @@
 				data : $("#player_form").serialize(),
 				success : function(data) {
 					alert("修改成功");
-					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}");
+					$('#content').loadAngular("<%=serverUrl%>care/resident_detail?id=${id}&registId="+registId);
 						},
 						error : function() {
 							alert("修改失败");

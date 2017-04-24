@@ -28,7 +28,8 @@
 							<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
 							<div class="col-md-3 profileDetailItemContent">${record.doctorName}</div>
 							<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-							<div class="col-md-3 profileDetailItemContent">${record.admissionDate}</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${record.admissionDate}" /></div>
 						</div>
 					</sa-panel>
 					<sa-panel title="入院情况">
@@ -89,7 +90,7 @@ pre, code {
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",
-				url : "<%=serverUrl%>care/resident_edit?id=${id}",
+				url : "<%=serverUrl%>care/resident_edit?id=${id}&registId="+registId,
 				success : function(data) {
 					//TODO: will update the container later
 					AngularHelper.Compile($('#content'), data);

@@ -100,11 +100,12 @@ public class CareController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/resident_edit",method = RequestMethod.GET)
-	public String toResidentRecordEdit(String id, Model model){
+	public String toResidentRecordEdit(String id, Model model,String registId){
 		
 		ResidentRecord record = patientService.getResidentRecordById(id);
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
 		return "care/resident_record_edit";
 	}
 	
@@ -199,9 +200,20 @@ public class CareController extends BaseController{
 	}
 	@ResponseBody
 	@RequestMapping(value = "/save_resident_record", method = RequestMethod.POST)
-	public Object saveResidentRecord(HttpServletRequest request, MedicalRecordVO record) {
+	public Object saveResidentRecord(HttpServletRequest request, ResidentRecord record,String id) {
 		
-		patientService.updateMedicalRecordById(record.getId(), record.getIllnessDesc(), record.getMedHistory(), record.getBodyExam(), record.getDiagDesc(),record.getTreatment(), record.getSuggestion());
+		ResidentRecord dbRecord = patientService.getResidentRecordById(id);
+		
+		dbRecord.setInChiDiagnosis(record.getInChiDiagnosis());
+		dbRecord.setInWesDiagnosis(record.getInWesDiagnosis());
+		dbRecord.setProcess(record.getProcess());
+		dbRecord.setOutChiDiagnosis(record.getOutChiDiagnosis());
+		dbRecord.setOutWesDiagnosis(record.getOutWesDiagnosis());
+		dbRecord.setSuggestion(record.getSuggestion());
+		dbRecord.setInState(record.getInState());
+		dbRecord.setOutState(record.getOutState());
+		
+		patientService.updateResidentRecord(dbRecord);
 		
 		return record;
 	}
