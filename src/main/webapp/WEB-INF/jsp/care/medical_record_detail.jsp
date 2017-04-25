@@ -14,6 +14,7 @@
 <div class="profileEditContainer">
 	<div class="coach_edit_button_area">
 		<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
+		<button id="new_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">新增</button>
 		<button id="export_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">导出病历</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>
@@ -85,6 +86,19 @@ pre, code {
 			sa.ajax({
 				type : "get",
 				url : "<%=serverUrl%>care/care_edit?id=${id}",
+				success : function(data) {
+					//TODO: will update the container later
+					AngularHelper.Compile($('#content'), data);
+				},
+				error: function() {
+					alert("打开编辑球员页面失败");
+				}
+			});
+		});
+		$('#new_btn').click(function() {
+			sa.ajax({
+				type : "get",
+				url : "<%=serverUrl%>care/care_insert",
 				success : function(data) {
 					//TODO: will update the container later
 					AngularHelper.Compile($('#content'), data);

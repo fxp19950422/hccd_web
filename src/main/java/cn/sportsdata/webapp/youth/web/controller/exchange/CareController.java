@@ -89,6 +89,14 @@ public class CareController extends BaseController{
 		return "care/medical_record_edit";
 	}
 	
+	@RequestMapping(value = "/care_insert",method = RequestMethod.GET)
+	public String toRecordInsert(Model model){
+		
+		MedicalRecordVO record = new MedicalRecordVO();
+		model.addAttribute("record", record);
+		return "care/medical_record_edit";
+	}
+	
 	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)
 	public ResponseEntity<byte[]> download(HttpServletRequest request, String id, HttpServletResponse response) throws IOException{
 		
