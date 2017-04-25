@@ -89,12 +89,33 @@ public class CareController extends BaseController{
 		return "care/medical_record_edit";
 	}
 	
+
 	@RequestMapping(value = "/care_insert",method = RequestMethod.GET)
 	public String toRecordInsert(Model model){
 		
 		MedicalRecordVO record = new MedicalRecordVO();
 		model.addAttribute("record", record);
 		return "care/medical_record_edit";
+	}
+	
+	@RequestMapping(value = "/resident_detail",method = RequestMethod.GET)
+	public String toResidentRecordDetail(String id, Model model,String registId){
+		
+		ResidentRecord record = patientService.getResidentRecordById(id);
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		return "care/resident_record_detail";
+	}
+	
+	@RequestMapping(value = "/resident_edit",method = RequestMethod.GET)
+	public String toResidentRecordEdit(String id, Model model,String registId){
+		
+		ResidentRecord record = patientService.getResidentRecordById(id);
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		return "care/resident_record_edit";
 	}
 	
 	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)
@@ -183,6 +204,25 @@ public class CareController extends BaseController{
 	public Object saveRecord(HttpServletRequest request, MedicalRecordVO record) {
 		
 		patientService.updateMedicalRecordById(record.getId(), record.getIllnessDesc(), record.getMedHistory(), record.getBodyExam(), record.getDiagDesc(),record.getTreatment(), record.getSuggestion());
+		
+		return record;
+	}
+	@ResponseBody
+	@RequestMapping(value = "/save_resident_record", method = RequestMethod.POST)
+	public Object saveResidentRecord(HttpServletRequest request, ResidentRecord record,String id) {
+		
+		ResidentRecord dbRecord = patientService.getResidentRecordById(id);
+		
+		dbRecord.setInChiDiagnosis(record.getInChiDiagnosis());
+		dbRecord.setInWesDiagnosis(record.getInWesDiagnosis());
+		dbRecord.setProcess(record.getProcess());
+		dbRecord.setOutChiDiagnosis(record.getOutChiDiagnosis());
+		dbRecord.setOutWesDiagnosis(record.getOutWesDiagnosis());
+		dbRecord.setSuggestion(record.getSuggestion());
+		dbRecord.setInState(record.getInState());
+		dbRecord.setOutState(record.getOutState());
+		
+		patientService.updateResidentRecord(dbRecord);
 		
 		return record;
 	}

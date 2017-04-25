@@ -111,10 +111,10 @@ public class PatientAPIController {
 		array.add(record1);
 		
 		//operation
-		List<String> SectionNameList2 = Arrays.asList(new String[] {"术前诊断", "术后诊断", "手术名称", "手术经过", "手术体位",
-				"手术切口","探查所见", "手术步骤", "引流物", "术毕病人情况"});
-		List<String> sectionList2 = Arrays.asList(new String[] {"beforeDiagnosis", "afterDiagnosis",
-				"operationDescription","process", "posture", "incision","exploratory", "steps", "drainage", "finishedCondition"});
+		List<String> SectionNameList2 = Arrays.asList(new String[] {"术者", "主诉", "术前诊断", "术后诊断", "手术名称", "手术经过", "手术体位",
+				"手术切口","探查所见", "手术步骤", "麻醉手段", "引流物", "术毕病人情况"});
+		List<String> sectionList2 = Arrays.asList(new String[] {"operator", "opPrimary", "beforeDiagnosis", "afterDiagnosis",
+				"operationDescription","process", "posture", "incision","exploratory", "steps", "anaesthesiaMethod", "drainage", "finishedCondition"});
 		HospitalRecordTypeVO record2 = new HospitalRecordTypeVO();
 		record2.setRecordType("operation");
 		record2.setRecordTypeName("手术记录");
