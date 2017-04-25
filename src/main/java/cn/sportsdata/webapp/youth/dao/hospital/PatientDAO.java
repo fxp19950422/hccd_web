@@ -121,4 +121,8 @@ public interface PatientDAO {
 	List<PatientRegistRecord> searchRegisteRecordList(@Param("hospital_id") String hospitalId,
 			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("year") long year,
 			@Param("month") long month, @Param("day") long day);
+	
+	List<OpertaionRecord> searchOperationRecordList(@Param("hospital_id") String hospitalId,
+			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("year") long year,
+			@Param("month") long month, @Param("day") long day);
 }

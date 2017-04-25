@@ -65,8 +65,6 @@
 	function initData() {
 		buildBreadcumb("新增/修改教练");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
-		
-		
 	}
 	
 	function initEvent() {

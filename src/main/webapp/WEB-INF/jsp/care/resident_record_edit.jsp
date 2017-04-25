@@ -76,7 +76,7 @@
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改住院信息");
+		buildBreadcumb("新增/修改出院信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 		
 		

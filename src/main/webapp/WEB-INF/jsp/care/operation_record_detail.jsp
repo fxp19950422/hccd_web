@@ -74,6 +74,14 @@
 		</form>
 	</div>
 </div>
+
+
+<form id="condition_form">
+	<div class="row">
+		<input type="hidden" class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
+		<input type="hidden" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
+	</div>
+</form>
 <style>
 pre, code {
     white-space: pre-line;
@@ -88,14 +96,20 @@ pre, code {
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改住院信息");
+		buildBreadcumb("手术信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 	}
 	
 	function initEvent() {
 		var registId = '${registId}';
 		$('#cancle_btn').click(function(){
-			$('#content').loadAngular("<%=serverUrl%>register/register_detail?id="+registId );
+			if(registId){
+				$('#content').loadAngular("<%=serverUrl%>register/register_detail?id="+registId );
+			} else {
+				if('${condition}'){
+					$('#content').loadAngular("<%=serverUrl%>care/operation_list?" + $("#condition_form").serialize() );
+				}
+			}
 		});
 		$("#export_btn").click(function(){
 			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
@@ -104,12 +118,13 @@ pre, code {
 			sa.ajax({
 				type : "get",
 				url : "<%=serverUrl%>care/operation_edit?id=${id}&registId="+registId,
+				data :$("#condition_form").serialize(),
 				success : function(data) {
 					//TODO: will update the container later
 					AngularHelper.Compile($('#content'), data);
 				},
 				error: function() {
-					alert("打开编辑球员页面失败");
+					alert("打开编辑页面失败");
 				}
 			});
 		});

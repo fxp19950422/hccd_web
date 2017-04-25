@@ -595,4 +595,11 @@ public class PatientServiceImpl implements PatientService {
 		// TODO Auto-generated method stub
 		return patientDAO.insertMedicalRecord(medicalRecordVO);
 	}
+
+	@Override
+	public List<OpertaionRecord> searchOperationRecordList(String hospitalId, String doctorCode, String name, long year,
+			long month, long day) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchOperationRecordList(hospitalId, doctorCode, name, year, month, day);
+	}
 }

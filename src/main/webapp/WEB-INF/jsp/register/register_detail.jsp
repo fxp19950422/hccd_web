@@ -55,9 +55,6 @@
 					<th data-field="id" data-formatter="actionFormatter"
 						data-align="center">操作</th>
 				</tr>
-				
-				
-				
 			</thead>
 			<tbody>
 				<c:forEach items="${list}" var="record">
@@ -149,7 +146,7 @@ pre, code {
 		if('medical' == value){
 			return "门诊记录";
 		} else if ('resident' == value) {
-			return '住院记录';
+			return '出院记录';
 		} else if ('operation' == value) {
 			return '手术记录';
 		}

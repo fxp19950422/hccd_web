@@ -14,7 +14,7 @@
 <div class="profileEditContainer">
 	<div class="coach_edit_button_area">
 		<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
-		<button id="new_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">新增</button>
+<!-- 		<button id="new_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">新增</button> -->
 		<button id="export_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">导出病历</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>

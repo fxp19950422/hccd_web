@@ -411,6 +411,18 @@
     		</if>
 	       	order by VISIT_DATE desc, VISIT_NO
     </select>
+    
+    <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select A.*,b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' and year(OPERATING_DATE) = #{year} 
+	       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+	       	<if test="patName != null and patName != '' ">
+    			and b.real_name like '%${patName}%'
+    		</if>
+	       	order by OPERATING_DATE desc
+    </select>
+    
     <select id="getRegisteRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord" parameterType="java.util.Map">
     	select A.* from patient_regist A
 	       	where A.id=#{id}

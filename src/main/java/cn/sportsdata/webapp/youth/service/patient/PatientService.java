@@ -61,5 +61,8 @@ public interface PatientService {
 	PatientRegistRecord getRegisteRecordById(String id);
 	
 	List<PatientInfoVO> getPatients(List<String> patientIdList);
+
+	List<OpertaionRecord> searchOperationRecordList(String hospitalId, String doctorCode, String name, long year,
+			long month, long day);
 	
 }

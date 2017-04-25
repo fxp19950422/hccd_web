@@ -35,7 +35,9 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.constants.Constants;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
 import cn.sportsdata.webapp.youth.common.utils.StringUtil;
+import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.FormCondition;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
@@ -162,7 +164,7 @@ public class CareController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/operation_detail",method = RequestMethod.GET)
-	public String toOperationRecordDetail(String id, Model model,String registId){
+	public String toOperationRecordDetail(String id, Model model,String registId,FormCondition condition){
 		
 		OpertaionRecord record = patientService.getOperationRecordById(id);
 		List<String> ids = new ArrayList<>();
@@ -172,11 +174,12 @@ public class CareController extends BaseController{
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
 		return "care/operation_record_detail";
 	}
 	
 	@RequestMapping(value = "/operation_edit",method = RequestMethod.GET)
-	public String toOperationRecordEdit(String id, Model model,String registId){
+	public String toOperationRecordEdit(String id, Model model,String registId,FormCondition condition){
 		
 		OpertaionRecord record = patientService.getOperationRecordById(id);
 		List<String> ids = new ArrayList<>();
@@ -186,7 +189,70 @@ public class CareController extends BaseController{
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
 		return "care/operation_record_edit";
+	}
+	
+	
+	
+	@RequestMapping(value = "/operation_list",method = RequestMethod.GET)
+    public String toOperationListPage(HttpServletRequest request, Model model, FormCondition condition,String registId) {
+		
+//		DepartmentVO department = this.getCurrentDepartment(request);
+//		List<DoctorVO> doctors = exchangeService.getDoctors(department.getDepartmentCode(), radio == 1);
+//		
+//		
+//		model.addAttribute("doctors", doctors);
+//		model.addAttribute("radio", radio);
+		if(StringUtil.isEmpty(registId)){
+			
+//			LoginVO login = getCurrentUser(request);
+//			DepartmentVO dept = getCurrentDepartment(request);
+//			
+//			Date date = DateUtil.string2Date2(careTimeStart,"yyyy-MM-dd");
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(date);
+//			
+//			Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+//					login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
+//					calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+//			model.addAttribute("record", result);
+			model.addAttribute("condition", condition);
+			return "care/operation_list";
+		} else {
+			PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
+			
+			List<PatientRecordBO> list = patientService.getPatientRecords(registId, registRecord.getName(),
+					registRecord.getPatientId(), registRecord.getHospitalId());
+			
+			model.addAttribute("record", registRecord);
+			model.addAttribute("list", list);
+			model.addAttribute("registId", registId);
+			return "register/register_detail";
+		}
+		
+	}
+	
+	@RequestMapping(value = "/operation_records",method = RequestMethod.GET)
+	@ResponseBody
+    public List<OpertaionRecord> getOperationRecords(HttpServletRequest request, Model model, FormCondition condition) {
+		
+		LoginVO login = getCurrentUser(request);
+		DepartmentVO dept = getCurrentDepartment(request);
+		
+		Date date = DateUtil.string2Date2(condition.getCareTimeStart(),"yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		List<OpertaionRecord> list = patientService.searchOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), calendar.get(Calendar.YEAR),
+				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+		
+//		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+//				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
+//				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+		
+		return list;
 	}
 	
 	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)

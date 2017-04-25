@@ -75,7 +75,7 @@ pre, code {
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改住院信息");
+		buildBreadcumb("出院信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 	}
 	
@@ -96,7 +96,7 @@ pre, code {
 					AngularHelper.Compile($('#content'), data);
 				},
 				error: function() {
-					alert("打开编辑球员页面失败");
+					alert("打开编辑页面失败");
 				}
 			});
 		});
