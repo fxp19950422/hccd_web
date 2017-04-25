@@ -111,6 +111,7 @@ public interface PatientDAO {
 			@Param("suggestion") String suggestion);
 	
 	int updateMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
+	int insertMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
 	int updateOperationRecord(@Param("opertaionRecord") OpertaionRecord opertaionRecord);
 	int updateResidentRecord(@Param("residentRecord") ResidentRecord residentRecord);
 	

@@ -14,9 +14,8 @@
 <div class="profileEditContainer">
 	<div class="coach_edit_button_area">
 		<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
-		<button id="new_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">新增</button>
-		<button id="export_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">导出病历</button>
-		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
+<!-- 		<button id="export_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">导出病历</button> -->
+		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
 	</div>
 	<div class="clearfix"></div>
 	<div class="profileEditContent">
@@ -25,31 +24,51 @@
 					<sa-panel title="病人信息">
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">姓名</div>
-							<div class="col-md-3 profileDetailItemContent">${record.realName}</div>
-							<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
-							<div class="col-md-3 profileDetailItemContent">${record.name}</div>
-							<div class="col-md-1 profileDetailItemTitle">诊断时间</div>
-							<div class="col-md-3 profileDetailItemContent">${record.visitDate}</div>
+							<div class="col-md-3 profileDetailItemContent">${record.patientName}</div>
+							<div class="col-md-1 profileDetailItemTitle">医生</div>
+							<div class="col-md-3 profileDetailItemContent">${record.operator}</div>
+							<div class="col-md-1 profileDetailItemTitle">入院时间</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${record.operatingDate}" /></div>
 						</div>
+						
 					</sa-panel>
 					<sa-panel title="主诉">
-							<pre style="background:white;border-width:0px;">${record.illnessDesc}</pre>
+							<pre style="background:white;border-width:0px;">${record.opPrimary}</pre>
 						</div>
 					</sa-panel>
-					<sa-panel title="病史">
-						<pre style="background:white;border-width:0px">${record.medHistory}</pre>
+					<sa-panel title="术前诊断">
+						<pre style="background:white;border-width:0px">${record.beforeDiagnosis}</pre>
 					</sa-panel>
-					<sa-panel title="查体">
-						<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
+					<sa-panel title="术后诊断">
+						<pre style="background:white;border-width:0px">${record.afterDiagnosis}</pre>
 					</sa-panel>
-					<sa-panel title="初步诊断">
-						<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
+					<sa-panel title="手术名称">
+						<pre style="background:white;border-width:0px">${record.operationDescription}</pre>
 					</sa-panel>
-					<sa-panel title="诊治项目">
-						<pre style="background:white;border-width:0px">${record.treatment}</pre>
+					<sa-panel title="手术经过">
+						<pre style="background:white;border-width:0px">${record.process}</pre>
 					</sa-panel>
-					<sa-panel title="建议">
-						<pre style="background:white;border-width:0px">${record.suggestion}</pre>
+					<sa-panel title="手术体位">
+						<pre style="background:white;border-width:0px">${record.posture}</pre>
+					</sa-panel>
+					<sa-panel title="手术切口">
+						<pre style="background:white;border-width:0px">${record.incision}</pre>
+					</sa-panel>
+					<sa-panel title="探查所见">
+						<pre style="background:white;border-width:0px">${record.exploratory}</pre>
+					</sa-panel>
+					<sa-panel title="手术步骤">
+						<pre style="background:white;border-width:0px">${record.steps}</pre>
+					</sa-panel>
+					<sa-panel title="麻醉手段">
+						<pre style="background:white;border-width:0px">${record.anaesthesiaMethod}</pre>
+					</sa-panel>
+					<sa-panel title="引流物">
+						<pre style="background:white;border-width:0px">${record.drainage}</pre>
+					</sa-panel>
+					<sa-panel title="术毕病人情况">
+						<pre style="background:white;border-width:0px">${record.finishedCondition}</pre>
 					</sa-panel>
 				</div>
 		</form>
@@ -69,15 +88,14 @@ pre, code {
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改教练");
+		buildBreadcumb("新增/修改住院信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
-		
-		
 	}
 	
 	function initEvent() {
+		var registId = '${registId}';
 		$('#cancle_btn').click(function(){
-			$('#content').loadAngular("<%=serverUrl%>care/care_list?registId=${registId}" );
+			$('#content').loadAngular("<%=serverUrl%>register/register_detail?id="+registId );
 		});
 		$("#export_btn").click(function(){
 			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
@@ -85,20 +103,7 @@ pre, code {
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",
-				url : "<%=serverUrl%>care/care_edit?id=${id}&registId=${registId}",
-				success : function(data) {
-					//TODO: will update the container later
-					AngularHelper.Compile($('#content'), data);
-				},
-				error: function() {
-					alert("打开编辑球员页面失败");
-				}
-			});
-		});
-		$('#new_btn').click(function() {
-			sa.ajax({
-				type : "get",
-				url : "<%=serverUrl%>care/care_insert",
+				url : "<%=serverUrl%>care/operation_edit?id=${id}&registId="+registId,
 				success : function(data) {
 					//TODO: will update the container later
 					AngularHelper.Compile($('#content'), data);

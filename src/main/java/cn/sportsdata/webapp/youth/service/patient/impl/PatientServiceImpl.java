@@ -583,4 +583,16 @@ public class PatientServiceImpl implements PatientService {
 		// TODO Auto-generated method stub
 		return patientDAO.getRegisteRecordById(id);
 	}
+
+	@Override
+	public List<PatientInfoVO> getPatients(List<String> patientIdList) {
+		// TODO Auto-generated method stub
+		return patientDAO.getPatients(patientIdList);
+	}
+
+	@Override
+	public int insertMedicalRecord(MedicalRecordVO medicalRecordVO) {
+		// TODO Auto-generated method stub
+		return patientDAO.insertMedicalRecord(medicalRecordVO);
+	}
 }

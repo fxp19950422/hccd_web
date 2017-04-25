@@ -128,7 +128,7 @@ pre, code {
 		if(recordType=='medical'){
 			url ="<%=serverUrl%>care/care_detail?id=" + recordId;
 		} else if(recordType=='operation'){
-			
+			url ="<%=serverUrl%>care/operation_detail?id=" + recordId;
 		} else if(recordType=='resident'){
 			url ="<%=serverUrl%>care/resident_detail?id=" + recordId;
 		}
@@ -168,7 +168,7 @@ pre, code {
 			$('#content').loadAngular("<%=serverUrl%>register/register_list" );
 		});
 		$("#add_medical_btn").click(function(){
-			
+			$('#content').loadAngular("<%=serverUrl%>care/add_care?registId=${record.id }" );
 		});
 		
 		$("#btable").bootstrapTable();

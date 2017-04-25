@@ -25,30 +25,37 @@
 							<div class="col-md-1 profileDetailItemTitle">姓名</div>
 							<div class="col-md-3 profileDetailItemContent">${record.realName}</div>
 							<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
-							<div class="col-md-3 profileDetailItemContent">${record.name}</div>
+							<div class="col-md-3 profileDetailItemContent">${record.doctor}</div>
 							<div class="col-md-1 profileDetailItemTitle">诊断时间</div>
-							<div class="col-md-3 profileDetailItemContent">${record.visitDate}</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${record.visitDate}" /></div>
 						</div>
 					</sa-panel>
 					<sa-panel title="主诉">
-						<textarea id="future_plan" name="illnessDesc" class="form-control" rows="5" placeholder="不超过800字" value="${record.illnessDesc}">${record.illnessDesc}</textarea>
+						<textarea id="future_plan" name="illnessDesc" class="form-control" rows="5" placeholder="不超过800字" value=""></textarea>
 					</sa-panel>
 					<sa-panel title="病史">
-						<textarea id="future_plan" name="medHistory" class="form-control" rows="5" placeholder="不超过800字" value="${record.medHistory}">${record.medHistory}</textarea>
+						<textarea id="future_plan" name="medHistory" class="form-control" rows="5" placeholder="不超过800字" value=""></textarea>
 					</sa-panel>
 					<sa-panel title="查体">
-						<textarea id="future_plan" name="bodyExam" class="form-control" rows="5" placeholder="不超过800字" value="${record.bodyExam}">${record.bodyExam}</textarea>
+						<textarea id="future_plan" name="bodyExam" class="form-control" rows="5" placeholder="不超过800字" value=""></textarea>
 					</sa-panel>
 					<sa-panel title="初步诊断">
-						<textarea id="future_plan" name="diagDesc" class="form-control" rows="5" placeholder="不超过800字" value="${record.diagDesc}">${record.diagDesc}</textarea>
+						<textarea id="future_plan" name="diagDesc" class="form-control" rows="5" placeholder="不超过800字" value=""></textarea>
 					</sa-panel>
 					<sa-panel title="诊治项目">
-						<textarea id="future_plan" name="treatment" class="form-control" rows="5" placeholder="不超过800字" value="${record.treatment}">${record.treatment}</textarea>
+						<textarea id="future_plan" name="treatment" class="form-control" rows="5" placeholder="不超过800字" value=""></textarea>
 					</sa-panel>
 					<sa-panel title="建议">
-						<textarea id="future_plan" name="suggestion" class="form-control" rows="5" placeholder="不超过800字" value="${record.suggestion}">${record.suggestion}</textarea>
+						<textarea id="future_plan" name="suggestion" class="form-control" rows="5" placeholder="不超过800字" value=""></textarea>
 					</sa-panel>
-					<input type="hidden" name="id" value="${id}"/>
+					<input type="hidden" name="id" value="${record.id}"/>
+					<input type="hidden" name="patientId" value="${record.patientId}"/>
+					<input type="hidden" name="visitDate" value="${record.visitDate}"/>
+					<input type="hidden" name="visitNo" value="${record.visitNo}"/>
+					<input type="hidden" name="doctor" value="${record.doctor}"/>
+					<input type="hidden" name="doctorNo" value="${record.doctorNo}"/>
+					<input type="hidden" name="hospitalId" value="${record.hospitalId}"/>
 				</div>
 		</form>
 	</div>
@@ -63,29 +70,29 @@
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改教练");
+		buildBreadcumb("新增门诊记录");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 		
 		
 	}
 	
 	function initEvent() {
-		
+		var registerId = '${registId}';
 		$('#cancle_btn').click(function() {
-			$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}" );
+			$('#content').loadAngular("<%=serverUrl%>register/register_detail?id="+registerId );
 		});
 		$('#save_btn').click(function() {
 			
 			sa.ajax({
 				type : "post",
-				url : "<%=serverUrl%>care/save_record",
+				url : "<%=serverUrl%>care/add_record",
 				data : $("#player_form").serialize(),
 				success : function(data) {
-					alert("修改成功");
-					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}" );
+					alert("新增成功");
+					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${record.id}&registId="+registerId );
 				},
 				error: function() {
-					alert("修改失败");
+					alert("新增失败");
 				}
 			}); 
 		});

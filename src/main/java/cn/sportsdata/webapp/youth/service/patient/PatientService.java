@@ -9,6 +9,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
@@ -45,6 +46,7 @@ public interface PatientService {
 			 String treatment,
 			 String suggestion);
 	int updateMedicalRecord(MedicalRecordVO medicalRecordVO);
+	int insertMedicalRecord(MedicalRecordVO medicalRecordVO);
 	int updateOperationRecord(OpertaionRecord opertaionRecord);
 	int updateResidentRecord(ResidentRecord residentRecord);
 	
@@ -57,4 +59,7 @@ public interface PatientService {
 	
 	List<PatientRegistRecord> getRegisteRecordList(String hospitalId, String doctorCode,String patName, long year,long month,long day);
 	PatientRegistRecord getRegisteRecordById(String id);
+	
+	List<PatientInfoVO> getPatients(List<String> patientIdList);
+	
 }

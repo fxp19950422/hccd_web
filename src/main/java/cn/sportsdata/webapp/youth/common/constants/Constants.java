@@ -18,6 +18,7 @@ public class Constants {
 	public static final String ROLE_DOCTOR = "doctor";
 	public static final String ROLE_NURSE = "nurse";
 	public static final String ROLE_PATIENT = "patient";
+	public static final String PLATFORM_CLOUD = "platform_cloud";
 	
 	
 	

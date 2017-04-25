@@ -291,6 +291,31 @@
 		advice = #{medicalRecordVO.advice}
     	where id = #{medicalRecordVO.id}
     </update>
+    <insert id="insertMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
+    	insert into medical_record (id,yb_icd_name,visit_no,visit_date,
+    	patient_id,treatment,tooth,suggestion,status,ordinal,
+    	operation_record,menses4,menses3,menses2,menses,memo,
+    	medical_record,med_history,maternity,marrital,individual,
+    	illness_desc,illness_date,hospital_id,family_ill,doctor_no,
+    	doctor,diag_yb_db,diag_desc,cfz_flag,cdiag,body_exam,
+    	assistant_exam,anamnesis,advice)
+    	values (#{medicalRecordVO.id},#{medicalRecordVO.ybIcdName},#{medicalRecordVO.visitNo},
+    	#{medicalRecordVO.visitDate},#{medicalRecordVO.patientId},
+    	#{medicalRecordVO.treatment},#{medicalRecordVO.tooth},
+    	#{medicalRecordVO.suggestion},#{medicalRecordVO.status},
+    	#{medicalRecordVO.ordinal},#{medicalRecordVO.operationRecord},
+    	#{medicalRecordVO.menses4},#{medicalRecordVO.menses3},
+    	#{medicalRecordVO.menses2},#{medicalRecordVO.menses},
+    	#{medicalRecordVO.memo},#{medicalRecordVO.medicalRecord},
+    	#{medicalRecordVO.medHistory},#{medicalRecordVO.maternity},
+    	#{medicalRecordVO.marrital},#{medicalRecordVO.individual},
+    	#{medicalRecordVO.illnessDesc},#{medicalRecordVO.illnessDate},
+    	#{medicalRecordVO.hospitalId},#{medicalRecordVO.familyIll},
+    	#{medicalRecordVO.doctorNo},#{medicalRecordVO.doctor},#{medicalRecordVO.diagYbDb},
+    	#{medicalRecordVO.diagDesc},#{medicalRecordVO.cfzFlag},#{medicalRecordVO.cdiag},
+    	#{medicalRecordVO.bodyExam},#{medicalRecordVO.assistantExam},
+    	#{medicalRecordVO.anamnesis},#{medicalRecordVO.advice})
+    </insert>
     
      <update id="updateOperationRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
      	update operation set  

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +31,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
+import cn.sportsdata.webapp.youth.common.constants.Constants;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
+import cn.sportsdata.webapp.youth.common.utils.StringUtil;
+import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
@@ -51,7 +59,7 @@ public class CareController extends BaseController{
 	PatientService patientService;
 	
 	@RequestMapping(value = "/care_list",method = RequestMethod.GET)
-    public String toCareListPage(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd) {
+    public String toCareListPage(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd,String registId) {
 		
 //		DepartmentVO department = this.getCurrentDepartment(request);
 //		List<DoctorVO> doctors = exchangeService.getDoctors(department.getDepartmentCode(), radio == 1);
@@ -59,7 +67,20 @@ public class CareController extends BaseController{
 //		
 //		model.addAttribute("doctors", doctors);
 //		model.addAttribute("radio", radio);
-		return "care/care_list";
+		if(StringUtil.isEmpty(registId)){
+			return "care/care_list";
+		} else {
+			PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
+			
+			List<PatientRecordBO> list = patientService.getPatientRecords(registId, registRecord.getName(),
+					registRecord.getPatientId(), registRecord.getHospitalId());
+			
+			model.addAttribute("record", registRecord);
+			model.addAttribute("list", list);
+			model.addAttribute("registId", registId);
+			return "register/register_detail";
+		}
+		
 	}
 	
 	@RequestMapping(value = "/medical_records",method = RequestMethod.GET)
@@ -72,20 +93,42 @@ public class CareController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/care_detail",method = RequestMethod.GET)
-	public String toRecordDetail(String id, Model model){
+	public String toRecordDetail(String id, Model model,String registId){
 		
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
 		return "care/medical_record_detail";
+	}
+	
+	@RequestMapping(value = "/add_care",method = RequestMethod.GET)
+	public String toAddDetail(HttpServletRequest request,Model model,String registId){
+		LoginVO user = getCurrentUser(request);
+		
+		PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
+		MedicalRecordVO record = new MedicalRecordVO();
+		record.setId(UUID.randomUUID().toString());
+		record.setRealName(registRecord.getName());
+		record.setPatientId(registRecord.getPatientId());
+		record.setVisitDate(registRecord.getVisitDate());
+		record.setVisitNo(registRecord.getVisitNo());
+		record.setHospitalId(user.getHospitalUserInfo().getHospitalId());
+		record.setDoctorNo(user.getHospitalUserInfo().getUserIdinHospital());
+		record.setDoctor(user.getHospitalUserInfo().getUserName());
+		
+		model.addAttribute("record", record);
+		model.addAttribute("registId", registId);
+		return "care/medical_record_add";
 	}
 
 	@RequestMapping(value = "/care_edit",method = RequestMethod.GET)
-	public String toRecordEdit(String id, Model model){
+	public String toRecordEdit(String id, Model model,String registId){
 		
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
 		return "care/medical_record_edit";
 	}
 	
@@ -116,6 +159,34 @@ public class CareController extends BaseController{
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
 		return "care/resident_record_edit";
+	}
+	
+	@RequestMapping(value = "/operation_detail",method = RequestMethod.GET)
+	public String toOperationRecordDetail(String id, Model model,String registId){
+		
+		OpertaionRecord record = patientService.getOperationRecordById(id);
+		List<String> ids = new ArrayList<>();
+		ids.add(record.getPatientId());
+		List<PatientInfoVO> pList = patientService.getPatients(ids);
+		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		return "care/operation_record_detail";
+	}
+	
+	@RequestMapping(value = "/operation_edit",method = RequestMethod.GET)
+	public String toOperationRecordEdit(String id, Model model,String registId){
+		
+		OpertaionRecord record = patientService.getOperationRecordById(id);
+		List<String> ids = new ArrayList<>();
+		ids.add(record.getPatientId());
+		List<PatientInfoVO> pList = patientService.getPatients(ids);
+		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		return "care/operation_record_edit";
 	}
 	
 	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)
@@ -207,6 +278,17 @@ public class CareController extends BaseController{
 		
 		return record;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/add_record", method = RequestMethod.POST)
+	public Object addRecord(HttpServletRequest request, MedicalRecordVO record) {
+		record.setMemo(Constants.PLATFORM_CLOUD);
+		record.setStatus("active");
+		patientService.insertMedicalRecord(record);
+		return record;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/save_resident_record", method = RequestMethod.POST)
 	public Object saveResidentRecord(HttpServletRequest request, ResidentRecord record,String id) {
@@ -226,6 +308,31 @@ public class CareController extends BaseController{
 		
 		return record;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/save_operation_record", method = RequestMethod.POST)
+	public Object saveOperationRecord(HttpServletRequest request, OpertaionRecord record,String id) {
+		
+		OpertaionRecord dbRecord = patientService.getOperationRecordById(id);
+		
+		dbRecord.setOperator(record.getOperator());
+		dbRecord.setOpPrimary(record.getOpPrimary());
+		dbRecord.setBeforeDiagnosis(record.getBeforeDiagnosis());
+		dbRecord.setAfterDiagnosis(record.getAfterDiagnosis());
+		dbRecord.setOperationDescription(record.getOperationDescription());
+		dbRecord.setProcess(record.getProcess());
+		dbRecord.setPosture(record.getPosture());
+		dbRecord.setIncision(record.getIncision());
+		dbRecord.setExploratory(record.getExploratory());
+		dbRecord.setSteps(record.getSteps());
+		dbRecord.setAnaesthesiaMethod(record.getAnaesthesiaMethod());
+		dbRecord.setDrainage(record.getDrainage());
+		dbRecord.setFinishedCondition(record.getFinishedCondition());
+		patientService.updateOperationRecord(dbRecord);
+		
+		return record;
+	}
+	
 //	@RequestMapping(value = "/exchange_detail",method = RequestMethod.POST)
 //    public String toExchangeDetail(HttpServletRequest request, Model model,  @RequestBody JSONObject obj) {
 //		
