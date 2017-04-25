@@ -136,7 +136,7 @@
 							<div class="col-md-11 profileDetailItemContent">${operation.operatorName}</div>
 						</div>
 					</sa-panel> --%>
-					<H2>手术情况(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" /></H2>
+					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
 					<table>
       				<tbody>
       					<tr>
