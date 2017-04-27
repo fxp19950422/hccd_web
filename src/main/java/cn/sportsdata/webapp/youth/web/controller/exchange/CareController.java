@@ -195,6 +195,7 @@ public class CareController extends BaseController{
 	
 	
 	
+	
 	@RequestMapping(value = "/operation_list",method = RequestMethod.GET)
     public String toOperationListPage(HttpServletRequest request, Model model, FormCondition condition,String registId) {
 		
@@ -448,5 +449,76 @@ public class CareController extends BaseController{
 		
 		model.addAttribute("medicalrecords", medicalRecords);
 		return "exchange/exchange_detail";
+	}
+	
+	
+	@RequestMapping(value = "/in_hospital_list",method = RequestMethod.GET)
+	public String toInHospitalListPage(HttpServletRequest request, Model model, FormCondition condition,String registId){
+		return "care/in_hospital_list";
+	}
+	
+	@RequestMapping(value = "/in_hospital_record_detail",method = RequestMethod.GET)
+	public String toInHospitalRecordDetail(String id, Model model,String registId,FormCondition condition){
+		
+		OpertaionRecord record = patientService.getOperationRecordById(id);
+		List<String> ids = new ArrayList<>();
+		ids.add(record.getPatientId());
+		List<PatientInfoVO> pList = patientService.getPatients(ids);
+		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
+		return "care/in_hospital_record_detail";
+	}
+	
+	@RequestMapping(value = "/in_hospital_record_edit",method = RequestMethod.GET)
+	public String toInHospitalRecordEdit(String id, Model model,String registId,FormCondition condition){
+		
+		OpertaionRecord record = patientService.getOperationRecordById(id);
+		List<String> ids = new ArrayList<>();
+		ids.add(record.getPatientId());
+		List<PatientInfoVO> pList = patientService.getPatients(ids);
+		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
+		return "care/in_hospital_record_edit";
+	}
+	
+	@RequestMapping(value = "/out_hospital_list",method = RequestMethod.GET)
+	public String toOutHospitalListPage(HttpServletRequest request, Model model, FormCondition condition,String registId){
+		return "care/out_hospital_list";
+	}
+	
+	@RequestMapping(value = "/out_hospital_record_detail",method = RequestMethod.GET)
+	public String toOutHospitalRecordDetail(String id, Model model,String registId,FormCondition condition){
+		
+		OpertaionRecord record = patientService.getOperationRecordById(id);
+		List<String> ids = new ArrayList<>();
+		ids.add(record.getPatientId());
+		List<PatientInfoVO> pList = patientService.getPatients(ids);
+		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
+		return "care/out_hospital_record_detail";
+	}
+	
+	@RequestMapping(value = "/out_hospital_record_edit",method = RequestMethod.GET)
+	public String toOutHospitalRecordEdit(String id, Model model,String registId,FormCondition condition){
+		
+		OpertaionRecord record = patientService.getOperationRecordById(id);
+		List<String> ids = new ArrayList<>();
+		ids.add(record.getPatientId());
+		List<PatientInfoVO> pList = patientService.getPatients(ids);
+		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		model.addAttribute("record", record);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
+		return "care/out_hospital_record_edit";
 	}
 }
