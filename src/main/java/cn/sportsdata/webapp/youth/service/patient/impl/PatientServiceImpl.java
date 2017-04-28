@@ -355,6 +355,17 @@ public class PatientServiceImpl implements PatientService {
 				patientIdList.add(record.getPatientId());
 			}
 		}
+		if (recordType.equalsIgnoreCase("patientInhospital")) {
+			List<PatientInHospital> list = patientDAO.searchPatientInhospital(hospitalId, patientName, doctorName, doctorCode);
+			for (PatientInHospital record:list) {
+				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setRecordType("patientInhospital");
+				patientRecord.setPatientInhospital(record);
+				patientRecord.setPatientId(record.getPatientId());
+				patientRecordList.add(patientRecord);
+				patientIdList.add(record.getPatientId());
+			}
+		}
 		
 		if (!patientIdList.isEmpty()) {
 			List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);

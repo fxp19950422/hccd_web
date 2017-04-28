@@ -41,6 +41,7 @@ public class PatientAPIController {
 	@Autowired
 	PatientService patientService;
 
+	//医生app登录工作台展示的记录列表
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
 			String hospitalId, String doctorCode, String doctorName, String recordType, long year, long month, long day) {
@@ -78,9 +79,13 @@ public class PatientAPIController {
 			result.put("residentRecord", patientService.getResidentRecordByOperation(recordId, hospitalId, patientId));
 		}
 		if (recordType.equalsIgnoreCase("resident")) {
+			List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
+			result.put("assetList", assetList);
 			result.put("operationRecordList", patientService.getOperationsByResident(recordId, hospitalId, patientId));
 		}
 		if (recordType.equalsIgnoreCase("patientInhospital")) {
+			List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
+			result.put("assetList", assetList);
 			result.put("operationRecordList", patientService.getOperationsDuringInHospital(recordId, hospitalId, patientId));
 		}
 		
@@ -142,9 +147,10 @@ public class PatientAPIController {
 				"nursingClass"});
 		HospitalRecordTypeVO record4 = new HospitalRecordTypeVO();
 		record4.setRecordType("patientInhospital");
-		record4.setRecordTypeName("住院患者");
+		record4.setRecordTypeName("当前住院患者");
 		record4.setSectionList(sectionList4);
 		record4.setSectionNameList(SectionNameList4);
+		record4.setAssetTypeList(patientService.getRecordAssetTypeList("patientInhospital"));
 		array.add(record4);
 		
 		Map<String, Object> result = new HashMap<String, Object>();

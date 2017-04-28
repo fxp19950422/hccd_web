@@ -41,7 +41,15 @@ public class OpertaionRecord implements Serializable {
     private String operatorName;
     
     
-    
+    Date meetingDate;
+	public Date getMeetingDate() {
+		return meetingDate;
+	}
+
+	public void setMeetingDate(Date meetingDate) {
+		this.meetingDate = meetingDate;
+	}
+
     
     public String getOperatorName() {
 		return operatorName;

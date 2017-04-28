@@ -62,37 +62,51 @@
     <select id="getMyOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc  limit 50
     </select>
     
     <select id="getFirstAsistOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.FIRST_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
     <select id="getSecondAsistOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.SECOND_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
     <select id="getAnesthesiaOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.ANESTHESIA_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' order by OPERATING_DATE desc
+	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
+
+    
+    <!-- 查询住院记录 -->
+    <!-- 住院期间的手术记录 -->
     <select id="getOperationsDuringInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-        select A.* from operation A
+        select A.*, C.meeting_date from operation A
+        	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
 	       	where A.OPERATING_DATE > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
 	        and A.patient_id =#{patient_id} and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
-    <!-- 查询住院记录 -->
+    <!-- 住院期间的出院记录 -->
+    <select id="getResidentDuringInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+        select A.*, C.meeting_date from resident_record A
+        	left join morning_shift_meeting_record C on C.record_id = A.id
+        	left join patient_in_hospital B on B.patient_id = A.patient_id
+	       	where A.IN_OUT_STATUS = 0 and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	        and A.patient_id =#{patient_id} and A.status = 'active'
+    </select>
+    
     <select id="getCurPatientsInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
-        select A.* from patient_in_hospital A
+        select A.*, C.meeting_date from patient_in_hospital A
+        	left join morning_shift_meeting_record C on C.record_id = A.id
 	       	where (A.doctor_id=#{doctor_code} or A.dept_code in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
@@ -113,21 +127,21 @@
         select A.* from resident_record A
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc limit 50
     </select>
     
     <select id="getDirectResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.DIRECTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
 	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc limit 50
     </select>
     
     <select id="getAttendingResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.ATTENDING_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
 	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc limit 50
     </select>
     
     <!-- 查询单个病人所有记录 -->
@@ -199,12 +213,17 @@
 	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
-    <select id="searchPatientResidentRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
-        select A.* from resident_record A
-	       	where A.hospital_id=#{hospital_id} and A.NAME = #{patient_name}
+    <select id="searchPatientResidentRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+        select A.* from resident_record A left join patient B on B.patient_number = A.patient_id 
+	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
 	       	and A.status = 'active' order by ADMISSION_DATE desc
     </select>
 
+    <select id="searchPatientInhospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+        select A.* from patient_in_hospital A left join patient B on B.patient_number = A.PATIENT_ID 
+	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
+	       	and A.status = 'active' order by ADMISSION_DATE_TIME desc
+    </select>
 
     <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO" parameterType="java.util.Map">
 		select A.id as id, A.record_asset_type_id as asset_type_id, B.id as asset_id, 
@@ -428,4 +447,16 @@
 	       	where A.id=#{id}
     </select>
     
+    <select id="getAllShiftMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
+    	
+    </select>
+  
+    <select id="getMyShiftMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
+    	
+    </select>
+
+    <insert id="saveShiftMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
+    	
+    </insert>
+      
 </mapper>

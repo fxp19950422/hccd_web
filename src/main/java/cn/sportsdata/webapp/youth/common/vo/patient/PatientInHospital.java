@@ -1028,4 +1028,28 @@ public class PatientInHospital implements Serializable {
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+    
+    Date meetingDate;
+	public Date getMeetingDate() {
+		return meetingDate;
+	}
+	public void setMeetingDate(Date meetingDate) {
+		this.meetingDate = meetingDate;
+	}
+	
+	Date latestMeetingDate;
+	String latestMeetingType;
+	
+	public Date getLatestMeetingDate() {
+		return latestMeetingDate;
+	}
+	public void setLatestMeetingDate(Date latestMeetingDate) {
+		this.latestMeetingDate = latestMeetingDate;
+	}
+	public String getLatestMeetingType() {
+		return latestMeetingType;
+	}
+	public void setLatestMeetingType(String latestMeetingType) {
+		this.latestMeetingType = latestMeetingType;
+	}
 }

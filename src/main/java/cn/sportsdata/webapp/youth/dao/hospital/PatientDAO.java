@@ -65,7 +65,7 @@ public interface PatientDAO {
 			@Param("doctor_name") String doctorName, @Param("year") long year, 
 			@Param("month") long month, @Param("day") long day);
 	
-	//
+	//按病人姓名搜索
 	List<MedicalRecordVO> searchPatientMedicalRecord(
 			@Param("hospital_id") String hospitalId, 
 			@Param("patient_name") String patientName,
@@ -77,6 +77,11 @@ public interface PatientDAO {
 			@Param("doctor_name") String doctorName, 
 			@Param("doctor_code") String doctorCode);
 	List<ResidentRecord> searchPatientResidentRecord(
+			@Param("hospital_id") String hospitalId, 
+			@Param("patient_name") String patientName,
+			@Param("doctor_name") String doctorName, 
+			@Param("doctor_code") String doctorCode);
+	List<PatientInHospital> searchPatientInhospital(
 			@Param("hospital_id") String hospitalId, 
 			@Param("patient_name") String patientName,
 			@Param("doctor_name") String doctorName, 
