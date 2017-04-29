@@ -56,6 +56,7 @@ public interface PatientService {
 	
 	List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId);
 	List<OpertaionRecord> getOperationsDuringInHospital(String recordId, String hospitalId, String patientId);
+	List<ResidentRecord> getResidentDuringInHospital(String recordId, String hospitalId, String patientId);
 	
 	List<PatientRegistRecord> getRegisteRecordList(String hospitalId, String doctorCode,String patName, long year,long month,long day);
 	PatientRegistRecord getRegisteRecordById(String id);
@@ -64,5 +65,7 @@ public interface PatientService {
 
 	List<OpertaionRecord> searchOperationRecordList(String hospitalId, String doctorCode, String name, long year,
 			long month, long day);
+	
+	Boolean submitMeetingRecord(String recordType, String recordId, String patientInhospitalId, String hospitalId, String doctorId);
 	
 }

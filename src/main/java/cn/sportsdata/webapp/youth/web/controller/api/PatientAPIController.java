@@ -87,6 +87,7 @@ public class PatientAPIController {
 			List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
 			result.put("assetList", assetList);
 			result.put("operationRecordList", patientService.getOperationsDuringInHospital(recordId, hospitalId, patientId));
+			result.put("residentList", patientService.getResidentDuringInHospital(recordId, hospitalId, patientId));
 		}
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
@@ -207,5 +208,15 @@ public class PatientAPIController {
 		}
 
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/submitMeetingRecord",  method = RequestMethod.POST)
+	public ResponseEntity<Response> submitMeetingRecord(HttpServletRequest request, HttpServletResponse resp,
+			String recordType, String recordId, String patientInhospitalId, String hospitalId, String doctorId) {
+	
+		if (patientService.submitMeetingRecord(recordType, recordId, patientInhospitalId, hospitalId, doctorId)) {
+			return new ResponseEntity<Response>(Response.toSussess("success"), HttpStatus.OK);
+		}
+		return new ResponseEntity<Response>(Response.toFailure(401, "exception"), HttpStatus.EXPECTATION_FAILED);
 	}
 }

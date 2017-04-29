@@ -14,6 +14,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
 
 public interface PatientDAO {
 	List<PatientRegistRecord> getRegisteRecordList(@Param("hospital_id") String hospitalId, 
@@ -42,13 +43,16 @@ public interface PatientDAO {
 	List<OpertaionRecord> getOperationsByResident(@Param("hospital_id") String hospitalId, 
 			@Param("patient_id") String patientId, @Param("admission_date") Date admissionDate,
 			 @Param("discharge_date") Date dischargeDate);
-	List<OpertaionRecord> getOperationsDuringInHospital(@Param("hospital_id") String hospitalId, 
-			@Param("patient_id") String patientId, @Param("record_id") String recordId);
-	
+
 	//住院记录
 	ResidentRecord getResidentById(@Param("id") String recordId);
 	List<PatientInHospital> getCurPatientsInHospital(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_code") String doctorCode, @Param("departmentIdList") List<String> departmentIdList);
+	List<OpertaionRecord> getOperationsDuringInHospital(@Param("hospital_id") String hospitalId, 
+			@Param("patient_id") String patientId, @Param("record_id") String recordId);
+	List<ResidentRecord> getResidentDuringInHospital(@Param("hospital_id") String hospitalId, 
+			@Param("patient_id") String patientId, @Param("record_id") String recordId);
+	
 	//出院记录
 	List<ResidentRecord> getResidentRecordByOperation(@Param("hospital_id") String hospitalId, 
 			@Param("patient_id") String patientId, @Param("operating_date") Date operatingDate);
@@ -130,4 +134,11 @@ public interface PatientDAO {
 	List<OpertaionRecord> searchOperationRecordList(@Param("hospital_id") String hospitalId,
 			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("year") long year,
 			@Param("month") long month, @Param("day") long day);
+	
+	int saveShiftMeetingRecords(@Param("hospital_id") String hospitalId,
+			@Param("doctor_id") String doctorId, @Param("record_id") String recordId,
+			@Param("record_type") String recordType);
+	
+	List<ShiftMeetingVO> getTodayMeetingRecords();
+	int updatePatientRecentMeetingRecord(@Param("record_id") String recordId, @Param("record_type") String recordType);
 }

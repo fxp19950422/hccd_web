@@ -447,16 +447,18 @@
 	       	where A.id=#{id}
     </select>
     
-    <select id="getAllShiftMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
-    	
-    </select>
-  
-    <select id="getMyShiftMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
-    	
+    <select id="getTodayMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
+    	select A.*  from morning_shift_meeting_record A
+			where TO_DAYS( now() ) - TO_DAYS(meeting_date) &lt;= 1 
     </select>
 
-    <insert id="saveShiftMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
-    	
-    </insert>
-      
+	<update id="saveShiftMeetingRecords" parameterType="java.util.Map">
+		replace into morning_shift_meeting_record(record_id, record_type, meeting_date, doctor_id, hospital_id, status)
+		values(#{record_id}, #{record_type}, CURDATE(), #{doctor_id}, #{hospital_id},'active')
+	</update>
+	
+	<update id="updatePatientRecentMeetingRecord" parameterType="java.util.Map">
+		update patient_in_hospital set latest_meeting_date=CURDATE(), 
+		latest_meeting_type=#{record_type} where id=#{record_id}
+	</update>
 </mapper>

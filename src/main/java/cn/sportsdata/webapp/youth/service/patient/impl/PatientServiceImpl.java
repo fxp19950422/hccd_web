@@ -613,4 +613,17 @@ public class PatientServiceImpl implements PatientService {
 		// TODO Auto-generated method stub
 		return patientDAO.searchOperationRecordList(hospitalId, doctorCode, name, year, month, day);
 	}
+
+	@Override
+	public Boolean submitMeetingRecord(String recordType, String recordId, String patientInhospitalId, String hospitalId, String doctorId) { 
+		if (patientDAO.saveShiftMeetingRecords(hospitalId, doctorId, recordId, recordType) > 0) {
+			return (patientDAO.updatePatientRecentMeetingRecord(patientInhospitalId, recordType) > 0);
+		}
+		return false;
+	}
+
+	@Override
+	public List<ResidentRecord> getResidentDuringInHospital(String recordId, String hospitalId, String patientId) {
+		return patientDAO.getResidentDuringInHospital(hospitalId, patientId, recordId);
+	}
 }
