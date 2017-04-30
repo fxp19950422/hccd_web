@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 
@@ -24,4 +25,8 @@ public interface ExchangeDAO {
 	boolean updateDoctorLoginId(String doctorId, String loginId);
 	
 	List<DoctorVO> getDoctorByLoginId(String loginId);
+	
+	List<PatientInHospital> getExchangeOperationRecords(List<String> uids);
+	
+	List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids);
 }

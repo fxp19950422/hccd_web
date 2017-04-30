@@ -25,6 +25,9 @@
     <!-- Wrap all slides in a single "slides" class -->
     <div class="slides">
       <!-- Each section element contains an individual slide -->
+      <section>
+			<H1>交班</H1>
+	 </section>
       <c:forEach items="${medicalrecords}" var="record">
       	<section style="top:25px">
       			<H2>基本资料</H2>
@@ -36,7 +39,7 @@
       						姓名
       						</td>
       						<td>
-      							${ record.name }
+      							${ record.realName }
       						</td>
       					</tr>
       					<tr>
@@ -52,7 +55,7 @@
       						入院时间
       						</td>
       						<td>
-      							<fmt:formatDate value="${ record.admissionDate }" pattern="yyyy年MM月dd日" />
+      							<fmt:formatDate value="${ record.admissionDateTime }" pattern="yyyy年MM月dd日" />
       						</td>
       					</tr>
       					<tr>
@@ -60,7 +63,7 @@
       						收治医师
       						</td>
       						<td>
-      							${record.doctorName}
+      							${record.doctorInCharge}
       						</td>
       					</tr>
       					<tr>
@@ -68,7 +71,7 @@
       						住院号
       						</td>
       						<td>
-      							${record.admissionNumber}
+      							${record.patientId}
       						</td>
       					</tr>
       				</tbody>
@@ -100,7 +103,7 @@
       						主诉
       						</td>
       						<td>
-      							${record.diagnose}
+      							${record.opPrimary}
       						</td>
       					</tr>
       					<tr>
@@ -109,7 +112,7 @@
       						</td>
       						<td>
       							<p>
-      							1. 刀割伤致左手疼痛，出血5.5小时
+      							${record.diagnosis}
       							</p>
       							
       						</td>
@@ -185,6 +188,10 @@
 					</c:if>
 				 </c:forEach>
       </c:forEach>
+      
+      <section>
+			<H1>病例讨论</H1>
+	  </section>
     </div>
   </div>
   </body>

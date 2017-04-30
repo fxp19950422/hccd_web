@@ -14,6 +14,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
 
 public interface PatientService {
 	List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode, 
@@ -80,5 +81,6 @@ public interface PatientService {
 	
 	PatientInHospital searchPatientInHospitalById(String recordId);
 
+	List<ShiftMeetingVO> getTodayExchangeRecordList();
 	
 }

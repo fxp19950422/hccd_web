@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.dao.exchange.ExchangeDAO;
@@ -36,6 +37,16 @@ public class ExchangeServiceImpl implements ExchangeService {
 	public List<DoctorVO> getAllDoctors(String departmentId) {
 		// TODO Auto-generated method stub
 		return exchangeDao.getAllDoctors(departmentId);
+	}
+	@Override
+	public List<PatientInHospital> getExchangeOperationRecordList(List<String> uids) {
+		// TODO Auto-generated method stub
+		return exchangeDao.getExchangeOperationRecords(uids);
+	}
+	@Override
+	public List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids) {
+		// TODO Auto-generated method stub
+		return exchangeDao.getExchangePatientInHospitalRecords(uids);
 	}
 	
 	

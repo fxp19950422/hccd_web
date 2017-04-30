@@ -33,7 +33,7 @@
 
 <div class="clearfix" style="height:15px;"></div>
 <div class=" doctorPatientList">
-<c:forEach items="${doctors}" var="doctor">
+<%-- <c:forEach items="${doctors}" var="doctor">
 	<sa-panel-card title="${doctor.name}">
 		 <c:choose>
 				<c:when test="${ fn:length(doctor.patients) == 0 }">
@@ -42,14 +42,14 @@
 				<c:otherwise>
 					 <c:forEach items="${doctor.patients}" var="patient">
 						<div class="profileCard" uid="${ patient.patient_number }" visitNo="${ patient.visitNo }">
-							<%--  <c:choose>
+							 <c:choose>
 								<c:when test="${ !empty patient.name }">
 									<img class="profileAvatar" src="<%=serverUrl%>file/downloadFile?fileName=${ coach.avatar }"></img>
 								</c:when>
-								<c:otherwise> --%>
+								<c:otherwise>
 									<img class="profileAvatar" src="<%=serverUrl%>resources/images/user_avatar.png"></img>
-								<%-- </c:otherwise>
-							</c:choose> --%>
+								</c:otherwise>
+							</c:choose>
 							
 							<div class="profileName"><xss:xssFilter text="${patient.real_name}" filter="html"/></div>
 							<div class="profileData">
@@ -79,7 +79,7 @@
 			</c:choose>
 		
 	</sa-panel-card>
-	</c:forEach>
+	</c:forEach> --%>
 	</div>
 	<style>
 		.selected{
@@ -123,7 +123,7 @@
 			});
 		}); 
 		
-		$('#add_btn').click(function() {
+		<%-- $('#add_btn').click(function() {
 			if ($("div.profileCard.selected").length <= 0){
 				alert("请选择需要交班的病人");
 			} else {
@@ -139,7 +139,7 @@
 				var postdata = {};
 				postdata.uids=uidArray;
 				
-				<%-- sa.ajax({
+				sa.ajax({
 					type : "post",
 					url : "<%=serverUrl%>exchange/exchange_detail",
 					data: JSON.stringify(postdata),
@@ -151,10 +151,14 @@
 					error: function() {
 						alert("打开创建球员页面失败");
 					}
-				}); --%>
+				});
 				window.open("<%=serverUrl%>exchange/exchange_detail?obj=" + Base64.encode(JSON.stringify(postdata)));
 				
 			}
+		}); --%>
+		
+		$('#add_btn').click(function(){
+			window.open("<%=serverUrl%>exchange/exchange_detail");
 		});
 	}
 </script>

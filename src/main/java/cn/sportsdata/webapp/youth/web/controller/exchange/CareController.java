@@ -90,7 +90,7 @@ public class CareController extends BaseController{
 	@ResponseBody
     public List<MedicalRecordVO> getMedicalRecord(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd) {
 		
-		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "100001");
+		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "1");
 
 		return recordList;
 	}

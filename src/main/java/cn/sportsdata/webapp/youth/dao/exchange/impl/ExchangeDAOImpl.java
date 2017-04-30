@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.dao.BaseDAO;
@@ -24,6 +25,10 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 	private static final String UPDATE_DOCTOR_LOGIN_ID = "updateDoctorLoginId";
 	
 	private static final String GET_DOCTORS_BY_LOGIN_ID = "getDoctorsByLoginId";
+	
+	private static final String GET_EXCHANGE_OPERATION_RECORDS = "getExchangeOperationRecords";
+	
+	private static final String GET_EXCHANGE_PATIENT_IN_HOSPITAL= "getExchangePatientInHospitalRecords";
 	
 	@Override
 	public List<PatientVO> getPatients(String departmentId, String doctorCode) {
@@ -75,6 +80,17 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 		Map map = new HashMap();
 		map.put("loginId", loginId);
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_DOCTORS_BY_LOGIN_ID), map);
+	}
+
+	@Override
+	public List<PatientInHospital> getExchangeOperationRecords(List<String> uids) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_OPERATION_RECORDS), uids);
+	}
+
+	@Override
+	public List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids) {
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_PATIENT_IN_HOSPITAL), uids);
 	}
 	
 }

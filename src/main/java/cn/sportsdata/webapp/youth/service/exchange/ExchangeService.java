@@ -3,6 +3,7 @@ package cn.sportsdata.webapp.youth.service.exchange;
 import java.util.List;
 
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 
@@ -15,5 +16,8 @@ public interface ExchangeService {
 	
 	List<DoctorVO> getAllDoctors(String departmentId);
 	
+	List<PatientInHospital> getExchangeOperationRecordList(List<String> uids);
+	
+	List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids);
 	
 }

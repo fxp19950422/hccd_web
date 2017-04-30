@@ -280,7 +280,7 @@ public class UserController extends BaseController {
 		
 		DepartmentVO department = this.getCurrentDepartment(request);
 		List<DoctorVO> doctors = exchangeService.getAllDoctors(department.getDepartmentCode());
-		List<DepartmentVO> departmentList = departService.getDepartmentList("1", "100001");
+		List<DepartmentVO> departmentList = departService.getDepartmentList("1", "1");
 		model.addAttribute("departments", departmentList);
 		model.addAttribute("doctors", doctors);
 		return "user/coach_edit";

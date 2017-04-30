@@ -23,6 +23,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
 import cn.sportsdata.webapp.youth.dao.asset.AssetDAO;
 import cn.sportsdata.webapp.youth.dao.hospital.PatientDAO;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
@@ -665,5 +666,11 @@ public class PatientServiceImpl implements PatientService {
 			Date careStartTime, Date careEndTime) {
 		// TODO Auto-generated method stub
 		return patientDAO.searchDirectorResidentRecordList(hospitalId, departmentId, name, careStartTime, careEndTime);
+	}
+
+	@Override
+	public List<ShiftMeetingVO> getTodayExchangeRecordList() {
+		// TODO Auto-generated method stub
+		return patientDAO.getTodayMeetingRecords();
 	}
 }
