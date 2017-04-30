@@ -20,4 +20,6 @@ public interface ExchangeService {
 	
 	List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids);
 	
+	List<ResidentRecord> getExchangeResidentRecord(List<String> uids);
+	
 }

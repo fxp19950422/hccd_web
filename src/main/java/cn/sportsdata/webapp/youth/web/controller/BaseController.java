@@ -24,7 +24,7 @@ public class BaseController {
 		if(obj != null){
 			if (obj.getLoginVO().getUserName().equals("zhaozhuren")){
 				DepartmentVO d = new DepartmentVO();
-				d.setDepartmentCode("1");
+				d.setDepartmentCode("100001");
 				return d;
 			}
 			return (DepartmentVO) obj.getDepartmentVO();

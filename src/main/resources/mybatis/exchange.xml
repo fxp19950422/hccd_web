@@ -42,6 +42,7 @@
         <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
         <result column="endTime" property="endTime" jdbcType="VARCHAR"/>
         
+        
         <result column="department_id" property="departmentId" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="admission_number" property="admissionNumber" jdbcType="VARCHAR"/>
@@ -62,9 +63,15 @@
         <result column="attending_doctor" property="attendingDoctor" jdbcType="VARCHAR"/>
         <result column="update_date" property="updateDate" jdbcType="VARCHAR"/>
         <!-- <result column="real_name" property="patient_name" jdbcType="VARCHAR"/> -->
+        <collection property="residentAssetTypes" ofType="cn.sportsdata.webapp.youth.common.vo.AssetTypeVO">
+        		<id column="residentAssetTypeName" property="assetTypeName" jdbcType="VARCHAR"/>
+        		<collection property="assets" ofType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+        		 	<result column="resident_asset_id" property="id" jdbcType="VARCHAR"/> 
+        		</collection>
+        </collection>
          <collection property="operationRecords" ofType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
         	<!-- <result column="id" property="id" jdbcType="VARCHAR"/> -->
-        	<result column="operation_id" property="id" jdbcType="VARCHAR"/>
+        	<id column="operation_id" property="id" jdbcType="VARCHAR"/>
         	<result column="patient_id" property="patientId" jdbcType="VARCHAR"/>
         	<result column="visit_id" property="visitId" jdbcType="VARCHAR"/>
         	<result column="operation_no" property="operationNo" jdbcType="VARCHAR"/>
@@ -87,7 +94,7 @@
     </resultMap> 
     
     <resultMap id="PatientInHospitalType" type="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital">
-        <id column="record_id" property="id" jdbcType="CHAR"/>
+        <result column="record_id" property="id" jdbcType="CHAR"/>
         <result column="doctor_id" property="doctorId" jdbcType="VARCHAR"/>
         <result column="patient_id" property="patientId" jdbcType="VARCHAR"/>
         <result column="admission_date_time" property="admissionDateTime" jdbcType="VARCHAR"/>
@@ -96,6 +103,8 @@
       	<result column="op_primary" property="opPrimary" jdbcType="VARCHAR"/>
       	<result column="birthday" property="birthday" javaType="java.util.Date" jdbcType="DATE"/>
       	<result column="doctor_in_charge" property="doctorInCharge"  jdbcType="VARCHAR"/>
+      	<result column="supplementary_examination" property="supplementaryExamination"  jdbcType="VARCHAR"/>
+      	<result column="record_discussion" property="recordDiscussion"  jdbcType="VARCHAR"/>
       	<collection property="patientAssetTypes" ofType="cn.sportsdata.webapp.youth.common.vo.AssetTypeVO">
         		<id column="patient_assetTypeName" property="assetTypeName" jdbcType="VARCHAR"/>
         		<collection property="assets" ofType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
@@ -203,7 +212,7 @@
     </select>
     
     <select id="getExchangeResidentRecords" resultMap="MedicalRecordType" parameterType="java.util.Map">
-    	SELECT * FROM medical.resident_record A
+    	SELECT A.*,I.asset_id as resident_asset_id, J.name as residentAssetTypeName FROM medical.resident_record A left outer join hospital_record_asset I on (A.id = I.hospital_record_id and I.record_type='resident' and I.status='active') left outer join record_asset_type J on (I.record_asset_type_id = J.id)
 			where A.id in (
 			<foreach item="item" index="index" collection="list" separator=",">
             "${item}"

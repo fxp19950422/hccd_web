@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
+import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
@@ -111,13 +112,26 @@ public class ExchangeController extends BaseController{
 			}
 		}
 		
-		List<PatientInHospital>  operationRecordList = exchangeService.getExchangeOperationRecordList(operationList);
+		List<PatientInHospital>  operationRecordList = null;
+		if (operationList.size() > 0){
+			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList);
+		}
 		
-		List<PatientInHospital>  patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList);
+		List<PatientInHospital>  patientInHospitalRecordList = null;
+		if (patientInHospitalList.size() > 0){
+			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList);
+		}
+		
+		List<ResidentRecord>  residentRecordList = null;
+		if (residentList.size() > 0){
+			residentRecordList = exchangeService.getExchangeResidentRecord(residentList);
+		}
 		
 		model.addAttribute("medicalrecords", operationRecordList);
 		
 		model.addAttribute("patient_in_hospital_records", patientInHospitalRecordList);
+		
+		model.addAttribute("residentrecords", residentRecordList);
 		
 		return "exchange/exchange_detail";
 	}

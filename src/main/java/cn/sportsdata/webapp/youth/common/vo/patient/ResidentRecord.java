@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import cn.sportsdata.webapp.youth.common.vo.AssetTypeVO;
+
 public class ResidentRecord implements Serializable {
 	public static final long RESIDENT_DOCTOR = 0x0001;
 	public static final long DIRECTOR_DOCTOR = 0x0002;
@@ -26,7 +28,18 @@ public class ResidentRecord implements Serializable {
 	private String doctorInCharge;
 	private String realName;
 	
-	  public String getRealName() {
+	private List<AssetTypeVO> residentAssetTypes;
+	
+	
+	  public List<AssetTypeVO> getResidentAssetTypes() {
+		return residentAssetTypes;
+	}
+
+	public void setResidentAssetTypes(List<AssetTypeVO> residentAssetTypes) {
+		this.residentAssetTypes = residentAssetTypes;
+	}
+
+	public String getRealName() {
 		return realName;
 	}
 

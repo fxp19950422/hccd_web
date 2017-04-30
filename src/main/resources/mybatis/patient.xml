@@ -423,6 +423,8 @@
       <update id="updatePatientInHospital" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital">
      	update patient_in_hospital set  
 		DIAGNOSIS = #{record.diagnosis},
+		supplementary_examination = #{record.supplementaryExamination},
+		record_discussion = #{record.recordDiscussion},
 		op_primary = #{record.opPrimary}
      	where id = #{record.id}
      	

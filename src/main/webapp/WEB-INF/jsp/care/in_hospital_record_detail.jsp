@@ -48,6 +48,12 @@
 					<sa-panel title="诊断">
 						<pre style="background:white;border-width:0px">${record.diagnosis}</pre>
 					</sa-panel>
+					<sa-panel title="辅助检验">
+						<pre style="background:white;border-width:0px">${record.supplementaryExamination}</pre>
+					</sa-panel>
+					<sa-panel title="病历讨论">
+						<pre style="background:white;border-width:0px">${record.recordDiscussion}</pre>
+					</sa-panel>
 				</div>
 		</form>
 	</div>

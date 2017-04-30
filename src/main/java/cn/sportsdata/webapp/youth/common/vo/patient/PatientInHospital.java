@@ -1146,8 +1146,27 @@ public class PatientInHospital implements Serializable {
 	}
 
 	private List<AssetTypeVO> patientAssetTypes;
+	
+	private String supplementaryExamination;
+	private String recordDiscussion;
 
 	
+
+	public String getSupplementaryExamination() {
+		return supplementaryExamination;
+	}
+
+	public void setSupplementaryExamination(String supplementaryExamination) {
+		this.supplementaryExamination = supplementaryExamination;
+	}
+
+	public String getRecordDiscussion() {
+		return recordDiscussion;
+	}
+
+	public void setRecordDiscussion(String recordDiscussion) {
+		this.recordDiscussion = recordDiscussion;
+	}
 
 	public List<AssetTypeVO> getPatientAssetTypes() {
 		return patientAssetTypes;

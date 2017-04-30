@@ -30,6 +30,8 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 	
 	private static final String GET_EXCHANGE_PATIENT_IN_HOSPITAL= "getExchangePatientInHospitalRecords";
 	
+	private static final String GET_EXCHANGE_RESIDENT_RECORD= "getExchangeResidentRecords";
+	
 	@Override
 	public List<PatientVO> getPatients(String departmentId, String doctorCode) {
 		Map map = new HashMap();
@@ -91,6 +93,12 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 	@Override
 	public List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids) {
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_PATIENT_IN_HOSPITAL), uids);
+	}
+
+	@Override
+	public List<ResidentRecord> getExchangeResidentRecords(List<String> uids) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_RESIDENT_RECORD), uids);
 	}
 	
 }

@@ -476,7 +476,7 @@ public class CareController extends BaseController{
 //				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), null, null);
 		
 		List<PatientInHospital> list = patientService.searchDirectorInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
-				login.getHospitalUserInfo().getDeptId(), condition.getPatName(), date, null);
+				dept.getDepartmentCode(), condition.getPatName(), date, null);
 		
 //		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
 //				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
@@ -518,6 +518,8 @@ public class CareController extends BaseController{
 		PatientInHospital dbRecord = patientService.searchPatientInHospitalById(id);
 		dbRecord.setOpPrimary(record.getOpPrimary());
 		dbRecord.setDiagnosis(record.getDiagnosis());
+		dbRecord.setSupplementaryExamination(record.getSupplementaryExamination());
+		dbRecord.setRecordDiscussion(record.getRecordDiscussion());
 		patientService.updatePatientInHospital(dbRecord);
 		
 		return record;

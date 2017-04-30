@@ -48,6 +48,14 @@
 					name="diagnosis" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.diagnosis}">${record.diagnosis}</textarea>
 				</sa-panel>
+				<sa-panel title="辅助检验"> <textarea id="future_plan"
+					name="supplementaryExamination" class="form-control" rows="5"
+					placeholder="不超过800字" value="${record.supplementaryExamination}">${record.supplementaryExamination}</textarea>
+				</sa-panel>
+				<sa-panel title="病历讨论"> <textarea id="future_plan"
+					name="recordDiscussion" class="form-control" rows="5"
+					placeholder="不超过800字" value="${record.recordDiscussion}">${record.recordDiscussion}</textarea>
+				</sa-panel>
 				<input type="hidden" name="id" value="${id}" />
 			</div>
 		</form>
