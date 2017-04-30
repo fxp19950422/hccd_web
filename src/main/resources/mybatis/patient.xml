@@ -150,7 +150,7 @@
     </select>
     
    	<select id="getResidentById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
-    	select A.* from resident_record A where A.id = #{id}
+    	select A.*, B.real_name from resident_record A left outer join patient B on (A.patient_id = B.patient_number) where A.id = #{id}
     </select>
     
     <select id="getMedicalRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
@@ -419,6 +419,14 @@
      	where id = #{residentRecord.id}
      	
      </update>
+     
+      <update id="updatePatientInHospital" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital">
+     	update patient_in_hospital set  
+		DIAGNOSIS = #{record.diagnosis},
+		op_primary = #{record.opPrimary}
+     	where id = #{record.id}
+     	
+     </update>
     
     <select id="searchRegisteRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord" parameterType="java.util.Map">
     	select A.* from patient_regist A
@@ -440,6 +448,90 @@
     			and b.real_name like '%${patName}%'
     		</if>
 	       	order by OPERATING_DATE desc
+    </select>
+    
+    <select id="searchInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+    	select A.*,b.real_name from patient_in_hospital A left join patient b on A.patient_id=b.patient_number
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' 
+	       	<if test="patName != null and patName != '' ">
+    			and b.real_name like '%${patName}%'
+    		</if>
+    		<if test="careStartTime != null  ">
+    		<![CDATA[ and ADMISSION_DATE_TIME > #{careStartTime} ]]>
+    		</if>
+    		<if test="careEndTime != null ">
+    		<![CDATA[ and ADMISSION_DATE_TIME < #{careEndTime} ]]>
+    		</if>
+	       	order by ADMISSION_DATE_TIME desc
+    </select>
+    
+     <select id="searchDirectorInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+    		select C.*,D.real_name from 
+	    	(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
+				where A.department_code = #{departmentId}
+				union 
+			SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code where A.department_code = #{departmentId}
+				)
+			 A inner join doctor B on (A.department_code = B.department_id) 
+			  inner join patient_in_hospital C on (B.user_id = C.doctor_id) 
+		 	inner join patient D on (C.patient_id = D.patient_number)
+		 	where C.status = 'active'
+	       	<if test="patName != null and patName != '' ">
+    			and D.real_name like '%${patName}%'
+    		</if>
+    		<if test="careStartTime != null ">
+    		<![CDATA[ and C.ADMISSION_DATE_TIME > #{careStartTime} ]]>
+    		</if>
+    		<if test="careEndTime != null ">
+    		<![CDATA[ and C.ADMISSION_DATE_TIME < #{careEndTime} ]]>
+    		</if>
+	       	order by ADMISSION_DATE_TIME desc
+    </select>
+    
+     <select id="searchResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    	select A.*,b.real_name from resident_record A left join patient b on A.patient_id=b.patient_number
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' 
+	       	<if test="patName != null and patName != '' ">
+    			and b.real_name like '%${patName}%'
+    		</if>
+    		<if test="careStartTime != null  ">
+    		<![CDATA[ and ADMISSION_DATE > #{careStartTime} ]]>
+    		</if>
+    		<if test="careEndTime != null ">
+    		<![CDATA[ and ADMISSION_DATE < #{careEndTime} ]]>
+    		</if>
+	       	order by ADMISSION_DATE desc
+    </select>
+    
+     <select id="searchDirectorResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    		select C.*,D.real_name from 
+	    	(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
+				where A.department_code = #{departmentId}
+				union 
+			SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code where A.department_code = #{departmentId}
+				)
+			 A inner join doctor B on (A.department_code = B.department_id) 
+			  inner join resident_record C on (B.user_id = C.doctor_id) 
+		 	inner join patient D on (C.patient_id = D.patient_number)
+		 	<where>
+		       	<if test="patName != null and patName != '' ">
+	    			and D.real_name like '%${patName}%'
+	    		</if>
+	    		<if test="careStartTime != null ">
+	    		<![CDATA[ and C.ADMISSION_DATE > #{careStartTime} ]]>
+	    		</if>
+	    		<if test="careEndTime != null ">
+	    		<![CDATA[ and C.ADMISSION_DATE < #{careEndTime} ]]>
+	    		</if>
+    		</where>
+	       	order by ADMISSION_DATE desc
+    </select>
+    
+    <select id="searchPatientInHospitalById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+    	select A.*, B.real_name from patient_in_hospital A inner join  patient B on (A.patient_id = B.patient_number)
+	       	where A.id=#{recordId}
     </select>
     
     <select id="getRegisteRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord" parameterType="java.util.Map">

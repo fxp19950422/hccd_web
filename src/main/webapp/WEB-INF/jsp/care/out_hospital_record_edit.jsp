@@ -22,60 +22,18 @@
 			<div role="tabpanel" class="tab-pane active" id="basic_tab">
 				<sa-panel title="病人信息">
 				<div class="row">
-					<div class="col-md-1 profileDetailItemTitle">姓名</div>
-					<div class="col-md-3 profileDetailItemContent">${record.patientName}</div>
-					<div class="col-md-1 profileDetailItemTitle">医生</div>
-					<div class="col-md-3 profileDetailItemContent">${record.operator}</div>
-					<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-					<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${record.operatingDate}" /></div>
-				</div>
+							<div class="col-md-1 profileDetailItemTitle">姓名</div>
+							<div class="col-md-3 profileDetailItemContent">${record.realName}</div>
+							<div class="col-md-1 profileDetailItemTitle">医生</div>
+							<div class="col-md-3 profileDetailItemContent">${record.doctorInCharge}</div>
+							<div class="col-md-1 profileDetailItemTitle">入院时间</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${record.admissionDate}" /></div>
+						</div>
 				</sa-panel>
 				<sa-panel title="主诉"> <textarea id="future_plan"
-					name="opPrimary" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.opPrimary}">${record.opPrimary}</textarea>
-				</sa-panel>
-				<sa-panel title="术前诊断"> <textarea id="future_plan"
-					name="beforeDiagnosis" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.beforeDiagnosis}">${record.beforeDiagnosis}</textarea>
-				</sa-panel>
-				<sa-panel title="术后诊断"> <textarea id="future_plan"
-					name="afterDiagnosis" class="form-control" rows="5" placeholder="不超过800字"
-					value="${record.afterDiagnosis}">${record.afterDiagnosis}</textarea> </sa-panel>
-				<sa-panel title="手术名称"> <textarea id="future_plan"
-					name="operationDescription" class="form-control" rows="5" placeholder="不超过800字"
-					value="${record.operationDescription}">${record.operationDescription}</textarea> </sa-panel>
-				<sa-panel title="手术经过"> <textarea id="future_plan"
-					name="process" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.process}">${record.process}</textarea>
-				</sa-panel>
-				<sa-panel title="手术体位"> <textarea id="future_plan"
-					name="posture" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.posture}">${record.posture}</textarea>
-				</sa-panel>
-				<sa-panel title="手术切口"> <textarea id="future_plan"
-					name="incision" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.incision}">${record.incision}</textarea>
-				</sa-panel>
-				<sa-panel title="探查所见"> <textarea id="future_plan"
-					name="exploratory" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.exploratory}">${record.exploratory}</textarea>
-				</sa-panel>
-				<sa-panel title="手术步骤"> <textarea id="future_plan"
-					name="steps" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.steps}">${record.steps}</textarea>
-				</sa-panel>
-				<sa-panel title="麻醉手段"> <textarea id="future_plan"
-					name="anaesthesiaMethod" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.anaesthesiaMethod}">${record.anaesthesiaMethod}</textarea>
-				</sa-panel>
-				<sa-panel title="引流物"> <textarea id="future_plan"
-					name="drainage" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.drainage}">${record.drainage}</textarea>
-				</sa-panel>
-				<sa-panel title="术毕病人情况"> <textarea id="future_plan"
-					name="finishedCondition" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.finishedCondition}">${record.finishedCondition}</textarea>
+					name="diagnose" class="form-control" rows="5"
+					placeholder="不超过800字" value="${record.diagnose}">${record.diagnose}</textarea>
 				</sa-panel>
 				<input type="hidden" name="id" value="${id}" />
 			</div>
@@ -108,17 +66,17 @@
 	function initEvent() {
 		var registId = '${registId}';
 		$('#cancle_btn').click(function() {
-			$('#content').loadAngular("<%=serverUrl%>care/operation_detail?id=${id}&registId="+registId+"&"+$("#condition_form").serialize() );
+			$('#content').loadAngular("<%=serverUrl%>care/out_hospital_record_detail?id=${id}&registId="+registId+"&"+$("#condition_form").serialize() );
 		});
 		$('#save_btn').click(function() {
 			
 			sa.ajax({
 				type : "post",
-				url : "<%=serverUrl%>care/save_operation_record",
+				url : "<%=serverUrl%>care/save_out_hospital_record",
 				data : $("#player_form").serialize(),
 				success : function(data) {
 					alert("修改成功");
-					$('#content').loadAngular("<%=serverUrl%>care/operation_detail?id=${id}&registId="+registId+"&"+$("#condition_form").serialize());
+					$('#content').loadAngular("<%=serverUrl%>care/out_hospital_record_detail?id=${id}&registId="+registId+"&"+$("#condition_form").serialize());
 						},
 						error : function() {
 							alert("修改失败");

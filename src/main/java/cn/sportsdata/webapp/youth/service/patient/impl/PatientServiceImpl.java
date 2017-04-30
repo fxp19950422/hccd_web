@@ -519,6 +519,7 @@ public class PatientServiceImpl implements PatientService {
 		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment, suggestion);
 	}
 	
+	
 	@Override
 	public List<OpertaionRecord> getOperationsDuringInHospital(String recordId, String hospitalId, String patientId) {
 		try {
@@ -625,5 +626,44 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<ResidentRecord> getResidentDuringInHospital(String recordId, String hospitalId, String patientId) {
 		return patientDAO.getResidentDuringInHospital(hospitalId, patientId, recordId);
+	}
+	
+	public List<PatientInHospital> searchInHospitalRecordList(String hospitalId, String doctorCode, String name,
+			Date careStartTime, Date careEndTime) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchInHospitalRecordList(hospitalId, doctorCode, name, careStartTime, careEndTime);
+	}
+
+	@Override
+	public List<PatientInHospital> searchDirectorInHospitalRecordList(String hospitalId, String departmentId,
+			String name, Date careStartTime, Date careEndTime) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchDirectorInHospitalRecordList(hospitalId, departmentId, name, careStartTime, careEndTime);
+	}
+
+	@Override
+	public PatientInHospital searchPatientInHospitalById(String recordId) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchPatientInHospitalById(recordId);
+	}
+
+	@Override
+	public int updatePatientInHospital(PatientInHospital record) {
+		// TODO Auto-generated method stub
+		return patientDAO.updatePatientInHospital(record);
+	}
+
+	@Override
+	public List<ResidentRecord> searchResidentRecordList(String hospitalId, String doctorCode, String name,
+			Date careStartTime, Date careEndTime) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchResidentRecordList(hospitalId, doctorCode, name, careStartTime, careEndTime);
+	}
+
+	@Override
+	public List<ResidentRecord> searchDirectorResidentRecordList(String hospitalId, String departmentId, String name,
+			Date careStartTime, Date careEndTime) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchDirectorResidentRecordList(hospitalId, departmentId, name, careStartTime, careEndTime);
 	}
 }

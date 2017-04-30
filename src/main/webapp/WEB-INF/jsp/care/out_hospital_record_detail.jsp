@@ -24,51 +24,18 @@
 					<sa-panel title="病人信息">
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">姓名</div>
-							<div class="col-md-3 profileDetailItemContent">${record.patientName}</div>
+							<div class="col-md-3 profileDetailItemContent">${record.realName}</div>
 							<div class="col-md-1 profileDetailItemTitle">医生</div>
-							<div class="col-md-3 profileDetailItemContent">${record.operator}</div>
+							<div class="col-md-3 profileDetailItemContent">${record.doctorInCharge}</div>
 							<div class="col-md-1 profileDetailItemTitle">入院时间</div>
 							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${record.operatingDate}" /></div>
+            value="${record.admissionDate}" /></div>
 						</div>
 						
 					</sa-panel>
 					<sa-panel title="主诉">
-							<pre style="background:white;border-width:0px;">${record.opPrimary}</pre>
+							<pre style="background:white;border-width:0px;">${record.diagnose}</pre>
 						</div>
-					</sa-panel>
-					<sa-panel title="术前诊断">
-						<pre style="background:white;border-width:0px">${record.beforeDiagnosis}</pre>
-					</sa-panel>
-					<sa-panel title="术后诊断">
-						<pre style="background:white;border-width:0px">${record.afterDiagnosis}</pre>
-					</sa-panel>
-					<sa-panel title="手术名称">
-						<pre style="background:white;border-width:0px">${record.operationDescription}</pre>
-					</sa-panel>
-					<sa-panel title="手术经过">
-						<pre style="background:white;border-width:0px">${record.process}</pre>
-					</sa-panel>
-					<sa-panel title="手术体位">
-						<pre style="background:white;border-width:0px">${record.posture}</pre>
-					</sa-panel>
-					<sa-panel title="手术切口">
-						<pre style="background:white;border-width:0px">${record.incision}</pre>
-					</sa-panel>
-					<sa-panel title="探查所见">
-						<pre style="background:white;border-width:0px">${record.exploratory}</pre>
-					</sa-panel>
-					<sa-panel title="手术步骤">
-						<pre style="background:white;border-width:0px">${record.steps}</pre>
-					</sa-panel>
-					<sa-panel title="麻醉手段">
-						<pre style="background:white;border-width:0px">${record.anaesthesiaMethod}</pre>
-					</sa-panel>
-					<sa-panel title="引流物">
-						<pre style="background:white;border-width:0px">${record.drainage}</pre>
-					</sa-panel>
-					<sa-panel title="术毕病人情况">
-						<pre style="background:white;border-width:0px">${record.finishedCondition}</pre>
 					</sa-panel>
 				</div>
 		</form>
@@ -107,7 +74,7 @@ pre, code {
 				$('#content').loadAngular("<%=serverUrl%>register/register_detail?id="+registId );
 			} else {
 				if('${condition}'){
-					$('#content').loadAngular("<%=serverUrl%>care/operation_list?" + $("#condition_form").serialize() );
+					$('#content').loadAngular("<%=serverUrl%>care/out_hospital_list?" + $("#condition_form").serialize() );
 				}
 			}
 		});
@@ -117,7 +84,7 @@ pre, code {
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",
-				url : "<%=serverUrl%>care/operation_edit?id=${id}&registId="+registId,
+				url : "<%=serverUrl%>care/out_hospital_record_edit?id=${id}&registId="+registId,
 				data :$("#condition_form").serialize(),
 				success : function(data) {
 					//TODO: will update the container later

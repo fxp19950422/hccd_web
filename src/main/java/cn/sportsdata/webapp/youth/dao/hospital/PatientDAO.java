@@ -120,6 +120,7 @@ public interface PatientDAO {
 			@Param("suggestion") String suggestion);
 	
 	int updateMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
+	int updatePatientInHospital(@Param("record") PatientInHospital record);
 	int insertMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
 	int updateOperationRecord(@Param("opertaionRecord") OpertaionRecord opertaionRecord);
 	int updateResidentRecord(@Param("residentRecord") ResidentRecord residentRecord);
@@ -135,10 +136,29 @@ public interface PatientDAO {
 			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("year") long year,
 			@Param("month") long month, @Param("day") long day);
 	
+
 	int saveShiftMeetingRecords(@Param("hospital_id") String hospitalId,
 			@Param("doctor_id") String doctorId, @Param("record_id") String recordId,
 			@Param("record_type") String recordType);
 	
 	List<ShiftMeetingVO> getTodayMeetingRecords();
 	int updatePatientRecentMeetingRecord(@Param("record_id") String recordId, @Param("record_type") String recordType);
+
+	List<PatientInHospital> searchInHospitalRecordList(@Param("hospital_id") String hospitalId,
+			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("careStartTime") Date careStartTime,
+			@Param("careEndTime") Date careEndTime);
+	
+	List<PatientInHospital> searchDirectorInHospitalRecordList(@Param("hospital_id") String hospitalId,
+			@Param("departmentId") String departmentId, @Param("patName") String name, @Param("careStartTime") Date careStartTime,
+			@Param("careEndTime") Date careEndTime);
+	
+	List<ResidentRecord> searchResidentRecordList(@Param("hospital_id") String hospitalId,
+			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("careStartTime") Date careStartTime,
+			@Param("careEndTime") Date careEndTime);
+	
+	List<ResidentRecord> searchDirectorResidentRecordList(@Param("hospital_id") String hospitalId,
+			@Param("departmentId") String departmentId, @Param("patName") String name, @Param("careStartTime") Date careStartTime,
+			@Param("careEndTime") Date careEndTime);
+	
+	PatientInHospital searchPatientInHospitalById(@Param("recordId") String recordId);
 }

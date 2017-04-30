@@ -1,14 +1,14 @@
 package cn.sportsdata.webapp.youth.service.patient;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
@@ -45,6 +45,8 @@ public interface PatientService {
 			 String diag_desc,
 			 String treatment,
 			 String suggestion);
+	
+	int updatePatientInHospital(PatientInHospital record);
 	int updateMedicalRecord(MedicalRecordVO medicalRecordVO);
 	int insertMedicalRecord(MedicalRecordVO medicalRecordVO);
 	int updateOperationRecord(OpertaionRecord opertaionRecord);
@@ -67,5 +69,16 @@ public interface PatientService {
 			long month, long day);
 	
 	Boolean submitMeetingRecord(String recordType, String recordId, String patientInhospitalId, String hospitalId, String doctorId);
+
+	List<PatientInHospital> searchInHospitalRecordList(String hospitalId, String doctorCode, String name, Date careStartTime, Date careEndTime);
+	
+	List<PatientInHospital> searchDirectorInHospitalRecordList(String hospitalId, String departmentId, String name, Date careStartTime, Date careEndTime);
+	
+	List<ResidentRecord> searchResidentRecordList(String hospitalId, String doctorCode, String name, Date careStartTime, Date careEndTime);
+	
+	List<ResidentRecord> searchDirectorResidentRecordList(String hospitalId, String departmentId, String name, Date careStartTime, Date careEndTime);
+	
+	PatientInHospital searchPatientInHospitalById(String recordId);
+
 	
 }

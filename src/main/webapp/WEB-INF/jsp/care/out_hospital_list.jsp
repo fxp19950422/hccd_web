@@ -29,7 +29,7 @@
 				</c:if>
 			/>
 		</div>
-		<div class="col-md-1 inputLabel">手术时间</div>
+		<div class="col-md-1 inputLabel">住院时间</div>
 			<div class="col-md-3">
 			<div class="input-group date">
 				<input type="text" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart"
@@ -59,10 +59,10 @@
 		data-pagination-next-text="下页" data-pagination-last-text="最后页">
 		<thead>
 			<tr>
-				<th data-field="operatingDate" data-formatter="dateFormatter"   data-align="center">手术时间</th>
-				<th data-field="patientName" data-align="center">病人姓名</th>
-				<th data-field="operationDescription" data-align="center">手术名称</th>
-				<th data-field="operator" data-align="center">术者</th>
+				<th data-field="admissionNumber" data-align="center">住院号</th>
+				<th data-field="admissionDate" data-formatter="dateFormatter"   data-align="center">住院时间</th>
+				<th data-field="realName" data-align="center">病人姓名</th>
+				<th data-field="feeType" data-align="center">医保类型</th>
 				<th data-field="id"  data-formatter="actionFormatter"  data-align="center">操作</th>
 			</tr>
 		</thead>
@@ -107,7 +107,7 @@
 		if(recordId==undefined){
 			recordId=0;
 		}
-		var url ="<%=serverUrl%>care/operation_detail?id=" + recordId;
+		var url ="<%=serverUrl%>care/out_hospital_record_detail?id=" + recordId;
 		sa.ajax({
 			type : "get",
 			url : url,
@@ -151,9 +151,9 @@
 		});
 		
 		$("#table").bootstrapTable();
-		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/care/operation_records?" + $("#player_form").serialize()});
+		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/care/out_hospital_records?" + $("#player_form").serialize()});
 	    $("#search_btn").click(function(){
-			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/care/operation_records?" + $("#player_form").serialize()});
+			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/care/out_hospital_records?" + $("#player_form").serialize()});
 		});
 	}
 </script>

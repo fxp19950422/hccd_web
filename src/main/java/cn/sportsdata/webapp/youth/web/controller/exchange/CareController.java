@@ -40,6 +40,7 @@ import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.FormCondition;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -454,17 +455,44 @@ public class CareController extends BaseController{
 	
 	@RequestMapping(value = "/in_hospital_list",method = RequestMethod.GET)
 	public String toInHospitalListPage(HttpServletRequest request, Model model, FormCondition condition,String registId){
+		model.addAttribute("condition", condition);
 		return "care/in_hospital_list";
+	}
+	
+	@RequestMapping(value = "/in_hospital_records",method = RequestMethod.GET)
+	@ResponseBody
+    public List<PatientInHospital> getInHospitalRecords(HttpServletRequest request, Model model, FormCondition condition) {
+		
+		LoginVO login = getCurrentUser(request);
+		DepartmentVO dept = getCurrentDepartment(request);
+		
+		Date date = DateUtil.string2Date2(condition.getCareTimeStart(),"yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		
+		
+//		List<PatientInHospital> list = patientService.searchInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
+//				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), null, null);
+		
+		List<PatientInHospital> list = patientService.searchDirectorInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
+				login.getHospitalUserInfo().getDeptId(), condition.getPatName(), date, null);
+		
+//		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+//				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
+//				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+		
+		return list;
 	}
 	
 	@RequestMapping(value = "/in_hospital_record_detail",method = RequestMethod.GET)
 	public String toInHospitalRecordDetail(String id, Model model,String registId,FormCondition condition){
 		
-		OpertaionRecord record = patientService.getOperationRecordById(id);
-		List<String> ids = new ArrayList<>();
-		ids.add(record.getPatientId());
-		List<PatientInfoVO> pList = patientService.getPatients(ids);
-		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		PatientInHospital record = patientService.searchPatientInHospitalById(id);
+//		List<String> ids = new ArrayList<>();
+//		ids.add(record.getPatientId());
+//		List<PatientInfoVO> pList = patientService.getPatients(ids);
+//		record.setPatientName(pList==null?"":pList.get(0).getRealName());
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
@@ -475,11 +503,7 @@ public class CareController extends BaseController{
 	@RequestMapping(value = "/in_hospital_record_edit",method = RequestMethod.GET)
 	public String toInHospitalRecordEdit(String id, Model model,String registId,FormCondition condition){
 		
-		OpertaionRecord record = patientService.getOperationRecordById(id);
-		List<String> ids = new ArrayList<>();
-		ids.add(record.getPatientId());
-		List<PatientInfoVO> pList = patientService.getPatients(ids);
-		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		PatientInHospital record = patientService.searchPatientInHospitalById(id);
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
@@ -487,19 +511,58 @@ public class CareController extends BaseController{
 		return "care/in_hospital_record_edit";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/save_in_hospital_record", method = RequestMethod.POST)
+	public Object saveInHospitalRecord(HttpServletRequest request, PatientInHospital record,String id) {
+		
+		PatientInHospital dbRecord = patientService.searchPatientInHospitalById(id);
+		dbRecord.setOpPrimary(record.getOpPrimary());
+		dbRecord.setDiagnosis(record.getDiagnosis());
+		patientService.updatePatientInHospital(dbRecord);
+		
+		return record;
+	}
+	
 	@RequestMapping(value = "/out_hospital_list",method = RequestMethod.GET)
 	public String toOutHospitalListPage(HttpServletRequest request, Model model, FormCondition condition,String registId){
+		model.addAttribute("condition", condition);
 		return "care/out_hospital_list";
+	}
+	
+	@RequestMapping(value = "/out_hospital_records",method = RequestMethod.GET)
+	@ResponseBody
+    public List<ResidentRecord> getOutHospitalRecords(HttpServletRequest request, Model model, FormCondition condition) {
+		
+		LoginVO login = getCurrentUser(request);
+		DepartmentVO dept = getCurrentDepartment(request);
+		
+		Date date = DateUtil.string2Date2(condition.getCareTimeStart(),"yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		
+		
+//		List<PatientInHospital> list = patientService.searchInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
+//				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), null, null);
+		
+		List<ResidentRecord> list = patientService.searchDirectorResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
+				login.getHospitalUserInfo().getDeptId(), condition.getPatName(), date, null);
+		
+//		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+//				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
+//				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+		
+		return list;
 	}
 	
 	@RequestMapping(value = "/out_hospital_record_detail",method = RequestMethod.GET)
 	public String toOutHospitalRecordDetail(String id, Model model,String registId,FormCondition condition){
 		
-		OpertaionRecord record = patientService.getOperationRecordById(id);
-		List<String> ids = new ArrayList<>();
-		ids.add(record.getPatientId());
-		List<PatientInfoVO> pList = patientService.getPatients(ids);
-		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		ResidentRecord record = patientService.getResidentRecordById(id);
+//		List<String> ids = new ArrayList<>();
+//		ids.add(record.getPatientId());
+//		List<PatientInfoVO> pList = patientService.getPatients(ids);
+//		record.setPatientName(pList==null?"":pList.get(0).getRealName());
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
@@ -510,15 +573,23 @@ public class CareController extends BaseController{
 	@RequestMapping(value = "/out_hospital_record_edit",method = RequestMethod.GET)
 	public String toOutHospitalRecordEdit(String id, Model model,String registId,FormCondition condition){
 		
-		OpertaionRecord record = patientService.getOperationRecordById(id);
-		List<String> ids = new ArrayList<>();
-		ids.add(record.getPatientId());
-		List<PatientInfoVO> pList = patientService.getPatients(ids);
-		record.setPatientName(pList==null?"":pList.get(0).getRealName());
+		ResidentRecord record = patientService.getResidentRecordById(id);
+		
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
 		model.addAttribute("condition", condition);
 		return "care/out_hospital_record_edit";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/save_out_hospital_record", method = RequestMethod.POST)
+	public Object saveOutHospitalRecord(HttpServletRequest request, ResidentRecord record,String id) {
+		
+		ResidentRecord dbRecord = patientService.getResidentRecordById(id);
+		dbRecord.setDiagnose(record.getDiagnose());
+		patientService.updateResidentRecord(dbRecord);
+		
+		return record;
 	}
 }

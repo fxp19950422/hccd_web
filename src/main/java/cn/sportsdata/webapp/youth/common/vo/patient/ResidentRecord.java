@@ -21,9 +21,28 @@ public class ResidentRecord implements Serializable {
 	private String outState;
 	private String suggestion;
 	
-	private String doctorInCharge;
+	private String diagnosis;
 	
-	  public String getDoctorInCharge() {
+	private String doctorInCharge;
+	private String realName;
+	
+	  public String getRealName() {
+		return realName;
+	}
+
+	public String getDiagnosis() {
+		return diagnosis;
+	}
+
+	public void setDiagnosis(String diagnosis) {
+		this.diagnosis = diagnosis;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getDoctorInCharge() {
 		return doctorInCharge;
 	}
 
