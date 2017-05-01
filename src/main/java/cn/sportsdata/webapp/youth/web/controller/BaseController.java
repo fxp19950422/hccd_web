@@ -49,6 +49,14 @@ public class BaseController {
 		return null;
 	}
 	
+	protected String getCurrentRole(HttpServletRequest request) {
+		Token obj = (Token)request.getSession().getAttribute(Constants.USER_SESSION_KEY);
+		if(obj != null){
+			return obj.getRole();
+		}
+		return null;
+	}
+	
 	protected void setLoginVO(LoginVO loginVO, HttpServletRequest request) {
 		Token obj = (Token)request.getSession().getAttribute(Constants.USER_SESSION_KEY);
 		if(obj != null && loginVO != null){

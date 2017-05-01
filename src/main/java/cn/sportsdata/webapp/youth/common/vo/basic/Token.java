@@ -17,6 +17,16 @@ public class Token {
 public DepartmentVO getDepartmentVO() {
 		return departmentVO;
 	}
+	
+	String role = "";
+
+	public void setRole(String role){
+		this.role = role;
+	}
+	
+	public String getRole(){
+		return this.role;
+	}
 
 	public void setDepartmentVO(DepartmentVO departmentVO) {
 		this.departmentVO = departmentVO;
@@ -31,6 +41,8 @@ public DepartmentVO getDepartmentVO() {
 		this.loginVO = loginVO;
 	}
 
+	
+	
 	public void initPrivilege(){
 		
 		List<PrivilegeVO> privilegeVOs = privilegeService.getUserPrivileges(loginVO.getId(), orgVO.getId());

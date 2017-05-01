@@ -212,7 +212,7 @@
     </select>
     
     <select id="getExchangeResidentRecords" resultMap="MedicalRecordType" parameterType="java.util.Map">
-    	SELECT A.*,I.asset_id as resident_asset_id, J.name as residentAssetTypeName FROM medical.resident_record A left outer join hospital_record_asset I on (A.id = I.hospital_record_id and I.record_type='resident' and I.status='active') left outer join record_asset_type J on (I.record_asset_type_id = J.id)
+    	SELECT A.*,B.name as doctor_name,I.asset_id as resident_asset_id, J.name as residentAssetTypeName FROM medical.resident_record A left outer join doctor B on (A.doctor_id = B.user_id) left outer join hospital_record_asset I on (A.id = I.hospital_record_id and I.record_type='resident' and I.status='active') left outer join record_asset_type J on (I.record_asset_type_id = J.id)
 			where A.id in (
 			<foreach item="item" index="index" collection="list" separator=",">
             "${item}"

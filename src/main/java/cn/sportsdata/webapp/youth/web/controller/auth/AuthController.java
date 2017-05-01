@@ -3,6 +3,7 @@ package cn.sportsdata.webapp.youth.web.controller.auth;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -67,6 +68,9 @@ public class AuthController {
 		} else if (orgs.size() == 1) {
 			obj.setOrgVO(orgs.get(0));
 			obj.initPrivilege();
+			Map<String, String> role = departmentService.getUserRoleByLoginId(obj.getLoginVO().getId());
+			
+			obj.setRole(role.get("name"));
 			CookieUtils.setHagkCookie(response, obj);
 			return "redirect:/system/system/index";
 		} else {
@@ -149,6 +153,11 @@ public class AuthController {
 			DepartmentVO department = departmentService.getDepartmentFromLoginId(obj.getLoginVO().getId());
 			obj.setDepartmentVO(department);
 			obj.initPrivilege();
+			
+			Map<String, String> role = departmentService.getUserRoleByLoginId(obj.getLoginVO().getId());
+			
+			obj.setRole(role.get("name"));
+			
 			CookieUtils.setHagkCookie(response, obj);
 			return "redirect:/system/system/index";
 		} else {
@@ -178,6 +187,9 @@ public class AuthController {
 		obj.setDepartmentVO(department);
 		obj.setOrgVO(org);
 		obj.initPrivilege();
+		Map<String, String> role = departmentService.getUserRoleByLoginId(obj.getLoginVO().getId());
+		
+		obj.setRole(role.get("name"));
 		CookieUtils.setHagkCookie(response, obj);
 		return "redirect:/system/system/index";
 	}

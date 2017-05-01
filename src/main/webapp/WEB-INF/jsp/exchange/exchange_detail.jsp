@@ -353,6 +353,14 @@
 					</c:if>
 				 </c:forEach>
 
+			
+			
+			<section>
+					<H2>辅助检验</H2>
+					<p>
+      					${ record.supplementaryExamination }
+      				</p>
+			</section>
 			<c:forEach items="${record.patientAssetTypes}" var="assetType">
 						
 						<c:forEach items="${assetType.assets}" var="asset">
@@ -362,13 +370,6 @@
 							</section>
 						</c:forEach>
 			</c:forEach>
-			
-			<section>
-					<H2>辅助检验</H2>
-					<p>
-      					${ record.supplementaryExamination }
-      				</p>
-			</section>
 			<section>
 					<H2>病例讨论</H2>
 					<p>
@@ -408,7 +409,7 @@
       						收治医师
       						</td>
       						<td>
-      							${record.doctorInCharge}
+      							${record.doctorName}
       						</td>
       					</tr>
       					<tr>

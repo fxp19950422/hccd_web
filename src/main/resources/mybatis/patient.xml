@@ -452,6 +452,24 @@
 	       	order by OPERATING_DATE desc
     </select>
     
+       <select id="searchDirectorOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select C.*,D.real_name patientName from 
+    		(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
+				where A.department_code = #{departmentId}
+				union 
+			SELECT B.* FROM medical.department A left outer join department B on B.parent_department_id = A.department_code where A.department_code = #{departmentId}
+				)
+			 A inner join doctor B on (A.department_code = B.department_id) 
+			  inner join  operation C  on (B.user_id = C.doctor_id)  left join patient D on C.patient_id=D.patient_number
+	       	where  C.hospital_id=#{hospital_id} 
+	       	and C.status = 'active' and year(OPERATING_DATE) = #{year} 
+	       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+	       	<if test="patName != null and patName != '' ">
+    			and D.real_name like '%${patName}%'
+    		</if>
+	       	order by OPERATING_DATE desc
+    </select>
+    
     <select id="searchInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
     	select A.*,b.real_name from patient_in_hospital A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 

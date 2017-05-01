@@ -90,9 +90,23 @@ public class CareController extends BaseController{
 	@ResponseBody
     public List<MedicalRecordVO> getMedicalRecord(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd) {
 		
-		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "1");
-
-		return recordList;
+		
+		String role = this.getCurrentRole(request);
+		DepartmentVO dept = this.getCurrentDepartment(request);
+		LoginVO user = getCurrentUser(request);
+		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
+			List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", dept.getDepartmentCode());
+			return recordList;
+		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
+			List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(user.getHospitalUserInfo().getId(), careTimeStart, careTimeEnd, name, idNumber, "1", null);
+			return recordList;
+		} else {
+			return null;
+		}
+		
+//		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "1");
+//
+//		return recordList;
 	}
 	
 	@RequestMapping(value = "/care_detail",method = RequestMethod.GET)
@@ -246,15 +260,28 @@ public class CareController extends BaseController{
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		
-		List<OpertaionRecord> list = patientService.searchOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
-				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), calendar.get(Calendar.YEAR),
-				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+
+		String role = this.getCurrentRole(request);
+		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
+			List<OpertaionRecord> list = patientService.searchDirectorOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+					dept.getDepartmentCode(), condition.getPatName(), calendar.get(Calendar.YEAR),
+					calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+			return list;
+		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
+			List<OpertaionRecord> list = patientService.searchOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), calendar.get(Calendar.YEAR),
+					calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+			return list;
+		} else {
+			return null;
+		}
+		
+		
+		
 		
 //		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
 //				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
 //				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-		
-		return list;
 	}
 	
 	@RequestMapping(value = "/download_medical_record",method = RequestMethod.GET)
@@ -472,17 +499,29 @@ public class CareController extends BaseController{
 		
 		
 		
+		String role = this.getCurrentRole(request);
+		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
+			List<PatientInHospital> list = patientService.searchDirectorInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
+					dept.getDepartmentCode(), condition.getPatName(), date, null);
+			return list;
+		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
+			List<PatientInHospital> list = patientService.searchInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
+					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), date, null);
+			return list;
+		} else {
+			return null;
+		}
+		
 //		List<PatientInHospital> list = patientService.searchInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
 //				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), null, null);
 		
-		List<PatientInHospital> list = patientService.searchDirectorInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
-				dept.getDepartmentCode(), condition.getPatName(), date, null);
 		
-//		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
+		
+//		Map<String, Object> result = patientService.(login.getHospitalUserInfo().getHospitalId(),
 //				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
 //				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 		
-		return list;
+		
 	}
 	
 	@RequestMapping(value = "/in_hospital_record_detail",method = RequestMethod.GET)
@@ -541,20 +580,30 @@ public class CareController extends BaseController{
 		Date date = DateUtil.string2Date2(condition.getCareTimeStart(),"yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
+		String role = this.getCurrentRole(request);
 		
-		
+		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
+			List<ResidentRecord> list = patientService.searchDirectorResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
+					dept.getDepartmentCode(), condition.getPatName(), date, null);
+			return list;
+		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
+			List<ResidentRecord> list = patientService.searchResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
+					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), date, null);
+			return list;
+		} else {
+			return null;
+		}
 		
 //		List<PatientInHospital> list = patientService.searchInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
 //				login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), null, null);
 		
-		List<ResidentRecord> list = patientService.searchDirectorResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
-				login.getHospitalUserInfo().getDeptId(), condition.getPatName(), date, null);
+//		List<ResidentRecord> list = patientService.searchDirectorResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
+//				login.getHospitalUserInfo().getDeptId(), condition.getPatName(), date, null);
 		
 //		Map<String, Object> result = patientService.getOperationRecordList(login.getHospitalUserInfo().getHospitalId(),
 //				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
 //				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 		
-		return list;
 	}
 	
 	@RequestMapping(value = "/out_hospital_record_detail",method = RequestMethod.GET)

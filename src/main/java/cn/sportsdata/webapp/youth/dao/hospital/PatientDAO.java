@@ -136,6 +136,9 @@ public interface PatientDAO {
 			@Param("doctor_code") String doctorCode, @Param("patName") String name, @Param("year") long year,
 			@Param("month") long month, @Param("day") long day);
 	
+	List<OpertaionRecord> searchDirectorOperationRecordList(@Param("hospital_id") String hospitalId,
+			@Param("departmentId") String departmentId, @Param("patName") String name, @Param("year") long year,
+			@Param("month") long month, @Param("day") long day);
 
 	int saveShiftMeetingRecords(@Param("hospital_id") String hospitalId,
 			@Param("doctor_id") String doctorId, @Param("record_id") String recordId,

@@ -69,6 +69,9 @@ public interface PatientService {
 	List<OpertaionRecord> searchOperationRecordList(String hospitalId, String doctorCode, String name, long year,
 			long month, long day);
 	
+	List<OpertaionRecord> searchDirectorOperationRecordList(String hospitalId, String departmentId, String name, long year,
+			long month, long day);
+	
 	Boolean submitMeetingRecord(String recordType, String recordId, String patientInhospitalId, String hospitalId, String doctorId);
 
 	List<PatientInHospital> searchInHospitalRecordList(String hospitalId, String doctorCode, String name, Date careStartTime, Date careEndTime);

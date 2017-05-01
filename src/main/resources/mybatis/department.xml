@@ -18,4 +18,8 @@
     <select id="getDepartmentFromLoginId" resultMap="departmentResultMap" parameterType="java.lang.String">
         SELECT B.* FROM doctor A, medical.department B where A.department_id = B.department_code and A.login_user_id =#{userId}
     </select>
+    
+    <select id="getRoleFromLoginId" resultType="java.util.Map" parameterType="java.lang.String">
+       SELECT * FROM medical.user_role_mapping A, role B where A.role_id = B.id and A.user_id = #{userId}
+    </select>
 </mapper>

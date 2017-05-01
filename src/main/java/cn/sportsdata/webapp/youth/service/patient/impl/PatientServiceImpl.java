@@ -673,4 +673,11 @@ public class PatientServiceImpl implements PatientService {
 		// TODO Auto-generated method stub
 		return patientDAO.getTodayMeetingRecords();
 	}
+
+	@Override
+	public List<OpertaionRecord> searchDirectorOperationRecordList(String hospitalId, String departmentId, String name,
+			long year, long month, long day) {
+		// TODO Auto-generated method stub
+		return patientDAO.searchDirectorOperationRecordList(hospitalId, departmentId, name, year, month, day);
+	}
 }

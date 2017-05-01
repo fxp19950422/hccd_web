@@ -2,6 +2,7 @@ package cn.sportsdata.webapp.youth.service.department.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public DepartmentVO getDepartmentFromLoginId(String userId) {
 		// TODO Auto-generated method stub
 		return departDAO.getDepartmentFromLoginId(userId);
+	}
+
+	@Override
+	public Map<String, String> getUserRoleByLoginId(String userId) {
+		// TODO Auto-generated method stub
+		return departDAO.getUserRoleByLoginId(userId);
 	}
 
 	
