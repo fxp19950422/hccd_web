@@ -37,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.sportsdata.webapp.youth.common.constants.Constants;
 import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.HAFileUtils;
+import cn.sportsdata.webapp.youth.common.utils.ImgCompress;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
@@ -206,12 +207,21 @@ public class HealthDataFileUploadController extends BaseController {
 				String fileExt = HAFileUtils.getFileExtension(originFileName);
 
 				String createdFileName =  UUID.randomUUID().toString();
+				String createdFileNameWithExt = "";
+				String outPath = "";
 				if(fileExt != null){
-					createdFileName += ("." + fileExt);
+					createdFileNameWithExt += ("." + fileExt);
 				}
 
-				File createdFile = HAFileUtils.createNewAttachmentFile(createdFileName, loginVO.getId(), null, HAFileUtils.PRODUCT_FILE_TYPE);
+				File createdFile = HAFileUtils.createNewAttachmentFile(createdFileNameWithExt, loginVO.getId(), null, HAFileUtils.PRODUCT_FILE_TYPE);
 				uploadFile.transferTo(createdFile);
+				
+				boolean isRotated = false;
+//				if (createdFile != null) {
+//					outPath = HAFileUtils.getStorageFilePath(createdFileName + "_fix.jpeg", loginVO.getId(), null,
+//							HAFileUtils.PRODUCT_FILE_TYPE);
+//					isRotated = ImgCompress.fixImage(createdFile.getAbsolutePath(), outPath);
+//				}
 				
 				JSONObject json = new JSONObject();
 				
@@ -226,7 +236,12 @@ public class HealthDataFileUploadController extends BaseController {
 		        vo.setSize(uploadFile.getSize());
 		        vo.setPrivacy("protected");
 		        vo.setStatus("active");
-		        vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
+		        if(isRotated){
+		        	vo.setStorage_name(SecurityUtils.encryptByAES(outPath));
+		        } else {
+		        	 vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
+		        }
+		       
 
 		        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, assetTypeId);
 		        vo.setId(id);
