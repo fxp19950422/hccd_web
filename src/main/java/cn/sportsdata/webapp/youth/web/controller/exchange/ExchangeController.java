@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,7 +76,7 @@ public class ExchangeController extends BaseController{
 //	}
 	
 	@RequestMapping(value = "/exchange_detail",method = RequestMethod.GET)
-    public String toExchangeDetail(HttpServletRequest request, Model model,  String obj) throws Exception {
+    public String toExchangeDetail(HttpServletRequest request, Model model,  String obj, String anotherOperation) throws Exception {
 		
 		
 //		String document = new String(Base64.decode(obj.getBytes()));
@@ -132,6 +133,35 @@ public class ExchangeController extends BaseController{
 		model.addAttribute("patient_in_hospital_records", patientInHospitalRecordList);
 		
 		model.addAttribute("residentrecords", residentRecordList);
+		
+		List<List<String>> page = new ArrayList<List<String>>();
+		
+		if (!StringUtils.isEmpty(anotherOperation.trim())){
+			String[] arrays = anotherOperation.split("<br>");
+			
+			List<String> lstArr = new ArrayList<String>();
+			for (int i = 0; i < arrays.length; i++){
+				if (!StringUtils.isEmpty(arrays[i])){
+					lstArr.add(arrays[i]);
+				}
+			}
+			
+			
+			List<String> tmp = new ArrayList<String>();
+			for (int i = 0; i < lstArr.size(); i++){
+				if (i%4 == 0 ){
+					if (i != 0) {
+						page.add(tmp);
+						tmp = new ArrayList<String>();
+					}
+					tmp.add(lstArr.get(i));
+				} else {
+					tmp.add(lstArr.get(i));
+				}
+			}
+			page.add(tmp);
+		}
+		model.addAttribute("anotherOperation", page);
 		
 		return "exchange/exchange_detail";
 	}
