@@ -44,7 +44,7 @@
 						<pre style="background:white;border-width:0px">${record.afterDiagnosis}</pre>
 					</sa-panel>
 					<sa-panel title="手术名称">
-						<pre style="background:white;border-width:0px">${record.operationDescription}</pre>
+						<pre style="background:white;border-width:0px">${record.operationDesc}</pre>
 					</sa-panel>
 					<sa-panel title="手术经过">
 						<pre style="background:white;border-width:0px">${record.process}</pre>

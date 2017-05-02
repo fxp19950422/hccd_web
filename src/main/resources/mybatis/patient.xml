@@ -407,7 +407,7 @@
 		operation_nurse = #{opertaionRecord.operationNurse},
 		operation_no = #{opertaionRecord.operationNo},
 		operation_emer_indicator = #{opertaionRecord.operationEmerIndicator},
-		operation_desc = #{opertaionRecord.operationDescription},
+		operation_desc = #{opertaionRecord.operationDesc},
 		operation_code = #{opertaionRecord.operationCode},
 		operating_end_date = #{opertaionRecord.operatingEndDate},
 		operating_date = #{opertaionRecord.operatingDate},
