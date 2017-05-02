@@ -163,7 +163,6 @@
 		$('#add_btn').click(function(){
 			var str = $("#future_plan").val();
 			str= str.replace(/\n/g,"<br>");
-			alert(str);
 			window.open("<%=serverUrl%>exchange/exchange_detail?anotherOperation=" + str);
 		});
 	}
