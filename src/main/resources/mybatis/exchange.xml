@@ -192,7 +192,7 @@
    
    
     <select id="getExchangeOperationRecords" resultMap="PatientInHospitalType" parameterType="java.util.Map">
-    	select A.id as record_id, C.real_name, B.operating_date as operating_date_time, C.birthday, A.*,H.name as doctor_name, B.id as operation_id ,B.*,G.name as operator_name, E.asset_id, F.name as assetTypeName FROM medical.patient_in_hospital A left outer join doctor H on (A.doctor_id = H.user_id) left outer join patient C on (A.patient_id = C.patient_number), 
+    	select A.id as record_id, C.real_name, B.scheduled_date_time as operating_date_time, C.birthday, A.*,H.name as doctor_name, B.id as operation_id ,B.*,G.name as operator_name, E.asset_id, F.name as assetTypeName FROM medical.patient_in_hospital A left outer join doctor H on (A.doctor_id = H.user_id) left outer join patient C on (A.patient_id = C.patient_number), 
     	operation B 
     	left outer join doctor G on (B.doctor_id = G.user_id) left outer join hospital_record_asset E on (B.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id)
 			where A.patient_id = B.patient_id  and B.id in (
@@ -200,10 +200,11 @@
             "${item}"
          	</foreach>
 			)
+		order by G.department_id
     </select>
     
     <select id="getExchangePatientInHospitalRecords" resultMap="PatientInHospitalType" parameterType="java.util.Map">
-    	select A.id as record_id, C.real_name, B.operating_date as operating_date_time, C.birthday, I.asset_id as patient_asset_id, J.name as patient_assetTypeName, A.*,H.name as doctor_name, B.id as operation_id ,B.*,G.name as operator_name, E.asset_id, F.name as assetTypeName FROM medical.patient_in_hospital A left outer join doctor H on (A.doctor_id = H.user_id) left outer join patient C on (A.patient_id = C.patient_number) left outer join hospital_record_asset I on (A.id = I.hospital_record_id and I.record_type='patientInhospital' and I.status='active') left outer join record_asset_type J on (I.record_asset_type_id = J.id), 
+    	select A.id as record_id, C.real_name, B.scheduled_date_time as operating_date_time, C.birthday, I.asset_id as patient_asset_id, J.name as patient_assetTypeName, A.*,H.name as doctor_name, B.id as operation_id ,B.*,G.name as operator_name, E.asset_id, F.name as assetTypeName FROM medical.patient_in_hospital A left outer join doctor H on (A.doctor_id = H.user_id) left outer join patient C on (A.patient_id = C.patient_number) left outer join hospital_record_asset I on (A.id = I.hospital_record_id and I.record_type='patientInhospital' and I.status='active') left outer join record_asset_type J on (I.record_asset_type_id = J.id), 
     	operation B 
     	left outer join doctor G on (B.doctor_id = G.user_id) left outer join hospital_record_asset E on (B.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id)
 			where A.patient_id = B.patient_id  and A.id in (
