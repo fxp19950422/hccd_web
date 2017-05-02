@@ -206,21 +206,12 @@ public class HealthDataFileUploadController extends BaseController {
 				String fileExt = HAFileUtils.getFileExtension(originFileName);
 
 				String createdFileName =  UUID.randomUUID().toString();
-				String createdFileNameWithExt = "";
-				String outPath = "";
 				if(fileExt != null){
-					createdFileNameWithExt += ("." + fileExt);
+					createdFileName += ("." + fileExt);
 				}
 
-				File createdFile = HAFileUtils.createNewAttachmentFile(createdFileNameWithExt, loginVO.getId(), null, HAFileUtils.PRODUCT_FILE_TYPE);
+				File createdFile = HAFileUtils.createNewAttachmentFile(createdFileName, loginVO.getId(), null, HAFileUtils.PRODUCT_FILE_TYPE);
 				uploadFile.transferTo(createdFile);
-				
-				boolean isRotated = false;
-//				if (createdFile != null) {
-//					outPath = HAFileUtils.getStorageFilePath(createdFileName + "_fix.jpeg", loginVO.getId(), null,
-//							HAFileUtils.PRODUCT_FILE_TYPE);
-//					isRotated = ImgCompress.fixImage(createdFile.getAbsolutePath(), outPath);
-//				}
 				
 				JSONObject json = new JSONObject();
 				
@@ -235,12 +226,7 @@ public class HealthDataFileUploadController extends BaseController {
 		        vo.setSize(uploadFile.getSize());
 		        vo.setPrivacy("protected");
 		        vo.setStatus("active");
-		        if(isRotated){
-		        	vo.setStorage_name(SecurityUtils.encryptByAES(outPath));
-		        } else {
-		        	 vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
-		        }
-		       
+		        vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
 
 		        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, assetTypeId);
 		        vo.setId(id);
