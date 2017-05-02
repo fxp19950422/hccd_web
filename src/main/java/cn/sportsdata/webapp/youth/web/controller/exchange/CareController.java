@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -496,17 +497,18 @@ public class CareController extends BaseController{
 		Date date = DateUtil.string2Date2(condition.getCareTimeStart(),"yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, -1);
 		
 		
 		
 		String role = this.getCurrentRole(request);
 		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
 			List<PatientInHospital> list = patientService.searchDirectorInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
-					dept.getDepartmentCode(), condition.getPatName(), date, null);
+					dept.getDepartmentCode(), condition.getPatName(), calendar.getTime(), date);
 			return list;
 		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
 			List<PatientInHospital> list = patientService.searchInHospitalRecordList(login.getHospitalUserInfo().getHospitalId(),
-					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), date, null);
+					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), calendar.getTime(), date);
 			return list;
 		} else {
 			return null;
@@ -580,15 +582,19 @@ public class CareController extends BaseController{
 		Date date = DateUtil.string2Date2(condition.getCareTimeStart(),"yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, -1);
+		
+		
 		String role = this.getCurrentRole(request);
 		
 		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
 			List<ResidentRecord> list = patientService.searchDirectorResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
-					dept.getDepartmentCode(), condition.getPatName(), date, null);
+					dept.getDepartmentCode(), condition.getPatName(), calendar.getTime(), date);
 			return list;
 		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
 			List<ResidentRecord> list = patientService.searchResidentRecordList(login.getHospitalUserInfo().getHospitalId(),
-					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), date, null);
+					login.getHospitalUserInfo().getUserIdinHospital(), condition.getPatName(), calendar.getTime(), date);
 			return list;
 		} else {
 			return null;
