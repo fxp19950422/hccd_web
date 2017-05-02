@@ -85,8 +85,8 @@
 
 <form id="condition_form">
 	<div class="row">
-		<input  class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
-		<input  class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
+		<input type="hidden" class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
+		<input type="hidden"  class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
 	</div>
 </form>
 
