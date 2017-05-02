@@ -444,8 +444,11 @@
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
     	select A.*,b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and year(OPERATING_DATE) = #{year} 
-	       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+	       	and A.status = 'active' 
+	       	<if test="patName == null or patName ==''">
+		       	and year(OPERATING_DATE) = #{year} 
+		       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
@@ -462,8 +465,12 @@
 			 A inner join doctor B on (A.department_code = B.department_id) 
 			  inner join  operation C  on (B.user_id = C.doctor_id)  left join patient D on C.patient_id=D.patient_number
 	       	where  C.hospital_id=#{hospital_id} 
-	       	and C.status = 'active' and year(OPERATING_DATE) = #{year} 
+	       	and C.status = 'active' 
+	       	
+	       	<if test="patName == null or patName ==''"> 
+	       	 and year(OPERATING_DATE) = #{year} 
 	       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and D.real_name like '%${patName}%'
     		</if>

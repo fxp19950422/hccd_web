@@ -59,7 +59,7 @@
 		data-pagination-next-text="下页" data-pagination-last-text="最后页">
 		<thead>
 			<tr>
-				<th data-field="admissionNumber" data-align="center">住院号</th>
+				<th data-field="patientId" data-align="center">住院号</th>
 				<th data-field="admissionDate" data-formatter="dateFormatter"   data-align="center">住院时间</th>
 				<th data-field="realName" data-align="center">病人姓名</th>
 				<th data-field="feeType" data-align="center">医保类型</th>
