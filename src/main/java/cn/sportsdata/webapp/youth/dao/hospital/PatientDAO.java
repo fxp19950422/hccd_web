@@ -143,7 +143,7 @@ public interface PatientDAO {
 	int saveShiftMeetingRecords(@Param("hospital_id") String hospitalId,
 			@Param("doctor_id") String doctorId, @Param("record_id") String recordId,
 			@Param("record_type") String recordType);
-	
+	boolean deleteShiftMeetingRecord(@Param("record_id") String recordId);
 	List<ShiftMeetingVO> getTodayMeetingRecords();
 	int updatePatientRecentMeetingRecord(@Param("record_id") String recordId, @Param("record_type") String recordType);
 
@@ -164,4 +164,5 @@ public interface PatientDAO {
 			@Param("careEndTime") Date careEndTime);
 	
 	PatientInHospital searchPatientInHospitalById(@Param("recordId") String recordId);
+	
 }

@@ -631,4 +631,9 @@
 		update patient_in_hospital set latest_meeting_date=CURDATE(), 
 		latest_meeting_type=#{record_type} where id=#{record_id}
 	</update>
+	
+	<delete id="deleteShiftMeetingRecord" parameterType="java.util.Map">
+		delete from morning_shift_meeting_record where record_id=#{record_id}
+	</delete>
+	
 </mapper>

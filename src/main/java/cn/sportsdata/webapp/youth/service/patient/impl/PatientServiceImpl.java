@@ -680,4 +680,9 @@ public class PatientServiceImpl implements PatientService {
 		// TODO Auto-generated method stub
 		return patientDAO.searchDirectorOperationRecordList(hospitalId, departmentId, name, year, month, day);
 	}
+
+	@Override
+	public boolean revertMeetingRecord(String recordId) {
+		return patientDAO.deleteShiftMeetingRecord(recordId);
+	}
 }

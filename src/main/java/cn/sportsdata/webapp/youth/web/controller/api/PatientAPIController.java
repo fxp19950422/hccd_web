@@ -219,4 +219,14 @@ public class PatientAPIController {
 		}
 		return new ResponseEntity<Response>(Response.toFailure(401, "exception"), HttpStatus.EXPECTATION_FAILED);
 	}
+	
+	@RequestMapping(value = "/revertMeetingRecord",  method = RequestMethod.POST)
+	public ResponseEntity<Response> revertMeetingRecord(HttpServletRequest request, HttpServletResponse resp,
+			String recordId) {
+	
+		if (patientService.revertMeetingRecord(recordId)) {
+			return new ResponseEntity<Response>(Response.toSussess("success"), HttpStatus.OK);
+		}
+		return new ResponseEntity<Response>(Response.toFailure(401, "exception"), HttpStatus.EXPECTATION_FAILED);
+	}
 }

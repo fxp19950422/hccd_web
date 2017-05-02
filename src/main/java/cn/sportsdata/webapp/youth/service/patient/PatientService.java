@@ -85,5 +85,6 @@ public interface PatientService {
 	PatientInHospital searchPatientInHospitalById(String recordId);
 
 	List<ShiftMeetingVO> getTodayExchangeRecordList();
+	boolean revertMeetingRecord(String recordId);
 	
 }
