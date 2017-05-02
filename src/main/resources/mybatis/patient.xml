@@ -196,7 +196,7 @@
     </select>
     
     <!-- 查询单个病人所有记录 -->
-   	<select id="getOperationById" resultMap="OperationRecordsType" parameterType="java.util.Map">
+   	<select id="getOperationById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
     	select A.*,A.scheduled_date_time operatingDate,A.operation_desc operationDescription, E.asset_id, F.name as assetTypeName from operation A left outer join hospital_record_asset E on (A.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id) where A.id = #{id}
     </select>
     
@@ -499,7 +499,7 @@
 	       	order by VISIT_DATE desc, VISIT_NO
     </select>
     
-    <select id="searchOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
+    <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
     	select A.*,A.scheduled_date_time operatingDate,A.operation_desc operationDescription,
     	b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
@@ -514,7 +514,7 @@
 	       	order by scheduled_date_time desc
     </select>
     
-       <select id="searchDirectorOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
+       <select id="searchDirectorOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
     	select C.*,C.scheduled_date_time operatingDate,C.operation_desc operationDescription,
     	D.real_name patientName from 
     		(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
