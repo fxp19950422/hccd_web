@@ -456,6 +456,20 @@
 					</c:forEach>
 		</c:forEach>
       </c:forEach>
+     <c:if test="${anotherOperation != null && fn:length(anotherOperation) > 0}">
+      <section>
+      	<H1>今日择期手术</H1>
+      </section>
+      <c:forEach items="${anotherOperation}" var="record">
+      	<section>
+      		<p style="font-size:30px;text-align:left">
+      	<c:forEach items="${record}" var="subRecord">
+      		${subRecord}<br/><br/>
+      	</c:forEach>
+      		</p>
+      	</section>
+      </c:forEach>
+      </c:if>
     </div>
   </div>
   </body>

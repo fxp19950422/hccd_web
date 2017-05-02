@@ -19,12 +19,12 @@
 </div> -->
 
 <section class="top_control_area">
-	<label > 
+	<%-- <label > 
 		<input type="radio" name="testViewMode" class="model" value="0" <c:if test="${radio == 0}">checked</c:if>> 查看昨天手术病人
 	</label>
 	<label > 
 		<input type="radio" name="testViewMode" class="model" value="1" <c:if test="${radio == 1}">checked</c:if>> 查看所有住院病人
-	</label> 
+	</label>  --%>
 	 
 	<button id="add_btn" class="btn btn-primary test-btn-right">交班</button>
 	<div class="clearfix"></div>
@@ -33,6 +33,9 @@
 
 <div class="clearfix" style="height:15px;"></div>
 <div class=" doctorPatientList">
+<textarea id="future_plan"
+					name="anotherOperation" class="form-control" rows="30"
+					 value=""></textarea>
 <%-- <c:forEach items="${doctors}" var="doctor">
 	<sa-panel-card title="${doctor.name}">
 		 <c:choose>
@@ -158,7 +161,10 @@
 		}); --%>
 		
 		$('#add_btn').click(function(){
-			window.open("<%=serverUrl%>exchange/exchange_detail");
+			var str = $("#future_plan").val();
+			str= str.replace(/\n/g,"<br>");
+			alert(str);
+			window.open("<%=serverUrl%>exchange/exchange_detail?anotherOperation=" + str);
 		});
 	}
 </script>
