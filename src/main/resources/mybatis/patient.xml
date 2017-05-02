@@ -200,6 +200,11 @@
     	select A.*, E.asset_id, F.name as assetTypeName from operation A left outer join hospital_record_asset E on (A.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id) where A.id = #{id}
     </select>
     
+    <select id="getOperationByIdWithoutMapping" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select A.* from operation A  where A.id = #{id}
+    </select>
+    
+    
    	<select id="getResidentById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     	select A.*, B.real_name from resident_record A left outer join patient B on (A.patient_id = B.patient_number) where A.id = #{id}
     </select>
@@ -476,7 +481,9 @@
 		DIAGNOSIS = #{record.diagnosis},
 		supplementary_examination = #{record.supplementaryExamination},
 		record_discussion = #{record.recordDiscussion},
-		op_primary = #{record.opPrimary}
+		op_primary = #{record.opPrimary},
+		body_exam = #{record.bodyExam},
+		ill_history = #{record.illHistory}
      	where id = #{record.id}
      	
      </update>

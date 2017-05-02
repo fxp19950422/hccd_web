@@ -409,12 +409,13 @@ public class CareController extends BaseController{
 	@RequestMapping(value = "/save_operation_record", method = RequestMethod.POST)
 	public Object saveOperationRecord(HttpServletRequest request, OpertaionRecord record,String id) {
 		
-		OpertaionRecord dbRecord = patientService.getOperationRecordById(id);
+		OpertaionRecord dbRecord = patientService.getOperationRecordByIdWithoutAssset(id);
 		
 //		dbRecord.setOperator(record.getOperator());
 		dbRecord.setOpPrimary(record.getOpPrimary());
 		dbRecord.setBeforeDiagnosis(record.getBeforeDiagnosis());
 		dbRecord.setAfterDiagnosis(record.getAfterDiagnosis());
+		dbRecord.setOperationDesc(record.getOperationDesc());
 		dbRecord.setOperationDescription(record.getOperationDescription());
 		dbRecord.setProcess(record.getProcess());
 		dbRecord.setPosture(record.getPosture());
@@ -559,6 +560,9 @@ public class CareController extends BaseController{
 		PatientInHospital dbRecord = patientService.searchPatientInHospitalById(id);
 		dbRecord.setOpPrimary(record.getOpPrimary());
 		dbRecord.setDiagnosis(record.getDiagnosis());
+		dbRecord.setBodyExam(record.getBodyExam());
+		dbRecord.setIllHistory(record.getIllHistory());
+		
 		dbRecord.setSupplementaryExamination(record.getSupplementaryExamination());
 		dbRecord.setRecordDiscussion(record.getRecordDiscussion());
 		patientService.updatePatientInHospital(dbRecord);

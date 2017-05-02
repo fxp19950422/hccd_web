@@ -43,8 +43,8 @@
 					name="afterDiagnosis" class="form-control" rows="5" placeholder="不超过800字"
 					value="${record.afterDiagnosis}">${record.afterDiagnosis}</textarea> </sa-panel>
 				<sa-panel title="手术名称"> <textarea id="future_plan"
-					name="operationDescription" class="form-control" rows="5" placeholder="不超过800字"
-					value="${record.operationDescription}">${record.operationDescription}</textarea> </sa-panel>
+					name="operationDesc" class="form-control" rows="5" placeholder="不超过800字"
+					value="${record.operationDesc}">${record.operationDesc}</textarea> </sa-panel>
 				<sa-panel title="手术经过"> <textarea id="future_plan"
 					name="process" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.process}">${record.process}</textarea>

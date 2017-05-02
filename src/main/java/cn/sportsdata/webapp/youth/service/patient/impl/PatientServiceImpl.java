@@ -556,6 +556,11 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
+	public OpertaionRecord getOperationRecordByIdWithoutAssset(String id) {
+		return patientDAO.getOperationByIdWithoutMapping(id);
+	}
+	
+	@Override
 	public ResidentRecord getResidentRecordById(String id) {
 		return patientDAO.getResidentById(id);
 	}
