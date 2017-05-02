@@ -70,6 +70,15 @@
 					<sa-panel title="术毕病人情况">
 						<pre style="background:white;border-width:0px">${record.finishedCondition}</pre>
 					</sa-panel>
+					
+					<c:forEach items="${record.assetTypes}" var="assetType">
+						<sa-panel title="${assetType.assetTypeName}">
+							<c:forEach items="${assetType.assets}" var="asset">
+								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+							</c:forEach>
+						</sa-panel>
+					
+				</c:forEach>
 				</div>
 		</form>
 	</div>

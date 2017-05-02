@@ -411,7 +411,7 @@ public class CareController extends BaseController{
 		
 		OpertaionRecord dbRecord = patientService.getOperationRecordById(id);
 		
-		dbRecord.setOperator(record.getOperator());
+//		dbRecord.setOperator(record.getOperator());
 		dbRecord.setOpPrimary(record.getOpPrimary());
 		dbRecord.setBeforeDiagnosis(record.getBeforeDiagnosis());
 		dbRecord.setAfterDiagnosis(record.getAfterDiagnosis());
