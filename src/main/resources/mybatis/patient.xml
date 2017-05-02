@@ -13,7 +13,7 @@
         	<result column="heal" property="heal" jdbcType="VARCHAR"/>
         	
         	<result column="wound_grade" property="woundGrade" jdbcType="VARCHAR"/>
-        	<result column="operating_date" property="operatingDate" jdbcType="VARCHAR"/>
+        	<result column="scheduled_date_time" property="operatingDate" jdbcType="VARCHAR"/>
         	<result column="anaesthesia_method" property="anaesthesiaMethod" jdbcType="VARCHAR"/>
         	<result column="operator" property="operator" jdbcType="VARCHAR"/>
         	<result column="doctor_id" property="doctorId" jdbcType="VARCHAR"/>
@@ -197,7 +197,7 @@
     
     <!-- 查询单个病人所有记录 -->
    	<select id="getOperationById" resultMap="OperationRecordsType" parameterType="java.util.Map">
-    	select A.*, E.asset_id, F.name as assetTypeName from operation A left outer join hospital_record_asset E on (A.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id) where A.id = #{id}
+    	select A.*,A.scheduled_date_time operatingDate,A.operation_desc operationDescription, E.asset_id, F.name as assetTypeName from operation A left outer join hospital_record_asset E on (A.id = E.hospital_record_id and E.record_type='operation' and E.status='active') left outer join record_asset_type F on (E.record_asset_type_id = F.id) where A.id = #{id}
     </select>
     
     <select id="getOperationByIdWithoutMapping" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
@@ -500,21 +500,23 @@
     </select>
     
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select A.*,b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
+    	select A.*,A.scheduled_date_time operatingDate,A.operation_desc operationDescription,
+    	b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' 
 	       	<if test="patName == null or patName ==''">
-		       	and year(OPERATING_DATE) = #{year} 
-		       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+		       	and year(scheduled_date_time) = #{year} 
+		       	and month(scheduled_date_time) =#{month} and day(scheduled_date_time) = #{day}
 	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
-	       	order by OPERATING_DATE desc
+	       	order by scheduled_date_time desc
     </select>
     
        <select id="searchDirectorOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select C.*,D.real_name patientName from 
+    	select C.*,C.scheduled_date_time operatingDate,C.operation_desc operationDescription,
+    	D.real_name patientName from 
     		(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
 				where A.department_code = #{departmentId}
 				union 
@@ -526,13 +528,13 @@
 	       	and C.status = 'active' 
 	       	
 	       	<if test="patName == null or patName ==''"> 
-	       	 and year(OPERATING_DATE) = #{year} 
-	       	and month(OPERATING_DATE) =#{month} and day(OPERATING_DATE) = #{day}
+	       	 and year(scheduled_date_time) = #{year} 
+	       	and month(scheduled_date_time) =#{month} and day(scheduled_date_time) = #{day}
 	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and D.real_name like '%${patName}%'
     		</if>
-	       	order by OPERATING_DATE desc
+	       	order by scheduled_date_time desc
     </select>
     
     <select id="searchInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
