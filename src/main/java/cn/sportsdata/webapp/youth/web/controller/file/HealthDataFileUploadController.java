@@ -37,7 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.sportsdata.webapp.youth.common.constants.Constants;
 import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.HAFileUtils;
-import cn.sportsdata.webapp.youth.common.utils.ImgCompress;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
