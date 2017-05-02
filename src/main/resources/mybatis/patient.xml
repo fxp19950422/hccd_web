@@ -44,6 +44,8 @@
         	<result column="drainage" property="drainage" jdbcType="VARCHAR"/>
         	<result column="finished_condition" property="finishedCondition" jdbcType="VARCHAR"/>
         	
+        	<result column='meeting_date' property="meetingDate" jdbcType="VARCHAR"/>
+        	
         	<collection property="assetTypes" ofType="cn.sportsdata.webapp.youth.common.vo.AssetTypeVO">
         		<result column="assetTypeName" property="assetTypeName" jdbcType="VARCHAR"/>
         		<collection property="assets" ofType="cn.sportsdata.webapp.youth.common.vo.AssetVO">
