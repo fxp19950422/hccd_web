@@ -100,7 +100,7 @@
 	}
 	
 	function dateFormatter(value, row, index){
-		return new Date(value).Format("yyyy年MM月dd日")
+		return new Date(value).Format("yyyy年MM月dd日 hh时mm分")
 	}
 	
 	function handle(recordId) {

@@ -27,8 +27,8 @@
 							<div class="col-md-3 profileDetailItemContent">${record.patientName}</div>
 							<div class="col-md-1 profileDetailItemTitle">医生</div>
 							<div class="col-md-3 profileDetailItemContent">${record.operator}</div>
-							<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
+							<div class="col-md-1 profileDetailItemTitle">手术时间</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" 
             value="${record.operatingDate}" /></div>
 						</div>
 						
