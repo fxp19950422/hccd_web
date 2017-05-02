@@ -27,6 +27,7 @@ public interface PatientDAO {
 	
 	//手术记录
 	OpertaionRecord getOperationById(@Param("id") String recordId);
+	OpertaionRecord getOperationByIdWithoutMapping(@Param("id") String recordId);
 	List<OpertaionRecord> getCurMyOperationRecordList(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode);
 	List<OpertaionRecord> getMyOperationRecordList(@Param("hospital_id") String hospitalId, 

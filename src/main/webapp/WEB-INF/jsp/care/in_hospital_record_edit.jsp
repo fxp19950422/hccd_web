@@ -48,9 +48,13 @@
 					name="diagnosis" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.diagnosis}">${record.diagnosis}</textarea>
 				</sa-panel>
-				<sa-panel title="辅助检验"> <textarea id="future_plan"
-					name="supplementaryExamination" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.supplementaryExamination}">${record.supplementaryExamination}</textarea>
+				<sa-panel title="专科检查"> <textarea id="future_plan"
+					name="bodyExam" class="form-control" rows="5"
+					placeholder="不超过800字" value="${record.bodyExam}">${record.bodyExam}</textarea>
+				</sa-panel>
+				<sa-panel title="病史"> <textarea id="future_plan"
+					name="illHistory" class="form-control" rows="5"
+					placeholder="不超过800字" value="${record.illHistory}">${record.illHistory}</textarea>
 				</sa-panel>
 				<sa-panel title="病历讨论"> <textarea id="future_plan"
 					name="recordDiscussion" class="form-control" rows="5"

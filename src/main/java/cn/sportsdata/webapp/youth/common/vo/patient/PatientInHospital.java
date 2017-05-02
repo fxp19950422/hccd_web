@@ -1149,8 +1149,28 @@ public class PatientInHospital implements Serializable {
 	
 	private String supplementaryExamination;
 	private String recordDiscussion;
+	private String bodyExam;
+	private String illHistory;
+	
+	
 
 	
+
+	public String getBodyExam() {
+		return bodyExam;
+	}
+
+	public void setBodyExam(String bodyExam) {
+		this.bodyExam = bodyExam;
+	}
+
+	public String getIllHistory() {
+		return illHistory;
+	}
+
+	public void setIllHistory(String illHistory) {
+		this.illHistory = illHistory;
+	}
 
 	public String getSupplementaryExamination() {
 		return supplementaryExamination;

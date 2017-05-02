@@ -105,6 +105,8 @@
       	<result column="doctor_in_charge" property="doctorInCharge"  jdbcType="VARCHAR"/>
       	<result column="supplementary_examination" property="supplementaryExamination"  jdbcType="VARCHAR"/>
       	<result column="record_discussion" property="recordDiscussion"  jdbcType="VARCHAR"/>
+      	<result column="body_exam" property="bodyExam"  jdbcType="VARCHAR"/>
+      	<result column="ill_history" property="illHistory"  jdbcType="VARCHAR"/>
       	<collection property="patientAssetTypes" ofType="cn.sportsdata.webapp.youth.common.vo.AssetTypeVO">
         		<id column="patient_assetTypeName" property="assetTypeName" jdbcType="VARCHAR"/>
         		<collection property="assets" ofType="cn.sportsdata.webapp.youth.common.vo.AssetVO">

@@ -177,10 +177,11 @@
 					
 					</section>
 					<c:forEach items="${operation.assetTypes}" var="assetType">
-						
+						<section>
+							<H1>${assetType.assetTypeName}</H1>
+						</section>
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
-								<span style="font-size:20px">${assetType.assetTypeName}<span><br/>
 								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 							</section>
 						</c:forEach>
@@ -286,6 +287,32 @@
       				</tbody>
       			</table>
       	</section>
+      	<section>
+      		<table>
+      				<tbody>
+      					<tr>
+      						<td>
+      						专科检查
+      						</td>
+      						<td>
+      							${record.bodyExam}
+      						</td>
+      					</tr>
+      					<tr>
+      						<td>
+      						病史
+      						</td>
+      						<td>
+      							<p>
+      							${record.illHistory}
+      							</p>
+      							
+      						</td>
+      					</tr>
+      					
+      				</tbody>
+      			</table>
+      	</section>
       	
       	<c:forEach items="${record.operationRecords}" var="operation">
 				 <c:if test="${operation.id != null}">
@@ -342,10 +369,11 @@
 					
 					</section>
 					<c:forEach items="${operation.assetTypes}" var="assetType">
-						
+						<section>
+							<H1>${assetType.assetTypeName}</H1>
+						</section>
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
-								<span style="font-size:20px">${assetType.assetTypeName}<span><br/>
 								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 							</section>
 						</c:forEach>
@@ -353,19 +381,12 @@
 					</c:if>
 				 </c:forEach>
 
-			
-			
-			<section>
-					<H2>辅助检验</H2>
-					<p>
-      					${ record.supplementaryExamination }
-      				</p>
-			</section>
 			<c:forEach items="${record.patientAssetTypes}" var="assetType">
-						
+						<section>
+							<H1>${assetType.assetTypeName}</H1>
+						</section>
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
-								<span style="font-size:20px">${assetType.assetTypeName}<span><br/>
 								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 							</section>
 						</c:forEach>
@@ -425,10 +446,11 @@
       		
       	</section>
 		<c:forEach items="${record.residentAssetTypes}" var="assetType">
-					
+					<section>
+							<H1>${assetType.assetTypeName}</H1>
+						</section>
 					<c:forEach items="${assetType.assets}" var="asset">
 						<section>
-							<span style="font-size:20px">${assetType.assetTypeName}<span><br/>
 							<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 						</section>
 					</c:forEach>

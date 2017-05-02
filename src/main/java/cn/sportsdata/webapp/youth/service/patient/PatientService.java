@@ -54,6 +54,8 @@ public interface PatientService {
 	int updateResidentRecord(ResidentRecord residentRecord);
 	
 	OpertaionRecord getOperationRecordById(String id);
+	
+	public OpertaionRecord getOperationRecordByIdWithoutAssset(String id);
 	ResidentRecord getResidentRecordById(String id);
 	MedicalRecordVO getMedicalRecordVOById(String id);
 	
