@@ -13,7 +13,8 @@
         	<result column="heal" property="heal" jdbcType="VARCHAR"/>
         	
         	<result column="wound_grade" property="woundGrade" jdbcType="VARCHAR"/>
-        	<result column="scheduled_date_time" property="operatingDate" jdbcType="VARCHAR"/>
+        	<result column="OPERATING_DATE" property="operatingDate" jdbcType="VARCHAR"/>
+        	<result column="scheduled_date_time" property="operateScheduleDate" jdbcType="VARCHAR"/>
         	<result column="anaesthesia_method" property="anaesthesiaMethod" jdbcType="VARCHAR"/>
         	<result column="operator" property="operator" jdbcType="VARCHAR"/>
         	<result column="doctor_id" property="doctorId" jdbcType="VARCHAR"/>
