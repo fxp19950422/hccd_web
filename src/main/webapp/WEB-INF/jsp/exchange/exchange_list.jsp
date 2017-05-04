@@ -25,7 +25,8 @@
 	<label > 
 		<input type="radio" name="testViewMode" class="model" value="1" <c:if test="${radio == 1}">checked</c:if>> 查看所有住院病人
 	</label>  --%>
-	 
+	
+	<button id="export_btn" class="btn btn-primary test-btn-right">导出PPT</button>
 	<button id="add_btn" class="btn btn-primary test-btn-right">交班</button>
 	<div class="clearfix"></div>
 </section>
@@ -164,6 +165,10 @@
 			var str = $("#future_plan").val();
 			str= str.replace(/\n/g,"<br>");
 			window.open("<%=serverUrl%>exchange/exchange_detail?anotherOperation=" + str);
+		});
+		
+		$('#export_btn').click(function(){
+			window.open("<%=serverUrl%>/exchange/download_exchange_record");
 		});
 	}
 </script>
