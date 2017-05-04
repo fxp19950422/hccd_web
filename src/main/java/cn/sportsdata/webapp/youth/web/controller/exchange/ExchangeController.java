@@ -382,10 +382,10 @@ public class ExchangeController extends BaseController {
 		title.setText("手术情况");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String[][] txt1 = { { "手术时间", sdf.format(record.getOperatingDate()) }, { "手术名称", record.getOperationDesc() },
-				{ "术者", record.getOperatorName() } };
+				{ "术者", record.getOperatorName() }, {"麻醉方法", record.getAnaesthesiaMethod()} };
 
 		// 构造一个6行2列的表
-		HSLFTable table1 = slide.createTable(3, 2);
+		HSLFTable table1 = slide.createTable(4, 2);
 		for (int i = 0; i < txt1.length; i++) {
 			for (int j = 0; j < txt1[i].length; j++) {
 				// 获取表的单元格
