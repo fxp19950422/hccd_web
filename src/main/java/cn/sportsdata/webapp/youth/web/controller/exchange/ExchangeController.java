@@ -66,7 +66,7 @@ public class ExchangeController extends BaseController {
 
 	@Autowired
 	PatientService patientService;
-	
+
 	@Autowired
 	AssetService assetservice;
 
@@ -267,8 +267,10 @@ public class ExchangeController extends BaseController {
 		return null;
 	}
 
-	private void savePPT(HSLFSlideShow pptFile, List<PatientInHospital> patientInHospitalRecordList)
-			throws Exception {
+	private void savePPT(HSLFSlideShow pptFile, List<PatientInHospital> patientInHospitalRecordList) throws Exception {
+		if (patientInHospitalRecordList == null || patientInHospitalRecordList.size() == 0) {
+			return;
+		}
 		HSLFSlide section1 = pptFile.createSlide();
 		Rectangle arg0 = new Rectangle(50, 150, 600, 150);
 		HSLFTextBox tt = section1.createTextBox();
@@ -283,6 +285,10 @@ public class ExchangeController extends BaseController {
 	}
 
 	private void saveDiscussPPT(HSLFSlideShow pptFile, List<PatientInHospital> operationRecordList) throws Exception {
+		if (operationRecordList == null || operationRecordList.size() == 0) {
+			return;
+		}
+
 		HSLFSlide section1 = pptFile.createSlide();
 		Rectangle arg0 = new Rectangle(50, 150, 600, 150);
 		HSLFTextBox tt = section1.createTextBox();
@@ -382,7 +388,7 @@ public class ExchangeController extends BaseController {
 		title.setText("手术情况");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String[][] txt1 = { { "手术时间", sdf.format(record.getOperatingDate()) }, { "手术名称", record.getOperationDesc() },
-				{ "术者", record.getOperatorName() }, {"麻醉方法", record.getAnaesthesiaMethod()} };
+				{ "术者", record.getOperatorName() }, { "麻醉方法", record.getAnaesthesiaMethod() } };
 
 		// 构造一个6行2列的表
 		HSLFTable table1 = slide.createTable(4, 2);
@@ -515,6 +521,9 @@ public class ExchangeController extends BaseController {
 	}
 
 	private void saveResdientPPT(HSLFSlideShow pptFile, List<ResidentRecord> residentRecordList) throws Exception {
+		if (residentRecordList == null || residentRecordList.size() == 0) {
+			return;
+		}
 		HSLFSlide section1 = pptFile.createSlide();
 		Rectangle arg0 = new Rectangle(50, 150, 600, 150);
 		HSLFTextBox tt = section1.createTextBox();
