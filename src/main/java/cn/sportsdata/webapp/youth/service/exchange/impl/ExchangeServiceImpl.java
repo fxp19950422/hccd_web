@@ -39,19 +39,19 @@ public class ExchangeServiceImpl implements ExchangeService {
 		return exchangeDao.getAllDoctors(departmentId);
 	}
 	@Override
-	public List<PatientInHospital> getExchangeOperationRecordList(List<String> uids) {
+	public List<PatientInHospital> getExchangeOperationRecordList(List<String> uids, String doctorId) {
 		// TODO Auto-generated method stub
-		return exchangeDao.getExchangeOperationRecords(uids);
+		return exchangeDao.getExchangeOperationRecords(uids, doctorId);
 	}
 	@Override
-	public List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids) {
+	public List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids, String doctorId) {
 		// TODO Auto-generated method stub
-		return exchangeDao.getExchangePatientInHospitalRecords(uids);
+		return exchangeDao.getExchangePatientInHospitalRecords(uids, doctorId);
 	}
 	@Override
-	public List<ResidentRecord> getExchangeResidentRecord(List<String> uids) {
+	public List<ResidentRecord> getExchangeResidentRecord(List<String> uids, String doctorId) {
 		// TODO Auto-generated method stub
-		return exchangeDao.getExchangeResidentRecords(uids);
+		return exchangeDao.getExchangeResidentRecords(uids, doctorId);
 	}
 	
 	

@@ -16,10 +16,10 @@ public interface ExchangeService {
 	
 	List<DoctorVO> getAllDoctors(String departmentId);
 	
-	List<PatientInHospital> getExchangeOperationRecordList(List<String> uids);
+	List<PatientInHospital> getExchangeOperationRecordList(List<String> uids, String doctorId);
 	
-	List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids);
+	List<PatientInHospital> getExchangePatientInHospitalRecord(List<String> uids, String doctorId);
 	
-	List<ResidentRecord> getExchangeResidentRecord(List<String> uids);
+	List<ResidentRecord> getExchangeResidentRecord(List<String> uids, String doctorId);
 	
 }

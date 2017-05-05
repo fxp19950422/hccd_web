@@ -26,9 +26,9 @@ public interface ExchangeDAO {
 	
 	List<DoctorVO> getDoctorByLoginId(String loginId);
 	
-	List<PatientInHospital> getExchangeOperationRecords(List<String> uids);
+	List<PatientInHospital> getExchangeOperationRecords(List<String> uids, String doctorId);
 	
-	List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids);
+	List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids, String doctorId);
 	
-	List<ResidentRecord> getExchangeResidentRecords(List<String> uids);
+	List<ResidentRecord> getExchangeResidentRecords(List<String> uids, String doctorId);
 }

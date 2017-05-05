@@ -46,6 +46,7 @@ import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.AssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
+import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
@@ -152,17 +153,17 @@ public class ExchangeController extends BaseController {
 
 		List<PatientInHospital> operationRecordList = null;
 		if (operationList.size() > 0) {
-			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList);
+			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, null);
 		}
 
 		List<PatientInHospital> patientInHospitalRecordList = null;
 		if (patientInHospitalList.size() > 0) {
-			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList);
+			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList, null);
 		}
 
 		List<ResidentRecord> residentRecordList = null;
 		if (residentList.size() > 0) {
-			residentRecordList = exchangeService.getExchangeResidentRecord(residentList);
+			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, null);
 		}
 
 		model.addAttribute("medicalrecords", operationRecordList);
@@ -219,29 +220,49 @@ public class ExchangeController extends BaseController {
 				patientInHospitalList.add(record.getRecordId());
 			}
 		}
-
+		
+		LoginVO login = getCurrentUser(request);
+		
+		String role = this.getCurrentRole(request);
+		
+		String doctorId = login.getHospitalUserInfo().getUserIdinHospital();
+		
+		if (!StringUtils.isEmpty(role) && "director".equals(role)){
+			doctorId = null;
+		}
+		
+		
+		
+		
 		List<PatientInHospital> operationRecordList = null;
 		if (operationList.size() > 0) {
-			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList);
+			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, doctorId);
 		}
 
 		List<PatientInHospital> patientInHospitalRecordList = null;
 		if (patientInHospitalList.size() > 0) {
-			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList);
+			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList, doctorId);
 		}
 
 		List<ResidentRecord> residentRecordList = null;
 		if (residentList.size() > 0) {
-			residentRecordList = exchangeService.getExchangeResidentRecord(residentList);
+			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, doctorId);
 		}
 
 		ByteArrayOutputStream ostream = null;
 		HSLFSlideShow pptFile = new HSLFSlideShow();
 		try {
 			// FileInputStream in = new FileInputStream(templateFile);
-			savePPT(pptFile, operationRecordList);
-			saveDiscussPPT(pptFile, patientInHospitalRecordList);
-			saveResdientPPT(pptFile, residentRecordList);
+			if (operationRecordList != null){
+				savePPT(pptFile, operationRecordList);
+			}
+			if (patientInHospitalRecordList != null){
+				saveDiscussPPT(pptFile, patientInHospitalRecordList);
+			}
+			
+			if (residentRecordList != null){
+				saveResdientPPT(pptFile, residentRecordList);
+			}
 
 			// 输出 word 内容文件流，提供下载
 			ostream = new ByteArrayOutputStream();
