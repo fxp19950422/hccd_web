@@ -85,20 +85,28 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 	}
 
 	@Override
-	public List<PatientInHospital> getExchangeOperationRecords(List<String> uids) {
-		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_OPERATION_RECORDS), uids);
+	public List<PatientInHospital> getExchangeOperationRecords(List<String> uids, String doctorId) {
+		Map map = new HashMap();
+		map.put("doctorId", doctorId);
+		map.put("uids", uids);
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_OPERATION_RECORDS), map);
 	}
 
 	@Override
-	public List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids) {
-		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_PATIENT_IN_HOSPITAL), uids);
+	public List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids, String doctorId) {
+		Map map = new HashMap();
+		map.put("doctorId", doctorId);
+		map.put("uids", uids);
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_PATIENT_IN_HOSPITAL), map);
 	}
 
 	@Override
-	public List<ResidentRecord> getExchangeResidentRecords(List<String> uids) {
+	public List<ResidentRecord> getExchangeResidentRecords(List<String> uids, String doctorId) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_RESIDENT_RECORD), uids);
+		Map map = new HashMap();
+		map.put("doctorId", doctorId);
+		map.put("uids", uids);
+		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_RESIDENT_RECORD), map);
 	}
 	
 }
