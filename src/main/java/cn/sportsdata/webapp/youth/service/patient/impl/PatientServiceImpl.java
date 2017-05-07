@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
+import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
+import cn.sportsdata.webapp.youth.common.utils.ConfigProps;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
@@ -694,41 +696,44 @@ public class PatientServiceImpl implements PatientService {
 		return patientDAO.deleteShiftMeetingRecord(recordId);
 	}
 
+	private static final String historyDocumentDir = ConfigProps.getInstance().getConfigValue("historyDocumentDir");  
+	
 	@Override
-	public List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName) {
+	public List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName) throws SoccerProException {
 		List<PatientDocumentVO> docList = new ArrayList<PatientDocumentVO>();
-        File folder = new File("/Users/admin/Documents/hospital/创伤外科PPT/");// 默认目录
+        File folder = new File(historyDocumentDir);// 默认目录
         if (!folder.exists()) {// 如果文件夹不存在
-            System.out.println("目录不存在：" + folder.getAbsolutePath());
             return docList;
         }
-        List<String> result = searchFolder(folder, patientName);// 调用方法获得文件数组
-        System.out.println("在 " + folder + " 以及所有子文件时查找对象" + patientName);
-        for (String filePath : result) {
-        	System.out.println(filePath + " ");// 显示文件绝对路径
-        	File folder2 = new File(filePath);
-        	listSubFiles(folder2, docList);
+        List<File> result = searchFolder(folder, patientName);// 调用方法获得文件数组
+        for (File file : result) {
+        	listSubFiles(file, docList);
         }
         return docList;
 	}
 	
-	private void listSubFiles(File folder, List<PatientDocumentVO> docList) {
-   	 File[] subFolders = folder.listFiles();
-     for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
-    	 PatientDocumentVO document = new PatientDocumentVO();
-         if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
-        	 listSubFiles(subFolders[i], docList);
-        	 document.setDirName(subFolders[i].getAbsolutePath());
-         } else {
-        	 document.setFileName(subFolders[i].getAbsolutePath());
-         }
-         docList.add(document);
-     }
+	private void listSubFiles(File folder, List<PatientDocumentVO> docList) throws SoccerProException {
+    	PatientDocumentVO folderVO = new PatientDocumentVO();
+    	folderVO.setDirName(folder.getName());
+    	docList.add(folderVO);
+		
+		File[] subFolders = folder.listFiles();
+		for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
+			
+			if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
+				listSubFiles(subFolders[i], docList);
+			} else {
+				PatientDocumentVO document = new PatientDocumentVO();
+				document.setFileName(subFolders[i].getName());
+				document.setFilePath(subFolders[i].getAbsolutePath());
+				docList.add(document);
+			}	
+		}
     }
 	
     static int countFiles = 0;// 声明统计文件个数的变量
     static int countFolders = 0;// 声明统计文件夹的变量   
-    private List<String> searchFolder(File folder, final String keyWord) {// 递归查找包含关键字的文件
+    private List<File> searchFolder(File folder, final String keyWord) {// 递归查找包含关键字的文件
     	 
         File[] subFolders = folder.listFiles(new FileFilter() {// 运用内部匿名类获得文件
             @Override
@@ -744,14 +749,14 @@ public class PatientServiceImpl implements PatientService {
             }
         });
  
-        List<String> result = new ArrayList<String>();// 声明一个集合
+        List<File> result = new ArrayList<File>();// 声明一个集合
         for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
         	
             if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
                 if (subFolders[i].getName().toLowerCase().contains(keyWord.toLowerCase())) {
-                	result.add(subFolders[i].getAbsolutePath());
+                	result.add(subFolders[i]);
                 } else {
-                	List<String> foldResult = searchFolder(subFolders[i], keyWord);
+                	List<File> foldResult = searchFolder(subFolders[i], keyWord);
                 	result.addAll(foldResult);
                 }
             }

@@ -1,10 +1,15 @@
 package cn.sportsdata.webapp.youth.web.controller.exchange;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +20,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -33,7 +39,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.constants.Constants;
+import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
+import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.utils.StringUtil;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
@@ -120,9 +128,52 @@ public class CareController extends BaseController{
 	
 	@RequestMapping(value = "/patient_documents",method = RequestMethod.GET)
 	@ResponseBody
-    public List<PatientDocumentVO> getPatientDocumentDirs(HttpServletRequest request, Model model, String patientName) {
+    public List<PatientDocumentVO> getPatientDocumentDirs(HttpServletRequest request, Model model, String patientName) throws SoccerProException {
 		List<PatientDocumentVO> docList = patientService.getHistoryDocumentByPatientName(patientName);
 		return docList;
+	}
+	
+	@RequestMapping(value = "/download_history_document",method = RequestMethod.GET)
+	public ResponseEntity<byte[]> downloadDoc(HttpServletRequest request, String filePath, HttpServletResponse response) throws IOException, SoccerProException{	
+		String originalFilePath = SecurityUtils.decryptByAES(filePath);
+		File targetFile = new File(originalFilePath);
+		if(!targetFile.exists()) {
+			return null;
+		}
+		InputStream is = null;
+		OutputStream os = null;
+		String targetFileName = targetFile.getName();
+		String extName = targetFileName.substring(targetFileName.lastIndexOf(".") + 1);
+		
+		try {
+			if(Arrays.asList(Constants.VALID_ATTACHMENTS_PIC_TYPES).contains(extName.toLowerCase())) {
+				response.setContentType("image/*");
+			} else {
+				response.setContentType("application/octet-stream");
+				
+				String ua = request.getHeader("User-Agent");
+				if(ua != null && (ua.toLowerCase().indexOf("msie") > -1 || (ua.toLowerCase().indexOf("trident") > -1 && ua.toLowerCase().indexOf("rv") > -1))) {
+					targetFileName = URLEncoder.encode(targetFileName, "UTF8");
+				} else {
+					targetFileName = new String(targetFileName.getBytes("UTF-8"), "ISO8859-1");
+				}
+				
+				response.setHeader("Content-disposition", "attachment; filename=" + targetFileName);
+			}
+			
+			is = new FileInputStream(targetFile);
+			os = response.getOutputStream();
+
+			IOUtils.copy(is, os);
+		} catch(Exception e) {
+			//
+		} finally {
+			IOUtils.closeQuietly(is);
+			IOUtils.closeQuietly(os);
+		}
+		
+		return null;
+		 
 	}
 	
 	@RequestMapping(value = "/care_detail",method = RequestMethod.GET)

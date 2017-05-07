@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
+import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
@@ -89,6 +90,6 @@ public interface PatientService {
 
 	List<ShiftMeetingVO> getTodayExchangeRecordList(int difference);
 	boolean revertMeetingRecord(String recordId);
-	List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName);
+	List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName) throws SoccerProException;
 	
 }

@@ -1,14 +1,12 @@
 package cn.sportsdata.webapp.youth.common.vo.patient;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
+import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
+import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 
-public class PatientDocumentVO implements Serializable {
-	private static final long serialVersionUID = 8628757275474528838L;
-	
+public class PatientDocumentVO {
 	private String dirName = null;
 	private String fileName = null;
+	private String filePath = null;
 	public String getDirName() {
 		return dirName;
 	}
@@ -21,5 +19,13 @@ public class PatientDocumentVO implements Serializable {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) throws SoccerProException {
+		this.filePath = SecurityUtils.encryptByAES(filePath);
+	}
 	
 }
+
+
