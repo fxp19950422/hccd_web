@@ -8,6 +8,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientDocumentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
@@ -88,5 +89,6 @@ public interface PatientService {
 
 	List<ShiftMeetingVO> getTodayExchangeRecordList();
 	boolean revertMeetingRecord(String recordId);
+	List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName);
 	
 }

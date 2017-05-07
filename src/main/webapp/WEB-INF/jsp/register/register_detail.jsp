@@ -14,6 +14,7 @@
 	<div class="coach_edit_button_area">
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
+		<button id="history_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">历史文档</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
 	</div>
 	<div class="clearfix"></div>
@@ -167,7 +168,19 @@ pre, code {
 		$("#add_medical_btn").click(function(){
 			$('#content').loadAngular("<%=serverUrl%>care/add_care?registId=${record.id }" );
 		});
-		
+		$('#history_btn').click(function() {
+			sa.ajax({
+				type : "get",
+				url : "<%=serverUrl%>care/history_document?patientName=${record.name}&id=${id}&registId=${registId}",
+				success : function(data) {
+					//TODO: will update the container later
+					AngularHelper.Compile($('#content'), data);
+				},
+				error: function() {
+					alert("打开编辑球员页面失败");
+				}
+			});
+		});
 		$("#btable").bootstrapTable();
 <%-- 		$("#btable").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_detail_his_list?" --%>
 // 									+ $("#player_form").serialize()

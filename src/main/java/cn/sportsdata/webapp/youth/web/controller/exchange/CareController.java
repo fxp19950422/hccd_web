@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,6 +40,7 @@ import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.FormCondition;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientDocumentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
@@ -108,6 +108,21 @@ public class CareController extends BaseController{
 //		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "1");
 //
 //		return recordList;
+	}
+	
+	@RequestMapping(value = "/history_document",method = RequestMethod.GET)
+	public String getHistoryDocument(Model model,String patientName, String id, String registId){
+		model.addAttribute("patientName", patientName);
+		model.addAttribute("id", id);
+		model.addAttribute("registId", registId);
+		return "care/history_document_list";
+	}
+	
+	@RequestMapping(value = "/patient_documents",method = RequestMethod.GET)
+	@ResponseBody
+    public List<PatientDocumentVO> getPatientDocumentDirs(HttpServletRequest request, Model model, String patientName) {
+		List<PatientDocumentVO> docList = patientService.getHistoryDocumentByPatientName(patientName);
+		return docList;
 	}
 	
 	@RequestMapping(value = "/care_detail",method = RequestMethod.GET)
