@@ -632,7 +632,7 @@
     
     <select id="getTodayMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO" parameterType="java.util.Map">
     	select A.*  from morning_shift_meeting_record A
-			where TO_DAYS( now() ) - TO_DAYS(meeting_date) &lt;= 1 
+			where TO_DAYS( now() ) - TO_DAYS(meeting_date) &lt;= #{diffDays} 
     </select>
 
 	<update id="saveShiftMeetingRecords" parameterType="java.util.Map">

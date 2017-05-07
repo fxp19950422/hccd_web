@@ -87,7 +87,7 @@ public interface PatientService {
 	
 	PatientInHospital searchPatientInHospitalById(String recordId);
 
-	List<ShiftMeetingVO> getTodayExchangeRecordList();
+	List<ShiftMeetingVO> getTodayExchangeRecordList(int difference);
 	boolean revertMeetingRecord(String recordId);
 	List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName);
 	

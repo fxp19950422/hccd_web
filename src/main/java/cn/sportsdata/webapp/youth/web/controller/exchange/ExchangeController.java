@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.impl.cookie.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hslf.usermodel.HSLFPictureData;
 import org.apache.poi.hslf.usermodel.HSLFPictureShape;
@@ -81,7 +83,11 @@ public class ExchangeController extends BaseController {
 		model.addAttribute("doctors", doctors);
 		model.addAttribute("radio", radio);
 
-		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList();
+		String dateStr = DateUtil.date2String(new Date(), "yyyy-MM-dd");
+
+		model.addAttribute("systemDate", dateStr);
+
+//		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList();
 
 		return "exchange/exchange_list";
 	}
@@ -111,9 +117,14 @@ public class ExchangeController extends BaseController {
 	// return "exchange/exchange_detail";
 	// }
 
+	public static int differentDaysByMillisecond(Date date1, Date date2) {
+		int days = (int) ((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
+		return days;
+	}
+
 	@RequestMapping(value = "/exchange_detail", method = RequestMethod.GET)
-	public String toExchangeDetail(HttpServletRequest request, Model model, String obj, String anotherOperation)
-			throws Exception {
+	public String toExchangeDetail(HttpServletRequest request, Model model, String obj, String anotherOperation,
+			String startDate) throws Exception {
 
 		// String document = new String(Base64.decode(obj.getBytes()));
 		//
@@ -136,7 +147,11 @@ public class ExchangeController extends BaseController {
 		// medicalRecords.add(vo);
 		// }
 		// }
-		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList();
+
+		Date dateStart = DateUtil.getDateFromStr(startDate);
+		Date now = new Date();
+		int difference = differentDaysByMillisecond(dateStart, now);
+		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList(difference + 1);
 
 		List<String> operationList = new ArrayList<String>();
 		List<String> residentList = new ArrayList<String>();
@@ -158,7 +173,8 @@ public class ExchangeController extends BaseController {
 
 		List<PatientInHospital> patientInHospitalRecordList = null;
 		if (patientInHospitalList.size() > 0) {
-			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList, null);
+			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList,
+					null);
 		}
 
 		List<ResidentRecord> residentRecordList = null;
@@ -204,9 +220,14 @@ public class ExchangeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/download_exchange_record", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> download_exchange_record(HttpServletRequest request, HttpServletResponse response)
+	public ResponseEntity<byte[]> download_exchange_record(HttpServletRequest request, HttpServletResponse response, String startDate)
 			throws Exception {
-		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList();
+		
+		Date dateStart = DateUtil.getDateFromStr(startDate);
+		Date now = new Date();
+		int difference = differentDaysByMillisecond(dateStart, now);
+		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList(difference + 1);
+		
 
 		List<String> operationList = new ArrayList<String>();
 		List<String> residentList = new ArrayList<String>();
@@ -220,20 +241,17 @@ public class ExchangeController extends BaseController {
 				patientInHospitalList.add(record.getRecordId());
 			}
 		}
-		
+
 		LoginVO login = getCurrentUser(request);
-		
+
 		String role = this.getCurrentRole(request);
-		
+
 		String doctorId = login.getHospitalUserInfo().getUserIdinHospital();
-		
-		if (!StringUtils.isEmpty(role) && "director".equals(role)){
+
+		if (!StringUtils.isEmpty(role) && "director".equals(role)) {
 			doctorId = null;
 		}
-		
-		
-		
-		
+
 		List<PatientInHospital> operationRecordList = null;
 		if (operationList.size() > 0) {
 			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, doctorId);
@@ -241,7 +259,8 @@ public class ExchangeController extends BaseController {
 
 		List<PatientInHospital> patientInHospitalRecordList = null;
 		if (patientInHospitalList.size() > 0) {
-			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList, doctorId);
+			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList,
+					doctorId);
 		}
 
 		List<ResidentRecord> residentRecordList = null;
@@ -253,14 +272,14 @@ public class ExchangeController extends BaseController {
 		HSLFSlideShow pptFile = new HSLFSlideShow();
 		try {
 			// FileInputStream in = new FileInputStream(templateFile);
-			if (operationRecordList != null){
+			if (operationRecordList != null) {
 				savePPT(pptFile, operationRecordList);
 			}
-			if (patientInHospitalRecordList != null){
+			if (patientInHospitalRecordList != null) {
 				saveDiscussPPT(pptFile, patientInHospitalRecordList);
 			}
-			
-			if (residentRecordList != null){
+
+			if (residentRecordList != null) {
 				saveResdientPPT(pptFile, residentRecordList);
 			}
 

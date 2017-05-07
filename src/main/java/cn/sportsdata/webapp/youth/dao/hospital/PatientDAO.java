@@ -145,7 +145,7 @@ public interface PatientDAO {
 			@Param("doctor_id") String doctorId, @Param("record_id") String recordId,
 			@Param("record_type") String recordType);
 	boolean deleteShiftMeetingRecord(@Param("record_id") String recordId);
-	List<ShiftMeetingVO> getTodayMeetingRecords();
+	List<ShiftMeetingVO> getTodayMeetingRecords(@Param("diffDays") int difference);
 	int updatePatientRecentMeetingRecord(@Param("record_id") String recordId, @Param("record_type") String recordType);
 
 	List<PatientInHospital> searchInHospitalRecordList(@Param("hospital_id") String hospitalId,

@@ -25,9 +25,28 @@
 	<label > 
 		<input type="radio" name="testViewMode" class="model" value="1" <c:if test="${radio == 1}">checked</c:if>> 查看所有住院病人
 	</label>  --%>
+	<div class="row">
+		
+		<div class="col-md-1 inputLabel">开始时间</div>
+			<div class="col-md-3">
+			<div class="input-group date">
+				<input type="text" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart"
+					value="${systemDate}"
+				 readonly>
+				<span id="birthdayIcon" class="input-group-addon calendar-icon"><i class="glyphicon glyphicon-calendar major_color"></i></span>
+			</div>	
+			</div>
+		<div class="col-md-1 inputLabel"></div>
+		<div class="col-md-3">
+			
+		</div>
+		<div class="col-md-1 inputLabel"></div>
+		<div class="col-md-3">
+			<button id="export_btn" class="btn btn-primary test-btn-right">导出PPT</button>
+			<button id="add_btn" class="btn btn-primary test-btn-right">交班</button>
+		</div>
+	</div>
 	
-	<button id="export_btn" class="btn btn-primary test-btn-right">导出PPT</button>
-	<button id="add_btn" class="btn btn-primary test-btn-right">交班</button>
 	<div class="clearfix"></div>
 </section>
 
@@ -103,6 +122,15 @@
 	
 	function initEvent() {
 		
+		$("#careTimeStart").datepicker({
+			format : "yyyy-mm-dd",
+			language : "zh-CN",
+			autoclose : true,
+			todayHighlight : true,
+			toggleActive : true,
+			zIndexOffset:1031
+		});
+		
 		$('div.doctorPatientList').on('click', 'div.profileCard', function() {
 			var $dom = $(this);
 			if ($dom.hasClass("selected")){
@@ -164,11 +192,11 @@
 		$('#add_btn').click(function(){
 			var str = $("#future_plan").val();
 			str= str.replace(/\n/g,"<br>");
-			window.open("<%=serverUrl%>exchange/exchange_detail?anotherOperation=" + str);
+			window.open("<%=serverUrl%>exchange/exchange_detail?anotherOperation=" + str + "&startDate=" + $("#careTimeStart").val());
 		});
 		
 		$('#export_btn').click(function(){
-			window.open("<%=serverUrl%>/exchange/download_exchange_record");
+			window.open("<%=serverUrl%>/exchange/download_exchange_record?startDate=" + $("#careTimeStart").val());
 		});
 	}
 </script>

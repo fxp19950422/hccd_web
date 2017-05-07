@@ -677,9 +677,9 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public List<ShiftMeetingVO> getTodayExchangeRecordList() {
+	public List<ShiftMeetingVO> getTodayExchangeRecordList(int difference) {
 		// TODO Auto-generated method stub
-		return patientDAO.getTodayMeetingRecords();
+		return patientDAO.getTodayMeetingRecords(difference);
 	}
 
 	@Override
