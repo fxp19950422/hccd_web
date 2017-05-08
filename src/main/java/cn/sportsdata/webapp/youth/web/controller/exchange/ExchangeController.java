@@ -227,7 +227,6 @@ public class ExchangeController extends BaseController {
 		Date now = new Date();
 		int difference = differentDaysByMillisecond(dateStart, now);
 		List<ShiftMeetingVO> recordList = patientService.getTodayExchangeRecordList(difference + 1);
-		
 
 		List<String> operationList = new ArrayList<String>();
 		List<String> residentList = new ArrayList<String>();
@@ -475,7 +474,7 @@ public class ExchangeController extends BaseController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		String[] txtTitle = { "姓名", "年龄", "入院时间", "收治医生", "住院号" };
-		String[] txtContent = { record.getRealName(), record.getAge(), sdf.format(record.getAdmissionDateTime()),
+		String[] txtContent = { record.getRealName(), record.getAge() + "岁", sdf.format(record.getAdmissionDateTime()),
 				record.getDoctorInCharge(), record.getPatientId() };
 		String[][] txt1 = { txtTitle, txtContent };
 

@@ -26,6 +26,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
@@ -143,9 +144,9 @@ public class PatientAPIController {
 		array.add(record3);
 		
 		//patient in hospital
-		List<String> SectionNameList4 = Arrays.asList(new String[] {"入院诊断", "病人情况", "护理级别"});
-		List<String> sectionList4 = Arrays.asList(new String[] {"diagnosis", "patientCondition",
-				"nursingClass"});
+		List<String> SectionNameList4 = Arrays.asList(new String[] {"主诉", "入院诊断", "查体", "病史", "检查检验", "病例讨论"});
+		List<String> sectionList4 = Arrays.asList(new String[] {"opPrimary", "diagnosis", "bodyExam", "illHistory", "supplementaryExamination",
+				"recordDiscussion"});
 		HospitalRecordTypeVO record4 = new HospitalRecordTypeVO();
 		record4.setRecordType("patientInhospital");
 		record4.setRecordTypeName("当前住院患者");
@@ -190,7 +191,10 @@ public class PatientAPIController {
 			opertaionRecord.setSteps(record.getOperationRecord().getSteps());
 			opertaionRecord.setDrainage(record.getOperationRecord().getDrainage());
 			opertaionRecord.setFinishedCondition(record.getOperationRecord().getFinishedCondition());
-
+			opertaionRecord.setAnaesthesiaMethod(record.getOperationRecord().getAnaesthesiaMethod());
+			opertaionRecord.setOpPrimary(record.getOperationRecord().getOpPrimary());
+			opertaionRecord.setOperator(record.getOperationRecord().getOperator());
+			
 			int count = patientService.updateOperationRecord(opertaionRecord);
 		}
 		if (recordType.equalsIgnoreCase("resident")) {
@@ -205,6 +209,30 @@ public class PatientAPIController {
 			residentRecord.setSuggestion(record.getResidentRecord().getSuggestion());
 
 			int count = patientService.updateResidentRecord(residentRecord);
+		}
+		if (recordType.equalsIgnoreCase("resident")) {
+			ResidentRecord residentRecord = patientService.getResidentRecordById(record.getResidentRecord().getId());
+			residentRecord.setInState(record.getResidentRecord().getInState());
+			residentRecord.setInChiDiagnosis(record.getResidentRecord().getInChiDiagnosis());
+			residentRecord.setInWesDiagnosis(record.getResidentRecord().getInWesDiagnosis());
+			residentRecord.setProcess(record.getResidentRecord().getProcess());
+			residentRecord.setOutChiDiagnosis(record.getResidentRecord().getOutChiDiagnosis());
+			residentRecord.setOutWesDiagnosis(record.getResidentRecord().getOutWesDiagnosis());
+			residentRecord.setOutState(record.getResidentRecord().getOutState());
+			residentRecord.setSuggestion(record.getResidentRecord().getSuggestion());
+
+			int count = patientService.updateResidentRecord(residentRecord);
+		}
+		if (recordType.equalsIgnoreCase("patientInhospital")) {
+			PatientInHospital newRecord = record.getPatientInhospital();
+			PatientInHospital oldRecord = patientService.searchPatientInHospitalById(newRecord.getId());
+			oldRecord.setOpPrimary(newRecord.getOpPrimary());
+			oldRecord.setBodyExam(newRecord.getBodyExam());
+			oldRecord.setDiagnosis(newRecord.getDiagnosis());
+			oldRecord.setIllHistory(newRecord.getIllHistory());
+			oldRecord.setRecordDiscussion(newRecord.getRecordDiscussion());
+			oldRecord.setSupplementaryExamination(newRecord.getSupplementaryExamination());			
+			int count = patientService.updatePatientInHospital(oldRecord);
 		}
 
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
