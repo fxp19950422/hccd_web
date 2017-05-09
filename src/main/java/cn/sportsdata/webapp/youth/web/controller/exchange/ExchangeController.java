@@ -156,6 +156,19 @@ public class ExchangeController extends BaseController {
 		List<String> operationList = new ArrayList<String>();
 		List<String> residentList = new ArrayList<String>();
 		List<String> patientInHospitalList = new ArrayList<String>();
+		
+
+		LoginVO login = getCurrentUser(request);
+
+		String role = this.getCurrentRole(request);
+
+		String doctorId = login.getHospitalUserInfo().getUserIdinHospital();
+
+		if (!StringUtils.isEmpty(role) && "director".equals(role)) {
+			doctorId = null;
+		}
+
+		
 		for (ShiftMeetingVO record : recordList) {
 			if ("operation".equals(record.getRecordType())) {
 				operationList.add(record.getRecordId());
@@ -168,18 +181,18 @@ public class ExchangeController extends BaseController {
 
 		List<PatientInHospital> operationRecordList = null;
 		if (operationList.size() > 0) {
-			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, null);
+			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, doctorId);
 		}
 
 		List<PatientInHospital> patientInHospitalRecordList = null;
 		if (patientInHospitalList.size() > 0) {
 			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList,
-					null);
+					doctorId);
 		}
 
 		List<ResidentRecord> residentRecordList = null;
 		if (residentList.size() > 0) {
-			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, null);
+			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, doctorId);
 		}
 
 		model.addAttribute("medicalrecords", operationRecordList);

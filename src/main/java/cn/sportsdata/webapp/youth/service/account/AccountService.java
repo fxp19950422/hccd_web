@@ -29,4 +29,6 @@ public interface AccountService {
 	public int deleteAccount(AccountVO account, OrgVO orgVo);
 	
 	public HospitalUserInfo getHospitalUserInfoById(String id);
+
+	public AccountVO getPatientAccount(String username);
 }

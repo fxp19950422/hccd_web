@@ -276,8 +276,12 @@
 	            <exclusion>  
 	                <groupId>org.slf4j</groupId>  
 	                <artifactId>log4j-over-slf4j</artifactId>  
-	            </exclusion>  
-        	</exclusions>  
+	            </exclusion>
+	            <exclusion>
+	            	<artifactId>bcprov-jdk15</artifactId>
+	            	<groupId>org.bouncycastle</groupId>
+	            </exclusion>
+	        </exclusions>  
 	    </dependency>
 	    <dependency>
 			<groupId>org.json</groupId>
