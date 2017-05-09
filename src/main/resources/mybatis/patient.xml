@@ -180,22 +180,25 @@
     <select id="getMyResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc limit 50
+	       	and year(DISCHARGE_DATE_TIME) = #{year} and month(DISCHARGE_DATE_TIME) =#{month}
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 and A.DISCHARGE_DATE_TIME is not null 
+	       	order by DISCHARGE_DATE_TIME desc limit 50
     </select>
     
     <select id="getDirectResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.DIRECTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc limit 50
+	       	and year(DISCHARGE_DATE_TIME) = #{year} and month(DISCHARGE_DATE_TIME) =#{month}
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 and A.DISCHARGE_DATE_TIME is not null 
+	       	order by DISCHARGE_DATE_TIME desc limit 50
     </select>
     
     <select id="getAttendingResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
 	       	where A.ATTENDING_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
-	       	and year(ADMISSION_DATE) = #{year} and month(ADMISSION_DATE) =#{month}
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 order by ADMISSION_DATE desc limit 50
+	       	and year(DISCHARGE_DATE_TIME) = #{year} and month(DISCHARGE_DATE_TIME) =#{month}
+	       	and A.status = 'active' and A.IN_OUT_STATUS = 1 and A.DISCHARGE_DATE_TIME is not null 
+	       	order by DISCHARGE_DATE_TIME desc limit 50
     </select>
     
     <!-- 查询单个病人所有记录 -->
