@@ -19,8 +19,8 @@ public class PatientClientServiceImpl implements PatientClientService {
 
 	@Override
 	public List<PatientRecordBriefBO> getPatientBriefRecords(String userId, String hospitalId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<PatientRecordBriefBO> list = patientDAO.getPatientBriefRecordsByHospital(userId, hospitalId);
+		return list;
 	}
 
 	

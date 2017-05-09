@@ -144,7 +144,6 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 
 	@Override
 	public int getMappedPaitentCount(String userId) {
-		// TODO Auto-generated method stub
 		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_MAPPED_PATIENT_COUNT), userId);
 	}
 

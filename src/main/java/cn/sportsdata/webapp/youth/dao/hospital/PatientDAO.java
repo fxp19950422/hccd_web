@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBriefBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
@@ -165,5 +166,7 @@ public interface PatientDAO {
 			@Param("careEndTime") Date careEndTime);
 	
 	PatientInHospital searchPatientInHospitalById(@Param("recordId") String recordId);
+	
+	List<PatientRecordBriefBO> getPatientBriefRecordsByHospital(@Param("userId") String userId, @Param("hospitalId") String hospitalId);
 	
 }

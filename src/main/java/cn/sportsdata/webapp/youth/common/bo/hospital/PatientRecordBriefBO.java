@@ -6,11 +6,19 @@ public class PatientRecordBriefBO implements Serializable{
 	
 	private static final long serialVersionUID = -6339886860019541449L;
 	
+	private String id;
 	private String type;
 	private String doctorId;
 	private String doctorName;
 	private String createDate;
 	private String doctorAvatar;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getType() {
 		return type;
 	}

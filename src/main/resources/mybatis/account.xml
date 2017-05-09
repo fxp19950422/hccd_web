@@ -60,7 +60,7 @@
         where A.user_name = #{account}
     </select>
     
-    <select id="getPaitentCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    <select id="getMappedPatientCount" resultType="java.lang.Integer" parameterType="java.lang.String">
     	select count(1) from patient_user_mapping where user_id = #{userId}
     </select>
     
@@ -103,6 +103,5 @@
         select id,user_id,department_id,hospital_id,type,name from doctor
         where login_user_id = #{id} and status='active'
     </select>
-    
     
 </mapper>

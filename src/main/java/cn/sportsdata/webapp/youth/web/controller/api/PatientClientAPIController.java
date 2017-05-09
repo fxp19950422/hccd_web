@@ -50,30 +50,8 @@ public class PatientClientAPIController {
 	@RequestMapping(value = "/patientRecords/{hospitalId}/{userId}",  method = RequestMethod.GET)
 	public ResponseEntity<Response> patientRecorda(HttpServletRequest request, HttpServletResponse resp, 
 			@PathVariable String hospitalId, @PathVariable String userId) {
-		
 		List<PatientRecordBriefBO> list = patientClientService.getPatientBriefRecords(userId, hospitalId);
-		
-		
-		
-		
-		
-//		if (recordType.equalsIgnoreCase("medical")) {
-//			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, doctorName, year, month, day);
-//			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
-//		}
-//		if (recordType.equalsIgnoreCase("operation")) {
-//			Map<String, Object> result = patientService.getOperationRecordList(hospitalId, doctorCode, doctorName, year, month, day);
-//			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
-//		}
-//		if (recordType.equalsIgnoreCase("resident")) {
-//			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, year, month, day);
-//			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
-//		}
-//		if (recordType.equalsIgnoreCase("patientInhospital")) {
-//			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, doctorName, year, month, day);
-//			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
-//		}
-		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);
+		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 	}
 	
 //	@RequestMapping(value = "/recordDetails",  method = RequestMethod.POST)
