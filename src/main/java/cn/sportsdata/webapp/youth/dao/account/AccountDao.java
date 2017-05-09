@@ -38,4 +38,6 @@ public interface AccountDao{
 	public int deleteAccountRelationInOrg(AccountVO account, OrgVO orgVo);
 	
 	HospitalUserInfo getHospitalUserInfoByUserId(String id);
+
+	int getMappedPaitentCount(String userId);
 }

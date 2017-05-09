@@ -60,6 +60,10 @@
         where A.user_name = #{account}
     </select>
     
+    <select id="getPaitentCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    	select count(1) from patient_user_mapping where user_id = #{userId}
+    </select>
+    
      <insert id="insertAccount" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">  
             select UUID() from dual  

@@ -117,4 +117,17 @@ public class AccountServiceImpl implements AccountService {
 		return accountDao.getHospitalUserInfoByUserId(id);
 	}
 
+	@Override
+	public AccountVO getPatientAccount(String username) {
+		// TODO Auto-generated method stub
+		AccountVO account = accountDao.getAccountByUserName(username);
+		if (account != null) {
+			int patientCount = accountDao.getMappedPaitentCount(account.getId());
+			if (patientCount > 0) {
+				return account;
+			}
+ 		}
+		return null;
+	}
+
 }

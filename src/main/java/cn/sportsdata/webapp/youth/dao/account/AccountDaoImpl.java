@@ -53,6 +53,8 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 
 	private static final String SELECT_ACCOUNTS_TO_UPDATE = "getRecordsToUpdate";
 	
+	private static final String SELECT_MAPPED_PATIENT_COUNT = "getMappedPatientCount";
+	
 	private static final String getHospitalUserInfoByUserId = "getHospitalUserInfoByUserId";
 
 	@Override
@@ -138,6 +140,12 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	public HospitalUserInfo getHospitalUserInfoByUserId(String id) {
 		List<HospitalUserInfo> infos = sqlSessionTemplate.selectList(getSqlNameSpace(getHospitalUserInfoByUserId), id);
 		return infos.get(0);
+	}
+
+	@Override
+	public int getMappedPaitentCount(String userId) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_MAPPED_PATIENT_COUNT), userId);
 	}
 
 }
