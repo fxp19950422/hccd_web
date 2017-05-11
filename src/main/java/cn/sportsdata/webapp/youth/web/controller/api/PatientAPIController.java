@@ -31,10 +31,11 @@ import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
+import cn.sportsdata.webapp.youth.web.controller.BaseController;
 
 @RestController
 @RequestMapping("/api/v1/")
-public class PatientAPIController {
+public class PatientAPIController extends BaseController{
 
 	@Autowired
 	private AccountService loginService;
@@ -46,6 +47,8 @@ public class PatientAPIController {
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
 			String hospitalId, String doctorCode, String doctorName, String recordType, long year, long month, long day) {
+		List<String> departmentIdList = getCurrentDepartmentIdList(request);
+		
 		if (recordType.equalsIgnoreCase("medical")) {
 			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
@@ -58,8 +61,10 @@ public class PatientAPIController {
 			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
+		
+		
 		if (recordType.equalsIgnoreCase("patientInhospital")) {
-			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, doctorName, year, month, day);
+			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, departmentIdList, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 		}
 		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);

@@ -53,10 +53,7 @@ public class PatientClientAPIController {
 		
 		List<PatientRecordBriefBO> list = patientClientService.getPatientBriefRecords(userId, hospitalId);
 		
-		
-		
-		
-		
+
 //		if (recordType.equalsIgnoreCase("medical")) {
 //			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 //			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);

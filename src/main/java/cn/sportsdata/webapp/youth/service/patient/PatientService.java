@@ -26,7 +26,7 @@ public interface PatientService {
 	Map<String, Object> getResidentRecordList(String hospitalId, String doctorCode, 
 			String doctorName, long year, long month, long day);
 	List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, 
-			String doctorName, long year, long month, long day);
+			List<String> departmentIdList, long year, long month, long day);
 	
 	List<PatientRecordBO> searchPatientRecord(String hospitalId, String patientName, String doctorName, 
 			String doctorCode, String recordType);

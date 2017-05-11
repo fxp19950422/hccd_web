@@ -426,11 +426,10 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, String doctorName,
+	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, List<String> departmentIdList,
 			long year, long month, long day) {
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		try {
-			List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
 			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode, departmentIdList);
 			List<String> patientIdList = new ArrayList<String>();
 			for (PatientInHospital record:list) {
