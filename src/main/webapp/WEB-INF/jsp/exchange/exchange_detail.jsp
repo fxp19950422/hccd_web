@@ -314,10 +314,10 @@
       			</table>
       	</section>
       	
-      	<c:forEach items="${record.operationRecords}" var="operation">
+      	<%-- <c:forEach items="${record.operationRecords}" var="operation">
 				 <c:if test="${operation.id != null}">
 				 	<section>
-				 	<%-- <sa-panel title="手术记录(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)">
+				 	<sa-panel title="手术记录(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)">
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">麻醉方法</div>
 							<div class="col-md-11 profileDetailItemContent">${ operation.anaesthesiaMethod }</div>
@@ -330,7 +330,7 @@
 							<div class="col-md-1 profileDetailItemTitle">术者</div>
 							<div class="col-md-11 profileDetailItemContent">${operation.operatorName}</div>
 						</div>
-					</sa-panel> --%>
+					</sa-panel>
 					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
 					<table>
       				<tbody>
@@ -379,7 +379,7 @@
 						</c:forEach>
 					</c:forEach>
 					</c:if>
-				 </c:forEach>
+				 </c:forEach> --%>
 
 			<c:forEach items="${record.patientAssetTypes}" var="assetType">
 						<section>

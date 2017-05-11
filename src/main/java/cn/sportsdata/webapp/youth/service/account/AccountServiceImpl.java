@@ -119,7 +119,6 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public AccountVO getPatientAccount(String username) {
-		// TODO Auto-generated method stub
 		AccountVO account = accountDao.getAccountByUserName(username);
 		if (account != null) {
 			int patientCount = accountDao.getMappedPaitentCount(account.getId());

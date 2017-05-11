@@ -599,6 +599,22 @@
 	       	order by ADMISSION_DATE desc
     </select>
     
+    <select id="getPatientBriefRecordsByHospital" resultType="cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBriefBO" parameterType="java.util.Map">
+    	select d.id, d.doctor_id as doctorId, doc.name as doctorName, d.create_date as createDate, record_type as type, u.avatar from 
+			(
+			select id, DOCTOR_NO as doctor_id, last_updated as create_date, 'medical' as record_type from medical_record where HOSPITAL_ID=#{hospitalId} and PATIENT_ID in 
+				(select patient_id from patient_user_mapping where user_id = #{userId} and hospital_id = #{hospitalId})
+			union all
+			select id, doctor_id, OPERATING_DATE as create_date, 'operation' as record_type from operation where HOSPITAL_ID=#{hospitalId} and PATIENT_ID in 
+				(select patient_id from patient_user_mapping where user_id = #{userId} and hospital_id = #{hospitalId})
+			union all
+			select id, doctor_id, create_time as create_date, 'resident' as record_type from resident_record where HOSPITAL_ID=#{hospitalId} and PATIENT_ID in 
+				(select patient_id from patient_user_mapping where user_id = #{userId} and hospital_id = #{hospitalId})
+			) as d
+			left join doctor doc on d.doctor_id = doc.user_id
+			left join user u on u.id = #{userId}
+    </select>
+    
      <select id="searchDirectorResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     		select C.*,D.real_name from 
 	    	(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
