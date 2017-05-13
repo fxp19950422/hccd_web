@@ -577,7 +577,7 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId) {
 		if (doctorCode.equalsIgnoreCase("1701")) {
-			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317"});
+			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317", "0312"});
 		}
 		if (doctorCode.equalsIgnoreCase("1702")) {
 			return Arrays.asList(new String[] {"0309"});
@@ -590,6 +590,9 @@ public class PatientServiceImpl implements PatientService {
 		}
 		if (doctorCode.equalsIgnoreCase("1765")) {
 			return Arrays.asList(new String[] {"0321"});
+		}
+		if (doctorCode.equalsIgnoreCase("1572")) {
+			return Arrays.asList(new String[] {"0312"});
 		}
 		return Arrays.asList(new String[] {"-1"});
 	}
@@ -763,4 +766,22 @@ public class PatientServiceImpl implements PatientService {
  
         return result;
     }
+
+	@Override
+	public List<PatientInHospital> getInHospitalMeetingRecords(String doctorId, long year, long month, long day) {
+		// TODO Auto-generated method stub
+		return patientDAO.getInHospitalMeetingRecords(doctorId, year, month, day);
+	}
+
+	@Override
+	public List<ResidentRecord> getResidentMeetingRecords(String doctorId, long year, long month, long day) {
+		// TODO Auto-generated method stub
+		return patientDAO.getResidentMeetingRecords(doctorId, year, month, day);
+	}
+
+	@Override
+	public List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day) {
+		// TODO Auto-generated method stub
+		return patientDAO.getOperationMeetingRecords(doctorId, year, month, day);
+	}
 }

@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientMedicalRecordBO;
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientOperationRecordBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
+import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
+import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
@@ -47,7 +46,7 @@ public class PatientAPIController extends BaseController{
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
 			String hospitalId, String doctorCode, String doctorName, String recordType, long year, long month, long day) {
-		List<String> departmentIdList = getCurrentDepartmentIdList(request);
+		List<String> departmentIdList = patientService.getDoctorDepartmentIdList(doctorCode, hospitalId);
 		
 		if (recordType.equalsIgnoreCase("medical")) {
 			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, doctorName, year, month, day);
@@ -261,5 +260,19 @@ public class PatientAPIController extends BaseController{
 			return new ResponseEntity<Response>(Response.toSussess("success"), HttpStatus.OK);
 		}
 		return new ResponseEntity<Response>(Response.toFailure(401, "exception"), HttpStatus.EXPECTATION_FAILED);
+	}
+	
+	@RequestMapping(value = "/getMeetingRecords",  method = RequestMethod.POST)
+	public ResponseEntity<Response> getMeetingRecords(HttpServletRequest request, HttpServletResponse resp,
+			String doctorId, long year, long month, long day) {
+		List<OpertaionRecord> operationList = patientService.getOperationMeetingRecords(doctorId, year, month, day);
+		List<ResidentRecord> residentList = patientService.getResidentMeetingRecords(doctorId, year, month, day);
+		List<PatientInHospital> patientInHospitalList = patientService.getInHospitalMeetingRecords(doctorId, year, month, day);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("operationList", operationList);
+		result.put("residentList", residentList);
+		result.put("patientInHospitalList", patientInHospitalList);
+		
+		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}
 }

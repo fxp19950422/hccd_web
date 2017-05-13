@@ -137,8 +137,6 @@
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
-
-    
     <!-- 查询住院记录 -->
     <!-- 住院期间的手术记录 -->
     <select id="getOperationsDuringInHospital" resultMap="OperationRecordsType" parameterType="java.util.Map">
@@ -284,7 +282,7 @@
     <select id="searchPatientInhospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.* from patient_in_hospital A left join patient B on B.patient_number = A.PATIENT_ID 
 	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
-	       	and A.status = 'active' order by ADMISSION_DATE_TIME desc
+	        order by ADMISSION_DATE_TIME desc
     </select>
 
     <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO" parameterType="java.util.Map">
@@ -668,4 +666,28 @@
 		delete from morning_shift_meeting_record where record_id=#{record_id}
 	</delete>
 	
+	<!-- 获取医生的交班信息 -->
+	<select id="getOperationMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
+    	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from operation A 
+    	left join morning_shift_meeting_record B on B.record_id = A.id 
+    	left join patient C on C.patient_number = A.patient_id
+    	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
+    	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    </select>
+    
+	<select id="getInHospitalMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+    	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from patient_in_hospital A 
+    	left join morning_shift_meeting_record B on B.record_id = A.id 
+    	left join patient C on C.patient_number = A.patient_id
+    	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
+    	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    </select>     
+    
+	<select id="getResidentMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from resident_record A 
+    	left join morning_shift_meeting_record B on B.record_id = A.id 
+    	left join patient C on C.patient_number = A.patient_id
+    	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
+    	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    </select>
 </mapper>

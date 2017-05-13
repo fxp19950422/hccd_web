@@ -35,34 +35,6 @@ public class BaseController {
 		return null;
 	}
 	
-	protected List<String> getCurrentDepartmentIdList(HttpServletRequest request) {
-		Token obj = (Token)request.getSession().getAttribute(Constants.USER_SESSION_KEY);
-		if(obj != null){
-			String doctorCode = obj.getLoginVO().getHospitalUserInfo().getUserIdinHospital();
-			if (doctorCode.equalsIgnoreCase("1701")) {
-				return Arrays.asList(new String[] {"0309", "0321", "0316", "0317", "0312"});
-			}
-			if (doctorCode.equalsIgnoreCase("1702")) {
-				return Arrays.asList(new String[] {"0309"});
-			}
-			if (doctorCode.equalsIgnoreCase("1705")) {
-				return Arrays.asList(new String[] {"0317"});
-			}
-			if (doctorCode.equalsIgnoreCase("1703")) {
-				return Arrays.asList(new String[] {"0316"});
-			}
-			if (doctorCode.equalsIgnoreCase("1765")) {
-				return Arrays.asList(new String[] {"0321"});
-			}
-			if (doctorCode.equalsIgnoreCase("1572")) {
-				return Arrays.asList(new String[] {"0312"});
-			}
-			return Arrays.asList(new String[] {"-1"});
-		}
-		return null;
-
-	}
-	
 	protected OrgVO getCurrentOrg(HttpServletRequest request) {
 		Token obj = (Token)request.getSession().getAttribute(Constants.USER_SESSION_KEY);
 		if(obj != null){

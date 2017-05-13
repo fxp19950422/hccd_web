@@ -91,5 +91,8 @@ public interface PatientService {
 	List<ShiftMeetingVO> getTodayExchangeRecordList(int difference);
 	boolean revertMeetingRecord(String recordId);
 	List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName) throws SoccerProException;
+	List<PatientInHospital> getInHospitalMeetingRecords(String doctorId, long year, long month, long day);
+	List<ResidentRecord> getResidentMeetingRecords(String doctorId, long year, long month, long day);
+	List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day);
 	
 }

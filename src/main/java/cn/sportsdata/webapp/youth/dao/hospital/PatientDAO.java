@@ -168,5 +168,11 @@ public interface PatientDAO {
 	PatientInHospital searchPatientInHospitalById(@Param("recordId") String recordId);
 	
 	List<PatientRecordBriefBO> getPatientBriefRecordsByHospital(@Param("userId") String userId, @Param("hospitalId") String hospitalId);
+	List<PatientInHospital> getInHospitalMeetingRecords(@Param("doctor_id") String doctorId, 
+			@Param("year") long year, @Param("month") long month, @Param("day") long day);
+	List<ResidentRecord> getResidentMeetingRecords(@Param("doctor_id") String doctorId, 
+			@Param("year") long year, @Param("month") long month, @Param("day") long day);
+	List<OpertaionRecord> getOperationMeetingRecords(@Param("doctor_id") String doctorId,
+			@Param("year") long year, @Param("month") long month, @Param("day") long day);
 	
 }
