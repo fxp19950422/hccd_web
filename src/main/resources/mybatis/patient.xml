@@ -110,30 +110,35 @@
         select A.* from operation A
         	left join resident_record B on B.patient_id = A.patient_id
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' and B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
     </select>
     
     <select id="getMyOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc  limit 50
     </select>
     
     <select id="getFirstAsistOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.FIRST_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
+	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
     <select id="getSecondAsistOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.SECOND_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
+	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
     <select id="getAnesthesiaOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
         select A.* from operation A
 	       	where A.ANESTHESIA_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
+	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     

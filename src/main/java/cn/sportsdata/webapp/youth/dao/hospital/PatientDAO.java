@@ -32,7 +32,8 @@ public interface PatientDAO {
 	List<OpertaionRecord> getCurMyOperationRecordList(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode);
 	List<OpertaionRecord> getMyOperationRecordList(@Param("hospital_id") String hospitalId, 
-			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode);
+			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode,
+			@Param("year") long year, @Param("month") long month, @Param("day") long day);
 	List<OpertaionRecord> getFirstAsistOperationRecordList(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_name") String doctorName, @Param("year") long year, 
 			@Param("month") long month, @Param("day") long day);

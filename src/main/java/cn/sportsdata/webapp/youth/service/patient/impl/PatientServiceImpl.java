@@ -139,7 +139,7 @@ public class PatientServiceImpl implements PatientService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> operationList = patientDAO.getMyOperationRecordList(hospitalId, doctorName, doctorCode);
+			List<OpertaionRecord> operationList = patientDAO.getMyOperationRecordList(hospitalId, doctorName, doctorCode, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
 			for (OpertaionRecord operationRecord:operationList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
@@ -186,26 +186,32 @@ public class PatientServiceImpl implements PatientService {
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
 
-				for (PatientInfoVO patient:patientList) {
-					for (PatientRecordBO patientRecord:patientRecordList1) {
+				for (PatientRecordBO patientRecord:patientRecordList1) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
 						}
 					}
-					for (PatientRecordBO patientRecord:patientRecordList2) {
+				}
+				for (PatientRecordBO patientRecord:patientRecordList2) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
 						}
 					}
-					for (PatientRecordBO patientRecord:patientRecordList3) {
+				}
+				for (PatientRecordBO patientRecord:patientRecordList3) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
 						}
 					}
-					for (PatientRecordBO patientRecord:patientRecordList4) {
+				}
+				for (PatientRecordBO patientRecord:patientRecordList4) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -290,20 +296,24 @@ public class PatientServiceImpl implements PatientService {
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
 
-				for (PatientInfoVO patient:patientList) {
-					for (PatientRecordBO patientRecord:patientRecordList1) {
+				for (PatientRecordBO patientRecord:patientRecordList1) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
 						}
 					}
-					for (PatientRecordBO patientRecord:patientRecordList2) {
+				}
+				for (PatientRecordBO patientRecord:patientRecordList2) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
 						}
 					}
-					for (PatientRecordBO patientRecord:patientRecordList3) {
+				}
+				for (PatientRecordBO patientRecord:patientRecordList3) {
+					for (PatientInfoVO patient:patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -376,8 +386,8 @@ public class PatientServiceImpl implements PatientService {
 		if (!patientIdList.isEmpty()) {
 			List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
 
-			for (PatientInfoVO patient:patientList) {
-				for (PatientRecordBO patientRecord:patientRecordList) {
+			for (PatientRecordBO patientRecord:patientRecordList) {
+				for (PatientInfoVO patient:patientList) {
 					if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 						patientRecord.setPatient(patient);
 						break;
