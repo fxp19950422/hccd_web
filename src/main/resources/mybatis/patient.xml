@@ -584,7 +584,7 @@
      <select id="searchResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     	select A.*,b.real_name from resident_record A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' 
+	       	and A.status = 'active' and A.in_out_status = '1'
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
@@ -624,6 +624,7 @@
 			  inner join resident_record C on (B.user_id = C.doctor_id) 
 		 	inner join patient D on (C.patient_id = D.patient_number)
 		 	<where>
+		 		C.in_out_status = '1'
 		       	<if test="patName != null and patName != '' ">
 	    			and D.real_name like '%${patName}%'
 	    		</if>
