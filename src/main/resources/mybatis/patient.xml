@@ -382,7 +382,7 @@
     	medical_record,med_history,maternity,marrital,individual,
     	illness_desc,illness_date,hospital_id,family_ill,doctor_no,
     	doctor,diag_yb_db,diag_desc,cfz_flag,cdiag,body_exam,
-    	assistant_exam,anamnesis,advice)
+    	assistant_exam,anamnesis,advice,platform)
     	values (#{medicalRecordVO.id},#{medicalRecordVO.ybIcdName},#{medicalRecordVO.visitNo},
     	#{medicalRecordVO.visitDate},#{medicalRecordVO.patientId},
     	#{medicalRecordVO.treatment},#{medicalRecordVO.tooth},
@@ -398,7 +398,7 @@
     	#{medicalRecordVO.doctorNo},#{medicalRecordVO.doctor},#{medicalRecordVO.diagYbDb},
     	#{medicalRecordVO.diagDesc},#{medicalRecordVO.cfzFlag},#{medicalRecordVO.cdiag},
     	#{medicalRecordVO.bodyExam},#{medicalRecordVO.assistantExam},
-    	#{medicalRecordVO.anamnesis},#{medicalRecordVO.advice})
+    	#{medicalRecordVO.anamnesis},#{medicalRecordVO.advice},'platform_cloud')
     </insert>
     
      <update id="updateOperationRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">
@@ -505,7 +505,7 @@
 	       	<if test="patName != null and patName != '' ">
     			and A.name like '%${patName}%'
     		</if>
-	       	order by VISIT_DATE desc, VISIT_NO
+	       	order by VISIT_DATE desc, VISIT_NO desc
     </select>
     
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">

@@ -68,20 +68,48 @@ public class RegisterController extends BaseController{
 	
 	@RequestMapping(value = "/register_records",method = RequestMethod.GET)
 	@ResponseBody
-    public List<PatientRegistRecord> getMedicalRecord(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd) {
-		
-//		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "100001");
+	public List<PatientRegistRecord> getMedicalRecord(HttpServletRequest request, Model model, String name,
+			String idNumber, String careTimeStart, String careTimeEnd, boolean includeMedical) {
 
 		LoginVO login = getCurrentUser(request);
 		DepartmentVO dept = getCurrentDepartment(request);
-		
-		Date date = DateUtil.string2Date2(careTimeStart,"yyyy-MM-dd");
+
+		Date date = DateUtil.string2Date2(careTimeStart, "yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		
-		List<PatientRegistRecord> recordList =  patientService.getRegisteRecordList(login.getHospitalUserInfo().getHospitalId(),
+		careTimeEnd = careTimeStart + " 23:59:59";
+
+		List<PatientRegistRecord> recordList = patientService.getRegisteRecordList(login.getHospitalUserInfo().getHospitalId(),
 				login.getHospitalUserInfo().getUserIdinHospital(), name, calendar.get(Calendar.YEAR),
 				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+		if (!includeMedical) {
+			List<MedicalRecordVO> medicalList = patientService.getHospitalMedicalRecordList(null, careTimeStart,
+					careTimeEnd, "", idNumber, "1", dept.getDepartmentCode());
+			List<String> ids2Move = new ArrayList<>();
+			if (recordList != null && medicalList != null) {
+				for (PatientRegistRecord record : recordList) {
+					for (MedicalRecordVO medical : medicalList) {
+						if (record.getPatientId().equals(medical.getPatientId())
+								&& record.getVisitNo().intValue() == medical.getVisitNo().intValue()) {
+							ids2Move.add(record.getId());
+						}
+					}
+				}
+			}
+			List<PatientRegistRecord> newList = new ArrayList<>();
+			if (ids2Move != null && ids2Move.size()>0) {
+				for (PatientRegistRecord record : recordList) {
+					if (!ids2Move.contains(record.getId())) {
+						newList.add(record);
+					} 
+				}
+				recordList.clear();
+				recordList.addAll(newList);
+			}
+
+		} 
+
 		return recordList;
 	}
 	

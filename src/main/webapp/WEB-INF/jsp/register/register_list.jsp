@@ -10,21 +10,18 @@
 %>
 
 
-<!-- <div class="button_area">
-	<button id="add_btn" class="btn btn-primary"  style="float: right;">交班</button>
-</div>
-
-<div class="button_area">
-	
-</div> -->
 
 <div>
-<form id="player_form">
+
+	
+
 	<div class="row">
-		<div class="col-md-1 inputLabel">姓名</div>
-		<div class="col-md-3">
-			<input type="text" class="profileEditInput form-control" id="name" name="name" />
-		</div>
+<div class="col-md-2 inputLabel">
+</div>
+	<div class="col-md-2 inputLabel">
+		<input type="checkbox" name="includeMedical" id="includeMedical" >已完成诊疗</input>
+	</div>
+		<form id="player_form">
 		<div class="col-md-1 inputLabel">就诊时间</div>
 			<div class="col-md-3">
 			<div class="input-group date">
@@ -32,20 +29,15 @@
 				<span id="birthdayIcon" class="input-group-addon calendar-icon"><i class="glyphicon glyphicon-calendar major_color"></i></span>
 			</div>	
 			</div>
+<!-- 			<div class="col-md-1" style="width:200px"> -->
+<!-- 				<button id="search_btn" class="btn btn-primary">检索</button> -->
+<!-- 				<button id="cancle_btn" class="btn btn-default">取消</button> -->
+<!-- 			</div> -->
+			</form>
 	</div>
-	</form>
-	<!-- <div class="row" style="margin-top:10px">
-			<div class="col-md-3 inputLabel"></div>
-			<div class="col-md-6 inputLabel" >
-				<button id="save_btn" class="btn btn-primary" style="margin:0 auto">保存</button>
-				<button id="cancle_btn" class="btn btn-default">取消</button>
-			</div>
-			<div class="col-md-3"></div>
-	</div> -->
-	<div style="margin:0 auto; margin-top:20px;width:200px">
-		<button id="search_btn" class="btn btn-primary">检索</button>
-		<button id="cancle_btn" class="btn btn-default">取消</button>
-	</div>
+	
+	
+	
 </div>
 
 
@@ -54,7 +46,7 @@
 <div >
 	<table style="clear: both" id="table" data-classes="table table-no-bordered sprotsdatatable" data-toggle="table"
 		data-striped="true" data-pagination="true"
-		data-page-size="7" data-page-list="[7,10,15,20]"
+		data-page-size="20" data-page-list="[7,10,15,20]"
 		data-pagination-first-text="第一页" data-pagination-pre-text="上页"
 		data-pagination-next-text="下页" data-pagination-last-text="最后页">
 		<thead>
@@ -119,7 +111,9 @@
 			todayHighlight : true,
 			toggleActive : true,
 			zIndexOffset:1031
-		});
+		}).on('changeDate', function(e){
+			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()+"&includeMedical="+$("#includeMedical").is(':checked')});
+	    });
 		$("#careTimeStart").val(new Date().Format("yyyy-MM-dd"));
 		$("#careTimeEnd").datepicker({
 			format : "yyyy-mm-dd",
@@ -129,13 +123,17 @@
 			toggleActive : true,
 			zIndexOffset:1031
 		});
-		
 		$("#table").bootstrapTable();
 		
-		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()})
+		$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()+"&includeMedical="+$("#includeMedical").is(':checked')});
 		
 	    $("#search_btn").click(function(){
-			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()});
+				//$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()}); 
+	    	$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()+"&includeMedical="+$("#includeMedical").is(':checked')});
+		});
+		
+		$("#includeMedical").change(function(){
+			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()+"&includeMedical="+$("#includeMedical").is(':checked')});
 		});
 	}
 </script>
