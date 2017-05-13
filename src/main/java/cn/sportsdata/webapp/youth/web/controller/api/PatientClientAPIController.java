@@ -48,9 +48,20 @@ public class PatientClientAPIController {
 	PatientService patientService;
 
 	@RequestMapping(value = "/patientRecords/{hospitalId}/{userId}",  method = RequestMethod.GET)
-	public ResponseEntity<Response> patientRecorda(HttpServletRequest request, HttpServletResponse resp, 
+	public ResponseEntity<Response> patientRecords(HttpServletRequest request, HttpServletResponse resp, 
 			@PathVariable String hospitalId, @PathVariable String userId) {
+		
 		List<PatientRecordBriefBO> list = patientClientService.getPatientBriefRecords(userId, hospitalId);
+		
+		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/patientRecord/detail/{recordId}",  method = RequestMethod.GET)
+	public ResponseEntity<Response> patientRecordDetail(HttpServletRequest request, HttpServletResponse resp, 
+			@PathVariable String hospitalId, @PathVariable String userId) {
+		
+		List<PatientRecordBriefBO> list = patientClientService.getPatientBriefRecords(userId, hospitalId);
+		
 		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 	}
 	

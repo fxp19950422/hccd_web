@@ -1,5 +1,8 @@
 package cn.sportsdata.webapp.youth.web.controller.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -86,7 +89,10 @@ public class TokenAPIController {
 				String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
 				ApiToken token = new ApiToken();
 				token.setToken(tokeninfo);
-				return new ResponseEntity<Response>(Response.toSussess(token), HttpStatus.OK);
+				Map<String, Object> loginInfo = new HashMap<String, Object>();
+				loginInfo.put("token", token);
+				loginInfo.put("userId", loginVO.getId());
+				return new ResponseEntity<Response>(Response.toSussess(loginInfo), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
 			}
