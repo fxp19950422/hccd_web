@@ -40,18 +40,26 @@
 						</div>
 						
 					</sa-panel>
+					<div class="row">
+						<div class="col-md-4">
 				<sa-panel title="主诉"> <textarea id="future_plan"
 					name="opPrimary" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.opPrimary}">${record.opPrimary}</textarea>
 				</sa-panel>
+				</div>
+				<div class="col-md-4">
 				<sa-panel title="诊断"> <textarea id="future_plan"
 					name="diagnosis" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.diagnosis}">${record.diagnosis}</textarea>
 				</sa-panel>
+				</div>
+				<div class="col-md-4">
 				<sa-panel title="专科检查"> <textarea id="future_plan"
 					name="bodyExam" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.bodyExam}">${record.bodyExam}</textarea>
 				</sa-panel>
+				</div>
+				</div>
 				<sa-panel title="病史"> <textarea id="future_plan"
 					name="illHistory" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.illHistory}">${record.illHistory}</textarea>
@@ -68,8 +76,8 @@
 
 <form id="condition_form">
 	<div class="row">
-		<input  class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
-		<input  class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
+		<input type="hidden" class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
+		<input type="hidden" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
 	</div>
 </form>
 

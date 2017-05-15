@@ -41,16 +41,23 @@
 						</div>
 						
 					</sa-panel>
-					<sa-panel title="主诉">
+					<div class="row">
+						<div class="col-md-4">
+						<sa-panel title="主诉">
 							<pre style="background:white;border-width:0px;">${record.opPrimary}</pre>
+						</sa-panel>
 						</div>
-					</sa-panel>
-					<sa-panel title="诊断">
-						<pre style="background:white;border-width:0px">${record.diagnosis}</pre>
-					</sa-panel>
-					<sa-panel title="专科检查">
-						<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
-					</sa-panel>
+						<div class="col-md-4">
+						<sa-panel title="诊断">
+							<pre style="background:white;border-width:0px">${record.diagnosis}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-4">
+						<sa-panel title="专科检查">
+							<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
+						</sa-panel>
+						</div>
+					</div>
 					<sa-panel title="病史">
 						<pre style="background:white;border-width:0px">${record.illHistory}</pre>
 					</sa-panel>

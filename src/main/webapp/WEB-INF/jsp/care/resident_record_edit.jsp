@@ -27,40 +27,66 @@
 					<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
 					<div class="col-md-3 profileDetailItemContent">${record.doctorName}</div>
 					<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-					<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${record.admissionDate}" /></div>
+					<div class="col-md-3 profileDetailItemContent">
+						<fmt:formatDate pattern="yyyy-MM-dd"
+							value="${record.admissionDate}" />
+					</div>
 				</div>
 				</sa-panel>
-				<sa-panel title="入院情况"> <textarea id="future_plan"
-					name="inState" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.inState}">${record.inState}</textarea>
-				</sa-panel>
-				<sa-panel title="入院中医诊断"> <textarea id="future_plan"
-					name="inChiDiagnosis" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.inChiDiagnosis}">${record.inChiDiagnosis}</textarea>
-				</sa-panel>
-				<sa-panel title="入院西医诊断"> <textarea id="future_plan"
-					name="inWesDiagnosis" class="form-control" rows="5" placeholder="不超过800字"
-					value="${record.inWesDiagnosis}">${record.inWesDiagnosis}</textarea> </sa-panel>
-				<sa-panel title="诊疗经过"> <textarea id="future_plan"
-					name="process" class="form-control" rows="5" placeholder="不超过800字"
-					value="${record.process}">${record.process}</textarea> </sa-panel>
-				<sa-panel title="出院中医诊断"> <textarea id="future_plan"
-					name="outChiDiagnosis" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.outChiDiagnosis}">${record.outChiDiagnosis}</textarea>
-				</sa-panel>
-				<sa-panel title="出院西医诊断"> <textarea id="future_plan"
-					name="outWesDiagnosis" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.outWesDiagnosis}">${record.outWesDiagnosis}</textarea>
-				</sa-panel>
-				<sa-panel title="出院情况"> <textarea id="future_plan"
-					name="outState" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.outState}">${record.outState}</textarea>
-				</sa-panel>
-				<sa-panel title="出院医嘱"> <textarea id="future_plan"
-					name="suggestion" class="form-control" rows="5"
-					placeholder="不超过800字" value="${record.suggestion}">${record.suggestion}</textarea>
-				</sa-panel>
+				<div class="row">
+					<div class="col-md-4">
+						<sa-panel title="入院情况"> <textarea id="future_plan"
+							name="inState" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.inState}">${record.inState}</textarea>
+						</sa-panel>
+					</div>
+					<div class="col-md-4">
+						<sa-panel title="入院中医诊断"> <textarea id="future_plan"
+							name="inChiDiagnosis" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.inChiDiagnosis}">${record.inChiDiagnosis}</textarea>
+						</sa-panel>
+					</div>
+					<div class="col-md-4">
+						<sa-panel title="入院西医诊断"> <textarea id="future_plan"
+							name="inWesDiagnosis" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.inWesDiagnosis}">${record.inWesDiagnosis}</textarea>
+						</sa-panel>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<sa-panel title="诊疗经过"> <textarea id="future_plan"
+							name="process" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.process}">${record.process}</textarea>
+						</sa-panel>
+					</div>
+					<div class="col-md-4">
+						<sa-panel title="出院中医诊断"> <textarea id="future_plan"
+							name="outChiDiagnosis" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.outChiDiagnosis}">${record.outChiDiagnosis}</textarea>
+						</sa-panel>
+					</div>
+					<div class="col-md-4">
+						<sa-panel title="出院西医诊断"> <textarea id="future_plan"
+							name="outWesDiagnosis" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.outWesDiagnosis}">${record.outWesDiagnosis}</textarea>
+						</sa-panel>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<sa-panel title="出院情况"> <textarea id="future_plan"
+							name="outState" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.outState}">${record.outState}</textarea>
+						</sa-panel>
+					</div>
+					<div class="col-md-6">
+						<sa-panel title="出院医嘱"> <textarea id="future_plan"
+							name="suggestion" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.suggestion}">${record.suggestion}</textarea>
+						</sa-panel>
+					</div>
+				</div>
 				<input type="hidden" name="id" value="${id}" />
 			</div>
 		</form>
@@ -95,7 +121,8 @@
 				data : $("#player_form").serialize(),
 				success : function(data) {
 					alert("修改成功");
-					$('#content').loadAngular("<%=serverUrl%>care/resident_detail?id=${id}&registId="+registId);
+					$('#content').loadAngular("<%=serverUrl%>care/resident_detail?id=${id}&registId="
+											+ registId);
 						},
 						error : function() {
 							alert("修改失败");

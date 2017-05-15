@@ -29,28 +29,40 @@
 							<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
 							<div class="col-md-3 profileDetailItemContent">${record.name}</div>
 							<div class="col-md-1 profileDetailItemTitle">诊断时间</div>
-							<div class="col-md-3 profileDetailItemContent">${record.visitDate}</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd"
+							value="${record.visitDate}" /></div>
 						</div>
 					</sa-panel>
-					<sa-panel title="主诉">
-							<pre style="background:white;border-width:0px;">${record.illnessDesc}</pre>
+					<div class="row">
+						<div class="col-md-4">
+						<sa-panel title="主诉">
+								<pre style="background:white;border-width:0px;">${record.illnessDesc}</pre>
+						</sa-panel>
 						</div>
-					</sa-panel>
-					<sa-panel title="病史">
-						<pre style="background:white;border-width:0px">${record.medHistory}</pre>
-					</sa-panel>
-					<sa-panel title="查体">
-						<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
-					</sa-panel>
-					<sa-panel title="初步诊断">
-						<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
-					</sa-panel>
-					<sa-panel title="诊治项目">
-						<pre style="background:white;border-width:0px">${record.treatment}</pre>
-					</sa-panel>
-					<sa-panel title="建议">
-						<pre style="background:white;border-width:0px">${record.suggestion}</pre>
-					</sa-panel>
+						<div class="col-md-4">
+						<sa-panel title="病史">
+							<pre style="background:white;border-width:0px">${record.medHistory}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-4">
+						<sa-panel title="查体">
+							<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
+						</sa-panel>
+						</div>
+					</div>
+					<div class="row">
+					<div class="col-md-6">
+						<sa-panel title="初步诊断">
+							<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-6">
+						<sa-panel title="建议">
+							<pre style="background:white;border-width:0px">${record.suggestion}</pre>
+						</sa-panel>
+						</div>
+					</div>
+					
 				</div>
 		</form>
 	</div>
