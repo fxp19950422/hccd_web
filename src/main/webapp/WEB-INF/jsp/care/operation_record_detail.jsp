@@ -114,6 +114,11 @@
 	</div>
 </div>
 
+<div id="form_print" style="display: none;">
+	<div style="align:center"><H2>安徽省中西医结合医院</H2></div>		
+			
+</div>
+
 
 <form id="condition_form">
 	<div class="row">
@@ -150,9 +155,25 @@ pre, code {
 				}
 			}
 		});
-		$("#export_btn").click(function(){
+		
+		$('#export_btn')
+		.click(
+				function() {
+					$('#form_print')
+							.printArea(
+									{
+										'mode' : 'popup',
+										'popClose' : true,
+										'retainAttr' : [ 'class',
+												'id' ],
+										'extraHead' : '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
+									});
+				});
+		
+	<%-- 	$("#export_btn").click(function(){
+			
 			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
-		});
+		}); --%>
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",
