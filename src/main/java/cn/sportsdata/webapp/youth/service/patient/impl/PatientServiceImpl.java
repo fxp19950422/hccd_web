@@ -25,6 +25,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientDocumentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetStageVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -126,6 +127,22 @@ public class PatientServiceImpl implements PatientService {
 			assetTypeList = new ArrayList<RecordAssetTypeVO>();
 		}
 		return assetTypeList;
+	}
+	
+	@Override
+	public List<RecordAssetStageVO> getAssetStageList() {
+		List<RecordAssetStageVO> assetStageList = null;
+		try {
+			assetStageList = patientDAO.getAssetStageList();
+			if(assetStageList == null) {
+				assetStageList = new ArrayList<RecordAssetStageVO>();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			assetStageList = new ArrayList<RecordAssetStageVO>();
+		}
+		return assetStageList;
 	}
 
 	@Override

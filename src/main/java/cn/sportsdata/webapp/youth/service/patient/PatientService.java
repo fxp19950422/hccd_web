@@ -13,6 +13,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientDocumentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetStageVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -33,6 +34,8 @@ public interface PatientService {
 	
 	List<RecordAssetVO> getRecordAssetList(String recordId);
 	List<RecordAssetTypeVO> getRecordAssetTypeList(String recordType);
+	List<RecordAssetStageVO> getAssetStageList();
+	
 	DoctorVO getDoctorInfoByUsername(String username);
 	List<PatientRecordBO> getPatientRecords(String recordId, String patientName, String patientId, String hospitalId);
 	ResidentRecord getResidentRecordByOperation(String recordId, String hospitalId, String patientId);

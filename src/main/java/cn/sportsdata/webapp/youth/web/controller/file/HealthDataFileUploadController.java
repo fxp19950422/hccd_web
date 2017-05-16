@@ -195,13 +195,14 @@ public class HealthDataFileUploadController extends BaseController {
 		try {
 			LoginVO loginVO = (LoginVO)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		    String accountID = loginVO.getId();
-		    String assetTypeId = "";   
+		    String assetTypeId = "";
+		    String stageTypeId = "";
 		    
 		    for(MultipartFile uploadFile:uploadedFile){
-		    	
-		    	assetTypeId = uploadFile.getOriginalFilename();
-		    	
 		    	String originFileName = uploadFile.getOriginalFilename();
+		    	String idArray[] = originFileName.split(":", 2);
+		    	assetTypeId = idArray[0];
+		    	stageTypeId = idArray[1];
 
 				String fileExt = HAFileUtils.getFileExtension(originFileName);
 
@@ -215,7 +216,6 @@ public class HealthDataFileUploadController extends BaseController {
 				
 				JSONObject json = new JSONObject();
 				
-				
 				 // add a record to asset
 		        AssetVO vo = new AssetVO();
 		      
@@ -228,13 +228,10 @@ public class HealthDataFileUploadController extends BaseController {
 		        vo.setStatus("active");
 		        vo.setStorage_name(SecurityUtils.encryptByAES(createdFile.getAbsolutePath()));
 
-		        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, assetTypeId);
+		        String id = assetservice.insertAsset(vo, hospitalId, hospitalRecordId, type, assetTypeId, stageTypeId);
 		        vo.setId(id);
 				json.put("asset_id", id);
 		    }
-			
-			
-			
 			return "";
 		} catch(Exception e) {
 			logger.error("Error occurs while uploading file", e);

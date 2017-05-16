@@ -10,7 +10,14 @@ public class HospitalRecordTypeVO implements Serializable {
 	private List<String> sectionList;
 	private List<String> sectionNameList;
 	private List<RecordAssetTypeVO> assetTypeList;
+	private List<RecordAssetStageVO> assetStageList;
 	
+	public List<RecordAssetStageVO> getAssetStageList() {
+		return assetStageList;
+	}
+	public void setAssetStageList(List<RecordAssetStageVO> assetStageList) {
+		this.assetStageList = assetStageList;
+	}
 	public String getRecordType() {
 		return recordType;
 	}

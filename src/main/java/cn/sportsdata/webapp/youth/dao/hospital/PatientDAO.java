@@ -12,6 +12,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetStageVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -96,7 +97,8 @@ public interface PatientDAO {
 	
 	List<RecordAssetVO> getRecordAssetList(@Param("record_id") String recordId);
 
-	List<RecordAssetTypeVO> getRecordAssetTypeList(@Param("record_type") String recordType);
+	List<RecordAssetTypeVO> getRecordAssetTypeList(String recordType);
+	List<RecordAssetStageVO> getAssetStageList();
 	
 	DoctorVO getDoctorInfoByUsername(@Param("username") String username);
 	PatientInfoVO getPatientInfoVOById(@Param("patient_id") String patientId);

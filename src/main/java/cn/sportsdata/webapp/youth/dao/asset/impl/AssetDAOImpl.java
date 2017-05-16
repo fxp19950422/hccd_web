@@ -57,13 +57,14 @@ public class AssetDAOImpl extends BaseDAO implements AssetDAO {
 
 	@Override
 	public String insertHospitalRecordAsset(String hospitalId, String hospitalRecordId, String assetId, String type,
-			String typeId) {
+			String typeId, String stageTypeId) {
 		Map<String, String> hashMap = new HashMap<String, String>();
 		hashMap.put("hospital_id", hospitalId);
 		hashMap.put("hospital_record_id", hospitalRecordId);
 		hashMap.put("asset_id", assetId);
 		hashMap.put("record_type", type);
 		hashMap.put("record_asset_type_id", typeId);
+		hashMap.put("stage_type_id", stageTypeId);
 		int num = sqlSessionTemplate.insert(getSqlNameSpace(insertHospitalRecordAsset), hashMap);
 		return String.valueOf(num);
 	}

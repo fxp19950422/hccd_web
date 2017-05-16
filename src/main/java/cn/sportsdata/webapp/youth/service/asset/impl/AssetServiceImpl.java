@@ -23,10 +23,11 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public String insertAsset(AssetVO assetVo, String hospitalId, String recordId, String type, String recordTypeId) {
+	public String insertAsset(AssetVO assetVo, String hospitalId, String recordId, 
+			String type, String recordTypeId, String stageTypdId) {
 		String assetId = assetDAO.insertAsset(assetVo);
 		if (StringUtils.isNotEmpty(assetId)) {
-			assetDAO.insertHospitalRecordAsset(hospitalId, recordId, assetId, type, recordTypeId);
+			assetDAO.insertHospitalRecordAsset(hospitalId, recordId, assetId, type, recordTypeId, stageTypdId);
 		} 
 		return assetId;
 	}

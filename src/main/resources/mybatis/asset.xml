@@ -53,9 +53,9 @@
             select UUID() from dual  
         </selectKey>
 		insert into hospital_record_asset(id, hospital_id, hospital_record_id, asset_id, created_time, last_updated, record_type,
-		record_asset_type_id, status)
+		record_asset_type_id, asset_stage_type_id, status)
 		values(#{id}, #{hospital_id}, #{hospital_record_id}, #{asset_id},
-		current_timestamp(), current_timestamp(), #{record_type}, #{record_asset_type_id}, 'active')
+		current_timestamp(), current_timestamp(), #{record_type}, #{record_asset_type_id}, #{stage_type_id}, 'active')
 	</insert>
 
 	<update id="deleteHospitalRecordAsset" parameterType="java.util.Map">

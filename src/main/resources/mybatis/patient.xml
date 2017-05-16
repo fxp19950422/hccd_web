@@ -206,7 +206,7 @@
     
     <!-- 查询单个病人所有记录 -->
    	<select id="getOperationById" resultMap="OperationRecordsType" parameterType="java.util.Map">
-    	select A.*, E.asset_id, concat(F.name, G.name) as assetTypeName from operation A left outer join hospital_record_asset E on 
+    	select A.*, E.asset_id, concat(G.name, F.name) as assetTypeName from operation A left outer join hospital_record_asset E on 
     	(A.id = E.hospital_record_id and E.record_type='operation' and E.status='active') 
     	left outer join record_asset_type F on (E.record_asset_type_id = F.id) 
     	left outer join record_stage_in_hospital G on (E.asset_stage_type_id = G.id)
@@ -294,10 +294,10 @@
     </select>
 
     <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO" parameterType="java.util.Map">
-		select A.id as id, A.record_asset_type_id as asset_type_id, B.id as asset_id, 
+		select A.id as id, A.record_asset_type_id as asset_type_id, A.asset_stage_type_id as asset_stage_id, B.id as asset_id, 
 		concat(G.name, C.name) as asset_type_name, A.created_time from hospital_record_asset A 
-		let outer join asset B on B.id = A.asset_id 
-		let outer join record_asset_type C on C.id = A.record_asset_type_id
+		left outer join asset B on B.id = A.asset_id 
+		left outer join record_asset_type C on C.id = A.record_asset_type_id
 		left outer join record_stage_in_hospital G on (A.asset_stage_type_id = G.id)
 		where A.hospital_record_id=#{record_id} and A.status = 'active' order by A.created_time desc
     </select>
