@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class RecordAssetTypeVO implements Serializable {
+public class RecordAssetStageVO implements Serializable {
 	private static final long serialVersionUID = 8628757275474528838L;
 	
 	private String id;

@@ -16,10 +16,17 @@ public class RecordAssetVO implements Serializable {
 	private String privacy;
 	private String creatorId;
 	private String assetTypeId;
+	private String assetStageId;
 	private String assetTypeName;
 	private Date createdTime;
 	private String assetId;
 	
+	public String getAssetStageId() {
+		return assetStageId;
+	}
+	public void setAssetStageId(String assetStageId) {
+		this.assetStageId = assetStageId;
+	}
 	public String getAssetId() {
 		return assetId;
 	}
