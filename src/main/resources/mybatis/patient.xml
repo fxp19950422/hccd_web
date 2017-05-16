@@ -299,7 +299,7 @@
 		left outer join asset B on B.id = A.asset_id 
 		left outer join record_asset_type C on C.id = A.record_asset_type_id
 		left outer join record_stage_in_hospital G on (A.asset_stage_type_id = G.id)
-		where A.hospital_record_id=#{record_id} and A.status = 'active' order by A.created_time desc
+		where A.hospital_record_id=#{record_id} and A.status = 'active' order by asset_stage_type_id, record_asset_type_id
     </select>
     
     <select id="getRecordAssetTypeList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO" parameterType="java.util.Map">
