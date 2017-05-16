@@ -14,7 +14,7 @@
 <div class="profileEditContainer">
 	<div class="coach_edit_button_area">
 		<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
-<!-- 		<button id="new_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">新增</button> -->
+ 		<button id="print_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">打印</button> 
 		<button id="export_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">导出病历</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>
@@ -29,37 +29,106 @@
 							<div class="col-md-1 profileDetailItemTitle">诊断医生</div>
 							<div class="col-md-3 profileDetailItemContent">${record.name}</div>
 							<div class="col-md-1 profileDetailItemTitle">诊断时间</div>
-							<div class="col-md-3 profileDetailItemContent">${record.visitDate}</div>
+							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd"
+							value="${record.visitDate}" /></div>
 						</div>
 					</sa-panel>
-					<sa-panel title="主诉">
-							<pre style="background:white;border-width:0px;">${record.illnessDesc}</pre>
+					<div class="row">
+						<div class="col-md-4">
+						<sa-panel title="主诉">
+								<pre style="background:white;border-width:0px;">${record.illnessDesc}</pre>
+						</sa-panel>
 						</div>
-					</sa-panel>
-					<sa-panel title="病史">
-						<pre style="background:white;border-width:0px">${record.medHistory}</pre>
-					</sa-panel>
-					<sa-panel title="查体">
-						<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
-					</sa-panel>
-					<sa-panel title="初步诊断">
-						<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
-					</sa-panel>
-					<sa-panel title="诊治项目">
-						<pre style="background:white;border-width:0px">${record.treatment}</pre>
-					</sa-panel>
-					<sa-panel title="建议">
-						<pre style="background:white;border-width:0px">${record.suggestion}</pre>
-					</sa-panel>
+						<div class="col-md-4">
+						<sa-panel title="病史">
+							<pre style="background:white;border-width:0px">${record.medHistory}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-4">
+						<sa-panel title="查体">
+							<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
+						</sa-panel>
+						</div>
+					</div>
+					<div class="row">
+					<div class="col-md-6">
+						<sa-panel title="初步诊断">
+							<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-6">
+						<sa-panel title="建议">
+							<pre style="background:white;border-width:0px">${record.suggestion}</pre>
+						</sa-panel>
+						</div>
+					</div>
+					
 				</div>
 		</form>
 	</div>
+	<div id="form_print" style="display:none">
+		<div style="text-align:center"><H2>安徽省中西医结合医院</H2></div>		
+		<div style="text-align:center"><H2>门诊病历</H2></div>
+		<div style="margin-left:20px;font-size:17px;margin-top:10px;">
+			<table style="width:85%;margin:0 auto">
+				<tr>
+					<td width="33%">姓名: 王也</td>
+					
+					<td  width="33%">性别: 男</td>
+					
+					<td  width="33%">年龄: 23岁</td>
+				</tr>
+				<tr>
+					<td width="33%">号别: 创伤外科</td>
+					
+					<td width="33%">就诊日期: </td>
+					
+					<td width="33%">门诊次数: 1</td>
+					
+				</tr>
+			</table>
+			<div style="border:0.5px solid #000; width:85%;margin:0 auto;margin-top:5px;"></div>
+			<div style="width:85%;margin:0 auto;margin-top:10px;">
+				主诉:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+			</div>
+			<div style="border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			
+			<div style="width:85%;margin:0 auto;margin-top:10px;">
+				病史:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			
+			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+				查体:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			
+			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+				初步诊断:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+				诊治项目:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			
+			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+				建议:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+			</div>
+		</div>	
+	</div>
 </div>
+
+
+
 <style>
 pre, code {
     white-space: pre-line;
 }
+
+
 </style>
+
 <script type="text/javascript">
 	$(function() {
 		setTimeout(function() {
@@ -82,6 +151,19 @@ pre, code {
 		$("#export_btn").click(function(){
 			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
 		});
+		$('#print_btn')
+		.click(
+				function() {
+					$('#form_print')
+							.printArea(
+									{
+										'mode' : 'popup',
+										'popClose' : true,
+										'retainAttr' : [ 'class',
+												'id' ],
+										'extraHead' : '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
+									});
+				});
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",

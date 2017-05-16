@@ -73,6 +73,7 @@
 	<script type="text/javascript" src="<%=basePath%>resources/js/echarts.min.js" /></script>
 	<script type="text/javascript" src="<%=basePath%>resources/js/jquery.flexslider-min.js" /></script>
 	<script src="<%=basePath%>resources/js/fileupload.js" type="text/javascript"></script>
+	<script src="<%=basePath%>resources/js/jquery.PrintArea.js" type="text/javascript"></script>
 	
 	<!--[if lt IE 9]>
 	<script src="<%=basePath%>resources/js/excanvas.min.js"></script>

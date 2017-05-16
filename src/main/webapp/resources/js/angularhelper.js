@@ -37,18 +37,25 @@ app.directive('saPanel', function() {
     return {
         restrict: 'E',
         transclude: true,
-        scope: { title: '@title', linkText: '@linkText', callback: '&linkCallback' },
+        scope: { title: '@title', linktext: '@linktext', linkCallback: '&linkCallback' },
         template: 	'<div class="panel panel-default"> ' + 
 						'<div class="panel-heading" style="background-color:#067DC2;color:white">' +
 							'<div style="float: left;font-size:16px;color:#FFFFFF;">{{title}}</div>' +
-							'<div style="float: right;"><a href="javascript:void(0);" style="color: white;" ng-click="callback()" ng-show="isShowLink">{{linkText}}</a></div>' +
+							'<div style="float: right;"><a href="javascript:void(0);" style="color: white;"  ng-show="isShowLink" >{{linktext}}</a></div>' +
 							'<div class="clearfix"></div>' +
 						'</div>' +
 						'<div class="panel-body table-responsive" ng-transclude></div>' +
 					'</div>',
         transclude: true,
         link: function($scope, element, attrs) {
-        	$scope.isShowLink = ('linkText' in attrs);
+        	$scope.isShowLink = ('linktext' in attrs);
+        	if($scope.isShowLink){
+        		$(element).find('a').on('click',function(){
+            		eval(attrs.linkCallback);
+        			return false;
+            	})
+        	}
+        	
         }
     };
 });

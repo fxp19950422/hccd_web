@@ -33,44 +33,74 @@
 						</div>
 						
 					</sa-panel>
-					<sa-panel title="主诉">
-							<pre style="background:white;border-width:0px;">${record.opPrimary}</pre>
+					<div class="row">
+						<div class="col-md-4">
+						<sa-panel title="主诉">
+								<pre style="background:white;border-width:0px;">${record.opPrimary}</pre>
+						</sa-panel>
 						</div>
-					</sa-panel>
-					<sa-panel title="术前诊断">
-						<pre style="background:white;border-width:0px">${record.beforeDiagnosis}</pre>
-					</sa-panel>
-					<sa-panel title="术后诊断">
-						<pre style="background:white;border-width:0px">${record.afterDiagnosis}</pre>
-					</sa-panel>
+						<div class="col-md-4">
+						<sa-panel title="术前诊断">
+							<pre style="background:white;border-width:0px">${record.beforeDiagnosis}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-4">
+						<sa-panel title="术后诊断">
+							<pre style="background:white;border-width:0px">${record.afterDiagnosis}</pre>
+						</sa-panel>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
 					<sa-panel title="手术名称">
 						<pre style="background:white;border-width:0px">${record.operationDesc}</pre>
 					</sa-panel>
+					</div>
+					<div class="col-md-4">
 					<sa-panel title="手术经过">
 						<pre style="background:white;border-width:0px">${record.process}</pre>
 					</sa-panel>
+					</div>
+					<div class="col-md-4">
 					<sa-panel title="手术体位">
 						<pre style="background:white;border-width:0px">${record.posture}</pre>
 					</sa-panel>
+					</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
 					<sa-panel title="手术切口">
 						<pre style="background:white;border-width:0px">${record.incision}</pre>
 					</sa-panel>
+					</div>
+					<div class="col-md-4">
 					<sa-panel title="探查所见">
 						<pre style="background:white;border-width:0px">${record.exploratory}</pre>
 					</sa-panel>
+					</div>
+					<div class="col-md-4">
 					<sa-panel title="手术步骤">
 						<pre style="background:white;border-width:0px">${record.steps}</pre>
 					</sa-panel>
+					</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
 					<sa-panel title="麻醉手段">
 						<pre style="background:white;border-width:0px">${record.anaesthesiaMethod}</pre>
 					</sa-panel>
+					</div>
+					<div class="col-md-4">
 					<sa-panel title="引流物">
 						<pre style="background:white;border-width:0px">${record.drainage}</pre>
 					</sa-panel>
+					</div>
+					<div class="col-md-4">
 					<sa-panel title="术毕病人情况">
 						<pre style="background:white;border-width:0px">${record.finishedCondition}</pre>
 					</sa-panel>
-					
+					</div>
+					</div>
 					<c:forEach items="${record.assetTypes}" var="assetType">
 						<sa-panel title="${assetType.assetTypeName}">
 							<c:forEach items="${assetType.assets}" var="asset">
@@ -82,6 +112,11 @@
 				</div>
 		</form>
 	</div>
+</div>
+
+<div id="form_print" style="display: none;">
+	<div style="align:center"><H2>安徽省中西医结合医院</H2></div>		
+			
 </div>
 
 
@@ -120,9 +155,25 @@ pre, code {
 				}
 			}
 		});
-		$("#export_btn").click(function(){
+		
+		$('#export_btn')
+		.click(
+				function() {
+					$('#form_print')
+							.printArea(
+									{
+										'mode' : 'popup',
+										'popClose' : true,
+										'retainAttr' : [ 'class',
+												'id' ],
+										'extraHead' : '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
+									});
+				});
+		
+	<%-- 	$("#export_btn").click(function(){
+			
 			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
-		});
+		}); --%>
 		$('#edit_btn').click(function() {
 			sa.ajax({
 				type : "get",

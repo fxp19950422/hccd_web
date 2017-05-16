@@ -97,25 +97,31 @@ public class CareController extends BaseController{
 	
 	@RequestMapping(value = "/medical_records",method = RequestMethod.GET)
 	@ResponseBody
-    public List<MedicalRecordVO> getMedicalRecord(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd) {
-		
-		
+	public List<MedicalRecordVO> getMedicalRecord(HttpServletRequest request, Model model, String name, String idNumber,
+			String careTimeStart, String careTimeEnd, boolean includeMedical) {
+
 		String role = this.getCurrentRole(request);
 		DepartmentVO dept = this.getCurrentDepartment(request);
 		LoginVO user = getCurrentUser(request);
-		if (StringUtils.isNotEmpty(role) && "director".equals(role)){
-			List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", dept.getDepartmentCode());
+		
+		
+		if (StringUtils.isNotEmpty(role) && "director".equals(role)) {
+			List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart,
+					careTimeEnd, name, idNumber, "1", dept.getDepartmentCode());
 			return recordList;
-		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)){
-			List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(user.getHospitalUserInfo().getId(), careTimeStart, careTimeEnd, name, idNumber, "1", null);
+		} else if (StringUtils.isNotEmpty(role) && "doctor".equals(role)) {
+			List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(
+					user.getHospitalUserInfo().getId(), careTimeStart, careTimeEnd, name, idNumber, "1", null);
 			return recordList;
 		} else {
 			return null;
 		}
-		
-//		List<MedicalRecordVO> recordList = patientService.getHospitalMedicalRecordList(null, careTimeStart, careTimeEnd, name, idNumber, "1", "1");
-//
-//		return recordList;
+
+		// List<MedicalRecordVO> recordList =
+		// patientService.getHospitalMedicalRecordList(null, careTimeStart,
+		// careTimeEnd, name, idNumber, "1", "1");
+		//
+		// return recordList;
 	}
 	
 	@RequestMapping(value = "/history_document",method = RequestMethod.GET)

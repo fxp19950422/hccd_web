@@ -54,7 +54,7 @@
 <div >
 	<table style="clear: both" id="table" data-classes="table table-no-bordered sprotsdatatable" data-toggle="table"
 		data-striped="true" data-pagination="true"
-		data-page-size="7" data-page-list="[7,10,15,20]"
+		data-page-size="20" data-page-list="[7,10,15,20]"
 		data-pagination-first-text="第一页" data-pagination-pre-text="上页"
 		data-pagination-next-text="下页" data-pagination-last-text="最后页">
 		<thead>
