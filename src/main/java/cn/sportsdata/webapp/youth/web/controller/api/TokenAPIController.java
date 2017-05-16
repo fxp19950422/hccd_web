@@ -87,11 +87,11 @@ public class TokenAPIController {
 				json.put("birthday", loginVO.getBirthday());
 				
 				String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
-				ApiToken token = new ApiToken();
-				token.setToken(tokeninfo);
+//				ApiToken token = new ApiToken();
+//				token.setToken(tokeninfo);
 				Map<String, Object> loginInfo = new HashMap<String, Object>();
-				loginInfo.put("token", token);
-				loginInfo.put("userId", loginVO.getId());
+				loginInfo.put("token", tokeninfo);
+				loginInfo.put("user", loginVO);
 				return new ResponseEntity<Response>(Response.toSussess(loginInfo), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
