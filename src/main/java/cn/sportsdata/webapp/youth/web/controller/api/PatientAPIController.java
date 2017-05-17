@@ -56,11 +56,11 @@ public class PatientAPIController extends BaseController{
 			Map<String, Object> result = patientService.getOperationRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
+		
 		if (recordType.equalsIgnoreCase("resident")) {
 			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
-		
 		
 		if (recordType.equalsIgnoreCase("patientInhospital")) {
 			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, departmentIdList, year, month, day);

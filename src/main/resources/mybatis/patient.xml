@@ -116,7 +116,7 @@
     
     <select id="getMyOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
         select A.* from operation A
-	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	where (A.doctor_id=#{doctor_code} or A.doctor_user=#{doctor_code}) and A.hospital_id=#{hospital_id} 
 	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc  limit 50
     </select>
