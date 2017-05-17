@@ -242,7 +242,8 @@ public class RegisterController extends BaseController{
 	@RequestMapping(value = "/save_record", method = RequestMethod.POST)
 	public Object saveRecord(HttpServletRequest request, MedicalRecordVO record) {
 		
-		patientService.updateMedicalRecordById(record.getId(), record.getIllnessDesc(), record.getMedHistory(), record.getBodyExam(), record.getDiagDesc(),record.getTreatment(), record.getSuggestion());
+		patientService.updateMedicalRecordById(record.getId(), record.getIllnessDesc(), record.getMedHistory(),
+				record.getBodyExam(), record.getDiagDesc(), record.getTreatment(), record.getSuggestion(),record.getAccExam());
 		
 		return record;
 	}

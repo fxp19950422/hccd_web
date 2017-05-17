@@ -45,18 +45,23 @@
 						</sa-panel>
 						</div>
 						<div class="col-md-4">
-						<sa-panel title="查体">
+						<sa-panel title="专科查体">
 							<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
 						</sa-panel>
 						</div>
 					</div>
 					<div class="row">
-					<div class="col-md-6">
-						<sa-panel title="初步诊断">
+						<div class="col-md-4">
+						<sa-panel title="辅助检查">
+								<pre style="background:white;border-width:0px;">${record.accExam}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-4">
+						<sa-panel title="诊断">
 							<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
 						</sa-panel>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-4">
 						<sa-panel title="建议">
 							<pre style="background:white;border-width:0px">${record.suggestion}</pre>
 						</sa-panel>
