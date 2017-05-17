@@ -22,6 +22,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientMedicalRecordBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientOperationRecordBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBriefBO;
+import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordDetailBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
@@ -50,20 +51,18 @@ public class PatientClientAPIController {
 	@RequestMapping(value = "/patientRecords/{hospitalId}/{userId}",  method = RequestMethod.GET)
 	public ResponseEntity<Response> patientRecords(HttpServletRequest request, HttpServletResponse resp, 
 			@PathVariable String hospitalId, @PathVariable String userId) {
-		
 		List<PatientRecordBriefBO> list = patientClientService.getPatientBriefRecords(userId, hospitalId);
-		
 		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/patientRecord/detail/{recordId}",  method = RequestMethod.GET)
+	@RequestMapping(value = "/patientRecord/{type}/detail/{recordId}",  method = RequestMethod.GET)
 	public ResponseEntity<Response> patientRecordDetail(HttpServletRequest request, HttpServletResponse resp, 
-			@PathVariable String hospitalId, @PathVariable String userId) {
-		
-		List<PatientRecordBriefBO> list = patientClientService.getPatientBriefRecords(userId, hospitalId);
-		
-		return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
+			@PathVariable String recordId, @PathVariable String type) {	
+		PatientRecordDetailBO bo = patientClientService.getPatientRecordDetail(recordId, type);
+		return new ResponseEntity<Response>(Response.toSussess(bo), HttpStatus.OK);
 	}
+	
+	
 	
 //	@RequestMapping(value = "/recordDetails",  method = RequestMethod.POST)
 //	public ResponseEntity<Response> getRecordDetails(HttpServletRequest request, HttpServletResponse resp, 

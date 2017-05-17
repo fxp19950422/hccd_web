@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBriefBO;
+import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordDetailBO;
 import cn.sportsdata.webapp.youth.dao.hospital.PatientDAO;
 import cn.sportsdata.webapp.youth.service.patient.PatientClientService;
 
@@ -21,6 +22,12 @@ public class PatientClientServiceImpl implements PatientClientService {
 	public List<PatientRecordBriefBO> getPatientBriefRecords(String userId, String hospitalId) {
 		List<PatientRecordBriefBO> list = patientDAO.getPatientBriefRecordsByHospital(userId, hospitalId);
 		return list;
+	}
+
+	@Override
+	public PatientRecordDetailBO getPatientRecordDetail(String recordId, String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
