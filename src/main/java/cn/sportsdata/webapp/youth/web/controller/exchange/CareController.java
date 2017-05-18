@@ -186,6 +186,9 @@ public class CareController extends BaseController{
 	public String toRecordDetail(String id, Model model,String registId){
 		
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
+		
+		model.addAttribute("age", getAge(record.getBirthday()));
+		model.addAttribute("gender", "female".equalsIgnoreCase(record.getGender())?"女":"男"); 
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);

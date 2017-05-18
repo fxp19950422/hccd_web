@@ -1,0 +1,13 @@
+@media print {
+	@page {
+		margin: 0 -6cm;
+	}
+	body {
+		margin: 1.6cm;
+	}
+}
+
+@page {
+	size: auto; /* auto is the initial value */
+	margin: 0mm -6cm; /* this affects the margin in the printer settings */
+}
