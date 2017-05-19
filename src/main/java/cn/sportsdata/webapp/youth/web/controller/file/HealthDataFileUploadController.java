@@ -201,8 +201,8 @@ public class HealthDataFileUploadController extends BaseController {
 		    for(MultipartFile uploadFile:uploadedFile){
 		    	String originFileName = uploadFile.getOriginalFilename();
 		    	String idArray[] = originFileName.split(":", 2);
-		    	assetTypeId = idArray[0];
-		    	stageTypeId = idArray[1];
+		    	stageTypeId = idArray[0];
+		    	assetTypeId = idArray[1];
 
 				String fileExt = HAFileUtils.getFileExtension(originFileName);
 
