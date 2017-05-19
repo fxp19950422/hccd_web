@@ -45,27 +45,29 @@
 					</sa-panel>
 					</div>
 					<div class="col-md-4">
-					<sa-panel title="专科查见" linkText="模板" link-callback="getTemplate('bodyExam')"> <textarea id="bodyExam"
+					<sa-panel title="专科查体" linkText="模板" link-callback="getTemplate('bodyExam')"> <textarea id="bodyExam"
 						name="bodyExam" class="form-control" rows="5"
 						placeholder="不超过800字" value="${record.bodyExam}">${record.bodyExam}</textarea>
 					</sa-panel>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-6">
-					<sa-panel title="初步诊断"  linkText="模板" link-callback="getTemplate('diagDesc')"> <textarea id="diagDesc"
-						name="diagDesc" class="form-control" rows="5" placeholder="不超过800字"
-						value="${record.diagDesc}">${record.diagDesc}</textarea> </sa-panel>
-						</div>
-						<div class="col-md-6">
-<!-- 					<sa-panel title="诊治项目"> <textarea id="future_plan" -->
-<!-- 						name="treatment" class="form-control" rows="5" -->
-<%-- 						placeholder="不超过800字" value="${record.treatment}">${record.treatment}</textarea> --%>
-<!-- 					</sa-panel> -->
-					<sa-panel title="建议"  linkText="模板" link-callback="getTemplate('suggestion')"> <textarea id="suggestion"
-						name="suggestion" class="form-control" rows="5"
-						placeholder="不超过800字" value="${record.suggestion}">${record.suggestion}</textarea>
-					</sa-panel>
+					<div class="col-md-4">
+						<sa-panel title="辅助检查" linkText="模板"
+							link-callback="getTemplate('accExam')"> <textarea
+							id="accExam" name="accExam" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.accExam}">${record.accExam}</textarea> </sa-panel>
+					</div>
+					<div class="col-md-4">
+						<sa-panel title="诊断"  linkText="模板" link-callback="getTemplate('diagDesc')"> <textarea id="diagDesc"
+							name="diagDesc" class="form-control" rows="5" placeholder="不超过800字"
+							value="${record.diagDesc}">${record.diagDesc}</textarea> </sa-panel>
+					</div>
+					<div class="col-md-4">
+						<sa-panel title="建议"  linkText="模板" link-callback="getTemplate('suggestion')"> <textarea id="suggestion"
+							name="suggestion" class="form-control" rows="5"
+							placeholder="不超过800字" value="${record.suggestion}">${record.suggestion}</textarea>
+						</sa-panel>
 					</div>
 				</div>
 				

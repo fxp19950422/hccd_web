@@ -318,7 +318,7 @@
     
      <insert id="updateMedicalRecordById" parameterType="java.util.Map">
 		update medical_record set illness_desc=#{illness_desc}, med_history=#{med_history},body_exam=#{body_exam},diag_desc=#{diag_desc},treatment=#{treatment},
-		suggestion=#{suggestion} where id=#{record_id}
+		suggestion=#{suggestion},acc_exam=#{accExam} where id=#{record_id}
     </insert>
     
     <select id="getDoctorInfoByUsername" resultType="cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO" parameterType="java.util.Map">
@@ -338,6 +338,7 @@
     <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
     	update medical_record set  
     	yb_icd_name = #{medicalRecordVO.ybIcdName},
+    	acc_exam=#{medicalRecordVO.accExam},
 		visit_no = #{medicalRecordVO.visitNo},
 		visit_date = #{medicalRecordVO.visitDate},
 		patient_id = #{medicalRecordVO.patientId},
@@ -390,7 +391,7 @@
     	medical_record,med_history,maternity,marrital,individual,
     	illness_desc,illness_date,hospital_id,family_ill,doctor_no,
     	doctor,diag_yb_db,diag_desc,cfz_flag,cdiag,body_exam,
-    	assistant_exam,anamnesis,advice,platform)
+    	assistant_exam,anamnesis,advice,platform,acc_exam)
     	values (#{medicalRecordVO.id},#{medicalRecordVO.ybIcdName},#{medicalRecordVO.visitNo},
     	#{medicalRecordVO.visitDate},#{medicalRecordVO.patientId},
     	#{medicalRecordVO.treatment},#{medicalRecordVO.tooth},
@@ -406,7 +407,7 @@
     	#{medicalRecordVO.doctorNo},#{medicalRecordVO.doctor},#{medicalRecordVO.diagYbDb},
     	#{medicalRecordVO.diagDesc},#{medicalRecordVO.cfzFlag},#{medicalRecordVO.cdiag},
     	#{medicalRecordVO.bodyExam},#{medicalRecordVO.assistantExam},
-    	#{medicalRecordVO.anamnesis},#{medicalRecordVO.advice},'platform_cloud')
+    	#{medicalRecordVO.anamnesis},#{medicalRecordVO.advice},'platform_cloud',#{medicalRecordVO.accExam})
     </insert>
     
      <update id="updateOperationRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord">

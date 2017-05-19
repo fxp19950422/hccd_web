@@ -50,7 +50,8 @@ public interface PatientService {
 			 String body_exam,
 			 String diag_desc,
 			 String treatment,
-			 String suggestion);
+			 String suggestion,
+			 String accExam);
 	
 	int updatePatientInHospital(PatientInHospital record);
 	int updateMedicalRecord(MedicalRecordVO medicalRecordVO);

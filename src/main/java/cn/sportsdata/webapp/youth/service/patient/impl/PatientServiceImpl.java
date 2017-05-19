@@ -546,9 +546,9 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public int updateMedicalRecordById(String recordId, String illness_desc, String med_history, String body_exam,
-			String diag_desc, String treatment, String suggestion) {
+			String diag_desc, String treatment, String suggestion,String accExam) {
 		// TODO Auto-generated method stub
-		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment, suggestion);
+		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment, suggestion,accExam);
 	}
 	
 	

@@ -122,7 +122,8 @@ public interface PatientDAO {
 			@Param("body_exam") String body_exam,
 			@Param("diag_desc") String diag_desc,
 			@Param("treatment") String treatment,
-			@Param("suggestion") String suggestion);
+			@Param("suggestion") String suggestion,
+			@Param("accExam") String accExam);
 	
 	int updateMedicalRecord(@Param("medicalRecordVO") MedicalRecordVO medicalRecordVO);
 	int updatePatientInHospital(@Param("record") PatientInHospital record);

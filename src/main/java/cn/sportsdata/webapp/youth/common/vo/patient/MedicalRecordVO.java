@@ -51,6 +51,7 @@ public class MedicalRecordVO {
   
     private String name;
     
+    private String accExam;
 
     public Date getBirthday() {
 		return birthday;
@@ -804,6 +805,14 @@ public class MedicalRecordVO {
 
 	public void setMedicalRecord(String medicalRecord) {
 		this.medicalRecord = medicalRecord;
+	}
+
+	public String getAccExam() {
+		return accExam;
+	}
+
+	public void setAccExam(String accExam) {
+		this.accExam = accExam;
 	}
 
 

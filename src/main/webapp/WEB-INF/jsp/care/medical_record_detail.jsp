@@ -45,18 +45,23 @@
 						</sa-panel>
 						</div>
 						<div class="col-md-4">
-						<sa-panel title="查体">
+						<sa-panel title="专科查体">
 							<pre style="background:white;border-width:0px">${record.bodyExam}</pre>
 						</sa-panel>
 						</div>
 					</div>
 					<div class="row">
-					<div class="col-md-6">
-						<sa-panel title="初步诊断">
+						<div class="col-md-4">
+						<sa-panel title="辅助检查">
+								<pre style="background:white;border-width:0px;">${record.accExam}</pre>
+						</sa-panel>
+						</div>
+						<div class="col-md-4">
+						<sa-panel title="诊断">
 							<pre style="background:white;border-width:0px">${record.diagDesc}</pre>
 						</sa-panel>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-4">
 						<sa-panel title="建议">
 							<pre style="background:white;border-width:0px">${record.suggestion}</pre>
 						</sa-panel>
@@ -72,16 +77,17 @@
 		<div style="margin-left:20px;font-size:17px;margin-top:10px;">
 			<table style="width:85%;margin:0 auto">
 				<tr>
-					<td width="33%">姓名: 王也</td>
+					<td width="33%">姓名: ${record.realName}</td>
 					
-					<td  width="33%">性别: 男</td>
+					<td  width="33%">性别: ${gender}</td>
 					
-					<td  width="33%">年龄: 23岁</td>
+					<td  width="33%">年龄: ${age}岁</td>
 				</tr>
 				<tr>
 					<td width="33%">号别: 创伤外科</td>
 					
-					<td width="33%">就诊日期: </td>
+					<td width="33%">就诊日期: <fmt:formatDate pattern="yyyy-MM-dd"
+							value="${record.visitDate}" /></td>
 					
 					<td width="33%">门诊次数: 1</td>
 					
@@ -89,31 +95,31 @@
 			</table>
 			<div style="border:0.5px solid #000; width:85%;margin:0 auto;margin-top:5px;"></div>
 			<div style="width:85%;margin:0 auto;margin-top:10px;">
-				主诉:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+				主诉:${record.illnessDesc}
 			</div>
 			<div style="border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
 			
 			<div style="width:85%;margin:0 auto;margin-top:10px;">
-				病史:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+				病史:${record.medHistory}
 			</div>
 			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
 			
 			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
-				查体:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+				查体:${record.bodyExam}
 			</div>
 			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
 			
 			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
-				初步诊断:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+				初步诊断:${record.diagDesc}
 			</div>
 			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
 			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
-				诊治项目:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+				诊治项目:${record.treatment}
 			</div>
 			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
 			
 			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
-				建议:病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题病人手有问题
+				建议:${record.suggestion}
 			</div>
 		</div>	
 	</div>
@@ -158,7 +164,9 @@ pre, code {
 							.printArea(
 									{
 										'mode' : 'popup',
-										'popClose' : true,
+										'popTitle': '医生：${record.name}',
+										'extraCss': '<%=serverUrl%>resources/css/printer.css',
+										'popClose' : false,
 										'retainAttr' : [ 'class',
 												'id' ],
 										'extraHead' : '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
