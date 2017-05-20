@@ -72,10 +72,10 @@
 		</form>
 	</div>
 	<div id="form_print" style="display:none">
-		<div style="text-align:center"><H2>安徽省中西医结合医院</H2></div>		
-		<div style="text-align:center"><H2>门诊病历</H2></div>
-		<div style="margin-left:20px;font-size:17px;margin-top:10px;">
-			<table style="width:85%;margin:0 auto">
+		<div style="text-align:center"><H3>安徽省中西医结合医院</H3></div>		
+		<div style="text-align:center"><H3>门诊病历</H3></div>
+		<div style="margin-left:2%;font-size:0.7em;margin-top:10px;">
+			<table style="width:95%;margin:0 auto">
 				<tr>
 					<td width="33%">姓名: ${record.realName}</td>
 					
@@ -93,32 +93,32 @@
 					
 				</tr>
 			</table>
-			<div style="border:0.5px solid #000; width:85%;margin:0 auto;margin-top:5px;"></div>
-			<div style="width:85%;margin:0 auto;margin-top:10px;">
+			<div style="border:0.5px solid #000; width:95%;margin:0 auto;margin-top:5px;"></div>
+			<div style="width:95%;margin:0 auto;margin-top:10px;">
 				主诉:${record.illnessDesc}
 			</div>
-			<div style="border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			<div style="border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			
-			<div style="width:85%;margin:0 auto;margin-top:10px;">
+			<div style="width:95%;margin:0 auto;margin-top:10px;">
 				病史:${record.medHistory}
 			</div>
-			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			
-			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				查体:${record.bodyExam}
 			</div>
-			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			
-			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				初步诊断:${record.diagDesc}
 			</div>
-			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
-			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				诊治项目:${record.treatment}
 			</div>
-			<div style="margin-top:10px;border:0.5px dashed #000; width:85%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			
-			<div style="margin-top:10px;width:85%;margin:0 auto;margin-top:10px;">
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				建议:${record.suggestion}
 			</div>
 		</div>	
