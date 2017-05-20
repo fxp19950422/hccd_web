@@ -168,7 +168,6 @@ pre, code {
 									{
 										'mode' : 'popup',
 										'popTitle': '医生：${record.name}',
-										'extraCss': '<%=serverUrl%>resources/css/printer.css',
 										'popClose' : false,
 										'retainAttr' : [ 'class',
 												'id' ],
