@@ -169,7 +169,7 @@ pre, code {
 										'mode' : 'popup',
 										'popTitle': '医生：${record.name}',
 										'popClose' : false,
-										'retainAttr' : [ 'class',
+										'retainAttr' : [ 'class','style',
 												'id' ],
 										'extraHead' : '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
 									});
