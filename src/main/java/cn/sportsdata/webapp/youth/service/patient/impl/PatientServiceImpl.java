@@ -54,6 +54,7 @@ public class PatientServiceImpl implements PatientService {
 			for (MedicalRecordVO record:medicalRecordList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("medical");
+				patientRecord.setDepartmentId("0309");
 				patientRecord.setMedicalRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientIdList.add(record.getPatientId());
@@ -153,51 +154,20 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public Map<String, Object> getOperationRecordList(String hospitalId, String doctorCode, String doctorName,
 			long year, long month, long day) {
+		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> operationList = patientDAO.getMyOperationRecordList(hospitalId, doctorName, doctorCode, year, month, day);
+			List<OpertaionRecord> operationList = patientDAO.getOperationRecordList(hospitalId, departmentIdList, doctorName, doctorCode, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
 			for (OpertaionRecord operationRecord:operationList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("operation");
+				patientRecord.setDepartmentId(operationRecord.getDepartmentId());
 				patientRecord.setOperationRecord(operationRecord);
 				patientRecord.setPatientId(operationRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
 				patientRecordList1.add(patientRecord);
-			}
-			
-			List<PatientRecordBO> patientRecordList2 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> firstAssitList = patientDAO.getFirstAsistOperationRecordList(hospitalId, doctorName, year, month, day);
-			for (OpertaionRecord operationRecord:firstAssitList) {
-				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("operation");
-				patientRecord.setOperationRecord(operationRecord);
-				patientRecord.setPatientId(operationRecord.getPatientId());
-				patientIdList.add(patientRecord.getPatientId());
-				patientRecordList2.add(patientRecord);
-			}
-			
-			List<PatientRecordBO> patientRecordList3 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> secondAssitList = patientDAO.getSecondAsistOperationRecordList(hospitalId, doctorName, year, month, day);
-			for (OpertaionRecord operationRecord:secondAssitList) {
-				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("operation");
-				patientRecord.setOperationRecord(operationRecord);
-				patientRecord.setPatientId(operationRecord.getPatientId());
-				patientIdList.add(patientRecord.getPatientId());
-				patientRecordList3.add(patientRecord);
-			}
-			
-			List<PatientRecordBO> patientRecordList4 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> anesthesiaList = patientDAO.getAnesthesiaOperationRecordList(hospitalId, doctorName, year, month, day);
-			for (OpertaionRecord operationRecord:anesthesiaList) {
-				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("operation");
-				patientRecord.setOperationRecord(operationRecord);
-				patientRecord.setPatientId(operationRecord.getPatientId());
-				patientIdList.add(patientRecord.getPatientId());
-				patientRecordList4.add(patientRecord);
 			}
 			
 			if (!patientIdList.isEmpty()) {
@@ -211,36 +181,8 @@ public class PatientServiceImpl implements PatientService {
 						}
 					}
 				}
-				for (PatientRecordBO patientRecord:patientRecordList2) {
-					for (PatientInfoVO patient:patientList) {
-						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
-							patientRecord.setPatient(patient);
-							break;
-						}
-					}
-				}
-				for (PatientRecordBO patientRecord:patientRecordList3) {
-					for (PatientInfoVO patient:patientList) {
-						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
-							patientRecord.setPatient(patient);
-							break;
-						}
-					}
-				}
-				for (PatientRecordBO patientRecord:patientRecordList4) {
-					for (PatientInfoVO patient:patientList) {
-						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
-							patientRecord.setPatient(patient);
-							break;
-						}
-					}
-				}
 			}
-			
 			result.put("operationList", patientRecordList1);
-			result.put("firstAssitList", patientRecordList2);
-			result.put("secondAssitList", patientRecordList3);
-			result.put("anesthesiaList", patientRecordList4);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -251,31 +193,35 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public Map<String, Object> getResidentRecordList(String hospitalId, String doctorCode, String doctorName,
 			long year, long month, long day) {
+		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			/*
-			List<PatientRecordBO> chargedPatientList = new ArrayList<PatientRecordBO>();
-			List<PatientInHospital> patientInHosList = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode);
-			List<ResidentRecord> chargedList = patientDAO.getCurMyResidentRecordList(hospitalId, doctorCode);
+			List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
+			List<ResidentRecord> residentRecordList = patientDAO.getResidentRecordList(hospitalId, doctorCode, departmentIdList, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
-			for (PatientInHospital patientInhospital:patientInHosList) {
+			for (ResidentRecord residentRecord:residentRecordList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setDepartmentId(residentRecord.getDepartmentId());
 				patientRecord.setRecordType("resident");
-				patientRecord.setPatientInhospital(patientInhospital);
-				patientRecord.setPatientId(patientInhospital.getPatientId());
+				patientRecord.setResidentRecord(residentRecord);
+				patientRecord.setPatientId(residentRecord.getPatientId());
 				patientIdList.add(patientRecord.getPatientId());
-				
-				for (ResidentRecord residentRecord:chargedList) {
-					if (residentRecord.getPatientId().equalsIgnoreCase(patientInhospital.getPatientId())) {
-						patientRecord.setResidentRecord(residentRecord);
-						chargedList.remove(residentRecord);
-						break;
+				patientRecordList.add(patientRecord);
+			}
+			
+			if (!patientIdList.isEmpty()) {
+				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
+				for (PatientRecordBO patientRecord:patientRecordList) {
+					for (PatientInfoVO patient:patientList) {
+						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
+							patientRecord.setPatient(patient);
+							break;
+						}
 					}
 				}
-				
-				chargedPatientList.add(patientRecord);
 			}
-			*/
+			result.put("residentList", patientRecordList);
+			/*
 			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
 			List<ResidentRecord> chargedList = patientDAO.getMyResidentRecordList(hospitalId, doctorCode, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
@@ -338,10 +284,7 @@ public class PatientServiceImpl implements PatientService {
 					}
 				}
 			}
-			
-			result.put("directList", patientRecordList2);
-			result.put("operationList", patientRecordList1);
-			result.put("attendingList", patientRecordList3);
+			*/
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -359,6 +302,7 @@ public class PatientServiceImpl implements PatientService {
 			List<MedicalRecordVO> list = patientDAO.searchPatientMedicalRecord(hospitalId, patientName, doctorName, doctorCode);
 			for (MedicalRecordVO record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
+				patientRecord.setDepartmentId(patientRecord.getDepartmentId());
 				patientRecord.setRecordType("medical");
 				patientRecord.setMedicalRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
@@ -453,8 +397,9 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, List<String> departmentIdList,
+	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode,
 			long year, long month, long day) {
+		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		try {
 			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode, departmentIdList);
@@ -462,6 +407,7 @@ public class PatientServiceImpl implements PatientService {
 			for (PatientInHospital record:list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("patientInhospital");
+				patientRecord.setDepartmentId(record.getDepartmentId());
 				patientRecord.setPatientInhospital(record);
 				patientRecord.setPatientId(record.getPatientId());
 				patientIdList.add(record.getPatientId());
@@ -604,7 +550,7 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId) {
 		if (doctorCode.equalsIgnoreCase("1701")) {
-			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317", "0312"});
+			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317", "0325", "0324"});
 		}
 		if (doctorCode.equalsIgnoreCase("1702")) {
 			return Arrays.asList(new String[] {"0309"});
@@ -618,8 +564,8 @@ public class PatientServiceImpl implements PatientService {
 		if (doctorCode.equalsIgnoreCase("1765")) {
 			return Arrays.asList(new String[] {"0321"});
 		}
-		if (doctorCode.equalsIgnoreCase("1572")) {
-			return Arrays.asList(new String[] {"0312"});
+		if (doctorCode.equalsIgnoreCase("1527")) {
+			return Arrays.asList(new String[] {"0325", "0324"});
 		}
 		return Arrays.asList(new String[] {"-1"});
 	}
@@ -810,5 +756,10 @@ public class PatientServiceImpl implements PatientService {
 	public List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day) {
 		// TODO Auto-generated method stub
 		return patientDAO.getOperationMeetingRecords(doctorId, year, month, day);
+	}
+
+	@Override
+	public String getDoctorAppVersion() {
+		return patientDAO.getAppVersion("doctor_app");
 	}
 }

@@ -6,6 +6,7 @@
         	<id column="id" property="id" jdbcType="VARCHAR"/>
         	<result column="patient_id" property="patientId" jdbcType="VARCHAR"/>
         	<result column="visit_id" property="visitId" jdbcType="VARCHAR"/>
+        	<result column="dept_stayed" property="departmentId" jdbcType="VARCHAR"/>
         	<result column="operation_no" property="operationNo" jdbcType="VARCHAR"/>
         	<result column="operation_desc" property="operationDesc" jdbcType="VARCHAR"/>
         	<result column="operation_code" property="operationCode" jdbcType="VARCHAR"/>
@@ -106,12 +107,18 @@
     </select>
     
     <!-- 查询手术记录 -->
-    <select id="getCurMyOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.* from operation A
-        	left join resident_record B on B.patient_id = A.patient_id
-	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
-	       	and A.status = 'active' and B.IN_OUT_STATUS = 0 order by OPERATING_DATE desc
+    <select id="getOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
+        select A.*, B.name as operator_name from operation A
+        	left outer join doctor B on B.user_id = A.doctor_id
+	       	where A.hospital_id=#{hospital_id} 
+	      	and (A.doctor_id=#{doctor_code} or A.dept_stayed in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            )
+	       	and year(req_date_time) = #{year} and month(req_date_time) =#{month}
+	       	and A.status = 'active' order by A.dept_stayed, A.doctor_id, req_date_time desc
     </select>
     
     <select id="getMyOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
@@ -162,7 +169,7 @@
     </select>
     
     <select id="getCurPatientsInHospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
-        select A.*, C.meeting_date from patient_in_hospital A
+        select A.*, C.meeting_date, A.dept_code as department_id from patient_in_hospital A
         	left join morning_shift_meeting_record C on C.record_id = A.id
 	       	where (A.doctor_id=#{doctor_code} or A.dept_code in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
@@ -170,14 +177,21 @@
             		#{id}
             	</foreach>
             ) and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' order by ADMISSION_DATE_TIME desc
+	       	and A.status = 'active' order by A.dept_code, A.doctor_id, ADMISSION_DATE_TIME desc
     </select>
     
     <!-- 查询出院记录 -->
-    <select id="getCurMyResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
+    <select id="getResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
-	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and A.status = 'active' and A.IN_OUT_STATUS = 0 order by ADMISSION_DATE desc
+	       	where (A.doctor_id=#{doctor_code} or A.department_id in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            )
+            and A.hospital_id=#{hospital_id} and year(DISCHARGE_DATE_TIME) = #{year} and month(DISCHARGE_DATE_TIME) =#{month}
+	       	and A.status = 'active' and  A.IN_OUT_STATUS = 1 and A.DISCHARGE_DATE_TIME is not null 
+	       	order by A.department_id, A.doctor_id, ADMISSION_DATE desc
     </select>
     
     <select id="getMyResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
@@ -705,4 +719,9 @@
     	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
     	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
     </select>
+    
+    <select id="getAppVersion" resultType="java.lang.String" parameterType="java.lang.String">
+    	select version_string from app_version where app_type = #{app_type}
+    </select>
+    
 </mapper>

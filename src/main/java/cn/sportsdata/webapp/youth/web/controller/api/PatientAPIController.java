@@ -46,8 +46,6 @@ public class PatientAPIController extends BaseController{
 	@RequestMapping(value = "/getDoctorRecords",  method = RequestMethod.POST)
 	public ResponseEntity<Response> patientRecord(HttpServletRequest request, HttpServletResponse resp,
 			String hospitalId, String doctorCode, String doctorName, String recordType, long year, long month, long day) {
-		List<String> departmentIdList = patientService.getDoctorDepartmentIdList(doctorCode, hospitalId);
-		
 		if (recordType.equalsIgnoreCase("medical")) {
 			List<PatientRecordBO> list = patientService.getMedicalRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
@@ -56,14 +54,12 @@ public class PatientAPIController extends BaseController{
 			Map<String, Object> result = patientService.getOperationRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
-		
 		if (recordType.equalsIgnoreCase("resident")) {
 			Map<String, Object> result = patientService.getResidentRecordList(hospitalId, doctorCode, doctorName, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 		}
-		
 		if (recordType.equalsIgnoreCase("patientInhospital")) {
-			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, departmentIdList, year, month, day);
+			List<PatientRecordBO> list = patientService.getPatientInHospital(hospitalId, doctorCode, year, month, day);
 			return new ResponseEntity<Response>(Response.toSussess(list), HttpStatus.OK);
 		}
 		return new ResponseEntity<Response>(Response.toFailure(-1, "invalide record type"), HttpStatus.OK);

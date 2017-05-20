@@ -27,6 +27,14 @@ public class OpertaionRecord implements Serializable {
 	private String doctorId;
 	private String patientName;
 	
+	private String departmentId;
+	public String getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
+	
 	private String patientGender;
 	public String getPatientGender() {
 		return patientGender;

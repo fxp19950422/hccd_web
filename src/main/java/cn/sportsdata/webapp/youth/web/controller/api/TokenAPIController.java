@@ -56,7 +56,12 @@ public class TokenAPIController {
 				String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
 				ApiToken token = new ApiToken();
 				token.setToken(tokeninfo);
-				return new ResponseEntity<Response>(Response.toSussess(token), HttpStatus.OK);
+				
+				Map<String, Object> result = new HashMap<String, Object>();
+				result.put("token", token);
+				result.put("doctorInfo", loginVO.getHospitalUserInfo());
+				result.put("version", patientService.getDoctorAppVersion());
+				return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
 			}

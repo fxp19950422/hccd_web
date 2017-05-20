@@ -27,7 +27,7 @@ public interface PatientService {
 	Map<String, Object> getResidentRecordList(String hospitalId, String doctorCode, 
 			String doctorName, long year, long month, long day);
 	List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, 
-			List<String> departmentIdList, long year, long month, long day);
+			long year, long month, long day);
 	
 	List<PatientRecordBO> searchPatientRecord(String hospitalId, String patientName, String doctorName, 
 			String doctorCode, String recordType);
@@ -98,5 +98,6 @@ public interface PatientService {
 	List<PatientInHospital> getInHospitalMeetingRecords(String doctorId, long year, long month, long day);
 	List<ResidentRecord> getResidentMeetingRecords(String doctorId, long year, long month, long day);
 	List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day);
+	String getDoctorAppVersion();
 	
 }

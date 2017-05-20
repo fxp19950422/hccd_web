@@ -20,7 +20,14 @@ public class PatientRecordBO implements Serializable{
 	private PatientInHospital patientInhospital = null;
 	private String patientId;
 	private String recordType;
+	private String departmentId;
 	
+	public String getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
 	public PatientInHospital getPatientInhospital() {
 		return patientInhospital;
 	}

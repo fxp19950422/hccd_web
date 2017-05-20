@@ -30,8 +30,11 @@ public interface PatientDAO {
 	//手术记录
 	OpertaionRecord getOperationById(@Param("id") String recordId);
 	OpertaionRecord getOperationByIdWithoutMapping(@Param("id") String recordId);
-	List<OpertaionRecord> getCurMyOperationRecordList(@Param("hospital_id") String hospitalId, 
-			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode);
+	List<OpertaionRecord> getOperationRecordList(@Param("hospital_id") String hospitalId,
+			@Param("departmentIdList") List<String> departmentIdList,
+			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode,
+			@Param("year") long year, @Param("month") long month, @Param("day") long day);
+	
 	List<OpertaionRecord> getMyOperationRecordList(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_name") String doctorName, @Param("doctor_code") String doctorCode,
 			@Param("year") long year, @Param("month") long month, @Param("day") long day);
@@ -61,8 +64,9 @@ public interface PatientDAO {
 	List<ResidentRecord> getResidentRecordByOperation(@Param("hospital_id") String hospitalId, 
 			@Param("patient_id") String patientId, @Param("operating_date") Date operatingDate);
 	
-	List<ResidentRecord> getCurMyResidentRecordList(@Param("hospital_id") String hospitalId, 
-			@Param("doctor_code") String doctorCode);
+	List<ResidentRecord> getResidentRecordList(@Param("hospital_id") String hospitalId, 
+			@Param("doctor_code") String doctorCode, @Param("departmentIdList") List<String> departmentIdList, 
+			@Param("year") long year, @Param("month") long month, @Param("day") long day);
 	List<ResidentRecord> getMyResidentRecordList(@Param("hospital_id") String hospitalId, 
 			@Param("doctor_code") String doctorCode, @Param("year") long year, 
 			@Param("month") long month, @Param("day") long day);
@@ -178,5 +182,6 @@ public interface PatientDAO {
 			@Param("year") long year, @Param("month") long month, @Param("day") long day);
 	List<OpertaionRecord> getOperationMeetingRecords(@Param("doctor_id") String doctorId,
 			@Param("year") long year, @Param("month") long month, @Param("day") long day);
+	String getAppVersion(@Param("app_type") String appType);
 	
 }
