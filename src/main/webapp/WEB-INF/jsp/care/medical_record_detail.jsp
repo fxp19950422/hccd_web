@@ -74,8 +74,9 @@
 	<div id="form_print" style="display:none">
 		<div style="text-align:center"><H3>安徽省中西医结合医院</H3></div>		
 		<div style="text-align:center"><H3>门诊病历</H3></div>
-		<div style="margin-left:2%;font-size:0.7em;margin-top:10px;">
-			<table style="width:95%;margin:0 auto">
+		<div style="font-size:0.7em;margin-top:10px;">
+			<div style="width:3%;background-color:red;float:left">&nbsp</div>
+			<table style="width:94%;float:left">
 				<tr>
 					<td width="33%">姓名: ${record.realName}</td>
 					
@@ -93,6 +94,9 @@
 					
 				</tr>
 			</table>
+			<div style="width:3%;background-color:red;float:left"></div>
+			<div style="clear:both;"></div>
+			</div>
 			<div style="border:0.5px solid #000; width:95%;margin:0 auto;margin-top:5px;"></div>
 			<div style="width:95%;margin:0 auto;margin-top:10px;">
 				主诉:${record.illnessDesc}
@@ -121,7 +125,7 @@
 			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				建议:${record.suggestion}
 			</div>
-		</div>	
+			
 	</div>
 </div>
 
