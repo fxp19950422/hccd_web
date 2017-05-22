@@ -112,7 +112,7 @@
         select A.*, B.name as operator_name from operation A
         	left outer join doctor B on B.user_id = A.doctor_id
 	       	where A.hospital_id=#{hospital_id} 
-	      	and (A.doctor_id=#{doctor_code} or A.dept_stayed in 
+	      	and (A.doctor_id=#{doctor_code} or A.doctor_user=#{doctor_code} or A.dept_stayed in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
             		#{id}
