@@ -87,6 +87,7 @@
    		</if>
 	       	where 
             A.patient_id = B.patient_number 
+	       	and b.status='active'
             and A.status = 'active'
 	       	<if test="doctor_code != null and doctor_code != '' ">
     			and A.DOCTOR_NO=#{doctor_code}
@@ -233,6 +234,7 @@
     
    	<select id="getResidentById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     	select A.*, B.real_name from resident_record A left outer join patient B on (A.patient_id = B.patient_number) where A.id = #{id}
+	       	and b.status='active'
     </select>
     
     <select id="getMedicalRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
@@ -257,27 +259,31 @@
     
     <select id="getPatientOperationRecords" resultMap="OperationRecordsType" parameterType="java.util.Map">
     	select A.* from operation A 
-	       	where A.patient_id in (select patient_number FROM patient where real_name = #{patient_name})
+	       	where A.patient_id in (select patient_number FROM patient where real_name = #{patient_name} 
+	       	and status='active')
 	       	and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and A.id != #{record_id} order by OPERATING_DATE desc
     </select>
     
     <select id="getPatientResidentRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
-	       	where A.patient_id in (SELECT patient_number FROM patient where real_name = #{patient_name})
+	       	where A.patient_id in (SELECT patient_number FROM patient where real_name = #{patient_name}
+	       	and status='active')
 	       	and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and A.id != #{record_id} order by ADMISSION_DATE desc
     </select>
     
     <select id="getPatientMedicalRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
     	select A.* from medical_record A
-	       	where  A.patient_id in (SELECT patient_number FROM patient where real_name = #{patient_name})
+	       	where  A.patient_id in (SELECT patient_number FROM patient where real_name = #{patient_name} 
+	       	and status='active')
         	and A.patient_id=#{patient_id}
 	       	and A.status = 'active' and A.id != #{record_id} order by VISIT_DATE desc, VISIT_NO
     </select>
     
     <select id="getMedicalRecordByID" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
     	SELECT * FROM medical.medical_record A, patient B, doctor C where A.patient_id = B.patient_number
+	       	and b.status='active'
  		and A.doctor_no = C.user_id and A.id = #{record_id}
     </select>
     
@@ -286,24 +292,28 @@
     	select A.* from medical_record A left join patient B on B.patient_number = A.PATIENT_ID
 	       	where A.DOCTOR_NO=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and B.real_name like CONCAT('%', #{patient_name},'%')
+	       	and b.status='active'
 	       	order by VISIT_DATE desc, VISIT_NO
     </select>
     
     <select id="searchPatientOperationRecord" resultMap="OperationRecordsType" parameterType="java.util.Map">
         select A.* from operation A left join patient B on B.patient_number = A.PATIENT_ID 
 	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
+	       	and b.status='active'
 	       	and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
     <select id="searchPatientResidentRecord" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A left join patient B on B.patient_number = A.patient_id 
 	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
+	       	and b.status='active'
 	       	and A.status = 'active' order by ADMISSION_DATE desc
     </select>
 
     <select id="searchPatientInhospital" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.* from patient_in_hospital A left join patient B on B.patient_number = A.PATIENT_ID 
 	       	where A.hospital_id=#{hospital_id} and B.real_name like CONCAT('%', #{patient_name},'%')
+	       	and b.status='active'
 	        order by ADMISSION_DATE_TIME desc
     </select>
 
@@ -536,6 +546,7 @@
     	A.operation_desc operationDescription,
     	b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
+	       	and b.status='active'
 	       	and A.status = 'active' 
 	       	<if test="patName == null or patName ==''">
 		       	and year(scheduled_date_time) = #{year} 
@@ -558,6 +569,7 @@
 			 A inner join doctor B on (A.department_code = B.department_id) 
 			  inner join  operation C  on (B.user_id = C.doctor_id)  left join patient D on C.patient_id=D.patient_number
 	       	where  C.hospital_id=#{hospital_id} 
+	       	and d.status='active'
 	       	and C.status = 'active' 
 	       	
 	       	<if test="patName == null or patName ==''"> 
@@ -574,6 +586,7 @@
     	select A.*,b.real_name from patient_in_hospital A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' 
+	       	and b.status='active'
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
@@ -597,6 +610,7 @@
 			  inner join patient_in_hospital C on (B.user_id = C.doctor_id) 
 		 	inner join patient D on (C.patient_id = D.patient_number)
 		 	where C.status = 'active'
+	       	and D.status='active'
 	       	<if test="patName != null and patName != '' ">
     			and D.real_name like '%${patName}%'
     		</if>
@@ -613,6 +627,7 @@
     	select A.*,b.real_name from resident_record A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and A.in_out_status = '1'
+	       	and b.status='active'
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
@@ -653,6 +668,7 @@
 		 	inner join patient D on (C.patient_id = D.patient_number)
 		 	<where>
 		 		C.in_out_status = '1'
+	       		and D.status='active'
 		       	<if test="patName != null and patName != '' ">
 	    			and D.real_name like '%${patName}%'
 	    		</if>
@@ -669,6 +685,7 @@
     <select id="searchPatientInHospitalById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
     	select A.*, B.real_name from patient_in_hospital A inner join  patient B on (A.patient_id = B.patient_number)
 	       	where A.id=#{recordId}
+	       	and b.status='active'
     </select>
     
     <select id="getRegisteRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord" parameterType="java.util.Map">
