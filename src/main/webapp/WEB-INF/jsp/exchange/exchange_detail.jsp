@@ -136,7 +136,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">术者</div>
-							<div class="col-md-11 profileDetailItemContent">${operation.operatorName}</div>
+							<div class="col-md-11 profileDetailItemContent">${operation.operator}</div>
 						</div>
 					</sa-panel> --%>
 					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
@@ -167,7 +167,7 @@
       						</td>
       						<td>
       							<p>
-      							${operation.operatorName}
+      							${operation.operator}
       							</p>
       							
       						</td>
@@ -328,7 +328,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">术者</div>
-							<div class="col-md-11 profileDetailItemContent">${operation.operatorName}</div>
+							<div class="col-md-11 profileDetailItemContent">${operation.operator}</div>
 						</div>
 					</sa-panel>
 					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
@@ -359,7 +359,7 @@
       						</td>
       						<td>
       							<p>
-      							${operation.operatorName}
+      							${operation.operator}
       							</p>
       							
       						</td>
@@ -534,7 +534,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-1 profileDetailItemTitle">术者</div>
-							<div class="col-md-11 profileDetailItemContent">${operation.operatorName}</div>
+							<div class="col-md-11 profileDetailItemContent">${operation.operator}</div>
 						</div>
 					</sa-panel>
 					<c:forEach items="${operation.assetTypes}" var="assetType">
