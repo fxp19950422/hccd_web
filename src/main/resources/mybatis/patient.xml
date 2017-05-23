@@ -569,7 +569,7 @@
 			 A inner join doctor B on (A.department_code = B.department_id) 
 			  inner join  operation C  on (B.user_id = C.doctor_id)  left join patient D on C.patient_id=D.patient_number
 	       	where  C.hospital_id=#{hospital_id} 
-	       	and d.status='active'
+	       	and D.status='active'
 	       	and C.status = 'active' 
 	       	
 	       	<if test="patName == null or patName ==''"> 
