@@ -238,13 +238,31 @@
       		
       	</section>
 		<c:forEach items="${record.residentAssetTypes}" var="assetType">
-					<section>
+					<%-- <section>
 							<H1>${assetType.assetTypeName}</H1>
-						</section>
+					</section> --%>
 					<c:forEach items="${assetType.assets}" var="asset">
-						<section>
+						<%-- <section>
 							<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
-						</section>
+						</section> --%>
+						
+						<section>
+							<table>
+			      				<tbody>
+			      					<tr>
+			      						<td>
+			      							<span>${assetType.assetTypeName}</span>
+			      						</td>
+			      					</tr>
+			      					<tr>
+			      						<td>
+			      							<img class="starterAvator" style="height:500px" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+			      						</td>
+			      					</tr>
+			      					</tbody>
+      						</table>
+								
+							</section>
 					</c:forEach>
 		</c:forEach>
       </c:forEach>
@@ -358,13 +376,31 @@
       	
 
 			<c:forEach items="${record.patientAssetTypes}" var="assetType">
-						<section>
+						<%-- <section>
 							<H1>${assetType.assetTypeName}</H1>
-						</section>
+						</section> --%>
 						<c:forEach items="${assetType.assets}" var="asset">
-							<section>
+							<%-- <section>
 								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+							</section> --%>
+							<section>
+							<table>
+			      				<tbody>
+			      					<tr>
+			      						<td>
+			      							<span>${assetType.assetTypeName}</span>
+			      						</td>
+			      					</tr>
+			      					<tr>
+			      						<td>
+			      							<img class="starterAvator" style="height:500px" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+			      						</td>
+			      					</tr>
+			      					</tbody>
+      						</table>
+								
 							</section>
+							
 						</c:forEach>
 			</c:forEach>
 			<section>
