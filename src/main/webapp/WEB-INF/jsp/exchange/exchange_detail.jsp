@@ -25,10 +25,13 @@
     <!-- Wrap all slides in a single "slides" class -->
     <div class="slides">
       <!-- Each section element contains an individual slide -->
-      <section>
+     
+      <c:forEach items="${medicalrecords}" var="exchangeRecord">
+      	<c:if test="${exchangeRecord.exchangeList != null && fn:length(exchangeRecord.exchangeList) > 0}">
+      	<section>
 			<H1>交班</H1>
-	 </section>
-      <c:forEach items="${medicalrecords}" var="record">
+	 	</section>
+      	<c:forEach items="${exchangeRecord.exchangeList}" var="record">
       	<section style="top:25px">
       			<H2>基本资料</H2>
       			
@@ -47,7 +50,7 @@
       						年龄
       						</td>
       						<td>
-      							<fmt:formatNumber value="${ record.age }" pattern="###"/>岁
+      							${ record.age }岁
       						</td>
       					</tr>
       					<tr>
@@ -77,23 +80,6 @@
       				</tbody>
       			</table>
       		
-				<%-- <div class="col-md-1 profileDetailItemTitle">姓名</div>
-				<div class="col-md-11 profileDetailItemContent">${ record.name }</div>
-				<div class="col-md-1 profileDetailItemTitle">年龄</div>
-				<div class="col-md-11 profileDetailItemContent"> 
-				<fmt:formatNumber value="${ record.age }" pattern="###"/>岁
-				</div>
-				<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-				<div class="col-md-11 profileDetailItemContent"><fmt:formatDate value="${ record.admissionDate }" pattern="yyyy年MM月dd日" /></div>
-				<div class="col-md-1 profileDetailItemTitle">收治医师</div>
-				<div class="col-md-11 profileDetailItemContent">${record.doctorName}</div>
-				<div class="col-md-1 profileDetailItemTitle">住院号</div>
-				<div class="col-md-11 profileDetailItemContent">${record.admissionNumber}</div>
-				
-				<div class="col-md-1 profileDetailItemTitle">主诉</div>
-				<div class="col-md-11 profileDetailItemContent">${record.diagnose}低调低调</div>
-				<div class="col-md-1 profileDetailItemTitle">诊断</div>
-				<div class="col-md-11 profileDetailItemContent">1. 刀割伤致左手疼痛，出血5.5小时</div> --%>
       	</section>
       	<section>
       		<table>
@@ -189,7 +175,67 @@
 					</c:if>
 				 </c:forEach>
       </c:forEach>
-      
+     </c:if>
+      <c:if test="${exchangeRecord.residentList != null && fn:length(exchangeRecord.residentList) > 0}">
+      <section>
+		<H1>阅片</H1>
+	  </section>
+	
+      <c:forEach items="${exchangeRecord.residentList}" var="record"> 
+      	<section style="top:25px">
+      			<H2>基本资料</H2>
+      			
+      			<table>
+      				<tbody>
+      					<tr>
+      						<td>
+      						姓名
+      						</td>
+      						<td>
+      							${ record.name }
+      						</td>
+      					</tr>
+      					<tr>
+      						<td>
+      						年龄
+      						</td>
+      						<td>
+      							<fmt:formatNumber value="${ record.age }" pattern="###"/>岁
+      						</td>
+      					</tr>
+      					<tr>
+      						<td>
+      						收治医师
+      						</td>
+      						<td>
+      							${record.doctorName}
+      						</td>
+      					</tr>
+      					<tr>
+      						<td>
+      						住院号
+      						</td>
+      						<td>
+      							${record.patientId}
+      						</td>
+      					</tr>
+      				</tbody>
+      			</table>
+      		
+      	</section>
+		<c:forEach items="${record.residentAssetTypes}" var="assetType">
+					<section>
+							<H1>${assetType.assetTypeName}</H1>
+						</section>
+					<c:forEach items="${assetType.assets}" var="asset">
+						<section>
+							<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+						</section>
+					</c:forEach>
+		</c:forEach>
+      </c:forEach>
+      </c:if>
+       </c:forEach>
       <section>
 			<H1>病例讨论</H1>
 	  </section>
@@ -242,24 +288,6 @@
       					</tr>
       				</tbody>
       			</table>
-      		
-				<%-- <div class="col-md-1 profileDetailItemTitle">姓名</div>
-				<div class="col-md-11 profileDetailItemContent">${ record.name }</div>
-				<div class="col-md-1 profileDetailItemTitle">年龄</div>
-				<div class="col-md-11 profileDetailItemContent"> 
-				<fmt:formatNumber value="${ record.age }" pattern="###"/>岁
-				</div>
-				<div class="col-md-1 profileDetailItemTitle">入院时间</div>
-				<div class="col-md-11 profileDetailItemContent"><fmt:formatDate value="${ record.admissionDate }" pattern="yyyy年MM月dd日" /></div>
-				<div class="col-md-1 profileDetailItemTitle">收治医师</div>
-				<div class="col-md-11 profileDetailItemContent">${record.doctorName}</div>
-				<div class="col-md-1 profileDetailItemTitle">住院号</div>
-				<div class="col-md-11 profileDetailItemContent">${record.admissionNumber}</div>
-				
-				<div class="col-md-1 profileDetailItemTitle">主诉</div>
-				<div class="col-md-11 profileDetailItemContent">${record.diagnose}低调低调</div>
-				<div class="col-md-1 profileDetailItemTitle">诊断</div>
-				<div class="col-md-11 profileDetailItemContent">1. 刀割伤致左手疼痛，出血5.5小时</div> --%>
       	</section>
       	<section>
       		<table>
@@ -314,72 +342,6 @@
       			</table>
       	</section>
       	
-      	<%-- <c:forEach items="${record.operationRecords}" var="operation">
-				 <c:if test="${operation.id != null}">
-				 	<section>
-				 	<sa-panel title="手术记录(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)">
-						<div class="row">
-							<div class="col-md-1 profileDetailItemTitle">麻醉方法</div>
-							<div class="col-md-11 profileDetailItemContent">${ operation.anaesthesiaMethod }</div>
-						</div>
-						<div class="row">
-							<div class="col-md-1 profileDetailItemTitle">手术名称</div>
-							<div class="col-md-11 profileDetailItemContent">${ operation.operationDesc }</div>
-						</div>
-						<div class="row">
-							<div class="col-md-1 profileDetailItemTitle">术者</div>
-							<div class="col-md-11 profileDetailItemContent">${operation.operator}</div>
-						</div>
-					</sa-panel>
-					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
-					<table>
-      				<tbody>
-      					<tr>
-      						<td>
-      						麻醉方法
-      						</td>
-      						<td>
-      							${ operation.anaesthesiaMethod }
-      						</td>
-      					</tr>
-      					<tr>
-      						<td>
-      						手术名称
-      						</td>
-      						<td>
-      							<p>
-      							${ operation.operationDesc }
-      							</p>
-      							
-      						</td>
-      					</tr>
-      					<tr>
-      						<td>
-      						术者
-      						</td>
-      						<td>
-      							<p>
-      							${operation.operator}
-      							</p>
-      							
-      						</td>
-      					</tr>
-      				</tbody>
-      			</table>
-					
-					</section>
-					<c:forEach items="${operation.assetTypes}" var="assetType">
-						<section>
-							<H1>${assetType.assetTypeName}</H1>
-						</section>
-						<c:forEach items="${assetType.assets}" var="asset">
-							<section>
-								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
-							</section>
-						</c:forEach>
-					</c:forEach>
-					</c:if>
-				 </c:forEach> --%>
 
 			<c:forEach items="${record.patientAssetTypes}" var="assetType">
 						<section>
@@ -399,63 +361,6 @@
 			</section>
       </c:forEach>
       
-      <section>
-			<H1>阅片</H1>
-	  </section>
-	  
-	   <c:forEach items="${residentrecords}" var="record">
-      	<section style="top:25px">
-      			<H2>基本资料</H2>
-      			
-      			<table>
-      				<tbody>
-      					<tr>
-      						<td>
-      						姓名
-      						</td>
-      						<td>
-      							${ record.name }
-      						</td>
-      					</tr>
-      					<tr>
-      						<td>
-      						年龄
-      						</td>
-      						<td>
-      							<fmt:formatNumber value="${ record.age }" pattern="###"/>岁
-      						</td>
-      					</tr>
-      					<tr>
-      						<td>
-      						收治医师
-      						</td>
-      						<td>
-      							${record.doctorName}
-      						</td>
-      					</tr>
-      					<tr>
-      						<td>
-      						住院号
-      						</td>
-      						<td>
-      							${record.patientId}
-      						</td>
-      					</tr>
-      				</tbody>
-      			</table>
-      		
-      	</section>
-		<c:forEach items="${record.residentAssetTypes}" var="assetType">
-					<section>
-							<H1>${assetType.assetTypeName}</H1>
-						</section>
-					<c:forEach items="${assetType.assets}" var="asset">
-						<section>
-							<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
-						</section>
-					</c:forEach>
-		</c:forEach>
-      </c:forEach>
      <c:if test="${anotherOperation != null && fn:length(anotherOperation) > 0}">
       <section>
       	<H1>今日择期手术</H1>

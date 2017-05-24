@@ -10,15 +10,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.impl.cookie.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hslf.usermodel.HSLFPictureData;
 import org.apache.poi.hslf.usermodel.HSLFPictureShape;
@@ -50,6 +49,7 @@ import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.ExchangeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -194,13 +194,44 @@ public class ExchangeController extends BaseController {
 		if (residentList.size() > 0) {
 			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, doctorId);
 		}
+		
+//		List<PatientInHospital> list = new ArrayList<PatientInHospital>();
+//		List<PatientInHospital> tmpList = new ArrayList<PatientInHospital>();
+		LinkedHashMap<String, ExchangeVO> map = new LinkedHashMap<String, ExchangeVO>();
+		for (int i = 0; i < operationRecordList.size(); i++){
+			PatientInHospital exchangeRecord = operationRecordList.get(i);
+			if (map.containsKey(exchangeRecord.getDoctorId())){
+				ExchangeVO exchangeVO = (ExchangeVO)map.get(exchangeRecord.getDoctorId());
+				exchangeVO.getExchangeList().add(exchangeRecord);
+			} else {
+				ExchangeVO exchangeVO = new ExchangeVO();
+				exchangeVO.getExchangeList().add(exchangeRecord);
+				map.put(exchangeRecord.getDoctorId(), exchangeVO);
+			}
+		}
+		
+		for (int i = 0; i < residentRecordList.size(); i++){
+			ResidentRecord exchangeRecord = residentRecordList.get(i);
+			if (map.containsKey(exchangeRecord.getDoctorId())){
+				ExchangeVO exchangeVO = (ExchangeVO)map.get(exchangeRecord.getDoctorId());
+				exchangeVO.getResidentList().add(exchangeRecord);
+			} else {
+				ExchangeVO exchangeVO = new ExchangeVO();
+				exchangeVO.getResidentList().add(exchangeRecord);
+				map.put(exchangeRecord.getDoctorId(), exchangeVO);
+			}
+		}
+		
+		List<ExchangeVO> exchangeVOList = new ArrayList<ExchangeVO>(map.values());
 
-		model.addAttribute("medicalrecords", operationRecordList);
+		model.addAttribute("medicalrecords", exchangeVOList);
 
 		model.addAttribute("patient_in_hospital_records", patientInHospitalRecordList);
 
-		model.addAttribute("residentrecords", residentRecordList);
+//		model.addAttribute("residentrecords", residentRecordList);
 
+		
+		
 		List<List<String>> page = new ArrayList<List<String>>();
 
 		if (!StringUtils.isEmpty(anotherOperation.trim())) {

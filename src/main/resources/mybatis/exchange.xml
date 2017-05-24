@@ -212,7 +212,7 @@
             "${item}"
          	</foreach>
 			)
-		order by G.department_id, E.asset_stage_type_id, E.record_asset_type_id
+		order by G.department_id,H.user_id, E.asset_stage_type_id, E.record_asset_type_id
     </select>
     
     <select id="getExchangePatientInHospitalRecords" resultMap="PatientInHospitalType" parameterType="java.util.Map">
