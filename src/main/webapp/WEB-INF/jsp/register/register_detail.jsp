@@ -15,6 +15,7 @@
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
 		<button id="history_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">历史文档</button>
+		<button id="play_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">就医历史</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
 	</div>
 	<div class="clearfix"></div>
@@ -162,6 +163,10 @@ pre, code {
 	}
 	
 	function initEvent() {
+		$('#play_btn').click(function(){
+			window.open("<%=serverUrl%>care/medical_history_detail?registId=${record.id }");
+		});
+		
 		$('#cancle_btn').click(function(){
 			$('#content').loadAngular("<%=serverUrl%>register/register_list" );
 		});

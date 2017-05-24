@@ -53,6 +53,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
@@ -728,5 +729,38 @@ public class CareController extends BaseController{
 		patientService.updateResidentRecord(dbRecord);
 		
 		return record;
+	}
+	
+
+	@RequestMapping(value = "/medical_history_detail", method = RequestMethod.GET)
+	public String toExchangeDetail(HttpServletRequest request, Model model, String registId,
+			String startDate) throws Exception {
+
+		List<OpertaionRecord> operations = new ArrayList<>();
+		List<ResidentRecord> residents = new ArrayList<>();
+		List<MedicalRecordVO> medicals = new ArrayList<>();
+		
+		PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
+		
+		List<PatientRecordBO> list = patientService.getPatientRecords(registId, registRecord.getName(),
+				registRecord.getPatientId(), registRecord.getHospitalId());
+		
+		for(PatientRecordBO record : list){
+			if("medical".equals(record.getRecordType())){
+				medicals.add(record.getMedicalRecord());
+			} else if("resident".equals(record.getRecordType())){
+				residents.add(record.getResidentRecord());
+			} else if("operation".equals(record.getRecordType())){
+				operations.add(record.getOperationRecord());
+			}
+		}
+		
+		model.addAttribute("medicalrecords", medicals);
+		model.addAttribute("residentrecords", residents);
+		model.addAttribute("operationRecords", operations);
+
+		
+
+		return "care/medical_history_detail";
 	}
 }
