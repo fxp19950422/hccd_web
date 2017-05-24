@@ -163,12 +163,26 @@
 					
 					</section>
 					<c:forEach items="${operation.assetTypes}" var="assetType">
-						<section>
-							<H1>${assetType.assetTypeName}</H1>
-						</section>
+						<%-- <section>
+							<span>${assetType.assetTypeName}</span>
+						</section> --%>
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
-								<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+							<table>
+      				<tbody>
+      					<tr>
+      						<td>
+      							<span>${assetType.assetTypeName}</span>
+      						</td>
+      					</tr>
+      					<tr>
+      						<td>
+      							<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+      						</td>
+      					</tr>
+      					</tbody>
+      					</table>
+								
 							</section>
 						</c:forEach>
 					</c:forEach>
@@ -509,7 +523,9 @@ height:auto !important;
 		Reveal.initialize({
 			autoSlide: 5000,
 			mouseWheel: true,
-			loop: true
+			loop: true,
+			minScale: 0.1,
+			maxScale: 1.5
 		  });
 			/*  $('.flexslider').flexslider({
 				    animation: "slide",
