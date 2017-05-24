@@ -742,20 +742,20 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public List<PatientInHospital> getInHospitalMeetingRecords(String doctorId, long year, long month, long day) {
-		// TODO Auto-generated method stub
-		return patientDAO.getInHospitalMeetingRecords(doctorId, year, month, day);
+		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorId, "1");
+		return patientDAO.getInHospitalMeetingRecords(departmentIdList, doctorId, year, month, day);
 	}
 
 	@Override
 	public List<ResidentRecord> getResidentMeetingRecords(String doctorId, long year, long month, long day) {
-		// TODO Auto-generated method stub
-		return patientDAO.getResidentMeetingRecords(doctorId, year, month, day);
+		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorId, "1");
+		return patientDAO.getResidentMeetingRecords(departmentIdList, doctorId, year, month, day);
 	}
 
 	@Override
 	public List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day) {
-		// TODO Auto-generated method stub
-		return patientDAO.getOperationMeetingRecords(doctorId, year, month, day);
+		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorId, "1");
+		return patientDAO.getOperationMeetingRecords(departmentIdList, doctorId, year, month, day);
 	}
 
 	@Override

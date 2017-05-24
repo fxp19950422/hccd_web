@@ -717,24 +717,45 @@
     	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from operation A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
-    	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    	where B.record_type='operation' and A.status = 'active'
+    	and (A.doctor_id=#{doctor_id} or A.dept_stayed in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            )
+    	and year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    	order by A.dept_stayed, A.doctor_id desc
     </select>
     
 	<select id="getInHospitalMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
     	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from patient_in_hospital A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
-    	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    	where B.record_type='patientInhospital' and A.status = 'active'
+    	and (A.doctor_id=#{doctor_id} or A.dept_code in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            )
+    	and year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    	order by A.dept_code, A.doctor_id desc
     </select>     
     
 	<select id="getResidentMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
     	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from resident_record A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='operation' and A.status = 'active' and A.doctor_id = #{doctor_id} and 
-    	year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    	where B.record_type='resident' and A.status = 'active'
+    	and (A.doctor_id=#{doctor_id} or A.department_id in 
+	       	  	<foreach collection="departmentIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            )
+    	and year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
+    	order by A.department_id, A.doctor_id desc
     </select>
     
     <select id="getAppVersion" resultType="java.lang.String" parameterType="java.lang.String">

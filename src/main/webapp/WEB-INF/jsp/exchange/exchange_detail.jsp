@@ -47,7 +47,7 @@
       						年龄
       						</td>
       						<td>
-      							<fmt:formatNumber value="${ record.age }" pattern="###"/>岁
+      							${ record.age }岁
       						</td>
       					</tr>
       					<tr>
