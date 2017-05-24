@@ -583,7 +583,7 @@
     </select>
     
     <select id="searchInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
-    	select A.*,b.real_name from patient_in_hospital A left join patient b on A.patient_id=b.patient_number
+    	select A.*,b.real_name from patient_in_hospital A left join patient B on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' 
 	       	and B.status='active'
@@ -624,7 +624,7 @@
     </select>
     
      <select id="searchResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
-    	select A.*,b.real_name from resident_record A left join patient b on A.patient_id=b.patient_number
+    	select A.*,b.real_name from resident_record A left join patient B on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and A.in_out_status = '1'
 	       	and B.status='active'

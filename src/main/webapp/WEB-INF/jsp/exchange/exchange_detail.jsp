@@ -35,10 +35,10 @@
       	<section style="top:25px">
       			<H2>基本资料</H2>
       			
-      			<table>
+      			<table style="font-size:0.7em">
       				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						姓名
       						</td>
       						<td>
@@ -46,7 +46,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						年龄
       						</td>
       						<td>
@@ -54,7 +54,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						入院时间
       						</td>
       						<td>
@@ -62,7 +62,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						收治医师
       						</td>
       						<td>
@@ -70,22 +70,15 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						住院号
       						</td>
       						<td>
       							${record.patientId}
       						</td>
       					</tr>
-      				</tbody>
-      			</table>
-      		
-      	</section>
-      	<section>
-      		<table>
-      				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						主诉
       						</td>
       						<td>
@@ -93,20 +86,28 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						诊断
       						</td>
       						<td>
       							<p>
-      							${record.diagnosis}
+      							${record.diagnosis} 
       							</p>
       							
       						</td>
       					</tr>
+      				</tbody>
+      			</table>
+      		
+      	</section>
+      	<!-- <section>
+      		<table>
+      				<tbody>
+      					
       					
       				</tbody>
       			</table>
-      	</section>
+      	</section> -->
       	
       	<c:forEach items="${record.operationRecords}" var="operation">
 				 <c:if test="${operation.id != null}">
@@ -126,10 +127,10 @@
 						</div>
 					</sa-panel> --%>
 					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
-					<table>
+					<table style="font-size:0.7em">
       				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						麻醉方法
       						</td>
       						<td>
@@ -137,7 +138,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						手术名称
       						</td>
       						<td>
@@ -147,8 +148,8 @@
       							
       						</td>
       					</tr>
-      					<tr>
-      						<td>
+      					<tr >
+      						<td style="width:25%">
       						术者
       						</td>
       						<td>
