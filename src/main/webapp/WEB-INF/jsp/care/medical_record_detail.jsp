@@ -4,6 +4,7 @@
 
 <%@ page import="cn.sportsdata.webapp.youth.common.utils.CommonUtils" %>
 <%@ page import="cn.sportsdata.webapp.youth.common.vo.UserVO" %>
+<%@ page import="java.util.Date" %>
 
 <%
 	String serverUrl = CommonUtils.getServerUrl(request);
@@ -71,7 +72,7 @@
 				</div>
 		</form>
 	</div>
-	<div id="form_print" style="display:none">
+	<div id="form_print"  style="display:none;">
 		<div style="text-align:center"><H3>安徽省中西医结合医院</H3></div>		
 		<div style="text-align:center"><H3>门诊病历</H3></div>
 		<div style="font-size:0.7em;margin-top:10px;">
@@ -126,6 +127,10 @@
 				建议:${record.suggestion}
 			</div>
 			
+			<div id="bottomDiv" style=" postion:absolute;botton:20px;margin:0 auto;width:95%;">
+				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
+				<span style="float:right">医生：${record.name}</span>
+			</div>
 	</div>
 </div>
 
@@ -150,8 +155,10 @@ pre, code {
 	function initData() {
 		buildBreadcumb("新增/修改教练");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
+		$("#bottomDiv").css({"margin-top":$(document).height() - $("#form_print").height() - 50})
 		
-		
+		/* $("#form_print").height();
+		alert($(document).height()); */
 	}
 	
 	function initEvent() {
