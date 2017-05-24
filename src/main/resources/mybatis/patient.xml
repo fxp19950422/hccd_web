@@ -544,7 +544,7 @@
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
     	select A.*,A.scheduled_date_time operatingDate,
     	A.operation_desc operationDescription,
-    	b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
+    	b.real_name patientName from operation A left join patient B on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and B.status='active'
 	       	and A.status = 'active' 
