@@ -177,7 +177,7 @@
       					</tr>
       					<tr>
       						<td>
-      							<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+      							<img class="starterAvator" style="height:500px" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
       						</td>
       					</tr>
       					</tbody>
