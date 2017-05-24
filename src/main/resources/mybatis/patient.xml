@@ -544,9 +544,9 @@
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
     	select A.*,A.scheduled_date_time operatingDate,
     	A.operation_desc operationDescription,
-    	b.real_name patientName from operation A left join patient B on A.patient_id=b.patient_number
+    	b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
-	       	and B.status='active'
+	       	and b.status='active'
 	       	and A.status = 'active' 
 	       	<if test="patName == null or patName ==''">
 		       	and year(scheduled_date_time) = #{year} 
@@ -583,10 +583,10 @@
     </select>
     
     <select id="searchInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
-    	select A.*,b.real_name from patient_in_hospital A left join patient B on A.patient_id=b.patient_number
+    	select A.*,b.real_name from patient_in_hospital A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' 
-	       	and B.status='active'
+	       	and b.status='active'
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
@@ -624,10 +624,10 @@
     </select>
     
      <select id="searchResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
-    	select A.*,b.real_name from resident_record A left join patient B on A.patient_id=b.patient_number
+    	select A.*,b.real_name from resident_record A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and A.status = 'active' and A.in_out_status = '1'
-	       	and B.status='active'
+	       	and b.status='active'
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
