@@ -110,23 +110,20 @@
 			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			
 			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
-				查体:${record.bodyExam}
-			</div>
-			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
-			
-			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
-				初步诊断:${record.diagDesc}
+				专科查体:${record.bodyExam}
 			</div>
 			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
-				诊治项目:${record.treatment}
+				诊断:${record.diagDesc}
 			</div>
 			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
-			
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
+				辅助检查:${record.accExam}
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
 			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				建议:${record.suggestion}
 			</div>
-			
 			<div id="bottomDiv" style=" postion:absolute;botton:20px;margin:0 auto;width:95%;">
 				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
 				<span style="float:right">医生：${record.name}</span>

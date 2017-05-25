@@ -714,7 +714,7 @@
 	
 	<!-- 获取医生的交班信息 -->
 	<select id="getOperationMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from operation A 
+    	select A.*, B.doctor_id as exchange_doctor_id, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from operation A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
     	where B.record_type='operation' and A.status = 'active'
@@ -729,7 +729,7 @@
     </select>
     
 	<select id="getInHospitalMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
-    	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from patient_in_hospital A 
+    	select A.*, B.doctor_id as exchange_doctor_id, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from patient_in_hospital A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
     	where B.record_type='patientInhospital' and A.status = 'active'
@@ -744,7 +744,7 @@
     </select>     
     
 	<select id="getResidentMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
-    	select A.*, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from resident_record A 
+    	select A.*, B.meeting_date, B.doctor_id as exchange_doctor_id, C.real_name as patient_name, C.gender as patient_gender from resident_record A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
     	where B.record_type='resident' and A.status = 'active'
@@ -760,6 +760,10 @@
     
     <select id="getAppVersion" resultType="java.lang.String" parameterType="java.lang.String">
     	select version_string from app_version where app_type = #{app_type}
+    </select>
+    
+    <select id="getDoctorListByOrg" resultType="cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO" parameterType="java.lang.String">
+    	select A.* from doctor A where A.hospital_id = #{hospital_id} and status = 'active' and login_user_id is not null
     </select>
     
 </mapper>

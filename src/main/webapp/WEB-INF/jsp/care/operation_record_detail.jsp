@@ -35,11 +35,6 @@
 					</sa-panel>
 					<div class="row">
 						<div class="col-md-4">
-						<sa-panel title="主诉">
-								<pre style="background:white;border-width:0px;">${record.opPrimary}</pre>
-						</sa-panel>
-						</div>
-						<div class="col-md-4">
 						<sa-panel title="术前诊断">
 							<pre style="background:white;border-width:0px">${record.beforeDiagnosis}</pre>
 						</sa-panel>
@@ -86,7 +81,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-					<sa-panel title="麻醉手段">
+					<sa-panel title="麻醉方式">
 						<pre style="background:white;border-width:0px">${record.anaesthesiaMethod}</pre>
 					</sa-panel>
 					</div>

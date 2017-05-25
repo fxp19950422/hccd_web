@@ -762,4 +762,9 @@ public class PatientServiceImpl implements PatientService {
 	public String getDoctorAppVersion() {
 		return patientDAO.getAppVersion("doctor_app");
 	}
+
+	@Override
+	public List<DoctorVO> getDoctorListByOrg(String hospitalId) {
+		return patientDAO.getDoctorListByOrg(hospitalId);
+	}
 }

@@ -99,5 +99,6 @@ public interface PatientService {
 	List<ResidentRecord> getResidentMeetingRecords(String doctorId, long year, long month, long day);
 	List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day);
 	String getDoctorAppVersion();
+	List<DoctorVO> getDoctorListByOrg(String hospitalId);
 	
 }

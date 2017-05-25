@@ -1157,6 +1157,14 @@ public class PatientInHospital implements Serializable {
 		this.meetingDate = meetingDate;
 	}
 
+    private String exchangeDoctorId;
+    public String getExchangeDoctorId() {
+		return exchangeDoctorId;
+	}
+	public void setExchangeDoctorId(String exchangeDoctorId) {
+		this.exchangeDoctorId = exchangeDoctorId;
+	}
+	
 	Date latestMeetingDate;
 	String latestMeetingType;
 

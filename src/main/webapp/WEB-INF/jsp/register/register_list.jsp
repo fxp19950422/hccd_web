@@ -19,7 +19,7 @@
 <div class="col-md-2 inputLabel">
 </div>
 	<div class="col-md-2 inputLabel">
-		<input type="checkbox" name="includeMedical" id="includeMedical" >已完成诊疗</input>
+		<input type="checkbox" checked="checked" name="includeMedical" id="includeMedical" >已完成诊疗</input>
 	</div>
 		<form id="player_form">
 		<div class="col-md-1 inputLabel">就诊时间</div>

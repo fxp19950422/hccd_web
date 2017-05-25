@@ -183,5 +183,6 @@ public interface PatientDAO {
 	List<OpertaionRecord> getOperationMeetingRecords(@Param("departmentIdList") List<String> departmentIdList, @Param("doctor_id") String doctorId,
 			@Param("year") long year, @Param("month") long month, @Param("day") long day);
 	String getAppVersion(@Param("app_type") String appType);
+	List<DoctorVO> getDoctorListByOrg(@Param("hospital_id") String hospitalId);
 	
 }

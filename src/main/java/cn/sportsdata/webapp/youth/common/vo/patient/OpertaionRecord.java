@@ -50,8 +50,15 @@ public class OpertaionRecord implements Serializable {
      */
     private String id;
     private String operatorName;
-    
-    Date meetingDate;
+    private String exchangeDoctorId;
+    public String getExchangeDoctorId() {
+		return exchangeDoctorId;
+	}
+	public void setExchangeDoctorId(String exchangeDoctorId) {
+		this.exchangeDoctorId = exchangeDoctorId;
+	}
+
+	Date meetingDate;
 	public Date getMeetingDate() {
 		return meetingDate;
 	}
