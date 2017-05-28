@@ -692,7 +692,11 @@ public class ResidentRecord implements Serializable {
      * @mbggenerated
      */
     public Double getAge() {
-        return age;
+    	if (age != null)
+    		return age;
+    	else {
+    		return -1D;
+    	}
     }
 
     /**
