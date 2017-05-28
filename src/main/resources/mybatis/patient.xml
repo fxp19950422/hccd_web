@@ -15,7 +15,7 @@
         	
         	<result column="wound_grade" property="woundGrade" jdbcType="VARCHAR"/>
         	<result column="OPERATING_DATE" property="operatingDate" jdbcType="VARCHAR"/>
-        	<result column="scheduled_date_time" property="operateScheduleDate" jdbcType="VARCHAR"/>
+        	<result column="operating_date" property="operateScheduleDate" jdbcType="VARCHAR"/>
         	<result column="anaesthesia_method" property="anaesthesiaMethod" jdbcType="VARCHAR"/>
         	<result column="operator" property="operator" jdbcType="VARCHAR"/>
         	<result column="doctor_id" property="doctorId" jdbcType="VARCHAR"/>
@@ -156,7 +156,7 @@
         select A.*, C.meeting_date from operation A
         	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
-	       	where A.scheduled_date_time > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	       	where A.operating_date > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
 	        and A.patient_id =#{patient_id} and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
@@ -252,8 +252,8 @@
     <select id="getOperationsByResident" resultMap="OperationRecordsType" parameterType="java.util.Map">
     	select A.* from operation A 
 	       	where A.patient_id=#{patient_id} and A.hospital_id=#{hospital_id} and A.status = 'active' 
-	       	and scheduled_date_time &gt; #{admission_date} 
-	       	and scheduled_date_time &lt; #{discharge_date}
+	       	and operating_date &gt; #{admission_date} 
+	       	and operating_date &lt; #{discharge_date}
 	       	order by OPERATING_DATE desc
     </select>
     
@@ -542,24 +542,24 @@
     </select>
     
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select A.*,A.scheduled_date_time operatingDate,
+    	select A.*,A.operating_date operatingDate,
     	A.operation_desc operationDescription,
     	b.real_name patientName from operation A left join patient b on A.patient_id=b.patient_number
 	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and b.status='active'
 	       	and A.status = 'active' 
 	       	<if test="patName == null or patName ==''">
-		       	and year(scheduled_date_time) = #{year} 
-		       	and month(scheduled_date_time) =#{month} and day(scheduled_date_time) = #{day}
+		       	and year(operating_date) = #{year} 
+		       	and month(operating_date) =#{month} and day(operating_date) = #{day}
 	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
-	       	order by scheduled_date_time desc
+	       	order by operating_date desc
     </select>
     
        <select id="searchDirectorOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select C.*,C.scheduled_date_time operatingDate,C.operation_desc operationDescription,
+    	select C.*,C.operating_date operatingDate,C.operation_desc operationDescription,
     	D.real_name patientName from 
     		(SELECT A.* FROM medical.department A left outer join department B on A.parent_department_id = B.department_code
 				where A.department_code = #{departmentId}
@@ -573,13 +573,13 @@
 	       	and C.status = 'active' 
 	       	
 	       	<if test="patName == null or patName ==''"> 
-	       	 and year(scheduled_date_time) = #{year} 
-	       	and month(scheduled_date_time) =#{month} and day(scheduled_date_time) = #{day}
+	       	 and year(operating_date) = #{year} 
+	       	and month(operating_date) =#{month} and day(operating_date) = #{day}
 	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and D.real_name like '%${patName}%'
     		</if>
-	       	order by scheduled_date_time desc
+	       	order by operating_date desc
     </select>
     
     <select id="searchInHospitalRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
