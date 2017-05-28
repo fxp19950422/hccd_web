@@ -12,7 +12,7 @@
 	
 %>
 
-<div class="profileEditContainer">
+<div class="profileEditContainer" >
 	<div class="coach_edit_button_area">
 		<button id="edit_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">编辑</button>
  		<button id="print_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">打印</button> 
@@ -124,7 +124,7 @@
 			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
 				建议:${record.suggestion}
 			</div>
-			<div id="bottomDiv" style=" postion:absolute;botton:20px;margin:0 auto;width:95%;">
+			<div id="bottomDiv" style=" margin:0 auto;width:95%;margin-top:10px">
 				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
 				<span style="float:right">医生：${record.name}</span>
 			</div>
@@ -152,7 +152,7 @@ pre, code {
 	function initData() {
 		buildBreadcumb("新增/修改教练");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
-		$("#bottomDiv").css({"margin-top":$(document).height() - $("#form_print").height() - 50})
+		/* $("#bottomDiv").css({"margin-top":$(document).height() - $("#form_print").height() - 50}) */
 		
 		/* $("#form_print").height();
 		alert($(document).height()); */
