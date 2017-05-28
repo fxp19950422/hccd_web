@@ -6,7 +6,7 @@
         	<id column="id" property="id" jdbcType="VARCHAR"/>
         	<result column="patient_id" property="patientId" jdbcType="VARCHAR"/>
         	<result column="visit_id" property="visitId" jdbcType="VARCHAR"/>
-        	<result column="dept_stayed" property="departmentId" jdbcType="VARCHAR"/>
+        	<result column="department_id" property="departmentId" jdbcType="VARCHAR"/>
         	<result column="operation_no" property="operationNo" jdbcType="VARCHAR"/>
         	<result column="operation_desc" property="operationDesc" jdbcType="VARCHAR"/>
         	<result column="operation_code" property="operationCode" jdbcType="VARCHAR"/>
@@ -109,42 +109,46 @@
     
     <!-- 查询手术记录 -->
     <select id="getOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.*, B.name as operator_name from operation A
+        select A.*, B.name as operator_name, B.department_id as department_id from operation A
         	left outer join doctor B on B.user_id = A.doctor_id
 	       	where A.hospital_id=#{hospital_id} 
-	      	and (A.doctor_id=#{doctor_code} or A.doctor_user=#{doctor_code} or A.dept_stayed in 
+	      	and (A.doctor_id=#{doctor_code} or B.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
             		#{id}
             	</foreach>
             )
-	       	and year(req_date_time) = #{year} and month(req_date_time) =#{month}
-	       	and A.status = 'active' order by A.dept_stayed, A.doctor_id, req_date_time desc
+	       	and year(operating_date) = #{year} and month(operating_date) =#{month}
+	       	and A.status = 'active' order by B.department_id, A.doctor_id, operating_date desc
     </select>
     
     <select id="getMyOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.* from operation A
-	       	where (A.doctor_id=#{doctor_code} or A.doctor_user=#{doctor_code}) and A.hospital_id=#{hospital_id} 
+        select A.*, B.department_id as department_id from operation A
+        	left outer join doctor B on B.user_id = A.doctor_id
+	       	where A.doctor_id=#{doctor_code} and A.hospital_id=#{hospital_id} 
 	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc  limit 50
     </select>
     
     <select id="getFirstAsistOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.* from operation A
+        select A.*, B.department_id as department_id from operation A
+        	left outer join doctor B on B.user_id = A.doctor_id
 	       	where A.FIRST_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
 	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
     <select id="getSecondAsistOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.* from operation A
+        select A.*, B.department_id as department_id from operation A
+        	left outer join doctor B on B.user_id = A.doctor_id
 	       	where A.SECOND_ASSISTANT=#{doctor_name} and A.hospital_id=#{hospital_id} 
 	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
     </select>
     
     <select id="getAnesthesiaOperationRecordList" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.* from operation A
+        select A.*, B.department_id as department_id from operation A
+        	left outer join doctor B on B.user_id = A.doctor_id
 	       	where A.ANESTHESIA_DOCTOR=#{doctor_name} and A.hospital_id=#{hospital_id} 
 	       	and year(OPERATING_DATE) = #{year} and month(OPERATING_DATE) =#{month}
 	       	and A.status = 'active' order by OPERATING_DATE desc limit 50
@@ -153,7 +157,7 @@
     <!-- 查询住院记录 -->
     <!-- 住院期间的手术记录 -->
     <select id="getOperationsDuringInHospital" resultMap="OperationRecordsType" parameterType="java.util.Map">
-        select A.*, C.meeting_date from operation A
+        select A.*, C.meeting_date, B.dept_code as department_id from operation A
         	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
 	       	where A.operating_date > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
@@ -718,14 +722,14 @@
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
     	where B.record_type='operation' and A.status = 'active'
-    	and (A.doctor_id=#{doctor_id} or A.dept_stayed in 
+    	and (A.doctor_id=#{doctor_id} or B.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
             		#{id}
             	</foreach>
             )
     	and year(meeting_date) =#{year} and month(meeting_date) =#{month} and day(meeting_date) = #{day}
-    	order by A.dept_stayed, A.doctor_id desc
+    	order by B.department_id, A.doctor_id desc
     </select>
     
 	<select id="getInHospitalMeetingRecords" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
