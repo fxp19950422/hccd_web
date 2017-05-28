@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -404,4 +405,33 @@ public class StringUtil {
 			return "";
 		}
 	}
+	
+	public static String getAge(Date birthDay)  {  
+		if (birthDay == null) return "未知";
+		
+        Calendar cal = Calendar.getInstance();  
+  
+        if (cal.before(birthDay)) {  
+        	 return "未知"; 
+        }  
+        int yearNow = cal.get(Calendar.YEAR);  
+        int monthNow = cal.get(Calendar.MONTH);  
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);  
+        cal.setTime(birthDay);  
+  
+        int yearBirth = cal.get(Calendar.YEAR);  
+        int monthBirth = cal.get(Calendar.MONTH);  
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);  
+  
+        int age = yearNow - yearBirth;  
+  
+        if (monthNow <= monthBirth) {  
+            if (monthNow == monthBirth) {  
+                if (dayOfMonthNow < dayOfMonthBirth) age--;  
+            }else{  
+                age--;  
+            }  
+        }  
+        return String.valueOf(age);  
+    }  
 }

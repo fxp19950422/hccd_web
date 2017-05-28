@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import cn.sportsdata.webapp.youth.common.utils.StringUtil;
 import cn.sportsdata.webapp.youth.common.vo.AssetTypeVO;
 
 public class ResidentRecord implements Serializable {
@@ -28,10 +29,27 @@ public class ResidentRecord implements Serializable {
 	private String doctorInCharge;
 	private String realName;
 	
+	private Date patientBirthday;
+	
 	private String patientGender;
 	public String getPatientGender() {
 		return patientGender;
 	}
+	
+	
+	
+	public Date getPatientBirthday() {
+		return patientBirthday;
+	}
+
+
+
+	public void setPatientBirthday(Date patientBirthday) {
+		this.patientBirthday = patientBirthday;
+	}
+
+
+
 	public void setPatientGender(String patientGender) {
 		this.patientGender = patientGender;
 	}
@@ -695,7 +713,13 @@ public class ResidentRecord implements Serializable {
     	if (age != null)
     		return age;
     	else {
-    		return -1D;
+    		
+    		String age = StringUtil.getAge(patientBirthday);
+    		try{
+    			return Double.parseDouble(age);
+    		} catch(Exception ex){
+    			return -1D;
+    		}
     	}
     }
 
