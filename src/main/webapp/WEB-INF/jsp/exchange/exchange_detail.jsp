@@ -25,12 +25,11 @@
     <!-- Wrap all slides in a single "slides" class -->
     <div class="slides">
       <!-- Each section element contains an individual slide -->
-     
-      <c:forEach items="${medicalrecords}" var="exchangeRecord">
-      	<c:if test="${exchangeRecord.exchangeList != null && fn:length(exchangeRecord.exchangeList) > 0}">
-      	<section>
+     <section>
 			<H1>交班</H1>
 	 	</section>
+      <c:forEach items="${medicalrecords}" var="exchangeRecord">
+      	<c:if test="${exchangeRecord.exchangeList != null && fn:length(exchangeRecord.exchangeList) > 0}">
       	<c:forEach items="${exchangeRecord.exchangeList}" var="record">
       	<section style="top:25px">
       			<H2>基本资料</H2>
@@ -186,10 +185,10 @@
       	<section style="top:25px">
       			<H2>基本资料</H2>
       			
-      			<table>
+      			<table style="font-size:0.7em">
       				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						姓名
       						</td>
       						<td>
@@ -197,7 +196,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						年龄
       						</td>
       						<td>
@@ -205,7 +204,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						收治医师
       						</td>
       						<td>
@@ -213,7 +212,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						住院号
       						</td>
       						<td>
@@ -263,10 +262,10 @@
       	<section style="top:25px">
       			<H2>基本资料</H2>
       			
-      			<table>
+      			<table style="font-size:0.7em">
       				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						姓名
       						</td>
       						<td>
@@ -274,7 +273,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						年龄
       						</td>
       						<td>
@@ -282,7 +281,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						入院时间
       						</td>
       						<td>
@@ -290,7 +289,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						收治医师
       						</td>
       						<td>
@@ -298,21 +297,15 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						住院号
       						</td>
       						<td>
       							${record.patientId}
       						</td>
       					</tr>
-      				</tbody>
-      			</table>
-      	</section>
-      	<section>
-      		<table>
-      				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						主诉
       						</td>
       						<td>
@@ -320,7 +313,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						诊断
       						</td>
       						<td>
@@ -330,15 +323,22 @@
       							
       						</td>
       					</tr>
-      					
       				</tbody>
       			</table>
       	</section>
+      	<!-- <section>
+      		<table style="font-size:0.7em">
+      				<tbody>
+      					
+      					
+      				</tbody>
+      			</table>
+      	</section> -->
       	<section>
-      		<table>
+      		<table style="font-size:0.7em">
       				<tbody>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						专科检查
       						</td>
       						<td>
@@ -346,7 +346,7 @@
       						</td>
       					</tr>
       					<tr>
-      						<td>
+      						<td style="width:25%">
       						病史
       						</td>
       						<td>
@@ -392,7 +392,7 @@
 			</c:forEach>
 			<section>
 					<H2>病例讨论</H2>
-					<p>
+					<p style="font-size:0.7em">
       					${ record.recordDiscussion }
       				</p>
 			</section>
