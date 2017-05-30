@@ -9,6 +9,7 @@ import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.OrdersVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientDocumentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
@@ -100,5 +101,7 @@ public interface PatientService {
 	List<OpertaionRecord> getOperationMeetingRecords(String doctorId, long year, long month, long day);
 	String getDoctorAppVersion();
 	List<DoctorVO> getDoctorListByOrg(String hospitalId);
+	List<PatientInHospital> getPatientInHosByDepartment(String hospitalId, String departmentId);
+	List<OrdersVO> getPatientOrders(List<String> patientIdList);
 	
 }

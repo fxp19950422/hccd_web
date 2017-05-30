@@ -21,6 +21,7 @@ import cn.sportsdata.webapp.youth.common.utils.ConfigProps;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.OrdersVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientDocumentVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
@@ -367,12 +368,14 @@ public class PatientServiceImpl implements PatientService {
 			List<ResidentRecord> residentRecords = patientDAO.getPatientResidentRecords(recordId, patientName, patientId, hospitalId);
 			List<OpertaionRecord> operationRecords = patientDAO.getPatientOperationRecords(recordId, patientName, patientId, hospitalId);
 			List<PatientRecordBO> resultList = new ArrayList<PatientRecordBO>();
+			List<String> patientIdList = new ArrayList<String>();
 			for (MedicalRecordVO record:medicalRecords) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("medical");
 				patientRecord.setMedicalRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				resultList.add(patientRecord);
+				patientIdList.add(record.getPatientId());
 			}
 			for (ResidentRecord record:residentRecords) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
@@ -380,6 +383,7 @@ public class PatientServiceImpl implements PatientService {
 				patientRecord.setResidentRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				resultList.add(patientRecord);
+				patientIdList.add(record.getPatientId());
 			}
 			for (OpertaionRecord record:operationRecords) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
@@ -387,6 +391,20 @@ public class PatientServiceImpl implements PatientService {
 				patientRecord.setOperationRecord(record);
 				patientRecord.setPatientId(record.getPatientId());
 				resultList.add(patientRecord);
+				patientIdList.add(record.getPatientId());
+			}
+			
+			if (!patientIdList.isEmpty()) {
+				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
+
+				for (PatientRecordBO patientRecord:resultList) {
+					for (PatientInfoVO patient:patientList) {
+						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
+							patientRecord.setPatient(patient);
+							break;
+						}
+					}
+				}
 			}
 			return resultList;
 		}
@@ -766,5 +784,15 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<DoctorVO> getDoctorListByOrg(String hospitalId) {
 		return patientDAO.getDoctorListByOrg(hospitalId);
+	}
+
+	@Override
+	public List<PatientInHospital> getPatientInHosByDepartment(String hospitalId, String departmentId) {
+		return patientDAO.getPatientInHosByDepartment(hospitalId, departmentId);
+	}
+
+	@Override
+	public List<OrdersVO> getPatientOrders(List<String> patientIdList) {
+		return patientDAO.getPatientOrders(patientIdList);
 	}
 }

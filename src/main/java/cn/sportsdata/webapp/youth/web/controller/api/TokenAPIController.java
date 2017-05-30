@@ -24,6 +24,7 @@ import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 import cn.sportsdata.webapp.youth.web.api.vo.ApiToken;
@@ -67,7 +68,7 @@ public class TokenAPIController {
 				
 				Map<String, Object> result = new HashMap<String, Object>();
 				result.put("token", token);
-				result.put("doctorInfo", loginVO.getHospitalUserInfo());
+				result.put("doctorInfo", patientService.getDoctorInfoByUsername(loginVO.getUserName()));
 				result.put("version", patientService.getDoctorAppVersion());
 				return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 			} else {

@@ -185,6 +185,25 @@
 	       	and A.status = 'active' order by A.dept_code, A.doctor_id, ADMISSION_DATE_TIME desc
     </select>
     
+    <select id="getPatientInHosByDepartment" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
+        select A.*, A.dept_code as department_id, B.real_name as patient_name, B.gender as patient_gender from patient_in_hospital A
+        	left outer join patient B on B.patient_number = A.patient_id
+	       	where (A.dept_code=#{department_id} or A.ward_code=#{department_id}) and A.hospital_id=#{hospital_id} 
+	       	and A.status = 'active' order by A.bed_no desc
+    </select>
+    
+    <!-- 查询患者医嘱 -->
+    <select id="getPatientOrders" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OrdersVO" parameterType="java.util.Map">
+        select A.* from zyfsy_his_orders A
+        	where A.patient_id in 
+	       	  	<foreach collection="patientIdList" item="id" index="index"
+            		open="(" close=")" separator=",">
+            		#{id}
+            	</foreach>
+            and A.PROCESSING_DATE_TIME is null and A.CANCEL_DATE_TIME is null
+        	and A.status = 'active' order by A.patient_id, A.order_no desc
+    </select>
+    
     <!-- 查询出院记录 -->
     <select id="getResidentRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord" parameterType="java.util.Map">
         select A.* from resident_record A
@@ -721,8 +740,9 @@
     	select A.*, B.doctor_id as exchange_doctor_id, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from operation A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
+    	left join doctor D on D.user_id = B.doctor_id
     	where B.record_type='operation' and A.status = 'active'
-    	and (A.doctor_id=#{doctor_id} or B.department_id in 
+    	and (B.doctor_id=#{doctor_id} or D.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
             		#{id}

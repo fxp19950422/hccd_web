@@ -19,12 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
-import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
-import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.OrdersVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -275,6 +274,23 @@ public class PatientAPIController extends BaseController{
 		result.put("operationList", operationList);
 		result.put("residentList", residentList);
 		result.put("patientInHospitalList", patientInHospitalList);
+		
+		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/getPatientInHosByDepartment",  method = RequestMethod.POST)
+	public ResponseEntity<Response> getPatientInHosByDepartment(HttpServletRequest request, HttpServletResponse resp,
+			String hospitalId, String departmentId) {
+		List<PatientInHospital> patientInHospitalList = patientService.getPatientInHosByDepartment(hospitalId, departmentId);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("patientInHospitalList", patientInHospitalList);
+		
+		List<String> patientIdList = new ArrayList<String>();
+		for (PatientInHospital record:patientInHospitalList) {
+			patientIdList.add(record.getPatientId());
+		}
+		List<OrdersVO> orderList = patientService.getPatientOrders(patientIdList);
+		result.put("orderList", orderList);
 		
 		return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
 	}

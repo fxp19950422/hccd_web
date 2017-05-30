@@ -9,6 +9,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBriefBO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
+import cn.sportsdata.webapp.youth.common.vo.patient.OrdersVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
@@ -184,5 +185,7 @@ public interface PatientDAO {
 			@Param("year") long year, @Param("month") long month, @Param("day") long day);
 	String getAppVersion(@Param("app_type") String appType);
 	List<DoctorVO> getDoctorListByOrg(@Param("hospital_id") String hospitalId);
+	List<PatientInHospital> getPatientInHosByDepartment(@Param("hospital_id") String hospitalId, @Param("department_id") String departmentId);
+	List<OrdersVO> getPatientOrders(@Param("patientIdList") List<String> patientIdList);
 	
 }
