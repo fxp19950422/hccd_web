@@ -188,14 +188,14 @@ pre, code {
 	
 	
 	function actionFormatter(value, row, index){
-		return '<span onclick=handle("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return '<span onclick=handleNow("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
 	function actionHistoryFormatter(value, row, index){
 		return '<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
-	function handle(recordId,recordType) {
+	function handleNow(recordId,recordType) {
 		if(recordId==undefined){
 			recordId=0;
 		}
@@ -319,13 +319,13 @@ pre, code {
 			  }
 		});
 		
-		$("#todaytable tr").click(function(event){
+		/* $("#todaytable tr").click(function(event){
 			var td = event.target;
 			var dataTd = $(td).parent().children()[3];
 			var dataid = $(dataTd).find("span").attr("dataid");
 			var datatype = $(dataTd).find("span").attr("recordtype")
-			handle(dataid,datatype);
-		})
+			handleNow(dataid,datatype);
+		}) */
 		
 <%-- 		$("#btable").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_detail_his_list?" --%>
 // 									+ $("#player_form").serialize()
