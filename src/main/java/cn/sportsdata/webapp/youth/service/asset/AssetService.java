@@ -9,4 +9,6 @@ public interface AssetService {
 	boolean deleteAsset(AssetVO assetVo);
 	boolean replaceAsset(AssetVO assetVo);
 	boolean deleteHospitalAsset(String hostpitalAssetId);
+	String insertHospitalRecordOSSAsset(String filename, String hospitalId, String recordId, 
+			String type, String recordTypeId, String stageTypdId, String storageType);
 }

@@ -20,7 +20,14 @@ public class RecordAssetVO implements Serializable {
 	private String assetTypeName;
 	private Date createdTime;
 	private String assetId;
+	private String storageType;
 	
+	public String getStorageType() {
+		return storageType;
+	}
+	public void setStorageType(String storageType) {
+		this.storageType = storageType;
+	}
 	public String getAssetStageId() {
 		return assetStageId;
 	}

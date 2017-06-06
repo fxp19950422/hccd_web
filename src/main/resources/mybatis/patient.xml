@@ -345,8 +345,8 @@
     </select>
 
     <select id="getRecordAssetList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO" parameterType="java.util.Map">
-		select A.id as id, A.record_asset_type_id as asset_type_id, A.asset_stage_type_id as asset_stage_id, B.id as asset_id, 
-		concat(G.name, C.name) as asset_type_name, A.created_time from hospital_record_asset A 
+		select A.id as id, A.record_asset_type_id as asset_type_id, A.asset_stage_type_id as asset_stage_id, A.asset_id as asset_id, 
+		concat(G.name, C.name) as asset_type_name, A.created_time, A.storage_type as storage_type from hospital_record_asset A 
 		left outer join asset B on B.id = A.asset_id 
 		left outer join record_asset_type C on C.id = A.record_asset_type_id
 		left outer join record_stage_in_hospital G on (A.asset_stage_type_id = G.id)
@@ -361,11 +361,6 @@
     <select id="getAssetStageList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetStageVO" parameterType="java.util.Map">
 		select A.id, A.name from record_stage_in_hospital A order by A.id asc
     </select>
-    
-    <insert id="insertRecordAsset" parameterType="java.util.Map">
-		insert into hospital_record_asset (id, hospital_id, hospital_record_id, asset_id, medical_data_type_id) 
-		values(uuid(),  #{hospital_id},  #{hospital_record_id},  #{asset_id},  #{medical_data_type_id})
-    </insert>
     
      <insert id="updateMedicalRecordById" parameterType="java.util.Map">
 		update medical_record set illness_desc=#{illness_desc}, med_history=#{med_history},body_exam=#{body_exam},diag_desc=#{diag_desc},treatment=#{treatment},

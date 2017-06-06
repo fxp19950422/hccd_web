@@ -27,9 +27,15 @@ public class AssetServiceImpl implements AssetService {
 			String type, String recordTypeId, String stageTypdId) {
 		String assetId = assetDAO.insertAsset(assetVo);
 		if (StringUtils.isNotEmpty(assetId)) {
-			assetDAO.insertHospitalRecordAsset(hospitalId, recordId, assetId, type, recordTypeId, stageTypdId);
+			assetDAO.insertHospitalRecordAsset(hospitalId, recordId, assetId, type, recordTypeId, stageTypdId, "local");
 		} 
 		return assetId;
+	}
+	
+	@Override
+	public String insertHospitalRecordOSSAsset(String filename, String hospitalId, String recordId, 
+			String type, String recordTypeId, String stageTypdId, String storageType) {
+		return assetDAO.insertHospitalRecordAsset(hospitalId, recordId, filename, type, recordTypeId, stageTypdId, storageType);
 	}
 
 	@Override

@@ -190,6 +190,20 @@ public class HealthDataFileUploadController extends BaseController {
 	
 	// below upload/download methods are used by pure PlUpload plugin
 	@ResponseBody
+	@RequestMapping(value="/setOssFileAsset", method = RequestMethod.POST)
+	public String setOssFileAsset(HttpServletRequest request, String fileName, String stageTypeId, 
+			String assetTypeId, String hospitalId, String hospitalRecordId, String type) {
+		try {
+			return assetservice.insertHospitalRecordOSSAsset(fileName, hospitalId, hospitalRecordId, type, assetTypeId, stageTypeId, "oss");
+		} catch(Exception e) {
+			logger.error("Error occurs while uploading file", e);
+		}
+		
+		return "";
+	}
+	
+	// below upload/download methods are used by pure PlUpload plugin
+	@ResponseBody
 	@RequestMapping(value="/fileUpload", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
 	public String fileUpload(HttpServletRequest request, @RequestParam ArrayList<MultipartFile> uploadedFile, String hospitalId, String hospitalRecordId, String type) {
 		try {
