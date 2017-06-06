@@ -35,6 +35,11 @@ public class AssetServiceImpl implements AssetService {
 	@Override
 	public String insertHospitalRecordOSSAsset(String filename, String hospitalId, String recordId, 
 			String type, String recordTypeId, String stageTypdId, String storageType) {
+		AssetVO assetVo = new AssetVO();
+		assetVo.setId(filename);
+		assetVo.setStorage_name(storageType);
+		assetVo.setStatus("active");
+		assetDAO.insertAsset(assetVo);
 		return assetDAO.insertHospitalRecordAsset(hospitalId, recordId, filename, type, recordTypeId, stageTypdId, storageType);
 	}
 

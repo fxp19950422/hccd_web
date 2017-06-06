@@ -156,8 +156,12 @@
 						</section>
 						<c:forEach items="${assetType.assets}" var="asset">
 							<section>
-								<img class="starterAvator"
-									src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+								<c:if test="${asset.storage_name === "oss"}">
+									<img class="starterAvator" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${asset.id}"></img>
+								</c:if>
+								<c:if test="${asset.storage_name != "oss"}">
+									<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+								</c:if>
 							</section>
 						</c:forEach>
 					</c:forEach>
