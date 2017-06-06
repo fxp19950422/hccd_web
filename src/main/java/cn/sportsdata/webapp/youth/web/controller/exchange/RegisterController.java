@@ -34,6 +34,7 @@ import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.FormCondition;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
@@ -55,21 +56,19 @@ public class RegisterController extends BaseController{
 	PatientService patientService;
 	
 	@RequestMapping(value = "/register_list",method = RequestMethod.GET)
-    public String toCareListPage(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd) {
-		
-//		DepartmentVO department = this.getCurrentDepartment(request);
-//		List<DoctorVO> doctors = exchangeService.getDoctors(department.getDepartmentCode(), radio == 1);
-//		
-//		
-//		model.addAttribute("doctors", doctors);
-//		model.addAttribute("radio", radio);
+	public String toCareListPage(HttpServletRequest request, Model model, String name, String idNumber,
+			String careTimeStart, String careTimeEnd,FormCondition condition) {
+
+		if(condition!=null){
+			model.addAttribute("condition", condition);
+		}
 		return "register/register_list";
 	}
 	
 	@RequestMapping(value = "/register_records",method = RequestMethod.GET)
 	@ResponseBody
 	public List<PatientRegistRecord> getMedicalRecord(HttpServletRequest request, Model model, String name,
-			String idNumber, String careTimeStart, String careTimeEnd, boolean includeMedical) {
+			String idNumber, String careTimeStart, String careTimeEnd, boolean includeMedical,FormCondition condition) {
 
 		LoginVO login = getCurrentUser(request);
 		DepartmentVO dept = getCurrentDepartment(request);
@@ -114,16 +113,33 @@ public class RegisterController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/register_detail",method = RequestMethod.GET)
-	public String toRegistDetail(HttpServletRequest request,String id, Model model){
+	public String toRegistDetail(HttpServletRequest request,String id, Model model,FormCondition condition){
 		
 		PatientRegistRecord registRecord = patientService.getRegisteRecordById(id);
 		
-		List<PatientRecordBO> list = patientService.getPatientRecords(id, registRecord.getName(),
+		List<PatientRecordBO> allList = patientService.getPatientRecords(id, registRecord.getName(),
 				registRecord.getPatientId(), registRecord.getHospitalId());
+		
+		List<PatientRecordBO> todayList = new ArrayList<>();
+		List<PatientRecordBO> list = new ArrayList<>();
+		for(PatientRecordBO bo:allList){
+			if("medical".equals(bo.getRecordType())){
+				MedicalRecordVO medical = bo.getMedicalRecord();
+				if(DateUtil.date2String(medical.getVisitDate()).equals(DateUtil.date2String(new Date()))){
+					todayList.add(bo);
+				} else {
+					list.add(bo);
+				}
+			} else if ("resident".equals(bo.getRecordType())) {
+				list.add(bo);
+			}
+		}
 		
 		model.addAttribute("record", registRecord);
 		model.addAttribute("list", list);
+		model.addAttribute("todayList", todayList);
 		model.addAttribute("registId", id);
+		model.addAttribute("condition", condition);
 		return "register/register_detail";
 	}
 	

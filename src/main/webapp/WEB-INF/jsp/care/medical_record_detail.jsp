@@ -131,7 +131,12 @@
 	</div>
 </div>
 
-
+<form id="condition_form">
+	<div class="row">
+		<input type="hidden" class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
+		<input type="hidden" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
+	</div>
+</form>
 
 <style>
 pre, code {
@@ -150,7 +155,7 @@ pre, code {
 	});
 	
 	function initData() {
-		buildBreadcumb("新增/修改教练");
+		buildBreadcumb("新增/修改门诊信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 		/* $("#bottomDiv").css({"margin-top":$(document).height() - $("#form_print").height() - 50}) */
 		
@@ -160,7 +165,12 @@ pre, code {
 	
 	function initEvent() {
 		$('#cancle_btn').click(function(){
-			$('#content').loadAngular("<%=serverUrl%>care/care_list?registId=${registId}" );
+			if('${condition}'){
+				$('#content').loadAngular("<%=serverUrl%>care/care_list?registId=${registId}&"+$("#condition_form").serialize() );
+			} else {
+				$('#content').loadAngular("<%=serverUrl%>care/care_list?registId=${registId}" );
+			}
+			
 		});
 		$("#export_btn").click(function(){
 			window.open("<%=serverUrl%>/care/download_medical_record?id=${id}");
@@ -182,12 +192,13 @@ pre, code {
 			sa.ajax({
 				type : "get",
 				url : "<%=serverUrl%>care/care_edit?id=${id}&registId=${registId}",
+				data:$("#condition_form").serialize(),
 				success : function(data) {
 					//TODO: will update the container later
 					AngularHelper.Compile($('#content'), data);
 				},
 				error: function() {
-					alert("打开编辑球员页面失败");
+					alert("打开编辑页面失败");
 				}
 			});
 		});
@@ -195,12 +206,13 @@ pre, code {
 			sa.ajax({
 				type : "get",
 				url : "<%=serverUrl%>care/care_insert",
+				data:$("#condition_form").serialize(),
 				success : function(data) {
 					//TODO: will update the container later
 					AngularHelper.Compile($('#content'), data);
 				},
 				error: function() {
-					alert("打开编辑球员页面失败");
+					alert("打开编辑页面失败");
 				}
 			});
 		});

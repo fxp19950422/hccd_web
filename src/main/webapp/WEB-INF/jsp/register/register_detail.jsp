@@ -14,8 +14,10 @@
 	<div class="coach_edit_button_area">
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
-		<button id="history_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">历史文档</button>
-		<button id="play_btn" class="btn btn-primary" style="float: right; margin-left: 10px;">就医历史</button>
+		<button id="history_btn" class="btn btn-primary"
+			style="float: right; margin-left: 10px;">历史文档</button>
+		<button id="play_btn" class="btn btn-primary"
+			style="float: right; margin-left: 10px;">就医历史</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
 	</div>
 	<div class="clearfix"></div>
@@ -40,6 +42,69 @@
 	</div>
 
 	<div>
+		<div class="panel-heading"
+			style="background-color: #067DC2; color: white;">
+			<div style="text-align: center; font-size: 16px; color: #FFFFFF;">当日记录</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<table style="clear: both;" id="todaytable"
+			data-classes="table table-no-bordered sprotsdatatable"
+			data-toggle="table" data-striped="true">
+			<thead>
+				<tr>
+					<th data-field="visitDate" data-formatter="dateFormatter"
+						data-align="center">日期</th>
+					<th data-field="recordType" data-formatter="typeFormatter"
+						data-align="center">类型</th>
+					<th data-align="center">项目</th>
+					<th data-align="center">医生</th>
+					<th data-field="id" data-formatter="actionFormatter"
+						data-align="center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${todayList}" var="record">
+					<c:if test="${record.recordType == 'medical' }">
+						<tr >
+							<td>${record.medicalRecord.visitDate }</td>
+							<td>${record.recordType }</td>
+							<td>${record.medicalRecord.illnessDesc }</td>
+							<td>${record.medicalRecord.doctor }
+							<span  recordType="${record.recordType}" dataid="${record.medicalRecord.id }"></span></td>
+							<td>${record.medicalRecord.id }</td>
+						</tr>
+					</c:if>
+					<c:if test="${record.recordType == 'resident' }">
+						<tr>
+							<td>${record.residentRecord.admissionDate }</td>
+							<td>${record.recordType }</td>
+							<td>${record.residentRecord.inChiDiagnosis }</td>
+							<td>${record.residentRecord.residentId }</td>
+							<td>${record.residentRecord.id }</td>
+						</tr>
+					</c:if>
+					<c:if test="${record.recordType == 'operation' }">
+						<tr>
+							<td>${record.operationRecord.operatingDate }</td>
+							<td>${record.recordType }</td>
+							<td>${record.operationRecord.operationDescription }</td>
+							<td>${record.operationRecord.operator }</td>
+							<td>${record.operationRecord.id }</td>
+						</tr>
+					</c:if>
+
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<div style="clear: both; height: 20px;"></div>
+	<div>
+		<div class="panel-heading"
+			style="background-color: #067DC2; color: white">
+			<div style="text-align: center; font-size: 16px; color: #FFFFFF;">历史记录</div>
+			<div class="clearfix"></div>
+		</div>
 		<table style="clear: both" id="btable"
 			data-classes="table table-no-bordered sprotsdatatable"
 			data-toggle="table" data-striped="true" data-pagination="true"
@@ -54,46 +119,53 @@
 						data-align="center">类型</th>
 					<th data-align="center">项目</th>
 					<th data-align="center">医生</th>
-					<th data-field="id" data-formatter="actionFormatter"
+					<th data-field="id" data-formatter="actionHistoryFormatter"
 						data-align="center">操作</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${list}" var="record">
-				<c:if test="${record.recordType == 'medical' }">
-					<tr>
-						<td>${record.medicalRecord.visitDate }</td>
-						<td>${record.recordType }</td>
-						<td>${record.medicalRecord.illnessDesc }</td>
-						<td>${record.medicalRecord.doctor }</td>
-						<td>${record.medicalRecord.id }</td>
-					</tr>
-				</c:if>
-				<c:if test="${record.recordType == 'resident' }">
-					<tr>
-						<td>${record.residentRecord.admissionDate }</td>
-						<td>${record.recordType }</td>
-						<td>${record.residentRecord.inChiDiagnosis }</td>
-						<td>${record.residentRecord.residentId }</td>
-						<td>${record.residentRecord.id }</td>
-					</tr>
-				</c:if>
-				<c:if test="${record.recordType == 'operation' }">
-					<tr>
-						<td>
-						${record.operationRecord.operatingDate }
-						</td>
-						<td>${record.recordType }</td>
-						<td>${record.operationRecord.operationDescription }</td>
-						<td>${record.operationRecord.operator }</td>
-						<td>${record.operationRecord.id }</td>
-					</tr>
-				</c:if>
-				
+					<c:if test="${record.recordType == 'medical' }">
+						<tr recordType="${record.recordType}" dateId="${record.medicalRecord.id }">
+							<td>${record.medicalRecord.visitDate }</td>
+							<td>${record.recordType }</td>
+							<td>${record.medicalRecord.illnessDesc }</td>
+							<td>${record.medicalRecord.doctor }</td>
+							<td>${record.medicalRecord.id }</td>
+						</tr>
+					</c:if>
+					<c:if test="${record.recordType == 'resident' }">
+						<tr>
+							<td>${record.residentRecord.admissionDate };${record.residentRecord.dischargeDateTime }</td>
+							<td>${record.recordType }</td>
+							<td>${record.residentRecord.inChiDiagnosis }</td>
+							<td>${record.residentRecord.residentId }</td>
+							<td>${record.residentRecord.id }</td>
+						</tr>
+					</c:if>
+					<c:if test="${record.recordType == 'operation' }">
+						<tr>
+							<td>${record.operationRecord.operatingDate }</td>
+							<td>${record.recordType }</td>
+							<td>${record.operationRecord.operationDescription }</td>
+							<td>${record.operationRecord.operator }</td>
+							<td>${record.operationRecord.id }</td>
+						</tr>
+					</c:if>
+
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
+
+	<form id="condition_form">
+		<div class="row">
+			<input type="hidden"
+				class="form-control profileEditInput calendar-input"
+				id="careTimeStart" name="careTimeStart"
+				value="${condition.careTimeStart }">
+		</div>
+	</form>
 </div>
 <style>
 pre, code {
@@ -119,17 +191,46 @@ pre, code {
 		return '<span onclick=handle("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
+	function actionHistoryFormatter(value, row, index){
+		return '<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+	}
+	
 	function handle(recordId,recordType) {
 		if(recordId==undefined){
 			recordId=0;
 		}
 		var url ;
 		if(recordType=='medical'){
-			url ="<%=serverUrl%>care/care_detail?id=" + recordId;
+			url ="<%=serverUrl%>care/care_detail?id=" + recordId+"&"+$("#condition_form").serialize();
 		} else if(recordType=='operation'){
-			url ="<%=serverUrl%>care/operation_detail?id=" + recordId;
+			url ="<%=serverUrl%>care/operation_detail?id=" + recordId+"&"+$("#condition_form").serialize();
 		} else if(recordType=='resident'){
-			url ="<%=serverUrl%>care/resident_detail?id=" + recordId;
+			url ="<%=serverUrl%>care/resident_detail?id=" + recordId+"&"+$("#condition_form").serialize();
+		}
+		sa.ajax({
+			type : "get",
+			url : url,
+			data :{registId:$("#recordId").val()},
+			success : function(data) {
+				AngularHelper.Compile($('#content'), data);
+			},
+			error: function() {
+				alert("页面打开失败");
+			}
+		});
+	}
+	
+	function handleHistory(recordId,recordType) {
+		if(recordId==undefined){
+			recordId=0;
+		}
+		var url ;
+		if(recordType=='medical'){
+			url ="<%=serverUrl%>care/care_detail?id=" + recordId+"&"+$("#condition_form").serialize();
+		} else if(recordType=='operation'){
+			url ="<%=serverUrl%>care/operation_detail?id=" + recordId+"&"+$("#condition_form").serialize();
+		} else if(recordType=='resident'){
+			url ="<%=serverUrl%>care/resident_detail?id=" + recordId+"&"+$("#condition_form").serialize();
 		}
 		sa.ajax({
 			type : "get",
@@ -157,7 +258,14 @@ pre, code {
 	
 	function dateFormatter(value, row, index){
 		if(value){
-			return new Date(value).Format("yyyy年MM月dd日")
+			if(value.indexOf(";")>0){
+				var start = new Date(value.split(";")[0]).Format("yyyy年MM月dd日")
+				var end = new Date(value.split(";")[1]).Format("yyyy年MM月dd日")
+				return start + " 至 " +end
+			} else {
+				return new Date(value).Format("yyyy年MM月dd日")
+			}
+			
 		}
 		return "-";
 	}
@@ -168,7 +276,11 @@ pre, code {
 		});
 		
 		$('#cancle_btn').click(function(){
-			$('#content').loadAngular("<%=serverUrl%>register/register_list" );
+			if('${condition}'){
+				$('#content').loadAngular("<%=serverUrl%>register/register_list?" + $("#condition_form").serialize() );
+			} else {
+				$('#content').loadAngular("<%=serverUrl%>register/register_list");
+			}
 		});
 		$("#add_medical_btn").click(function(){
 			$('#content').loadAngular("<%=serverUrl%>care/add_care?registId=${record.id }" );
@@ -182,11 +294,39 @@ pre, code {
 					AngularHelper.Compile($('#content'), data);
 				},
 				error: function() {
-					alert("打开编辑球员页面失败");
+					alert("打开编辑页面失败");
 				}
 			});
 		});
 		$("#btable").bootstrapTable();
+		var msg = '当日记录尚未同步完成，请稍后';
+		if('${condition.careTimeStart}'){
+			var conDate = '${condition.careTimeStart}';
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = date.getMonth()+1;
+			var day = date.getDate();
+			var array = conDate.split("-");
+			if(parseInt(year)==parseInt(array[0])&&parseInt(month)==parseInt(array[1])&&parseInt(day)==parseInt(array[2])){
+				//today
+			} else {
+				msg = '该日期为'+'${condition.careTimeStart}'+',记录已归档';
+			}
+		}
+		$("#todaytable").bootstrapTable({
+			formatNoMatches: function () {  //没有匹配的结果  
+			    return msg;  
+			  }
+		});
+		
+		$("#todaytable tr").click(function(event){
+			var td = event.target;
+			var dataTd = $(td).parent().children()[3];
+			var dataid = $(dataTd).find("span").attr("dataid");
+			var datatype = $(dataTd).find("span").attr("recordtype")
+			handle(dataid,datatype);
+		})
+		
 <%-- 		$("#btable").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_detail_his_list?" --%>
 // 									+ $("#player_form").serialize()
 // 						})

@@ -25,7 +25,11 @@
 		<div class="col-md-1 inputLabel">就诊时间</div>
 			<div class="col-md-3">
 			<div class="input-group date">
-				<input type="text" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" readonly>
+				<input type="text" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" readonly
+				<c:if test="${condition!=null }">
+					value="${condition.careTimeStart }"
+				</c:if>
+				>
 				<span id="birthdayIcon" class="input-group-addon calendar-icon"><i class="glyphicon glyphicon-calendar major_color"></i></span>
 			</div>	
 			</div>
@@ -93,6 +97,7 @@
 		sa.ajax({
 			type : "get",
 			url : url,
+			data:$("#player_form").serialize(),
 			success : function(data) {
 				AngularHelper.Compile($('#content'), data);
 			},
@@ -114,7 +119,15 @@
 		}).on('changeDate', function(e){
 			$("#table").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_records?" + $("#player_form").serialize()+"&includeMedical="+$("#includeMedical").is(':checked')});
 	    });
-		$("#careTimeStart").val(new Date().Format("yyyy-MM-dd"));
+		var conditiontime;
+		if('${condition}'){
+			if('${condition.careTimeStart}'){
+				conditiontime = '${condition.careTimeStart}';
+			}
+		}
+		if(!conditiontime){
+			$("#careTimeStart").val(new Date().Format("yyyy-MM-dd"));
+		}
 		$("#careTimeEnd").datepicker({
 			format : "yyyy-mm-dd",
 			language : "zh-CN",

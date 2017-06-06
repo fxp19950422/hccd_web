@@ -76,6 +76,12 @@
 		</form>
 	</div>
 </div>
+<form id="condition_form">
+	<div class="row">
+		<input type="hidden" class="profileEditInput form-control" id="patName" name="patName" value="${condition.patName }" />
+		<input type="hidden" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart" value="${condition.careTimeStart }">
+	</div>
+</form>
 
 <script type="text/javascript">
 	$(function() {
@@ -93,7 +99,11 @@
 	function initEvent() {
 		
 		$('#cancle_btn').click(function() {
-			$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}" );
+			if('${condition}'){
+				$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}&"+$("#condition_form").serialize() );
+			} else {
+				$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}" );
+			}
 		});
 		$('#save_btn').click(function() {
 			
@@ -103,7 +113,7 @@
 				data : $("#player_form").serialize(),
 				success : function(data) {
 					alert("修改成功");
-					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}");
+					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}&"+$("#condition_form").serialize() );
 										},
 										error : function() {
 											alert("修改失败");

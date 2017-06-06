@@ -72,28 +72,48 @@ public class CareController extends BaseController{
 	PatientService patientService;
 	
 	@RequestMapping(value = "/care_list",method = RequestMethod.GET)
-    public String toCareListPage(HttpServletRequest request, Model model, String name, String idNumber, String careTimeStart, String careTimeEnd,String registId) {
-		
-//		DepartmentVO department = this.getCurrentDepartment(request);
-//		List<DoctorVO> doctors = exchangeService.getDoctors(department.getDepartmentCode(), radio == 1);
-//		
-//		
-//		model.addAttribute("doctors", doctors);
-//		model.addAttribute("radio", radio);
-		if(StringUtil.isEmpty(registId)){
+	public String toCareListPage(HttpServletRequest request, Model model, String name, String idNumber,
+			String careTimeStart, String careTimeEnd, String registId,FormCondition condition) {
+
+		// DepartmentVO department = this.getCurrentDepartment(request);
+		// List<DoctorVO> doctors =
+		// exchangeService.getDoctors(department.getDepartmentCode(), radio ==
+		// 1);
+		//
+		//
+		// model.addAttribute("doctors", doctors);
+		// model.addAttribute("radio", radio);
+		if (StringUtil.isEmpty(registId)) {
 			return "care/care_list";
 		} else {
 			PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
-			
-			List<PatientRecordBO> list = patientService.getPatientRecords(registId, registRecord.getName(),
+
+			List<PatientRecordBO> allList = patientService.getPatientRecords(registId, registRecord.getName(),
 					registRecord.getPatientId(), registRecord.getHospitalId());
+			
+			List<PatientRecordBO> todayList = new ArrayList<>();
+			List<PatientRecordBO> list = new ArrayList<>();
+			for(PatientRecordBO bo:allList){
+				if("medical".equals(bo.getRecordType())){
+					MedicalRecordVO medical = bo.getMedicalRecord();
+					if(DateUtil.date2String(medical.getVisitDate()).equals(DateUtil.date2String(new Date()))){
+						todayList.add(bo);
+					} else {
+						list.add(bo);
+					}
+				} else if ("resident".equals(bo.getRecordType())) {
+					list.add(bo);
+				}
+			}
 			
 			model.addAttribute("record", registRecord);
 			model.addAttribute("list", list);
+			model.addAttribute("todayList", todayList);
 			model.addAttribute("registId", registId);
+			model.addAttribute("condition", condition);
 			return "register/register_detail";
 		}
-		
+
 	}
 	
 	@RequestMapping(value = "/medical_records",method = RequestMethod.GET)
@@ -184,7 +204,7 @@ public class CareController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/care_detail",method = RequestMethod.GET)
-	public String toRecordDetail(String id, Model model,String registId){
+	public String toRecordDetail(String id, Model model,String registId,FormCondition condition){
 		
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
 		
@@ -193,6 +213,7 @@ public class CareController extends BaseController{
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
 		return "care/medical_record_detail";
 	}
 	
@@ -217,12 +238,13 @@ public class CareController extends BaseController{
 	}
 
 	@RequestMapping(value = "/care_edit",method = RequestMethod.GET)
-	public String toRecordEdit(String id, Model model,String registId){
+	public String toRecordEdit(String id, Model model,String registId,FormCondition condition){
 		
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
+		model.addAttribute("condition", condition);
 		return "care/medical_record_edit";
 	}
 	
