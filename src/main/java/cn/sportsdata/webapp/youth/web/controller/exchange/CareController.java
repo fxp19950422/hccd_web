@@ -785,4 +785,45 @@ public class CareController extends BaseController{
 
 		return "care/medical_history_detail";
 	}
+	
+	@RequestMapping(value = "/pat_history_document", method = RequestMethod.GET)
+	public String toHistoryDocument(HttpServletRequest request, Model model, String registId,
+			String startDate) throws Exception {
+		
+		List<OpertaionRecord> operations = new ArrayList<>();
+		List<ResidentRecord> residents = new ArrayList<>();
+		List<MedicalRecordVO> medicals = new ArrayList<>();
+		
+		PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
+		
+		List<PatientDocumentVO> docList = patientService.getHistoryDocumentByPatientName(registRecord.getName());
+		
+		List<PatientRecordBO> list = patientService.getPatientRecords(registId, registRecord.getName(),
+				registRecord.getPatientId(), registRecord.getHospitalId());
+		
+		for(PatientRecordBO record : list){
+			if("medical".equals(record.getRecordType())){
+				medicals.add(record.getMedicalRecord());
+			} else if("resident".equals(record.getRecordType())){
+				residents.add(record.getResidentRecord());
+			} else if("operation".equals(record.getRecordType())){
+				operations.add(record.getOperationRecord());
+			}
+		}
+		List<PatientDocumentVO> docs = new ArrayList<>();
+		for(PatientDocumentVO doc :docList){
+			if(!StringUtil.isBlank(doc.getFileName())&&doc.getFileName().endsWith("jpg")){
+				docs.add(doc);
+			}
+		}
+		
+		model.addAttribute("medicalrecords", medicals);
+		model.addAttribute("residentrecords", residents);
+		model.addAttribute("operationRecords", operations);
+		model.addAttribute("docList", docs);
+		
+		
+		
+		return "care/pat_history_document";
+	}
 }

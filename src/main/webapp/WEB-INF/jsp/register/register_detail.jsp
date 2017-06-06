@@ -2,9 +2,13 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://www.sportsdata.cn/dateutil" prefix="DateUtil"%>
 
 <%@ page import="cn.sportsdata.webapp.youth.common.utils.CommonUtils"%>
 <%@ page import="cn.sportsdata.webapp.youth.common.vo.UserVO"%>
+<%@ page import="cn.sportsdata.webapp.youth.common.utils.DateUtil"%>
+<jsp:useBean id="now" class="java.util.Date" />
+<%@ page import="java.util.Date"%>
 
 <%
 	String serverUrl = CommonUtils.getServerUrl(request);
@@ -117,19 +121,20 @@
 						data-align="center">日期</th>
 					<th data-field="recordType" data-formatter="typeFormatter"
 						data-align="center">类型</th>
-					<th data-align="center">项目</th>
+					<th data-align="center">离本次门诊时间</th>
 					<th data-align="center">医生</th>
 					<th data-field="id" data-formatter="actionHistoryFormatter"
 						data-align="center">操作</th>
 				</tr>
 			</thead>
 			<tbody>
+			
 				<c:forEach items="${list}" var="record">
 					<c:if test="${record.recordType == 'medical' }">
 						<tr recordType="${record.recordType}" dateId="${record.medicalRecord.id }">
 							<td>${record.medicalRecord.visitDate }</td>
 							<td>${record.recordType }</td>
-							<td>${record.medicalRecord.illnessDesc }</td>
+							<td>${DateUtil:differentDays(record.medicalRecord.visitDate, now) }天前</td>
 							<td>${record.medicalRecord.doctor }</td>
 							<td>${record.medicalRecord.id }</td>
 						</tr>
@@ -138,7 +143,7 @@
 						<tr>
 							<td>${record.residentRecord.admissionDate };${record.residentRecord.dischargeDateTime }</td>
 							<td>${record.recordType }</td>
-							<td>${record.residentRecord.inChiDiagnosis }</td>
+							<td>${DateUtil:differentDays(record.residentRecord.admissionDate, now) }天前</td>
 							<td>${record.residentRecord.residentId }</td>
 							<td>${record.residentRecord.id }</td>
 						</tr>
@@ -147,7 +152,7 @@
 						<tr>
 							<td>${record.operationRecord.operatingDate }</td>
 							<td>${record.recordType }</td>
-							<td>${record.operationRecord.operationDescription }</td>
+							<td>${DateUtil:differentDays(record.operationRecord.operatingDate, now) }天前</td>
 							<td>${record.operationRecord.operator }</td>
 							<td>${record.operationRecord.id }</td>
 						</tr>
@@ -188,14 +193,14 @@ pre, code {
 	
 	
 	function actionFormatter(value, row, index){
-		return '<span onclick=handle("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return '<span onclick=handleNow("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
 	function actionHistoryFormatter(value, row, index){
 		return '<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
-	function handle(recordId,recordType) {
+	function handleNow(recordId,recordType) {
 		if(recordId==undefined){
 			recordId=0;
 		}
@@ -221,28 +226,7 @@ pre, code {
 	}
 	
 	function handleHistory(recordId,recordType) {
-		if(recordId==undefined){
-			recordId=0;
-		}
-		var url ;
-		if(recordType=='medical'){
-			url ="<%=serverUrl%>care/care_edit?id=" + recordId+"&"+$("#condition_form").serialize();
-		} else if(recordType=='operation'){
-			url ="<%=serverUrl%>care/operation_detail?id=" + recordId+"&"+$("#condition_form").serialize();
-		} else if(recordType=='resident'){
-			url ="<%=serverUrl%>care/resident_detail?id=" + recordId+"&"+$("#condition_form").serialize();
-		}
-		sa.ajax({
-			type : "get",
-			url : url,
-			data :{registId:$("#recordId").val()},
-			success : function(data) {
-				AngularHelper.Compile($('#content'), data);
-			},
-			error: function() {
-				alert("页面打开失败");
-			}
-		});
+		window.open("<%=serverUrl%>care/pat_history_document?registId="+$("#recordId").val());
 	}
 	
 	function typeFormatter(value, row, index){
@@ -319,13 +303,13 @@ pre, code {
 			  }
 		});
 		
-		$("#todaytable tr").click(function(event){
+		/* $("#todaytable tr").click(function(event){
 			var td = event.target;
 			var dataTd = $(td).parent().children()[3];
 			var dataid = $(dataTd).find("span").attr("dataid");
 			var datatype = $(dataTd).find("span").attr("recordtype")
-			handle(dataid,datatype);
-		})
+			handleNow(dataid,datatype);
+		}) */
 		
 <%-- 		$("#btable").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_detail_his_list?" --%>
 // 									+ $("#player_form").serialize()

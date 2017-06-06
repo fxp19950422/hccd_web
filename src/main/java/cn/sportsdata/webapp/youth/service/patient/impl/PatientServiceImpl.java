@@ -689,7 +689,8 @@ public class PatientServiceImpl implements PatientService {
 		return patientDAO.deleteShiftMeetingRecord(recordId);
 	}
 
-	private static final String historyDocumentDir = ConfigProps.getInstance().getConfigValue("historyDocumentDir");  
+//	private static final String historyDocumentDir = ConfigProps.getInstance().getConfigValue("historyDocumentDir");  
+	private static final String historyDocumentDir = "/mnt/historyDocument";  
 	
 	@Override
 	public List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName) throws SoccerProException {
@@ -717,6 +718,7 @@ public class PatientServiceImpl implements PatientService {
 				listSubFiles(subFolders[i], docList);
 			} else {
 				PatientDocumentVO document = new PatientDocumentVO();
+				document.setDirName(new File(subFolders[i].getParent()).getName());
 				document.setFileName(subFolders[i].getName());
 				document.setFilePath(subFolders[i].getAbsolutePath());
 				docList.add(document);

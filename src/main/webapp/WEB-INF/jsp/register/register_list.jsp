@@ -77,8 +77,17 @@
 	</style>
 	<script type="text/javascript">
 	$(function() {
-		initEvent();
+		setTimeout(function(){
+			initEvent();	
+		}),10
 	});
+	
+	/* $(function() {
+		setTimeout(function() {
+			initData();
+			initEvent();
+		}, 50);  // if using angular widget like sa-panel, since the real dom loaded is after the Angular.compile method, which is behind the document ready event, so add a little timeout to hack this
+	}); */
 	
 	function actionFormatter(value, row, index){
 		return '<span onclick=handle("'+value+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-edit content-color"></i></span>';
