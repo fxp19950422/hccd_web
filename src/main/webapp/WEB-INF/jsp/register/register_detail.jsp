@@ -226,28 +226,7 @@ pre, code {
 	}
 	
 	function handleHistory(recordId,recordType) {
-		if(recordId==undefined){
-			recordId=0;
-		}
-		var url ;
-		if(recordType=='medical'){
-			url ="<%=serverUrl%>care/care_edit?id=" + recordId+"&"+$("#condition_form").serialize();
-		} else if(recordType=='operation'){
-			url ="<%=serverUrl%>care/operation_detail?id=" + recordId+"&"+$("#condition_form").serialize();
-		} else if(recordType=='resident'){
-			url ="<%=serverUrl%>care/resident_detail?id=" + recordId+"&"+$("#condition_form").serialize();
-		}
-		sa.ajax({
-			type : "get",
-			url : url,
-			data :{registId:$("#recordId").val()},
-			success : function(data) {
-				AngularHelper.Compile($('#content'), data);
-			},
-			error: function() {
-				alert("页面打开失败");
-			}
-		});
+		window.open("<%=serverUrl%>care/pat_history_document?registId="+$("#recordId").val());
 	}
 	
 	function typeFormatter(value, row, index){
