@@ -244,7 +244,13 @@ pre, code {
 		if(value){
 			if(value.indexOf(";")>0){
 				var start = new Date(value.split(";")[0]).Format("yyyy年MM月dd日")
-				var end = new Date(value.split(";")[1]).Format("yyyy年MM月dd日")
+				var end ;
+				if(value.split(";")[1]){
+					 end = new Date(value.split(";")[1]).Format("yyyy年MM月dd日")
+				} else {
+					end = "~"
+				}
+				
 				return start + " 至 " +end
 			} else {
 				return new Date(value).Format("yyyy年MM月dd日")
