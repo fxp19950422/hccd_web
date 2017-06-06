@@ -72,7 +72,7 @@
 				</div>
 		</form>
 	</div>
-	<div id="form_print"  style="display:none;">
+	<%-- <div id="form_print"  style="display:none;">
 		<div style="text-align:center"><H3>安徽省中西医结合医院</H3></div>		
 		<div style="text-align:center"><H3>门诊病历</H3></div>
 		<div style="font-size:0.7em;margin-top:10px;">
@@ -128,7 +128,7 @@
 				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
 				<span style="float:right">医生：${record.name}</span>
 			</div>
-	</div>
+	</div> --%>
 </div>
 
 <form id="condition_form">

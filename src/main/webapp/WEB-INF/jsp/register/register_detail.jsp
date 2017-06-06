@@ -201,7 +201,7 @@ pre, code {
 		}
 		var url ;
 		if(recordType=='medical'){
-			url ="<%=serverUrl%>care/care_detail?id=" + recordId+"&"+$("#condition_form").serialize();
+			url ="<%=serverUrl%>care/care_edit?id=" + recordId+"&"+$("#condition_form").serialize();
 		} else if(recordType=='operation'){
 			url ="<%=serverUrl%>care/operation_detail?id=" + recordId+"&"+$("#condition_form").serialize();
 		} else if(recordType=='resident'){
@@ -226,7 +226,7 @@ pre, code {
 		}
 		var url ;
 		if(recordType=='medical'){
-			url ="<%=serverUrl%>care/care_detail?id=" + recordId+"&"+$("#condition_form").serialize();
+			url ="<%=serverUrl%>care/care_edit?id=" + recordId+"&"+$("#condition_form").serialize();
 		} else if(recordType=='operation'){
 			url ="<%=serverUrl%>care/operation_detail?id=" + recordId+"&"+$("#condition_form").serialize();
 		} else if(recordType=='resident'){

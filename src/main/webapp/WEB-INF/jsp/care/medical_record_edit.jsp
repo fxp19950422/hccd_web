@@ -5,6 +5,7 @@
 
 <%@ page import="cn.sportsdata.webapp.youth.common.utils.CommonUtils"%>
 <%@ page import="cn.sportsdata.webapp.youth.common.vo.UserVO"%>
+<%@ page import="java.util.Date" %>
 
 <%
 	String serverUrl = CommonUtils.getServerUrl(request);
@@ -13,7 +14,7 @@
 <div class="profileEditContainer">
 	<div class="coach_edit_button_area">
 		<button id="save_btn" class="btn btn-primary"
-			style="float: right; margin-left: 10px;">保存</button>
+			style="float: right; margin-left: 10px;">保存并打印</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>
 	<div class="clearfix"></div>
@@ -75,6 +76,64 @@
 			</div>
 		</form>
 	</div>
+	
+	<div id="form_print"  style="display:none;">
+		<div style="text-align:center"><H3>安徽省中西医结合医院</H3></div>		
+		<div style="text-align:center"><H3>门诊病历</H3></div>
+		<div style="font-size:0.7em;margin-top:10px;">
+			<div style="width:3%;background-color:red;float:left">&nbsp</div>
+			<table style="width:94%;float:left">
+				<tr>
+					<td width="33%">姓名: ${record.realName}</td>
+					
+					<td  width="33%">性别: ${gender}</td>
+					
+					<td  width="33%">年龄: ${age}岁</td>
+				</tr>
+				<tr>
+					<td width="33%">号别: 创伤外科</td>
+					
+					<td width="33%">就诊日期: <fmt:formatDate pattern="yyyy-MM-dd"
+							value="${record.visitDate}" /></td>
+					
+					<td width="33%">门诊次数: 1</td>
+					
+				</tr>
+			</table>
+			<div style="width:3%;background-color:red;float:left"></div>
+			<div style="clear:both;"></div>
+			</div>
+			<div style="border:0.5px solid #000; width:95%;margin:0 auto;margin-top:5px;"></div>
+			<div style="width:95%;margin:0 auto;margin-top:10px;">
+				主诉:<span id="spnIllnessDesc"></span>
+			</div>
+			<div style="border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
+			
+			<div style="width:95%;margin:0 auto;margin-top:10px;">
+				病史:<span id="spnMedHistory"></span>
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
+			
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
+				专科查体:<span id="spnBodyExam"></span>
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
+				诊断:<span id="spnDiagDesc"></span>
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
+				辅助检查:<span id="spnAccExam"></span>
+			</div>
+			<div style="margin-top:10px;border:0.5px dashed #000; width:95%;margin:0 auto;margin-top:10px;"></div>
+			<div style="margin-top:10px;width:95%;margin:0 auto;margin-top:10px;">
+				建议:<span id="spnSuggestion"></span>
+			</div>
+			<div id="bottomDiv" style=" margin:0 auto;width:95%;margin-top:10px">
+				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
+				<span style="float:right">医生：${record.name}</span>
+			</div>
+	</div>
 </div>
 <form id="condition_form">
 	<div class="row">
@@ -98,28 +157,57 @@
 	
 	function initEvent() {
 		
-		$('#cancle_btn').click(function() {
+	<%-- 	$('#cancle_btn').click(function() {
 			if('${condition}'){
 				$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}&"+$("#condition_form").serialize() );
 			} else {
 				$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}" );
 			}
+		}); --%>
+		$('#cancle_btn').click(function(){
+			if('${condition}'){
+				$('#content').loadAngular("<%=serverUrl%>care/care_list?registId=${registId}&"+$("#condition_form").serialize() );
+			} else {
+				$('#content').loadAngular("<%=serverUrl%>care/care_list?registId=${registId}" );
+			}
+			
 		});
 		$('#save_btn').click(function() {
-			
-			sa.ajax({
+			var flag = false;
+			$.ajax({
 				type : "post",
 				url : "<%=serverUrl%>care/save_record",
+				async:false,
 				data : $("#player_form").serialize(),
 				success : function(data) {
-					alert("修改成功");
-					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}&"+$("#condition_form").serialize() );
-										},
-										error : function() {
+					<%-- alert("修改成功");
+					$('#content').loadAngular("<%=serverUrl%>care/care_detail?id=${id}&registId=${registId}&"+$("#condition_form").serialize() ); --%>
+					flag = true;
+				
+				},
+				error : function() {
 											alert("修改失败");
 										}
 									});
+			if (flag){
+				$("#spnIllnessDesc").html($("#illnessDesc").val());
+				$("#spnMedHistory").html($("#medHistory").val());
+				$("#spnBodyExam").html($("#bodyExam").val());
+				$("#spnDiagDesc").html($("#diagDesc").val());
+				$("#spnAccExam").html($("#accExam").val());
+				$("#spnSuggestion").html($("#suggestion").val());
+				 $('#form_print').printArea(
+				{
+					'mode' : 'popup',
+					'popTitle': '医生：${record.name}',
+					'popClose' : false,
+					'retainAttr' : [ 'class', 'id' ],
+					'extraHead' : '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
+				}); 
+			}
 						});
+		
+		
 		validation();
 	}
 
