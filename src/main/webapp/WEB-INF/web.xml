@@ -116,6 +116,10 @@
       		<taglib-uri>http://www.sportsdata.cn/xss</taglib-uri>
       		<taglib-location>/META-INF/tld/xss.tld</taglib-location>
     	</taglib>
+    	 <taglib>
+      		<taglib-uri>http://www.sportsdata.cn/dateutil</taglib-uri>
+      		<taglib-location>/META-INF/tld/dateutil.tld</taglib-location>
+    	</taglib>
 	</jsp-config>
 	<error-page>
     	<error-code>404</error-code>
