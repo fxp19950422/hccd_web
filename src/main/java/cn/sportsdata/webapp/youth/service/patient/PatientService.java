@@ -35,7 +35,7 @@ public interface PatientService {
 	
 	List<RecordAssetVO> getRecordAssetList(String recordId);
 	List<RecordAssetTypeVO> getRecordAssetTypeList(String recordType);
-	List<RecordAssetStageVO> getAssetStageList();
+	List<RecordAssetStageVO> getAssetStageList(String recordType);
 	
 	DoctorVO getDoctorInfoByUsername(String username);
 	List<PatientRecordBO> getPatientRecords(String recordId, String patientName, String patientId, String hospitalId);

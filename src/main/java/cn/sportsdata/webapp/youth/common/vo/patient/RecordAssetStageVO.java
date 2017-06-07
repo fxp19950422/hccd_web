@@ -9,7 +9,14 @@ public class RecordAssetStageVO implements Serializable {
 	
 	private String id;
 	private String name;
+	private String recordType;
 	
+	public String getRecordType() {
+		return recordType;
+	}
+	public void setRecordType(String recordType) {
+		this.recordType = recordType;
+	}
 	public String getId() {
 		return id;
 	}

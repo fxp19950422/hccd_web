@@ -132,10 +132,10 @@ public class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
-	public List<RecordAssetStageVO> getAssetStageList() {
+	public List<RecordAssetStageVO> getAssetStageList(String recordType) {
 		List<RecordAssetStageVO> assetStageList = null;
 		try {
-			assetStageList = patientDAO.getAssetStageList();
+			assetStageList = patientDAO.getAssetStageList(recordType);
 			if(assetStageList == null) {
 				assetStageList = new ArrayList<RecordAssetStageVO>();
 			}

@@ -72,6 +72,8 @@ public class PatientAPIController extends BaseController{
 		if (recordType.equalsIgnoreCase("medical")) {
 			List<PatientRecordBO> list = patientService.getPatientRecords(recordId, patientName, patientId, hospitalId);
 			result.put("historyRecordList", list);
+			List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
+			result.put("assetList", assetList);
 		}
 		if (recordType.equalsIgnoreCase("operation")) {
 			List<RecordAssetVO> assetList = patientService.getRecordAssetList(recordId);
@@ -114,7 +116,7 @@ public class PatientAPIController extends BaseController{
 		record1.setSectionList(SectionList1);
 		record1.setSectionNameList(sectionNameList1);
 		record1.setAssetTypeList(patientService.getRecordAssetTypeList("medical"));
-		record1.setAssetStageList(patientService.getAssetStageList());
+		record1.setAssetStageList(patientService.getAssetStageList("medical"));
 		array.add(record1);
 		
 		//operation
@@ -128,7 +130,7 @@ public class PatientAPIController extends BaseController{
 		record2.setSectionList(sectionList2);
 		record2.setSectionNameList(SectionNameList2);
 		record2.setAssetTypeList(patientService.getRecordAssetTypeList("operation"));
-		record2.setAssetStageList(patientService.getAssetStageList());
+		record2.setAssetStageList(patientService.getAssetStageList("operation"));
 		array.add(record2);
 		
 		//resident
@@ -142,7 +144,7 @@ public class PatientAPIController extends BaseController{
 		record3.setSectionList(sectionList3);
 		record3.setSectionNameList(SectionNameList3);
 		record3.setAssetTypeList(patientService.getRecordAssetTypeList("resident"));
-		record3.setAssetStageList(patientService.getAssetStageList());
+		record3.setAssetStageList(patientService.getAssetStageList("resident"));
 		array.add(record3);
 		
 		//patient in hospital
@@ -155,7 +157,7 @@ public class PatientAPIController extends BaseController{
 		record4.setSectionList(sectionList4);
 		record4.setSectionNameList(SectionNameList4);
 		record4.setAssetTypeList(patientService.getRecordAssetTypeList("patientInhospital"));
-		record4.setAssetStageList(patientService.getAssetStageList());
+		record4.setAssetStageList(patientService.getAssetStageList("patientInhospital"));
 		array.add(record4);
 		
 		Map<String, Object> result = new HashMap<String, Object>();

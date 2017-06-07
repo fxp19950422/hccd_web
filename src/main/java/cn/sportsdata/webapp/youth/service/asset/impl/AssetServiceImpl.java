@@ -39,6 +39,15 @@ public class AssetServiceImpl implements AssetService {
 		assetVo.setId(filename);
 		assetVo.setStorage_name(storageType);
 		assetVo.setStatus("active");
+		
+		assetVo.setCreator_id(hospitalId);
+        assetVo.setOrg_id("");
+        assetVo.setDisplay_name(filename);
+        assetVo.setFile_extension("jpg");
+        assetVo.setSize(0);
+        assetVo.setPrivacy("protected");
+ 
+        
 		assetDAO.insertAsset(assetVo);
 		return assetDAO.insertHospitalRecordAsset(hospitalId, recordId, filename, type, recordTypeId, stageTypdId, storageType);
 	}

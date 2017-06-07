@@ -355,12 +355,13 @@
     </select>
     
     <select id="getRecordAssetTypeList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO" parameterType="java.util.Map">
-		select A.id, A.name from record_asset_type A 
-		where A.status = 'active' order by A.id asc
+		select A.id, A.name, A.record_type from record_asset_type A 
+		where A.record_type=#{record_type}  order by A.id asc
     </select>
     
     <select id="getAssetStageList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetStageVO" parameterType="java.util.Map">
-		select A.id, A.name from record_stage_in_hospital A order by A.id asc
+		select A.id, A.name, A.record_type from record_stage_in_hospital A 
+		where A.record_type=#{record_type} order by A.id asc
     </select>
     
      <insert id="updateMedicalRecordById" parameterType="java.util.Map">

@@ -102,8 +102,8 @@ public interface PatientDAO {
 	
 	List<RecordAssetVO> getRecordAssetList(@Param("record_id") String recordId);
 
-	List<RecordAssetTypeVO> getRecordAssetTypeList(String recordType);
-	List<RecordAssetStageVO> getAssetStageList();
+	List<RecordAssetTypeVO> getRecordAssetTypeList(@Param("record_type") String recordType);
+	List<RecordAssetStageVO> getAssetStageList(@Param("record_type") String recordType);
 	
 	DoctorVO getDoctorInfoByUsername(@Param("username") String username);
 	PatientInfoVO getPatientInfoVOById(@Param("patient_id") String patientId);
