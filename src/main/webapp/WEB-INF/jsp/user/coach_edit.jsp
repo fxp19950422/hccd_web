@@ -341,6 +341,7 @@
 			   "baseUrl": "<%=serverUrl%>",
                "defaultUserPhotoURL" : "resources/images/user_avatar.png",
                "dlgTitle" : "上传头像",
+               "noNeedCrop":false,
                "lnkUploadFileSelector" : "#user_avatar",
                "userPhotoSelector" : "#user_avatar"
 		};

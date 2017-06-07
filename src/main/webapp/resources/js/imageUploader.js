@@ -438,6 +438,8 @@ ImageUploader = {
         			"cropWidth":  self.cropOpt.width,
         			"cropHeight": self.cropOpt.height,
         			"action":"cropAndSave",
+        			"noNeedCrop":self.options.noNeedCrop,
+        			"fromPage":self.options.fromPage,
 					"fileName": fileName
         		},
         		success: function(data){

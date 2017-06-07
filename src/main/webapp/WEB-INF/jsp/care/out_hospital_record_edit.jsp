@@ -14,6 +14,7 @@
 	<div class="coach_edit_button_area">
 		<button id="save_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">保存</button>
+		<button id="upload_img_btn" class="btn btn-default" style="float: right;">上传用户基本信息截屏</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>
 	<div class="clearfix"></div>
@@ -36,6 +37,7 @@
 					placeholder="不超过800字" value="${record.diagnose}">${record.diagnose}</textarea>
 				</sa-panel>
 				<input type="hidden" name="id" value="${id}" />
+				<input type="hidden" name="avatar" id="encryptFileName" />
 			</div>
 		</form>
 	</div>
@@ -59,8 +61,27 @@
 	function initData() {
 		buildBreadcumb("新增/修改手术信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
+		initPhotoUpload();
 		
-		
+	}
+	
+
+	function initPhotoUpload(){
+		//avatar upload
+		var options = {
+			   "baseUrl": "<%=serverUrl%>",
+		       "url" : "file/upload",
+		       "flashUploadURL" : "file/flashUploadFile",
+		       "downloadURL": "file/downloadFile?fileName=",
+		       "flashURL" : "resources/js/takephoto.swf",
+		       "defaultUserPhotoURL" : "resources/images/user_avatar.png",
+		       "dlgTitle" : "上传头像",
+		       "noNeedCrop": true,
+		       "fromPage" : "operation",
+		       "lnkUploadFileSelector" : "#upload_img_btn",
+		       "userPhotoSelector" : "#upload_img_btn"
+		};
+		ImageUploader.init(options);
 	}
 	
 	function initEvent() {
@@ -69,7 +90,7 @@
 			$('#content').loadAngular("<%=serverUrl%>care/out_hospital_record_detail?id=${id}&registId="+registId+"&"+$("#condition_form").serialize() );
 		});
 		$('#save_btn').click(function() {
-			
+			$("#encryptFileName").val($("#upload_img_btn").data("encryptFileName"));
 			sa.ajax({
 				type : "post",
 				url : "<%=serverUrl%>care/save_out_hospital_record",

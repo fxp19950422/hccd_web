@@ -35,8 +35,21 @@
 					</sa-panel>
 					<sa-panel title="主诉">
 							<pre style="background:white;border-width:0px;">${record.diagnose}</pre>
-						</div>
+					
 					</sa-panel>
+					<c:forEach items="${record.assetTypes}" var="assetType">
+						<sa-panel title="${assetType.assetTypeName}">
+							<c:forEach items="${assetType.assets}" var="asset">
+								<c:if test="${asset.storage_name eq 'oss'}">
+									<img class="starterAvator" style="width:80%;text-align:center" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${asset.id}"></img>
+								</c:if>
+								<c:if test="${asset.storage_name != 'oss'}">
+									<img class="starterAvator" style="width:80%;text-align:center" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+								</c:if>
+							</c:forEach>
+						</sa-panel>
+					
+				</c:forEach>
 				</div>
 		</form>
 	</div>

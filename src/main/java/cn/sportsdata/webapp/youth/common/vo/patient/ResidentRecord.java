@@ -32,6 +32,19 @@ public class ResidentRecord implements Serializable {
 	private Date patientBirthday;
 	
 	private String patientGender;
+	
+	private List<AssetTypeVO> assetTypes;
+
+	  
+
+	public List<AssetTypeVO> getAssetTypes() {
+		return assetTypes;
+	}
+
+	public void setAssetTypes(List<AssetTypeVO> assetTypes) {
+		this.assetTypes = assetTypes;
+	}
+	
 	public String getPatientGender() {
 		return patientGender;
 	}

@@ -122,7 +122,9 @@ public class FileController extends BaseController {
 				int cropWidth = Integer.parseInt(cropWidthStr);
 				String cropHeightStr = request.getParameter("cropHeight");
 				int cropHeight = Integer.parseInt(cropHeightStr);
-				return processCropAndSave(tempFilePath, cropStartX, cropStartY, cropWidth, cropHeight, request);
+				
+				String noNeedCrop = request.getParameter("noNeedCrop");
+				return processCropAndSave(tempFilePath, cropStartX, cropStartY, cropWidth, cropHeight, request, noNeedCrop);
 			}
 		}
 		
@@ -141,14 +143,17 @@ public class FileController extends BaseController {
 		return flag;
 	}
 	
-	public String processCropAndSave(String tempFilePath,int cropStartX, int cropStartY, int cropWidth, int cropHeight, HttpServletRequest request) throws SoccerProException {
+	public String processCropAndSave(String tempFilePath,int cropStartX, int cropStartY, int cropWidth, int cropHeight, HttpServletRequest request, String noNeedCrop) throws SoccerProException {
 		String originalFileName = SecurityUtils.decryptByAES(tempFilePath);
 			
 		BufferedImage originalImage = readImage(originalFileName);
-			
-		BufferedImage processedImage = cropMyImage(originalImage, cropStartX, cropStartY, cropWidth, cropHeight);
 		LoginVO loginVO = getCurrentUser(request);
 		OrgVO orgVO = getCurrentOrg(request);
+		if ("true".equals(noNeedCrop)){
+			return writeImage(originalImage, "jpg", loginVO, orgVO);
+		}
+		BufferedImage processedImage = cropMyImage(originalImage, cropStartX, cropStartY, cropWidth, cropHeight);
+		
 		
 		BufferedImage scaledImage = scaleMyImage(processedImage, 320);
 		return writeImage(scaledImage, "jpg", loginVO, orgVO);

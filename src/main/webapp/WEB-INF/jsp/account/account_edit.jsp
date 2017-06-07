@@ -326,6 +326,7 @@ function initPhotoUpload(){
 	       "downloadURL": "file/downloadFile?fileName=",
 	       "flashURL" : "resources/js/takephoto.swf",
 	       "defaultUserPhotoURL" : "resources/images/user_avatar.png",
+	       "noNeedCrop":false,
 	       "dlgTitle" : "上传头像",
 	       "lnkUploadFileSelector" : "#user_avatar",
 	       "userPhotoSelector" : "#user_avatar"

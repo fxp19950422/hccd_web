@@ -31,7 +31,21 @@
 							<div class="col-md-3 profileDetailItemContent"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" 
             value="${record.operatingDate}" /></div>
 						</div>
-						
+						<%-- <div class="row">
+							<div class="col-md-12 text-center" >
+								<c:choose>
+									<c:when test="${ !empty account.avatar }">
+										<img id="user_avatar" class="profileEditAvatar custom-image" src="<%=serverUrl%>file/downloadFile?fileName=${ account.avatar }"></img>
+									</c:when>
+									<c:otherwise>
+										<div style="position: relative; width: 100px; height: 90px;"> 
+											<img id="user_avatar" class="profileEditAvatar default-image" src="<%=serverUrl%>resources/images/user_avatar.png"></img>
+											<span id="uploadTip" style="position: absolute; bottom: 0; left: 27px; color:#999999;font-size: 12px;">上传头像</span> 
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</div> --%>
 					</sa-panel>
 					<div class="row">
 						<div class="col-md-4">
@@ -116,7 +130,7 @@
 
 <div id="form_print" style="display: none;">
 	<div style="align:center"><H2>安徽省中西医结合医院</H2></div>		
-			
+	<input type="hidden" name="avatar" id="encryptFileName" />	
 </div>
 
 
@@ -142,8 +156,9 @@ pre, code {
 	function initData() {
 		buildBreadcumb("手术信息");
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
+		
 	}
-	
+
 	function initEvent() {
 		var registId = '${registId}';
 		$('#cancle_btn').click(function(){

@@ -30,6 +30,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.utils.StringUtil;
+import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.FormCondition;
@@ -54,6 +56,7 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
+import cn.sportsdata.webapp.youth.service.asset.AssetService;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
@@ -67,6 +70,9 @@ public class CareController extends BaseController{
 	
 	@Autowired
 	ExchangeService exchangeService;
+	
+	@Autowired
+	AssetService assetservice;
 	
 	@Autowired
 	PatientService patientService;
@@ -506,7 +512,25 @@ public class CareController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/save_operation_record", method = RequestMethod.POST)
-	public Object saveOperationRecord(HttpServletRequest request, OpertaionRecord record,String id) {
+	public Object saveOperationRecord(HttpServletRequest request, OpertaionRecord record,String id, String avatar) {
+		LoginVO login = getCurrentUser(request);
+		
+	    String accountID = login.getId();
+	    String assetTypeId = "50";
+	    String stageTypeId = "50";
+	    String type = "operation";
+		 AssetVO vo = new AssetVO();
+	      
+        vo.setCreator_id(accountID);
+        vo.setOrg_id("");
+        vo.setDisplay_name("");
+        vo.setFile_extension("jpg");
+        vo.setSize(0);
+        vo.setPrivacy("protected");
+        vo.setStatus("active");
+        vo.setStorage_name(avatar);
+
+        
 		
 		OpertaionRecord dbRecord = patientService.getOperationRecordByIdWithoutAssset(id);
 		
@@ -525,7 +549,7 @@ public class CareController extends BaseController{
 		dbRecord.setDrainage(record.getDrainage());
 		dbRecord.setFinishedCondition(record.getFinishedCondition());
 		patientService.updateOperationRecord(dbRecord);
-		
+		assetservice.insertAsset(vo, login.getHospitalUserInfo().getHospitalId(), id, type, assetTypeId, stageTypeId);
 		return record;
 	}
 	
@@ -744,12 +768,29 @@ public class CareController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/save_out_hospital_record", method = RequestMethod.POST)
-	public Object saveOutHospitalRecord(HttpServletRequest request, ResidentRecord record,String id) {
+	public Object saveOutHospitalRecord(HttpServletRequest request, ResidentRecord record,String id, String avatar) {
+		LoginVO login = getCurrentUser(request);
+		
+	    String accountID = login.getId();
+	    String assetTypeId = "50";
+	    String stageTypeId = "51";
+	    String type = "resident";
+		 AssetVO vo = new AssetVO();
+	      
+        vo.setCreator_id(accountID);
+        vo.setOrg_id("");
+        vo.setDisplay_name("");
+        vo.setFile_extension("jpg");
+        vo.setSize(0);
+        vo.setPrivacy("protected");
+        vo.setStatus("active");
+        vo.setStorage_name(avatar);
+		
 		
 		ResidentRecord dbRecord = patientService.getResidentRecordById(id);
 		dbRecord.setDiagnose(record.getDiagnose());
 		patientService.updateResidentRecord(dbRecord);
-		
+		assetservice.insertAsset(vo, login.getHospitalUserInfo().getHospitalId(), id, type, assetTypeId, stageTypeId);
 		return record;
 	}
 	
