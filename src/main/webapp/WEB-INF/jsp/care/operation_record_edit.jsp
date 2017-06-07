@@ -14,7 +14,7 @@
 	<div class="coach_edit_button_area">
 		<button id="save_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">保存</button>
-		<button id="upload_img_btn" class="btn btn-default" style="float: right;">上传用户基本信息截屏</button>
+		<button id="upload_img_btn" class="btn btn-default" style="float: right;margin-left: 10px;">图片上传</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">取消</button>
 	</div>
 	<div class="clearfix"></div>
