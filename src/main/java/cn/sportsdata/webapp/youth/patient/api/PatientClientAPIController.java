@@ -1,10 +1,6 @@
-package cn.sportsdata.webapp.youth.web.controller.api;
+package cn.sportsdata.webapp.youth.patient.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,24 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientMedicalRecordBO;
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientOperationRecordBO;
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBriefBO;
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordDetailBO;
-import cn.sportsdata.webapp.youth.common.bo.hospital.PatientResidentRecordBO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
-import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.HospitalRecordTypeVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
-import cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientClientService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;

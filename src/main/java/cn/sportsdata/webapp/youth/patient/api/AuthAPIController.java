@@ -1,4 +1,4 @@
-package cn.sportsdata.webapp.youth.web.controller.api;
+package cn.sportsdata.webapp.youth.patient.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +11,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +21,12 @@ import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
-import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
-import cn.sportsdata.webapp.youth.web.api.vo.ApiToken;
 
 @RestController
-@RequestMapping("/api/v1/")
-public class TokenAPIController {
+@RequestMapping("/api/v1/patient")
+public class AuthAPIController {
 
 	@Autowired
 	private AccountService loginService;
@@ -41,11 +36,12 @@ public class TokenAPIController {
 
 	private final String HEADER_TOKEN = "X-Auth-Token";
 
-	@RequestMapping(value = "/token", method = RequestMethod.POST)
-	public ResponseEntity<Response> token(HttpServletRequest request, HttpServletResponse resp, String username,
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseEntity<Response> patientToken(HttpServletRequest request, HttpServletResponse resp, String username,
 			String password) {
 
-		AccountVO account = loginService.getAccountByUserName(username);
+		AccountVO account = loginService.getPatientAccount(username);
+
 		if (account == null) {
 			return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
 		}
@@ -63,14 +59,10 @@ public class TokenAPIController {
 				json.put("birthday", loginVO.getBirthday());
 
 				String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
-				ApiToken token = new ApiToken();
-				token.setToken(tokeninfo);
-				
-				Map<String, Object> result = new HashMap<String, Object>();
-				result.put("token", token);
-				result.put("doctorInfo", patientService.getDoctorInfoByUsername(loginVO.getUserName()));
-				result.put("version", patientService.getDoctorAppVersion());
-				return new ResponseEntity<Response>(Response.toSussess(result), HttpStatus.OK);
+				Map<String, Object> loginInfo = new HashMap<String, Object>();
+				loginInfo.put("token", tokeninfo);
+				loginInfo.put("user", loginVO);
+				return new ResponseEntity<Response>(Response.toSussess(loginInfo), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"),
 						HttpStatus.OK);
@@ -78,5 +70,24 @@ public class TokenAPIController {
 		} else {
 			return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
 		}
+	}
+
+	@RequestMapping(value = "/verifyToken", method = RequestMethod.GET)
+	public ResponseEntity<Response> patientValidateToken(HttpServletRequest request, HttpServletResponse resp) {
+		String token = request.getHeader(HEADER_TOKEN);
+		JsonNode node = SecurityUtils.vefifyAuthToken_ts(token);
+		LoginVO login = new LoginVO();
+		login.setAvatar(node.get("avatar") == null ? "" : node.get("avatar").asText());
+		login.setAvatar_id(node.get("avatar_id") == null ? "" : node.get("avatar_id").asText());
+		login.setEmail(node.get("email") == null ? "" : node.get("email").asText());
+		login.setId(node.get("userid") == null ? "" : node.get("userid").asText());
+		login.setName(node.get("name") == null ? "" : node.get("name").asText());
+		login.setUserName(node.get("username") == null ? "" : node.get("username").asText());
+		login.setBirthday(node.get("birthday") == null ? "" : node.get("birthday").asText());
+
+		Map<String, Object> loginInfo = new HashMap<String, Object>();
+		loginInfo.put("token", token);
+		loginInfo.put("user", login);
+		return new ResponseEntity<Response>(Response.toSussess(loginInfo), HttpStatus.OK);
 	}
 }
