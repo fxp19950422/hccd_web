@@ -99,10 +99,10 @@
 					<c:forEach items="${record.assetTypes}" var="assetType">
 						<sa-panel title="${assetType.assetTypeName}">
 							<c:forEach items="${assetType.assets}" var="asset">
-								<c:if test="${asset.storage_name === "oss"}">
+								<c:if test="${asset.storage_name eq 'oss'}">
 									<img class="starterAvator" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${asset.id}"></img>
 								</c:if>
-								<c:if test="${asset.storage_name != "oss"}">
+								<c:if test="${asset.storage_name != 'oss'}">
 									<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
 								</c:if>
 							</c:forEach>
