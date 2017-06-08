@@ -179,18 +179,18 @@ public class ExchangeController extends BaseController {
 			}
 		}
 
-		List<PatientInHospital> operationRecordList = null;
+		List<PatientInHospital> operationRecordList = new ArrayList<PatientInHospital>();
 		if (operationList.size() > 0) {
 			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, doctorId);
 		}
 
-		List<PatientInHospital> patientInHospitalRecordList = null;
+		List<PatientInHospital> patientInHospitalRecordList = new ArrayList<PatientInHospital>();
 		if (patientInHospitalList.size() > 0) {
 			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList,
 					doctorId);
 		}
 
-		List<ResidentRecord> residentRecordList = null;
+		List<ResidentRecord> residentRecordList = new ArrayList<ResidentRecord>();
 		if (residentList.size() > 0) {
 			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, doctorId);
 		}
