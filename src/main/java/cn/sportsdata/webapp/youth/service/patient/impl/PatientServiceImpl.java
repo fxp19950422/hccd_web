@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
-import cn.sportsdata.webapp.youth.common.utils.ConfigProps;
+import cn.sportsdata.webapp.youth.common.utils.StringUtil;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
@@ -703,6 +705,9 @@ public class PatientServiceImpl implements PatientService {
         for (File file : result) {
         	listSubFiles(file, docList);
         }
+        
+        Collections.sort(docList, new docNameComparator());
+        
         return docList;
 	}
 	
@@ -796,5 +801,50 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<OrdersVO> getPatientOrders(List<String> patientIdList) {
 		return patientDAO.getPatientOrders(patientIdList);
+	}
+
+	class docNameComparator implements Comparator<PatientDocumentVO> {
+
+		@Override
+		public int compare(PatientDocumentVO o1, PatientDocumentVO o2) {
+			if (!StringUtil.isEmpty(o1.getFileName()) && o1.getFileName().contains("出院记录")) {
+				return -1;
+			} else if (!StringUtil.isEmpty(o2.getFileName()) && o2.getFileName().contains("出院记录")) {
+				return 1;
+			} else if (!StringUtil.isEmpty(o2.getFileName()) && o2.getFileName().contains("手术记录")) {
+				return 1;
+			} else if (!StringUtil.isEmpty(o1.getFileName()) && o1.getFileName().contains("手术记录")) {
+				return -1;
+			} else {
+				if (!StringUtil.isEmpty(o1.getFileName()) && !StringUtil.isEmpty(o2.getFileName())
+						&& withNumber(o1.getFileName()) && withNumber(o2.getFileName())) {
+					return getNumber(o1.getFileName()) - getNumber(o2.getFileName()) > 0 ? 1 : -1;
+				}
+			}
+			return 0;
+		}
+
+		private boolean withNumber(String name) {
+			String str = name.replace(".jpg", "");
+			if (str.contains("-")) {
+				String[] arr = str.split("-");
+				String last = arr[arr.length - 1];
+				for (int i = 0; i < last.length(); i++) {
+					if (!Character.isDigit(last.charAt(i))) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+
+		private int getNumber(String name) {
+			String str = name.replace(".jpg", "");
+			String[] arr = str.split("-");
+			String last = arr[arr.length - 1];
+			return Integer.parseInt(last);
+		}
+
 	}
 }
