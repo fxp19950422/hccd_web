@@ -226,8 +226,8 @@
     	concat(S2.name,F.name) as assetTypeName FROM medical.patient_in_hospital A left outer join doctor H on (A.doctor_id = H.user_id) 
     	left outer join patient C on (A.patient_id = C.patient_number) 
     	left outer join hospital_record_asset I on (A.id = I.hospital_record_id and I.record_type='patientInhospital' and I.status='active') 
-    	left outer join record_asset_type J on (I.record_asset_type_id = J.id), 
-    	left outer join record_stage_in_hospital S1 on (I.asset_stage_type_id = S1.id)
+    	left outer join record_asset_type J on (I.record_asset_type_id = J.id)
+    	left outer join record_stage_in_hospital S1 on (I.asset_stage_type_id = S1.id),
     	operation B 
     	left outer join doctor G on (B.doctor_id = G.user_id) 
     	left outer join hospital_record_asset E on (B.id = E.hospital_record_id and E.record_type='operation' and E.status='active') 
