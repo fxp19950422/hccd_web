@@ -841,6 +841,7 @@ public class CareController extends BaseController{
 		
 		PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
 		
+//		List<PatientDocumentVO> docList = patientService.getHistoryDocumentByPatientName("尹飞虎");
 		List<PatientDocumentVO> docList = patientService.getHistoryDocumentByPatientName(registRecord.getName());
 		
 		List<PatientRecordBO> list = patientService.getPatientRecords(registId, registRecord.getName(),
