@@ -8,6 +8,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -435,24 +439,47 @@ public class ExchangeController extends BaseController {
 			}
 		}
 	}
+	
+	static private String OSS_URL = "http://hospital-image.oss-cn-shanghai.aliyuncs.com/";
+	private InputStream loadPicFromOSS(String fileName) throws IOException {
+		URL url = new URL(OSS_URL + fileName);    
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
+		        //设置超时间为3秒  
+		conn.setConnectTimeout(3*1000);  
+		//防止屏蔽程序抓取而返回403错误  
+		conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");  
+		  
+		//得到输入流  
+		InputStream inputStream = conn.getInputStream();    
+
+		return inputStream;
+	}
 
 	private void operationPic(HSLFSlideShow ppt, AssetVO asset, String typeName) throws Exception {
 		HSLFSlide slide = ppt.createSlide();
 		HSLFTextBox title = slide.addTitle();
 		title.setText(typeName);
 
-		AssetVO assetv = assetservice.getAssetByID(asset.getId());
-		String encryptedFileName = assetv.getStorage_name();
-		String filePath = SecurityUtils.decryptByAES(encryptedFileName);
-		File picture = new File(filePath);
+		BufferedImage sourceImg = null;
+		HSLFPictureData pd = null;
+		if (asset.getStorage_name().equalsIgnoreCase("oss")) {
+			InputStream inputStream = loadPicFromOSS(asset.getId());
+			sourceImg = ImageIO.read(inputStream);
+			pd = ppt.addPicture(inputStream, PictureData.PictureType.JPEG);
+		} else {
+			AssetVO assetv = assetservice.getAssetByID(asset.getId());
+			String encryptedFileName = assetv.getStorage_name();
+			String filePath = SecurityUtils.decryptByAES(encryptedFileName);
+			File picture = new File(filePath);
 
-		if (!picture.exists()) {
-			logger.error("Asset ID: " + assetv.getId() + " of related file path is not found");
-			return;
+			if (!picture.exists()) {
+				logger.error("Asset ID: " + assetv.getId() + " of related file path is not found");
+				return;
+			}
+			sourceImg = ImageIO.read(new FileInputStream(picture));
+			pd = ppt.addPicture(picture, PictureData.PictureType.JPEG);
 		}
-		BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
-		HSLFPictureData pd = ppt.addPicture(picture, PictureData.PictureType.JPEG);
-
+		
 		HSLFPictureShape pictNew = new HSLFPictureShape(pd);
 
 		// 设置图片在幻灯片中的位置
