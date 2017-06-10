@@ -52,9 +52,10 @@ public class PatientAccountServiceImpl implements PatientAccountService {
 	public boolean updatePatientAccount(RegistVO registVO) {
 		UserVO userVO = new UserVO();
 		userVO.setId(registVO.getId());
-		userVO.setDisplayName(registVO.getDisplayName());
+		userVO.setUserName(registVO.getUserName());
+		userVO.setName(registVO.getDisplayName());
 		userVO.setGender(registVO.getGender());
-		userVO.setAvatarId(registVO.getAvatarId());
+		userVO.setAvatar(registVO.getAvatarId());
 		boolean isSuccess = userDao.handleUser(userVO, null, false);
 		return isSuccess;
 	}

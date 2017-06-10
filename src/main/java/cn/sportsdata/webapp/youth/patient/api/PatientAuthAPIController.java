@@ -62,8 +62,30 @@ public class PatientAuthAPIController {
 		} 
 		
 		String userId = accountService.createPatientAccount(mobile, password);
+		if (!StringUtils.isEmpty(userId)) {
+			// assemble login informations
+			LoginVO loginVO = new LoginVO();
+			loginVO.setId(userId);
+			loginVO.setMobile(mobile);
+			JSONObject json = new JSONObject();
+			json.put("userid", loginVO.getId());
+			json.put("username", loginVO.getUserName());
+			json.put("email", loginVO.getEmail());
+			json.put("name", loginVO.getName());
+			json.put("avatar", loginVO.getAvatar());
+			json.put("mobile", loginVO.getMobile());
+			json.put("avatar_id", loginVO.getAvatar_id());
+			json.put("birthday", loginVO.getBirthday());
+
+			String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
+			Map<String, Object> loginInfo = new HashMap<String, Object>();
+			loginInfo.put("token", tokeninfo);
+			loginInfo.put("user", loginVO);
+			return new ResponseEntity<Response>(Response.toSussess(loginInfo), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Response>(Response.toFailure(1003, "create user failed"), HttpStatus.OK);
+		}
 		
-		return new ResponseEntity<Response>(Response.toSussess(userId), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
@@ -114,6 +136,7 @@ public class PatientAuthAPIController {
 				json.put("email", loginVO.getEmail());
 				json.put("name", loginVO.getName());
 				json.put("avatar", loginVO.getAvatar());
+				json.put("mobile", loginVO.getMobile());
 				json.put("avatar_id", loginVO.getAvatar_id());
 				json.put("birthday", loginVO.getBirthday());
 
