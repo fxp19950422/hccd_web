@@ -40,4 +40,8 @@ public interface AccountDao{
 	HospitalUserInfo getHospitalUserInfoByUserId(String id);
 
 	int getMappedPaitentCount(String userId);
+
+	AccountVO getPatientAccountByMobilePhone(String mobile);
+
+	AccountVO getPatientAccountByUserName(String username);
 }

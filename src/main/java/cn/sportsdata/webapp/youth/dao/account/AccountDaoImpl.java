@@ -56,6 +56,10 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	private static final String SELECT_MAPPED_PATIENT_COUNT = "getMappedPatientCount";
 	
 	private static final String getHospitalUserInfoByUserId = "getHospitalUserInfoByUserId";
+	
+	private static final String SELECT_PATIENT_ACCOUNT_BY_USER_NAME = "getPatientAccountByUserName";
+	
+	private static final String SELECT_PATIENT_ACCOUNT_BY_MOBILE_PHONE = "getPatientAccountByMobilePhone";
 
 	@Override
 	public List<AccountVO> getAccounts(String orgID) {
@@ -145,6 +149,16 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	@Override
 	public int getMappedPaitentCount(String userId) {
 		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_MAPPED_PATIENT_COUNT), userId);
+	}
+
+	@Override
+	public AccountVO getPatientAccountByMobilePhone(String mobile) {
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_PATIENT_ACCOUNT_BY_MOBILE_PHONE), mobile);
+	}
+
+	@Override
+	public AccountVO getPatientAccountByUserName(String username) {
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_PATIENT_ACCOUNT_BY_USER_NAME), username);
 	}
 
 }
