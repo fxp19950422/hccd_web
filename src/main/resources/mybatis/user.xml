@@ -81,8 +81,8 @@
         <selectKey keyProperty="id" resultType="String" order="BEFORE">  
             select UUID() from dual  
         </selectKey>
-    	insert into user(id, user_name, password, display_name, phone, mobile, birthday, email, address, avatar, id_card, created_time) 
-    	values(#{id},  #{userName}, #{password}, #{name}, #{phone}, #{mobile}, #{birthday}, #{email}, #{address}, #{avatar}, #{idCard},  now())
+    	insert into user(id, user_name, display_name, gender, password, display_name, phone, mobile, birthday, email, address, avatar, id_card, created_time) 
+    	values(#{id},  #{userName}, #{displayName}, #{gender}, #{password}, #{name}, #{phone}, #{mobile}, #{birthday}, #{email}, #{address}, #{avatar}, #{idCard},  now())
     </insert>
     
     <insert id="insertUserExtData" parameterType="java.util.Map">

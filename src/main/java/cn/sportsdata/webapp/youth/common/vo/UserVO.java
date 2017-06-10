@@ -35,6 +35,7 @@ public class UserVO extends BaseVO implements Serializable {
 	
 
 	private String userName;
+	private String displayName;
 	
 	private String password;
 	
@@ -322,5 +323,13 @@ public class UserVO extends BaseVO implements Serializable {
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 }

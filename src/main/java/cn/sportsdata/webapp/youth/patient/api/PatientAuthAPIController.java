@@ -65,6 +65,24 @@ public class PatientAuthAPIController {
 		
 		return new ResponseEntity<Response>(Response.toSussess(userId), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
+	public ResponseEntity<Response> updateAccount(HttpServletRequest request, HttpServletResponse resp, @RequestBody RegistVO registVO) {
+		
+		// id is the user id of previous regist step
+		if (StringUtils.isEmpty(registVO.getId())) {
+			return new ResponseEntity<Response>(Response.toFailure(1003, "userId not exists"), HttpStatus.OK);
+		}
+		
+		AccountVO account = accountService.getPatientAccountByUserId(registVO.getId());
+		if (account == null) {
+			return new ResponseEntity<Response>(Response.toFailure(1002, "accout not exists"), HttpStatus.OK);
+		} 
+		
+		boolean isSuccess = accountService.updatePatientAccount(registVO);
+		
+		return new ResponseEntity<Response>(Response.toSussess(isSuccess), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<Response> patientToken(HttpServletRequest request, HttpServletResponse resp, @RequestBody LoginVO login) {

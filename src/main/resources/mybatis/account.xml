@@ -59,6 +59,10 @@
   	<select id="getPatientAccountByUserName" resultMap="AccountResultMap" parameterType="java.lang.String">
   		select A.* from user A, user_role_mapping M where A.id=M.user_id and A.user_name=#{username} and M.role_id=6 and A.status='active'
   	</select>
+  	
+  	<select id="getPatientAccountByUserId" resultMap="AccountResultMap" parameterType="java.lang.String">
+  		select A.* from user A, user_role_mapping M where A.id=M.user_id and A.id=#{userId} and M.role_id=6 and A.status='active'
+  	</select>
     
      <select id="getAccountByUsername" resultMap="AccountResultMap" parameterType="java.lang.String">
         select A.*

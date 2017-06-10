@@ -1,6 +1,7 @@
 package cn.sportsdata.webapp.youth.patient.service;
 
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
+import cn.sportsdata.webapp.youth.common.vo.regist.RegistVO;
 
 public interface PatientAccountService {
 
@@ -9,5 +10,9 @@ public interface PatientAccountService {
 	AccountVO getPatientAccountByUserName(String username);
 
 	String createPatientAccount(String phoneNum, String password);
+
+	AccountVO getPatientAccountByUserId(String id);
+
+	boolean updatePatientAccount(RegistVO registVO);
 	
 }

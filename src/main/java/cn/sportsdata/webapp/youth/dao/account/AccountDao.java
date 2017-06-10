@@ -45,9 +45,9 @@ public interface AccountDao{
 	AccountVO getPatientAccountByMobilePhone(String mobile);
 
 	AccountVO getPatientAccountByUserName(String username);
+	
+	AccountVO getPatientAccountByUserId(String userId);
 
 	int createPatientAccountRoleMapping(String userId, Long roleId);
-
-	String createUser(UserVO userVO);
 	
 }

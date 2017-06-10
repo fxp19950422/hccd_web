@@ -62,7 +62,7 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	
 	private static final String SELECT_PATIENT_ACCOUNT_BY_MOBILE_PHONE = "getPatientAccountByMobilePhone";
 	
-	private static final String CREATE_USER = "createUser";
+	private static final String SELECT_PATIENT_ACCOUNT_BY_USER_ID = "getPatientAccountByUserId";
 	
 	private static final String CREATE_PATIENT_ACCOUNT_ROLE_MAPPING = "insertPatientAccountRoleMapping";
 
@@ -173,9 +173,8 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	}
 
 	@Override
-	public String createUser(UserVO userVO) {
-		int ret = sqlSessionTemplate.insert(getSqlNameSpace(CREATE_USER), userVO);
-		return userVO.getId();
+	public AccountVO getPatientAccountByUserId(String userId) {
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_PATIENT_ACCOUNT_BY_USER_ID), userId);
 	}
 
 }

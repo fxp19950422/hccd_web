@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
+import cn.sportsdata.webapp.youth.common.vo.regist.RegistVO;
 import cn.sportsdata.webapp.youth.dao.account.AccountDao;
 import cn.sportsdata.webapp.youth.dao.user.UserDAO;
 import cn.sportsdata.webapp.youth.patient.service.PatientAccountService;
@@ -40,6 +41,22 @@ public class PatientAccountServiceImpl implements PatientAccountService {
 			accountDao.createPatientAccountRoleMapping(userId, 6L);
 		}
 		return userId;
+	}
+
+	@Override
+	public AccountVO getPatientAccountByUserId(String id) {
+		return accountDao.getPatientAccountByUserId(id);
+	}
+
+	@Override
+	public boolean updatePatientAccount(RegistVO registVO) {
+		UserVO userVO = new UserVO();
+		userVO.setId(registVO.getId());
+		userVO.setDisplayName(registVO.getDisplayName());
+		userVO.setGender(registVO.getGender());
+		userVO.setAvatarId(registVO.getAvatarId());
+		boolean isSuccess = userDao.handleUser(userVO, null, false);
+		return isSuccess;
 	}
 
 }
