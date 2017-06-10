@@ -81,8 +81,8 @@
         <selectKey keyProperty="id" resultType="String" order="BEFORE">  
             select UUID() from dual  
         </selectKey>
-    	insert into user(id, user_name, display_name, gender, password, display_name, phone, mobile, birthday, email, address, avatar, id_card, created_time) 
-    	values(#{id},  #{userName}, #{displayName}, #{gender}, #{password}, #{name}, #{phone}, #{mobile}, #{birthday}, #{email}, #{address}, #{avatar}, #{idCard},  now())
+    	insert into user(id, user_name, password, display_name, phone, mobile, birthday, email, address, avatar, id_card, created_time) 
+    	values(#{id},  #{userName}, #{password}, #{name}, #{phone}, #{mobile}, #{birthday}, #{email}, #{address}, #{avatar}, #{idCard},  now())
     </insert>
     
     <insert id="insertUserExtData" parameterType="java.util.Map">
@@ -93,8 +93,8 @@
     </insert>
     
     <update id="updateUserBasicData" parameterType="cn.sportsdata.webapp.youth.common.vo.UserVO">
-        update user set display_name=#{name}, phone=#{phone}, birthday=#{birthday}, email=#{email}, address=#{address}, avatar=#{avatar}, 
-        user_name=#{userName}, password=#{password}, id_card=#{idCard}
+        update user set display_name=#{name}, gender=#{gender}, phone=#{phone}, birthday=#{birthday}, email=#{email}, address=#{address}, 
+        	avatar=#{avatar}, avatarId=#{avatarId}, user_name=#{userName}, password=#{password}, id_card=#{idCard}
         where id = #{id}
     </update>
     
