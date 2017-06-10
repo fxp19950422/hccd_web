@@ -34,6 +34,8 @@ public class AccountVO extends BaseVO implements Serializable, UserDetails {
 	private String email;
 	private String avatar;
 	private String avatarId;
+	private String mobile;
+	
 	public String getAvatarId() {
 		return avatarId;
 	}
@@ -164,6 +166,14 @@ public class AccountVO extends BaseVO implements Serializable, UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 }

@@ -79,6 +79,10 @@
 		)
     </insert>
     
+    <insert id="insertPatientAccountRoleMapping" parameterType="java.util.Map">
+    	insert into user_role_mapping(user_id, hospital_id, role_id, created_time) values (#{userId}, '0', #{roleId}, now())
+    </insert>
+    
     <update id="updateAccount" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">
     	update user set email = #{email}, birthday=#{birthday}, display_name=#{name}, avatar=#{avatar}, last_update=now()
     	<if test="password != null and password != '' ">

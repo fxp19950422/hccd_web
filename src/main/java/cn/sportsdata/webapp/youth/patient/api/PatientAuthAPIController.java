@@ -11,8 +11,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,12 +24,13 @@ import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
+import cn.sportsdata.webapp.youth.common.vo.regist.RegistVO;
 import cn.sportsdata.webapp.youth.patient.service.PatientAccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 
 @RestController
 @RequestMapping("/api/v1/patient")
-public class AuthAPIController {
+public class PatientAuthAPIController {
 
 	@Autowired
 	private PatientAccountService accountService;
@@ -38,59 +41,36 @@ public class AuthAPIController {
 	private final String HEADER_TOKEN = "X-Auth-Token";
 	
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
-	public ResponseEntity<Response> regist(HttpServletRequest request, HttpServletResponse resp, String phoneNum,
-			String password, String veriCode) {
+	public ResponseEntity<Response> regist(HttpServletRequest request, HttpServletResponse resp, @RequestBody RegistVO registVO) {
 
+		String mobile = registVO.getMobile();
+		String password = registVO.getPassword();
+		String verifyCode = registVO.getVerifyCode();
+		if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password) || StringUtils.isEmpty(verifyCode)) {
+			return new ResponseEntity<Response>(Response.toFailure(1003, "parameters required"), HttpStatus.OK);
+		}
+		
 		//TODO verify vericode first
 		boolean codeValid = true;
 		if (!codeValid) {
 			return new ResponseEntity<Response>(Response.toFailure(1001, "verify code error"), HttpStatus.OK);
 		}
 		
-		AccountVO account = accountService.getPatientAccountByMobilePhone(phoneNum);
+		AccountVO account = accountService.getPatientAccountByMobile(mobile);
 		if (account != null) {
 			return new ResponseEntity<Response>(Response.toFailure(1002, "phone number already exists"), HttpStatus.OK);
-		}
+		} 
 		
-		return null;
+		String userId = accountService.createPatientAccount(mobile, password);
 		
-		
-//		AccountVO account = accountService.getPatientAccount(username);
-//
-//		if (account == null) {
-//			return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
-//		}
-//		LoginVO loginVO = new LoginVO(account);
-//		if (loginVO != null && !StringUtils.isEmpty(password)) {
-//
-//			if (SecurityUtils.verifyPassword(password, loginVO.getPassword())) {
-//				JSONObject json = new JSONObject();
-//				json.put("userid", loginVO.getId());
-//				json.put("username", loginVO.getUserName());
-//				json.put("email", loginVO.getEmail());
-//				json.put("name", loginVO.getName());
-//				json.put("avatar", loginVO.getAvatar());
-//				json.put("avatar_id", loginVO.getAvatar_id());
-//				json.put("birthday", loginVO.getBirthday());
-//
-//				String tokeninfo = SecurityUtils.generateAuthToken_ts(json.toString());
-//				Map<String, Object> loginInfo = new HashMap<String, Object>();
-//				loginInfo.put("token", tokeninfo);
-//				loginInfo.put("user", loginVO);
-//				return new ResponseEntity<Response>(Response.toSussess(loginInfo), HttpStatus.OK);
-//			} else {
-//				return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"),
-//						HttpStatus.OK);
-//			}
-//		} else {
-//			return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"), HttpStatus.OK);
-//		}
+		return new ResponseEntity<Response>(Response.toSussess(userId), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<Response> patientToken(HttpServletRequest request, HttpServletResponse resp, String username,
-			String password) {
-
+	public ResponseEntity<Response> patientToken(HttpServletRequest request, HttpServletResponse resp, @RequestBody LoginVO login) {
+		
+		String username = login.getUsername();
+		String password = login.getPassword();
 		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
 			return new ResponseEntity<Response>(Response.toFailure(-1, "invalid username or password"),
 					HttpStatus.OK);
@@ -98,7 +78,7 @@ public class AuthAPIController {
 		
 		AccountVO account = null;
 		if (CommonUtils.isMobileFormat(username)) {
-			account = accountService.getPatientAccountByMobilePhone(username);
+			account = accountService.getPatientAccountByMobile(username);
 		} else {
 			account = accountService.getPatientAccountByUserName(username);
 		}
