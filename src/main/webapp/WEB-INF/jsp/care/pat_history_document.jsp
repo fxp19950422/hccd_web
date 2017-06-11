@@ -28,54 +28,63 @@
 <script src="<%=serverUrl%>resources/js/jquery-1.11.1.min.js"
 	type="text/javascript"></script>
 </head>
+
+<style>
+.scrollable {
+    overflow-y: auto  !important;
+    overflow-x: hidden !important;
+    padding-top:0px;
+    height: 680px;
+}
+</style>
 <body>
 	<div class="reveal">
 		<!-- Wrap all slides in a single "slides" class -->
 		<div class="slides">
 			<!-- Each section element contains an individual slide -->
-			<c:if test="${medicalrecords != null&& fn:length(medicalrecords)>0}">
-				<section>
-					<H1>门诊记录</H1>
-				</section>
-				<c:forEach items="${medicalrecords}" var="record">
-					<section>
-						<table>
-							<tbody>
-								<tr>
-									<td>主诉</td>
-									<td>${record.illnessDesc}</td>
-								</tr>
-								<tr>
-									<td>病史</td>
-									<td>${record.medHistory}</td>
-								</tr>
-								<tr>
-									<td>专科查体</td>
-									<td>${record.bodyExam}</td>
-								</tr>
-								<tr>
-									<td>辅助检查</td>
-									<td>${record.accExam}</td>
-								</tr>
-								<tr>
-									<td>诊断</td>
-									<td>${record.diagDesc}</td>
-								</tr>
-								<tr>
-									<td>建议</td>
-									<td>${record.suggestion}</td>
-								</tr>
-							</tbody>
-						</table>
-					</section>
+<%-- 			<c:if test="${medicalrecords != null&& fn:length(medicalrecords)>0}"> --%>
+<!-- 				<section> -->
+<!-- 					<H1>门诊记录</H1> -->
+<!-- 				</section> -->
+<%-- 				<c:forEach items="${medicalrecords}" var="record"> --%>
+<!-- 					<section> -->
+<!-- 						<table> -->
+<!-- 							<tbody> -->
+<!-- 								<tr> -->
+<!-- 									<td>主诉</td> -->
+<%-- 									<td>${record.illnessDesc}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>病史</td> -->
+<%-- 									<td>${record.medHistory}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>专科查体</td> -->
+<%-- 									<td>${record.bodyExam}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>辅助检查</td> -->
+<%-- 									<td>${record.accExam}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>诊断</td> -->
+<%-- 									<td>${record.diagDesc}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>建议</td> -->
+<%-- 									<td>${record.suggestion}</td> --%>
+<!-- 								</tr> -->
+<!-- 							</tbody> -->
+<!-- 						</table> -->
+<!-- 					</section> -->
 
 
-				</c:forEach>
-			</c:if>
+<%-- 				</c:forEach> --%>
+<%-- 			</c:if> --%>
 			<c:if
 				test="${residentrecords != null&& fn:length(residentrecords)>0}">
 				<section>
-					<H1>出院记录</H1>
+					<H1>住院病历资料</H1>
 				</section>
 
 				<c:forEach items="${residentrecords}" var="record">
@@ -174,9 +183,9 @@
 				</c:forEach>
 			</c:if>
 			<c:forEach items="${docList}" var="doc">
-				<section>
-					<H6>${doc.dirName}/${doc.fileName}</H6>
-					<img class="docImg"
+				<section class="scrollable">
+					<H6>  </H6>
+					<img class="docImg" 
 						src="<%=serverUrl%>file/downloadFile?fileName=${doc.filePath}"></img>
 				</section>
 			</c:forEach>
@@ -205,7 +214,7 @@
 			autoSlide : 5000,
 			mouseWheel : true,
 			loop : true,
-
+// 			touch:false,
 			dependencies : [
 
 			// TOC-Progress plugin
@@ -219,9 +228,9 @@
 			} ]
 		});
 
-		var he = document.body.clientHeight - 150;
-		console.log(he);
-		$(".docImg").css("height", he);
+// 		var he = document.body.clientHeight - 150;
+// 		console.log(he);
+// 		$(".docImg").css("height", he);
 
 		/*  $('.flexslider').flexslider({
 			    animation: "slide",

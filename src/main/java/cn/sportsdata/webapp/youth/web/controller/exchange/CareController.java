@@ -858,7 +858,8 @@ public class CareController extends BaseController{
 		}
 		List<PatientDocumentVO> docs = new ArrayList<>();
 		for(PatientDocumentVO doc :docList){
-			if(!StringUtil.isBlank(doc.getFileName())&&doc.getFileName().endsWith("jpg")){
+			if(!StringUtil.isBlank(doc.getFileName())&&doc.getFileName().endsWith("jpg")
+					|| !StringUtil.isBlank(doc.getFileName())&&doc.getFileName().endsWith("JPG")){
 				docs.add(doc);
 			}
 		}

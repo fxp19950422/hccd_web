@@ -717,10 +717,15 @@ public class PatientServiceImpl implements PatientService {
     	docList.add(folderVO);
 		
 		File[] subFolders = folder.listFiles();
+		File accFolder = null;
 		for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
 			
 			if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
-				listSubFiles(subFolders[i], docList);
+				if(subFolders[i].getName().equals("检查结果")){
+					accFolder = subFolders[i];
+				} else {
+					listSubFiles(subFolders[i], docList);
+				}
 			} else {
 				PatientDocumentVO document = new PatientDocumentVO();
 				document.setDirName(new File(subFolders[i].getParent()).getName());
@@ -729,6 +734,21 @@ public class PatientServiceImpl implements PatientService {
 				docList.add(document);
 			}	
 		}
+		if (accFolder != null) {
+			File[] fileInAcc = accFolder.listFiles();
+			if (fileInAcc != null) {
+				for (int i = 0; i < fileInAcc.length; i++) {
+					if (fileInAcc[i] != null) {
+						PatientDocumentVO document = new PatientDocumentVO();
+						document.setDirName(new File(fileInAcc[i].getParent()).getName());
+						document.setFileName(fileInAcc[i].getName());
+						document.setFilePath(fileInAcc[i].getAbsolutePath());
+						docList.add(document);
+					}
+				}
+			}
+		}
+		
     }
 	
     static int countFiles = 0;// 声明统计文件个数的变量
@@ -815,17 +835,21 @@ public class PatientServiceImpl implements PatientService {
 				return 1;
 			} else if (!StringUtil.isEmpty(o1.getFileName()) && o1.getFileName().contains("手术记录")) {
 				return -1;
-			} else {
-				if (!StringUtil.isEmpty(o1.getFileName()) && !StringUtil.isEmpty(o2.getFileName())
+			} else if (!StringUtil.isEmpty(o1.getFileName()) && !StringUtil.isEmpty(o2.getFileName()) 
 						&& withNumber(o1.getFileName()) && withNumber(o2.getFileName())) {
 					return getNumber(o1.getFileName()) - getNumber(o2.getFileName()) > 0 ? 1 : -1;
-				}
+			} else {
+				return 1;
 			}
-			return 0;
 		}
 
 		private boolean withNumber(String name) {
-			String str = name.replace(".jpg", "");
+			String str = "";
+			if(name.endsWith(".jpg")){
+				str = name.replace(".jpg", "");
+			} else if(name.endsWith(".JPG")){
+				str = name.replace(".JPG", "");
+			}
 			if (str.contains("-")) {
 				String[] arr = str.split("-");
 				String last = arr[arr.length - 1];
@@ -840,7 +864,12 @@ public class PatientServiceImpl implements PatientService {
 		}
 
 		private int getNumber(String name) {
-			String str = name.replace(".jpg", "");
+			String str = "";
+			if(name.endsWith(".jpg")){
+				str = name.replace(".jpg", "");
+			} else if(name.endsWith(".JPG")){
+				str = name.replace(".JPG", "");
+			}
 			String[] arr = str.split("-");
 			String last = arr[arr.length - 1];
 			return Integer.parseInt(last);
