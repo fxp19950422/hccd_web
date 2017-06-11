@@ -706,7 +706,7 @@ public class PatientServiceImpl implements PatientService {
         	listSubFiles(file, docList);
         }
         
-        Collections.sort(docList, new docNameComparator());
+//        Collections.sort(docList, new docNameComparator());
         
         return docList;
 	}
@@ -734,6 +734,8 @@ public class PatientServiceImpl implements PatientService {
 				docList.add(document);
 			}	
 		}
+		
+		Collections.sort(docList, new docNameComparator());
 		if (accFolder != null) {
 			File[] fileInAcc = accFolder.listFiles();
 			if (fileInAcc != null) {
