@@ -245,7 +245,7 @@ pre, code {
 		if('medical' == value){
 			return "门诊记录";
 		} else if ('resident' == value) {
-			return '出院记录';
+			return "住院病历资料";
 		} else if ('operation' == value) {
 			return '手术记录';
 		}
