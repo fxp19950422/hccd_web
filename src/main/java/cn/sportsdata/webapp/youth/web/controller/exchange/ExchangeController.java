@@ -647,7 +647,7 @@ public class ExchangeController extends BaseController {
 
 	private void residentPPT(HSLFSlideShow ppt, ResidentRecord record) throws Exception {
 		PatientInHospital patientInfo = new PatientInHospital();
-		patientInfo.setAge(record.getAge() > 0?record.getAge().toString():"未知");
+		patientInfo.setAge(record.getAge() > 0?record.getAge().toString():"0");
 		patientInfo.setRealName(record.getRealName());
 		patientInfo.setAdmissionDateTime(record.getAdmissionDate());
 		patientInfo.setDoctorInCharge(record.getDoctorInCharge());
