@@ -31,7 +31,7 @@
       <c:forEach items="${medicalrecords}" var="exchangeRecord">
       	<c:if test="${exchangeRecord.exchangeList != null && fn:length(exchangeRecord.exchangeList) > 0}">
       	<c:forEach items="${exchangeRecord.exchangeList}" var="record">
-      	<section style="top:25px">
+      	<%-- <section style="top:25px">
       			<H2>基本资料</H2>
       			
       			<table style="font-size:0.7em">
@@ -98,7 +98,7 @@
       				</tbody>
       			</table>
       		
-      	</section>
+      	</section> --%>
       	<!-- <section>
       		<table>
       				<tbody>
@@ -110,7 +110,7 @@
       	
       	<c:forEach items="${record.operationRecords}" var="operation">
 				 <c:if test="${operation.id != null}">
-				 	<section>
+				 	<%-- <section>
 					<H2>手术情况<br/>(<fmt:formatDate value="${ operation.operatingDate }" pattern="yyyy年MM月dd日 HH时" />)</H2>
 					<table style="font-size:0.7em">
       				<tbody>
@@ -147,7 +147,7 @@
       				</tbody>
       			</table>
 					
-					</section>
+					</section> --%>
 					<c:forEach items="${operation.assetTypes}" var="assetType">
 						<%-- <section>
 							<span>${assetType.assetTypeName}</span>

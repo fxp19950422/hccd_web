@@ -32,10 +32,10 @@
             value="${record.admissionDate}" /></div>
 						</div>
 				</sa-panel>
-				<sa-panel title="主诉"> <textarea id="future_plan"
+				<%-- <sa-panel title="主诉"> <textarea id="future_plan"
 					name="diagnose" class="form-control" rows="5"
 					placeholder="不超过800字" value="${record.diagnose}">${record.diagnose}</textarea>
-				</sa-panel>
+				</sa-panel> --%>
 				<input type="hidden" name="id" value="${id}" />
 				<input type="hidden" name="avatar" id="encryptFileName" />
 			</div>
