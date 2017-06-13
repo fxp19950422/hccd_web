@@ -81,107 +81,110 @@
 
 <%-- 				</c:forEach> --%>
 <%-- 			</c:if> --%>
-			<c:if
-				test="${residentrecords != null&& fn:length(residentrecords)>0}">
+<%-- 			<c:if --%>
+<%-- 				test="${residentrecords != null&& fn:length(residentrecords)>0}"> --%>
+<!-- 				<section> -->
+<!-- 					<H1>住院病历资料</H1> -->
+<!-- 				</section> -->
+
+<%-- 				<c:forEach items="${residentrecords}" var="record"> --%>
+<!-- 					<section> -->
+<!-- 						<table> -->
+<!-- 							<tbody> -->
+<!-- 								<tr> -->
+<!-- 									<td>入院情况</td> -->
+<%-- 									<td>${record.inState}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>入院中医诊断</td> -->
+<%-- 									<td>${record.inChiDiagnosis}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>入院西医诊断</td> -->
+<%-- 									<td>${record.inWesDiagnosis}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>诊疗经过</td> -->
+<%-- 									<td>${record.process}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>出院中医诊断</td> -->
+<%-- 									<td>${record.outChiDiagnosis}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>出院西医诊断</td> -->
+<%-- 									<td>${record.outWesDiagnosis}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>出院情况</td> -->
+<%-- 									<td>${record.outState}</td> --%>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>出院医嘱</td> -->
+<%-- 									<td>${record.suggestion}</td> --%>
+<!-- 								</tr> -->
+
+<!-- 							</tbody> -->
+<!-- 						</table> -->
+<!-- 					</section> -->
+<%-- 				</c:forEach> --%>
+<%-- 			</c:if> --%>
+<%-- 			<c:if --%>
+<%-- 				test="${operationRecords != null && fn:length(operationRecords)>0}"> --%>
+<!-- 				<section> -->
+<!-- 					<H1>手术记录</H1> -->
+<!-- 				</section> -->
+
+<%-- 				<c:forEach items="${operationRecords}" var="operation"> --%>
+<%-- 					<c:if test="${operation.id != null}"> --%>
+<!-- 						<section> -->
+<!-- 							<H2> -->
+<!-- 								手术情况<br />( -->
+<%-- 								<fmt:formatDate value="${ operation.operatingDate }" --%>
+<%-- 									pattern="yyyy年MM月dd日 HH时" /> --%>
+<!-- 								) -->
+<!-- 							</H2> -->
+<!-- 							<table> -->
+<!-- 								<tbody> -->
+<!-- 									<tr> -->
+<!-- 										<td>麻醉方法</td> -->
+<%-- 										<td>${ operation.anaesthesiaMethod }</td> --%>
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<!-- 										<td>手术名称</td> -->
+<!-- 										<td> -->
+<%-- 											<p>${ operation.operationDesc }</p> --%>
+
+<!-- 										</td> -->
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<!-- 										<td>术者</td> -->
+<!-- 										<td> -->
+<%-- 											<p>${operation.operatorName}</p> --%>
+
+<!-- 										</td> -->
+<!-- 									</tr> -->
+<!-- 								</tbody> -->
+<!-- 							</table> -->
+
+<!-- 						</section> -->
+<%-- 						<c:forEach items="${operation.assetTypes}" var="assetType"> --%>
+<!-- 							<section> -->
+<%-- 								<H1>${assetType.assetTypeName}</H1> --%>
+<!-- 							</section> -->
+<%-- 							<c:forEach items="${assetType.assets}" var="asset"> --%>
+<!-- 								<section> -->
+<!-- 									<img class="starterAvator" -->
+<%-- 										src="<%=serverUrl%>file/asset?id=${asset.id}"></img> --%>
+<!-- 								</section> -->
+<%-- 							</c:forEach> --%>
+<%-- 						</c:forEach> --%>
+<%-- 					</c:if> --%>
+<%-- 				</c:forEach> --%>
+<%-- 			</c:if> --%>
 				<section>
 					<H1>住院病历资料</H1>
 				</section>
-
-				<c:forEach items="${residentrecords}" var="record">
-					<section>
-						<table>
-							<tbody>
-								<tr>
-									<td>入院情况</td>
-									<td>${record.inState}</td>
-								</tr>
-								<tr>
-									<td>入院中医诊断</td>
-									<td>${record.inChiDiagnosis}</td>
-								</tr>
-								<tr>
-									<td>入院西医诊断</td>
-									<td>${record.inWesDiagnosis}</td>
-								</tr>
-								<tr>
-									<td>诊疗经过</td>
-									<td>${record.process}</td>
-								</tr>
-								<tr>
-									<td>出院中医诊断</td>
-									<td>${record.outChiDiagnosis}</td>
-								</tr>
-								<tr>
-									<td>出院西医诊断</td>
-									<td>${record.outWesDiagnosis}</td>
-								</tr>
-								<tr>
-									<td>出院情况</td>
-									<td>${record.outState}</td>
-								</tr>
-								<tr>
-									<td>出院医嘱</td>
-									<td>${record.suggestion}</td>
-								</tr>
-
-							</tbody>
-						</table>
-					</section>
-				</c:forEach>
-			</c:if>
-			<c:if
-				test="${operationRecords != null && fn:length(operationRecords)>0}">
-				<section>
-					<H1>手术记录</H1>
-				</section>
-
-				<c:forEach items="${operationRecords}" var="operation">
-					<c:if test="${operation.id != null}">
-						<section>
-							<H2>
-								手术情况<br />(
-								<fmt:formatDate value="${ operation.operatingDate }"
-									pattern="yyyy年MM月dd日 HH时" />
-								)
-							</H2>
-							<table>
-								<tbody>
-									<tr>
-										<td>麻醉方法</td>
-										<td>${ operation.anaesthesiaMethod }</td>
-									</tr>
-									<tr>
-										<td>手术名称</td>
-										<td>
-											<p>${ operation.operationDesc }</p>
-
-										</td>
-									</tr>
-									<tr>
-										<td>术者</td>
-										<td>
-											<p>${operation.operatorName}</p>
-
-										</td>
-									</tr>
-								</tbody>
-							</table>
-
-						</section>
-						<c:forEach items="${operation.assetTypes}" var="assetType">
-							<section>
-								<H1>${assetType.assetTypeName}</H1>
-							</section>
-							<c:forEach items="${assetType.assets}" var="asset">
-								<section>
-									<img class="starterAvator"
-										src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
-								</section>
-							</c:forEach>
-						</c:forEach>
-					</c:if>
-				</c:forEach>
-			</c:if>
 			<c:forEach items="${docList}" var="doc">
 				<section class="scrollable">
 					<H6>  </H6>
