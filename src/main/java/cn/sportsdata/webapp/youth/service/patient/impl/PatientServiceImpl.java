@@ -562,7 +562,7 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId) {
 		if (doctorCode.equalsIgnoreCase("1701")) {
-			return Arrays.asList(new String[] { "0309", "0321", "0316", "0317", "0325", "0324" });
+			return Arrays.asList(new String[] { "0309", "0321", "0316", "0319","0317", "0325", "0324" });
 		}
 		if (doctorCode.equalsIgnoreCase("1702")) {
 			return Arrays.asList(new String[] { "0309" });

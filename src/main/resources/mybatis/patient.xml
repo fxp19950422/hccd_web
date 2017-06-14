@@ -242,7 +242,8 @@
     <select id="getPatientInHosByDepartment" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.*, A.dept_code as department_id, B.real_name as patient_name, B.gender as patient_gender from patient_in_hospital A
         	left outer join patient B on B.patient_number = A.patient_id
-	       	where (A.dept_code=#{department_id} or A.ward_code=#{department_id}) and A.hospital_id=#{hospital_id} 
+	       	where (A.dept_code=#{department_id} or A.ward_code=#{department_id}) 
+	       	and A.hospital_id=#{hospital_id} and B.status = 'active'
 	       	and A.status = 'active' order by A.bed_no desc
     </select>
     
@@ -437,6 +438,7 @@
             open="(" close=")" separator=",">
             #{id}
         </foreach>
+        and status = 'active'
     </select>
     
     <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
@@ -800,7 +802,7 @@
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
     	left join doctor D on D.user_id = B.doctor_id
-    	where B.record_type='operation' and A.status = 'active'
+    	where B.record_type='operation' and A.status = 'active' and C.status = 'active'
     	and (B.doctor_id=#{doctor_id} or D.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
@@ -815,7 +817,7 @@
     	select A.*, B.doctor_id as exchange_doctor_id, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from patient_in_hospital A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='patientInhospital' and A.status = 'active'
+    	where B.record_type='patientInhospital' and A.status = 'active' and C.status = 'active'
     	and (A.doctor_id=#{doctor_id} or A.dept_code in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
@@ -830,7 +832,7 @@
     	select A.*, B.meeting_date, B.doctor_id as exchange_doctor_id, C.real_name as patient_name, C.gender as patient_gender from resident_record A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='resident' and A.status = 'active'
+    	where B.record_type='resident' and A.status = 'active' and C.status = 'active'
     	and (A.doctor_id=#{doctor_id} or A.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
