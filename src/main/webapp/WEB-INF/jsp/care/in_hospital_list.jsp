@@ -103,6 +103,11 @@
 		return new Date(value).Format("yyyy年MM月dd日")
 	}
 	
+	
+	function handlePhoto(record_id,recordType){
+		window.open("<%=serverUrl%>care/upload_photo?recordId="+record_id+"&recordType=patientInhospital");
+	}
+	
 	function handle(recordId) {
 		if(recordId==undefined){
 			recordId=0;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
@@ -31,4 +32,6 @@ public interface ExchangeDAO {
 	List<PatientInHospital> getExchangePatientInHospitalRecords(List<String> uids, String doctorId);
 	
 	List<ResidentRecord> getExchangeResidentRecords(List<String> uids, String doctorId);
+	
+	List<AssetVO> getMedicalAsset(List<String> uids);
 }

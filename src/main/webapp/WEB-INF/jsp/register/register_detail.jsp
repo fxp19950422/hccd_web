@@ -18,7 +18,7 @@
 	<div class="coach_edit_button_area">
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
-		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
+		<button id="cancle_btn" class="btn btn-default" style="float: right;margin-left: 10px;">返回</button>
 	</div>
 	<div class="clearfix"></div>
 	<div class="profileEditContent">
@@ -168,6 +168,36 @@
 		</div>
 	</form>
 </div>
+
+
+<div class="modal fade" id="changeDateModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" style="z-index: 100001; display: none;">
+	<div class="modal-dialog" role="document" style="width: 50%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">图像上传</h4>
+			</div>
+			<span class="btn btn-success fileinput-button"> <i
+			class="glyphicon glyphicon-plus"></i> <span>添加文件</span> <!-- The file input field used as target for the file upload widget -->
+			<input id="fileupload" type="file" name="files[]" multiple>
+		</span> <br> <br>
+		<!-- The global progress bar -->
+		<div id="progress" class="progress">
+			<div class="progress-bar progress-bar-success"></div>
+		</div>
+		<!-- The container for the uploaded files -->
+		<div id="files" class="files"></div>
+		<br>
+			<div class="modal-footer">
+				<div id="template_cont"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <style>
 pre, code {
 	white-space: pre-line;
@@ -178,6 +208,10 @@ pre, code {
 		setTimeout(function() {
 			initData();
 			initEvent();
+			
+			initUpload();
+			
+			
 		}, 50);  // if using angular widget like sa-panel, since the real dom loaded is after the Angular.compile method, which is behind the document ready event, so add a little timeout to hack this
 	});
 	
@@ -186,14 +220,152 @@ pre, code {
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 	}
 	
-	
+	function initUpload(){
+		var url = "<%=serverUrl%>/api/vi/fileUpload",
+        uploadButton = $('<button/>')
+            .addClass('btn btn-primary')
+            .prop('disabled', true)
+            .text('Processing...')
+            .on('click', function () {
+                var $this = $(this),
+                    data = $this.data();
+                $this
+                    .off('click')
+                    .text('取消')
+                    .on('click', function () {
+                        $this.remove();
+                        data.abort();
+                    });
+                data.submit().always(function () {
+                    $this.remove();
+                });
+            });
+		$('#fileupload')
+				.fileupload(
+						{
+							url : url,
+							dataType : 'json',
+							autoUpload : false,
+							acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+							// Enable image resizing, except for Android and Opera,
+							// which actually support image resizing, but fail to
+							// send Blob objects via XHR requests:
+							disableImageResize : /Android(?!.*Chrome)|Opera/
+									.test(window.navigator.userAgent),
+							previewMaxWidth : 100,
+							previewMaxHeight : 100,
+							previewCrop : true
+						})
+				.on(
+						'fileuploadadd',
+						function(e, data) {
+							data.context = $('<div/>').appendTo('#files');
+							$.each(data.files, function(index, file) {
+								var node = $('<p/>').append(
+										$('<span/>').text(file.name));
+								if (!index) {
+									node.append('<br>').append(
+											uploadButton.clone(true).data(
+													data));
+								}
+								node.appendTo(data.context);
+							});
+						})
+				.on(
+						'fileuploadprocessalways',
+						function(e, data) {
+							var index = data.index, file = data.files[index], node = $(data.context
+									.children()[index]);
+							if (file.preview) {
+								node.prepend('<br>').prepend(file.preview);
+							}
+							if (file.error) {
+								node.append('<br>').append(
+										$('<span class="text-danger"/>')
+												.text(file.error));
+							}
+							if (index + 1 === data.files.length) {
+								data.context.find('button').text('上传')
+										.prop('disabled',
+												!!data.files.error);
+							}
+						})
+				.on(
+						'fileuploadprogressall',
+						function(e, data) {
+							var progress = parseInt(data.loaded
+									/ data.total * 100, 10);
+							$('#progress .progress-bar').css('width',
+									progress + '%');
+						})
+				.on(
+						'fileuploaddone',
+						function(e, data) {
+							$
+									.each(
+											data.result.files,
+											function(index, file) {
+												if (file.url) {
+													var link = $('<a>')
+															.attr('target',
+																	'_blank')
+															.prop(
+																	'href',
+																	file.url);
+													$(
+															data.context
+																	.children()[index])
+															.wrap(link);
+												} else if (file.error) {
+													var error = $(
+															'<span class="text-danger"/>')
+															.text(
+																	file.error);
+													$(
+															data.context
+																	.children()[index])
+															.append('<br>')
+															.append(error);
+												}
+											});
+						})
+				.on(
+						'fileuploadfail',
+						function(e, data) {
+							$
+									.each(
+											data.files,
+											function(index) {
+												var error = $(
+														'<span class="text-danger"/>')
+														.text(
+																'文件上传失败.');
+												$(
+														data.context
+																.children()[index])
+														.append('<br>')
+														.append(error);
+											});
+						}).prop('disabled', !$.support.fileInput).parent()
+				.addClass($.support.fileInput ? undefined : 'disabled');
+	}
 	
 	function actionFormatter(value, row, index){
-		return '<span onclick=handleNow("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return  actionPhotoFormatter(value, row, index) +
+		'<span onclick=handleNow("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+	}
+	
+	function actionPhotoFormatter(value, row, index){
+		return '<span onclick=handlePhoto("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-camera content-color"></i></span>';
 	}
 	
 	function actionHistoryFormatter(value, row, index){
-		return '<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return  actionPhotoFormatter(value, row, index) +
+		'<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+	}
+	
+	function handlePhoto(record_id,recordType){
+		window.open("<%=serverUrl%>care/upload_photo?recordId="+record_id+"&recordType="+recordType);
 	}
 	
 	function handleNow(recordId,recordType) {
@@ -236,7 +408,7 @@ pre, code {
 				}
 			});
 		}else {
-			window.open("<%=serverUrl%>care/pat_history_document?registId="+$("#recordId").val());
+			window.open("<%=serverUrl%>care/pat_history_document?recordId="+recordId+"&registId="+$("#recordId").val());
 		}
 		
 	}
@@ -284,6 +456,15 @@ pre, code {
 		$("#add_medical_btn").click(function(){
 			$('#content').loadAngular("<%=serverUrl%>care/add_care?registId=${record.id }" );
 		});
+		
+		$("#add_review_photo").click(function(){
+			showUploadPhoto()
+		})
+		
+		function showUploadPhoto(){
+// 			$("#changeDateModal").modal({backdrop:false,show:true});
+			window.open("<%=serverUrl%>care/upload_photo?registId="+$("#recordId").val());
+		}
 
 		$("#btable").bootstrapTable();
 		var msg = '当日记录尚未同步完成，请稍后';
@@ -305,6 +486,8 @@ pre, code {
 			    return msg;  
 			  }
 		});
+		
+		
 		
 		/* $("#todaytable tr").click(function(event){
 			var td = event.target;

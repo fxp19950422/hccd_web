@@ -96,7 +96,15 @@
 	});
 	
 	function actionFormatter(value, row, index){
-		return '<span onclick=handle("'+value+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-edit content-color"></i></span>';
+		return actionPhotoFormatter(value, row, index)+'<span onclick=handle("'+value+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-edit content-color"></i></span>';
+	}
+	
+	function actionPhotoFormatter(value, row, index){
+		return '<span onclick=handlePhoto("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-camera content-color"></i></span>';
+	}
+	
+	function handlePhoto(record_id,recordType){
+		window.open("<%=serverUrl%>care/upload_photo?recordId="+record_id+"&recordType=resident");
 	}
 	
 	function dateFormatter(value, row, index){
