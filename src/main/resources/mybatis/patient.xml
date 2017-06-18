@@ -223,7 +223,7 @@
         select A.*, C.meeting_date from resident_record A
         	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
-	       	where A.IN_OUT_STATUS = 0 and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	       	where A.hospital_id=#{hospital_id} and B.id=#{record_id}
 	        and A.patient_id =#{patient_id} and A.status = 'active'
     </select>
     
