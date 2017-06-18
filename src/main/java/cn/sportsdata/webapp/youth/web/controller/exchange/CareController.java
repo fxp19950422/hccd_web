@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,22 +31,28 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.PutObjectResult;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.constants.Constants;
 import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
 import cn.sportsdata.webapp.youth.common.utils.DateUtil;
+import cn.sportsdata.webapp.youth.common.utils.OSSUtil;
 import cn.sportsdata.webapp.youth.common.utils.SecurityUtils;
 import cn.sportsdata.webapp.youth.common.utils.StringUtil;
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.DepartmentVO;
+import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.FormCondition;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
@@ -55,7 +62,6 @@ import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInfoVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientRegistRecord;
 import cn.sportsdata.webapp.youth.common.vo.patient.ResidentRecord;
-import cn.sportsdata.webapp.youth.common.vo.patient.ShiftMeetingVO;
 import cn.sportsdata.webapp.youth.service.asset.AssetService;
 import cn.sportsdata.webapp.youth.service.exchange.ExchangeService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
@@ -159,6 +165,14 @@ public class CareController extends BaseController{
 		return "care/history_document_list";
 	}
 	
+	@RequestMapping(value = "/upload_photo",method = RequestMethod.GET)
+	public String getUploadPhotoPage(Model model,String recordType,  String recordId){
+		
+		model.addAttribute("recordType", recordType);
+		model.addAttribute("hospitalRecordId", recordId);
+		return "care/upload_photo";
+	}
+	
 	@RequestMapping(value = "/patient_documents",method = RequestMethod.GET)
 	@ResponseBody
     public List<PatientDocumentVO> getPatientDocumentDirs(HttpServletRequest request, Model model, String patientName) throws SoccerProException {
@@ -245,12 +259,13 @@ public class CareController extends BaseController{
 
 	@RequestMapping(value = "/care_edit",method = RequestMethod.GET)
 	public String toRecordEdit(String id, Model model,String registId,FormCondition condition){
-		
+		PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
 		model.addAttribute("condition", condition);
+		model.addAttribute("age", registRecord.getAge());
 		return "care/medical_record_edit";
 	}
 	
@@ -872,5 +887,54 @@ public class CareController extends BaseController{
 		
 		
 		return "care/pat_history_document";
+	}
+	
+	@RequestMapping(value="/fileUpload", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
+	public void fileUpload(HttpServletRequest request,HttpServletResponse response,  @RequestParam MultipartFile[] files,
+			String asset_stage_type_id, String record_asset_type_id, String hospitalId, String hospitalRecordId,
+			String recordType) {
+		JSONObject obj = new JSONObject();
+		response.setContentType("application/json");
+		PrintWriter writer = null;
+		try {
+			writer = response.getWriter();
+			LoginVO loginVO = getCurrentUser(request);
+			String accountID = loginVO.getId();
+			hospitalId = loginVO.getHospitalUserInfo().getHospitalId();
+			String ret = "";
+			for (MultipartFile uploadFile : files) {
+
+				String timesp = new Date().getTime() + "";
+				String idx = "0";
+				String assetId = hospitalRecordId + "_" + timesp + "_" + idx;
+				OSSClient client = OSSUtil.getOSSClient();
+				PutObjectResult result = client.putObject(OSSUtil.BUCKET_NAME, assetId,
+						uploadFile.getInputStream());
+
+				ret = assetId;
+				OSSUtil.shutdownOSSClient(client);
+				String fileName = assetId;
+				String assetTypeId = record_asset_type_id;
+				String assetStageId = asset_stage_type_id;
+				String createdTime = DateUtil.date2String(new Date(), "yyyy-MM-dd HH:mm:ss");
+
+				assetservice.insertHospitalRecordOSSAsset(fileName, hospitalId, hospitalRecordId, recordType,
+						assetTypeId, assetStageId, createdTime, "0", "oss");
+			}
+//			FileUp file = new FileUp();
+//			file.setUrl(ret);
+//			return file;
+			JSONArray array = new JSONArray();
+			JSONObject obj1 = new JSONObject();
+			obj1.put("url", ret);
+			array.add(obj1);
+			obj.put("files", array);
+		} catch (Exception e) {
+			logger.error("Error occurs while uploading file", e);
+		}finally {
+			writer.write(obj.toString());
+            writer.close();
+		}
+
 	}
 }

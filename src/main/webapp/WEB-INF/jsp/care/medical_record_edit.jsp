@@ -86,7 +86,10 @@
 				<tr>
 					<td width="33%">姓名: ${record.realName}</td>
 					
-					<td  width="33%">性别: ${gender}</td>
+					<td  width="33%">性别: 
+					<c:if test="${record.gender=='female'}">女</c:if>
+					<c:if test="${record.gender=='male'}">男</c:if>
+					</td>
 					
 					<td  width="33%">年龄: ${age}岁</td>
 				</tr>
@@ -130,7 +133,7 @@
 				建议:<span id="spnSuggestion"></span>
 			</div>
 			<div id="bottomDiv" style=" margin:0 auto;width:95%;margin-top:10px">
-				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
+<%-- 				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>   --%>
 				<span style="float:right">医生：${record.name}</span>
 			</div>
 	</div>
