@@ -84,6 +84,8 @@
 	<input type="hidden" id="checked_text"/>
 	<input type="hidden" id="asset_stage_type_id"/>
 	<input type="hidden" id="record_asset_type_id"/>
+	<input type="hidden" id="asset_stage_type_id_upload"/>
+	<input type="hidden" id="record_asset_type_id_upload"/>
 	
 		<h1 id="p_title">照片，截图上传</h1>
 		
@@ -95,15 +97,15 @@
 				</div>
 				<div class="radio_operation">
 					<p><input class="m_input" type="radio" name="op_usege" checked="checked" value="99:52"/><span>上传交班用的手术同意书</span></p>
-					<p><input class="m_input" type="radio" name="op_usege" checked="unchecked" value="50:52"/><span>上传门诊复查用的手术记录</span></p>
-					<p><input class="m_input" type="radio" name="op_usege" checked="unchecked" value="50:105"/><span>上传门诊复查用的检验检查影像</span></p>
+					<p><input class="m_input" type="radio" name="op_usege"  value="50:52"/><span>上传门诊复查用的手术记录</span></p>
+					<p><input class="m_input" type="radio" name="op_usege"  value="50:105"/><span>上传门诊复查用的检验检查影像</span></p>
 				</div>
 				<div class="radio_resident">
-					<p><input class="m_input" type="radio" name="re_usege" checked="checked" value="500:53"/><span>上传交班用的手术同意书</span></p>
-					<p><input class="m_input" type="radio" name="re_usege" checked="unchecked" value="51:53"/><span>上传门诊复查用的出院记录</span></p>
+<!-- 					<p><input class="m_input" type="radio" name="re_usege" checked="checked" value="52:53"/><span>上传交班用的手术同意书</span></p> -->
+					<p><input class="m_input" type="radio" name="re_usege" checked="checked"  value="51:53"/><span>上传门诊复查用的出院记录</span></p>
 				</div>
 				<div class="radio_patientInhospital">
-					<p><input class="m_input" type="radio" name="in_usege" checked="checked" value="700:54"/><span>上传交班用的手术记录</span></p>
+<!-- 					<p><input class="m_input" type="radio" name="in_usege" checked="checked" value="700:54"/><span>上传交班用的手术记录</span></p> -->
 				</div>
 				
 			</blockquote>
@@ -134,6 +136,27 @@
 	            .prop('disabled', true)
 	            .text('Processing...')
 	            .on('click', function () {
+	            	console.log('click')
+	            	var $span = $(this).parent().find('.file_desc')
+	            	$("#record_asset_type_id_upload").val($span.attr("record_asset_type_id"))
+	            	$("#asset_stage_type_id_upload").val($span.attr("asset_stage_type_id"))
+	            	$('#fileupload')
+					.fileupload(
+					{
+						url : url,
+						dataType : 'json',
+						autoUpload : false,
+						formData:{asset_stage_type_id:$("#asset_stage_type_id_upload").val(),record_asset_type_id:$("#record_asset_type_id_upload").val(),recordType:$("#recordType").val(),hospitalRecordId:$("#hospitalRecordId").val()},
+						acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+						// Enable image resizing, except for Android and Opera,
+						// which actually support image resizing, but fail to
+						// send Blob objects via XHR requests:
+						disableImageResize : /Android(?!.*Chrome)|Opera/
+								.test(window.navigator.userAgent),
+						previewMaxWidth : 100,
+						previewMaxHeight : 100,
+						previewCrop : true
+					})
 	                var $this = $(this),
 	                    data = $this.data();
 	                $this
@@ -147,133 +170,136 @@
 	                    $this.remove();
 	                });
 	            });
+			
 			$('#fileupload')
-					.fileupload(
-							{
-								url : url,
-								dataType : 'json',
-								autoUpload : false,
-								formData:{asset_stage_type_id:$("#asset_stage_type_id").val(),record_asset_type_id:$("#record_asset_type_id").val(),recordType:$("#recordType").val(),hospitalRecordId:$("#hospitalRecordId").val()},
-								acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
-								// Enable image resizing, except for Android and Opera,
-								// which actually support image resizing, but fail to
-								// send Blob objects via XHR requests:
-								disableImageResize : /Android(?!.*Chrome)|Opera/
-										.test(window.navigator.userAgent),
-								previewMaxWidth : 100,
-								previewMaxHeight : 100,
-								previewCrop : true
-							})
-					.on(
-							'fileuploadadd',
-							function(e, data) {
-								data.context = $('<div style="clear:both"/>').appendTo('#files');
-								$.each(data.files, function(index, file) {
-									var node = $('<p style="height:100px;line-height:100px;"/>').append(
-											$('<span style="height:100px;line-height:100px;float:left;margin-left:20px;"/>').text(file.name));
-									console.log(node)
-									var desc = $('<span style="margin-left:20px;"/>').append($("#checked_text").val())
-									node.append(desc)
-									if (!index) {
-										node.append(
-												uploadButton.clone(true).data(
-														data));
-									}
-									node.appendTo(data.context);
-								});
-							})
-					.on(
-							'fileuploadprocessalways',
-							function(e, data) {
-								var index = data.index, file = data.files[index], node = $(data.context
-										.children()[index]);
-								if (file.preview) {
-									$(file.preview).css("float","left")
-									node.prepend(file.preview);
-								}
-								if (file.error) {
-									node.append(
-											$('<span class="text-danger"/>')
-													.text(file.error));
-								}
-								if (index + 1 === data.files.length) {
-									data.context.find('button').text('上传')
-											.prop('disabled',
-													!!data.files.error);
-								}
-							})
-					.on(
-							'fileuploadprogressall',
-							function(e, data) {
-// 								var progress = parseInt(data.loaded
-// 										/ data.total * 100, 10);
-// 								$('#progress .progress-bar').css('width',
-// 										progress + '%');
-							})
-					.on(
-							'fileuploaddone',
-							function(e, data) {
-								if(!data.result.files){
-									var error = $(
-									'<span class="text-danger"/>')
-									.text(
-											"上传失败");
-							$(
-									data.context
-											.children()[index])
-									.append('<br>')
-									.append(error);
-									return 
-								}
-								$.each(
-												data.result.files,
-												function(index, file) {
-													if (file.url) {
-														var link = $('<a>')
-																.attr('target',
-																		'_blank')
-																.prop(
-																		'href',
-																		file.url);
-														$(
-																data.context
-																		.children()[index])
-																.append("<span style='margin-left:20px;'>上传成功</span>");
-													} else if (file.error) {
-														var error = $(
-																'<span class="text-danger"/>')
-																.text(
-																		file.error);
-														$(
-																data.context
-																		.children()[index])
-																.append('<br>')
-																.append(error);
-													}
-												});
-							})
-					.on(
-							'fileuploadfail',
-							function(e, data) {
-								$
-										.each(
-												data.files,
-												function(index) {
-													var error = $(
-															'<span class="text-danger"/>')
-															.text(
-																	'文件上传失败.');
-													$(
-															data.context
-																	.children()[index])
-															.append('<br>')
-															.append(error);
-												});
-							}).prop('disabled', !$.support.fileInput).parent()
-					.addClass($.support.fileInput ? undefined : 'disabled');
+			.fileupload(
+					{
+						url : url,
+						dataType : 'json',
+						autoUpload : false,
+						formData:{asset_stage_type_id:$("#asset_stage_type_id_upload").val(),record_asset_type_id:$("#record_asset_type_id_upload").val(),recordType:$("#recordType").val(),hospitalRecordId:$("#hospitalRecordId").val()},
+						acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+						// Enable image resizing, except for Android and Opera,
+						// which actually support image resizing, but fail to
+						// send Blob objects via XHR requests:
+						disableImageResize : /Android(?!.*Chrome)|Opera/
+								.test(window.navigator.userAgent),
+						previewMaxWidth : 100,
+						previewMaxHeight : 100,
+						previewCrop : true
+					})
+			.on(
+					'fileuploadadd',
+					function(e, data) {
+						data.context = $('<div style="clear:both"/>').appendTo('#files');
+						$.each(data.files, function(index, file) {
+							var node = $('<p style="height:100px;line-height:100px;"/>').append(
+									$('<span style="height:100px;line-height:100px;float:left;margin-left:20px;"/>').text(file.name));
+							var desc = $('<span class="file_desc" asset_stage_type_id="'+$("#asset_stage_type_id").val()+'" record_asset_type_id="'+$("#record_asset_type_id").val()+'" style="margin-left:20px;"/>').append($("#checked_text").val())
+							node.append(desc)
+							if (!index) {
+								node.append(
+										uploadButton.clone(true).data(
+												data));
+							}
+							node.appendTo(data.context);
+						});
+					})
+			.on(
+					'fileuploadprocessalways',
+					function(e, data) {
+						var index = data.index, file = data.files[index], node = $(data.context
+								.children()[index]);
+						if (file.preview) {
+							$(file.preview).css("float","left")
+							node.prepend(file.preview);
+						}
+						if (file.error) {
+							node.append(
+									$('<span class="text-danger"/>')
+											.text(file.error));
+						}
+						if (index + 1 === data.files.length) {
+							data.context.find('button').text('上传')
+									.prop('disabled',
+											!!data.files.error);
+						}
+					})
+			.on(
+					'fileuploadprogressall',
+					function(e, data) {
+//							var progress = parseInt(data.loaded
+//									/ data.total * 100, 10);
+//							$('#progress .progress-bar').css('width',
+//									progress + '%');
+					})
+			.on(
+					'fileuploaddone',
+					function(e, data) {
+						if(!data.result.files){
+							var error = $(
+							'<span class="text-danger"/>')
+							.text(
+									"上传失败");
+					$(
+							data.context
+									.children()[index])
+							.append('<br>')
+							.append(error);
+							return 
+						}
+						$.each(
+										data.result.files,
+										function(index, file) {
+											if (file.url) {
+												var link = $('<a>')
+														.attr('target',
+																'_blank')
+														.prop(
+																'href',
+																file.url);
+												$(
+														data.context
+																.children()[index])
+														.append("<span style='margin-left:20px;'>上传成功</span>");
+											} else if (file.error) {
+												var error = $(
+														'<span class="text-danger"/>')
+														.text(
+																file.error);
+												$(
+														data.context
+																.children()[index])
+														.append('<br>')
+														.append(error);
+											}
+										});
+					})
+			.on(
+					'fileuploadfail',
+					function(e, data) {
+						$
+								.each(
+										data.files,
+										function(index) {
+											var error = $(
+													'<span class="text-danger"/>')
+													.text(
+															'文件上传失败.');
+											$(
+													data.context
+															.children()[index])
+													.append('<br>')
+													.append(error);
+										});
+					}).prop('disabled', !$.support.fileInput).parent()
+			.addClass($.support.fileInput ? undefined : 'disabled');
 			
 			initData();
 		});
+	
+	
+	
 	function initData(){
 		var type = '${recordType}';
 		var pref = ""
@@ -291,23 +317,29 @@
 			pref = "出院记录"
 			$(".radio_resident").css("display","inline-block");
 		} else if(type === 'patientInhospital') {
-			pref = "入院记录"
-			$(".radio_patientInhospital").css("display","inline-block");
+// 			pref = "入院记录"
+// 			$(".radio_patientInhospital").css("display","inline-block");
 		}
 		$("#p_title").html(pref + "照片，截图上传");
 		
+		setUploadValues($(".radio_"+type).find("input[checked=checked]").val());
+		$("#checked_text").val($(".radio_"+type).find("input[checked=checked]").parent().find('span').html())
 		
 		$(".m_input").bind("click",function(){ 
 			var value = $(this).val();
+			if(value){
+				setUploadValues(value)
+			}
+			$("#checked_text").val($(this).parent().find('span').html())
+		});
+		
+		function setUploadValues(value){
 			if(value){
 				var values = value.split(":");
 				$("#asset_stage_type_id").val(values[0]);
 				$("#record_asset_type_id").val(values[1]);
 			}
-			console.log($("#asset_stage_type_id").val())
-			console.log($("#record_asset_type_id").val())
-			$("#checked_text").val($(this).parent().find('span').html())
-		});
+		}
 	}
 	</script>
 </body>

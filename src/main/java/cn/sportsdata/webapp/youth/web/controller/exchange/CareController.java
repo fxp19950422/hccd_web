@@ -261,11 +261,17 @@ public class CareController extends BaseController{
 	public String toRecordEdit(String id, Model model,String registId,FormCondition condition){
 		PatientRegistRecord registRecord = patientService.getRegisteRecordById(registId);
 		MedicalRecordVO record = patientService.getMedicalRecordById(id);
+		
+		List<String> uids = new ArrayList<>();
+		uids.add(id);
+		List<AssetVO> assets = exchangeService.getMedicalAsset(uids);
+		
 		model.addAttribute("record", record);
 		model.addAttribute("id", id);
 		model.addAttribute("registId", registId);
 		model.addAttribute("condition", condition);
 		model.addAttribute("age", registRecord.getAge());
+		model.addAttribute("assets", assets);
 		return "care/medical_record_edit";
 	}
 	
@@ -847,7 +853,7 @@ public class CareController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/pat_history_document", method = RequestMethod.GET)
-	public String toHistoryDocument(HttpServletRequest request, Model model, String registId,
+	public String toHistoryDocument(HttpServletRequest request, Model model, String registId,String recordId,
 			String startDate) throws Exception {
 		
 		List<OpertaionRecord> operations = new ArrayList<>();
@@ -872,9 +878,22 @@ public class CareController extends BaseController{
 			}
 		}
 		List<PatientDocumentVO> docs = new ArrayList<>();
+		
+		List<String> uids = new ArrayList<>();
+		uids.add(recordId);
+		List<AssetVO> assets = exchangeService.getMedicalAsset(uids);
+		for(AssetVO as : assets){
+			PatientDocumentVO docvo = new PatientDocumentVO();
+			docvo.setFilePath(as.getId());
+			docvo.setStorage_name(as.getStorage_name());
+			docvo.setFileName(as.getAssetTypeName());
+			docs.add(docvo);
+		}
+		
 		for(PatientDocumentVO doc :docList){
 			if(!StringUtil.isBlank(doc.getFileName())&&doc.getFileName().endsWith("jpg")
 					|| !StringUtil.isBlank(doc.getFileName())&&doc.getFileName().endsWith("JPG")){
+				doc.setStorage_name("local");
 				docs.add(doc);
 			}
 		}
@@ -896,6 +915,9 @@ public class CareController extends BaseController{
 		JSONObject obj = new JSONObject();
 		response.setContentType("application/json");
 		PrintWriter writer = null;
+		System.out.println("asset_stage_type_id:"+asset_stage_type_id);
+		System.out.println("record_asset_type_id:"+record_asset_type_id);
+		
 		try {
 			writer = response.getWriter();
 			LoginVO loginVO = getCurrentUser(request);
@@ -921,9 +943,6 @@ public class CareController extends BaseController{
 				assetservice.insertHospitalRecordOSSAsset(fileName, hospitalId, hospitalRecordId, recordType,
 						assetTypeId, assetStageId, createdTime, "0", "oss");
 			}
-//			FileUp file = new FileUp();
-//			file.setUrl(ret);
-//			return file;
 			JSONArray array = new JSONArray();
 			JSONObject obj1 = new JSONObject();
 			obj1.put("url", ret);

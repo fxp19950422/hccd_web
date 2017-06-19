@@ -182,6 +182,13 @@ public class ExchangeController extends BaseController {
 				patientInHospitalList.add(record.getRecordId());
 			}
 		}
+		
+		//test
+//		operationList.clear();
+//		residentList.clear();
+//		patientInHospitalList.clear();
+//		operationList.add("65ecda4a-528e-11e7-8f6f-00163e0ccee1");
+//		patientInHospitalList.add("44E5C449F3014B62BAE75B7AC8CE0A39");
 
 		List<PatientInHospital> operationRecordList = new ArrayList<PatientInHospital>();
 		if (operationList.size() > 0) {

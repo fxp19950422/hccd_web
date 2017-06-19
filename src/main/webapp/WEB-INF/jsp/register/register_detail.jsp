@@ -19,7 +19,6 @@
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;margin-left: 10px;">返回</button>
-		<button id="add_review_photo" class="btn btn-primary" style="float: right;">上传复查照片</button>
 	</div>
 	<div class="clearfix"></div>
 	<div class="profileEditContent">
@@ -409,7 +408,7 @@ pre, code {
 				}
 			});
 		}else {
-			window.open("<%=serverUrl%>care/pat_history_document?registId="+$("#recordId").val());
+			window.open("<%=serverUrl%>care/pat_history_document?recordId="+recordId+"&registId="+$("#recordId").val());
 		}
 		
 	}

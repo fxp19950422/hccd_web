@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
@@ -52,6 +53,11 @@ public class ExchangeServiceImpl implements ExchangeService {
 	public List<ResidentRecord> getExchangeResidentRecord(List<String> uids, String doctorId) {
 		// TODO Auto-generated method stub
 		return exchangeDao.getExchangeResidentRecords(uids, doctorId);
+	}
+	@Override
+	public List<AssetVO> getMedicalAsset(List<String> uids) {
+		// TODO Auto-generated method stub
+		return exchangeDao.getMedicalAsset(uids);
 	}
 	
 	

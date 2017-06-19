@@ -188,8 +188,13 @@
 			<c:forEach items="${docList}" var="doc">
 				<section class="scrollable">
 					<H6>  </H6>
-					<img class="docImg" 
-						src="<%=serverUrl%>file/downloadFile?fileName=${doc.filePath}"></img>
+						<c:if test="${doc.storage_name eq 'oss'}">
+							<img class="docImg" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${doc.filePath}"></img>
+						</c:if>
+						<c:if test="${asset.storage_name != 'oss'}">
+							<img class="docImg" 
+								src="<%=serverUrl%>file/downloadFile?fileName=${doc.filePath}"></img>
+						</c:if>
 				</section>
 			</c:forEach>
 		</div>
