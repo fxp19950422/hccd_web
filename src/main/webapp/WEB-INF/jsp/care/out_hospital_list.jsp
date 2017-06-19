@@ -29,7 +29,7 @@
 				</c:if>
 			/>
 		</div>
-		<div class="col-md-1 inputLabel">住院时间</div>
+		<div class="col-md-1 inputLabel">出院时间</div>
 			<div class="col-md-3">
 			<div class="input-group date">
 				<input type="text" class="form-control profileEditInput calendar-input" id="careTimeStart" name="careTimeStart"

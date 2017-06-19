@@ -360,8 +360,9 @@ pre, code {
 	}
 	
 	function actionHistoryFormatter(value, row, index){
+		console.log(row)
 		return  actionPhotoFormatter(value, row, index) +
-		'<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		'<span onclick=handleHistory("'+value+'","'+row.recordType+'","'+monthFormatter(row.visitDate, row, index)+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
 	function handlePhoto(record_id,recordType){
@@ -393,7 +394,7 @@ pre, code {
 		});
 	}
 	
-	function handleHistory(recordId,recordType) {
+	function handleHistory(recordId,recordType,row) {
 		if(recordType=='medical'){
 			url ="<%=serverUrl%>care/care_edit?id=" + recordId+"&"+$("#condition_form").serialize();
 			sa.ajax({
@@ -408,6 +409,7 @@ pre, code {
 				}
 			});
 		}else {
+			console.log(row)
 			window.open("<%=serverUrl%>care/pat_history_document?recordId="+recordId+"&registId="+$("#recordId").val());
 		}
 		
@@ -442,6 +444,24 @@ pre, code {
 			
 		}
 		return "-";
+	}
+	function monthFormatter(value, row, index){
+		if(value){
+			if(value.indexOf(";")>0){
+				var start = new Date(value.split(";")[0]).Format("yyyy-MM")
+				var end ;
+				if(value.split(";")[1]){
+					 end = new Date(value.split(";")[1]).Format("yyyy-MM")
+					 return end;
+				} else {
+					return start;
+				}
+			} else {
+				return ""
+			}
+			
+		}
+		return "";
 	}
 	
 	function initEvent() {
