@@ -265,13 +265,19 @@
     </select>
     
     
-    <select id="getMedicalAssetRecords" resultType="cn.sportsdata.webapp.youth.common.vo.AssetVO" parameterType="java.util.Map">
-    	select E.asset_id id, E.storage_type as storage_name, concat(S.name,F.name) as assetTypeName from hospital_record_asset E 
+     <resultMap id="AssetResultMap" type="cn.sportsdata.webapp.youth.common.vo.AssetVO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="storage_name" property="storage_name" jdbcType="VARCHAR"/>
+        <result column="assetTypeName" property="assetTypeName" jdbcType="VARCHAR"/>
+    </resultMap> 
+    
+    <select id="getMedicalAssetRecords" resultMap="AssetResultMap" parameterType="java.util.Map">
+    	select E.asset_id id, E.storage_type storage_name, concat(S.name,F.name) as assetTypeName from hospital_record_asset E 
     	inner join record_asset_type F on (E.record_asset_type_id = F.id)
     	inner join record_stage_in_hospital S on (E.asset_stage_type_id = S.id and (S.usage_type='medical' or S.usage_type='all'))
-    	where E.storage_type='oss' E.hospital_record_id in (
+    	where E.storage_type='oss' and E.hospital_record_id in (
 			<foreach item="item" index="index" collection="uids" separator=",">
-            "${item}"
+            '${item}'
          	</foreach>
 			)
     	order by E.asset_stage_type_id, E.record_asset_type_id,E.storage_index
