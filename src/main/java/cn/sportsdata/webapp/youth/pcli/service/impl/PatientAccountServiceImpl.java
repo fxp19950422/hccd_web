@@ -1,4 +1,4 @@
-package cn.sportsdata.webapp.youth.patient.service.impl;
+package cn.sportsdata.webapp.youth.pcli.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.regist.RegistVO;
 import cn.sportsdata.webapp.youth.dao.account.AccountDao;
 import cn.sportsdata.webapp.youth.dao.user.UserDAO;
-import cn.sportsdata.webapp.youth.patient.service.PatientAccountService;
+import cn.sportsdata.webapp.youth.pcli.service.PatientAccountService;
 
 @Service
 public class PatientAccountServiceImpl implements PatientAccountService {

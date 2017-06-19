@@ -56,9 +56,9 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
 
 		
 		if (httpRequest.getRequestURL().indexOf("/api/v1/token") == -1
-				&& httpRequest.getRequestURL().indexOf("/api/v1/patient/login") == -1
-				&& httpRequest.getRequestURL().indexOf("/api/v1/patient/regist") == -1
-				&& httpRequest.getRequestURL().indexOf("/api/v1/patient/verifyToken") == -1
+				&& httpRequest.getRequestURL().indexOf("/api/v1/pcli/login") == -1
+				&& httpRequest.getRequestURL().indexOf("/api/v1/pcli/regist") == -1
+				&& httpRequest.getRequestURL().indexOf("/api/v1/pcli/verifyToken") == -1
 				&& httpRequest.getRequestURL().indexOf("/api/v1/version") == -1
 				&& httpRequest.getRequestURL().indexOf("/api/v1/asset") == -1
 				){

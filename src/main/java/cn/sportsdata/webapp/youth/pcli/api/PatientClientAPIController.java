@@ -1,4 +1,4 @@
-package cn.sportsdata.webapp.youth.patient.api;
+package cn.sportsdata.webapp.youth.pcli.api;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import cn.sportsdata.webapp.youth.service.patient.PatientClientService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/pcli")
 public class PatientClientAPIController {
 
 	@Autowired

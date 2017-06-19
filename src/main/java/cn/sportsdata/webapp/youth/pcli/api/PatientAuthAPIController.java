@@ -1,4 +1,4 @@
-package cn.sportsdata.webapp.youth.patient.api;
+package cn.sportsdata.webapp.youth.pcli.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +25,11 @@ import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
 import cn.sportsdata.webapp.youth.common.vo.regist.RegistVO;
-import cn.sportsdata.webapp.youth.patient.service.PatientAccountService;
+import cn.sportsdata.webapp.youth.pcli.service.PatientAccountService;
 import cn.sportsdata.webapp.youth.service.patient.PatientService;
 
 @RestController
-@RequestMapping("/api/v1/patient")
+@RequestMapping("/api/v1/pcli")
 public class PatientAuthAPIController {
 
 	@Autowired

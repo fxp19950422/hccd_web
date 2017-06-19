@@ -1,4 +1,4 @@
-package cn.sportsdata.webapp.youth.patient.dao;
+package cn.sportsdata.webapp.youth.pcli.dao;
 
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 
