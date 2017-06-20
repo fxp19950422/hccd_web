@@ -137,7 +137,8 @@ toc_progress.create=function()
 					var srcst = $(last_child).attr("src");
 					var img2 = document.createElement('img');  
 					$(img2).attr("src",srcst)
-					$(img2).attr("css","height:50px;width:80px;")
+					$(img2).css("width","160px")
+//					$(img2).css({"height":"100px","width":"160px"})
 					
 					a_element.appendChild(img2)
 				} else {

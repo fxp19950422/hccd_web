@@ -63,7 +63,7 @@
 	
 	<div class="modal fade" id="imgClassModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" style="z-index: 100001; display: none;padding-right:5px;padding-left:5px;">
-	<div class="modal-dialog" role="document" style="width: 100%;">
+	<div class="modal-dialog" role="document" style="width: 100%;padding-left:160px;">
 			<button type="button" class="close" data-dismiss="modal"
 				style="border: 1px solid #000;background-color:#000;  opacity:0.5; -moz-border-radius: 20px; -webkit-border-radius: 20px; border-radius: 20px; z-index: 100011; width: 40px; height: 40px; position: fixed; right: 20px; top: 20px;"
 				aria-label="Close">

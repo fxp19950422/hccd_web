@@ -17,9 +17,9 @@
 	transition: opacity 800ms ease-in-out;
 	position: fixed;
 	bottom: 10px;
-	height: 100%;
+	height: 50px;
 	z-index: 20;
-	width: 160px;
+	width: 100%;
 	font-size: 1.55vh;
 	text-align: center;
 	white-space: nowrap;
@@ -61,8 +61,8 @@ div.progress[style="display: block;"] ~ #toc-progress-footer
 
 #toc-progress-footer-main
 {
-	width: 160px;
-	height: 100%;
+	width: 100%;
+	height: 80px;
 	float: left;
 	overflow: hidden;
 	letter-spacing: 0em;
@@ -70,32 +70,26 @@ div.progress[style="display: block;"] ~ #toc-progress-footer
 
 #toc-progress-footer-main-inside
 {
-	height: 100%;
 	text-align:center;
 	overflow:scroll;
-	overflow-x:hidden; 
-}
-
-#toc-progress-footer-main-inside ul
-{
-	margin:0px;
+	overflow-y:hidden; 
 }
 
 #toc-progress-footer-main-inside ul li 
 {
-	width: 160px;
-	height: 100px;
+	display:inline-block;
+	width: 80px;
+	margin-left:3px;
+	height: 50px;
 	line-height: 50px;
 	overflow: hidden;
-	margin:auto;
 }
 
 #toc-progress-footer-main-inside ul li a
 {
-	width: 160px;
-	height: 100px;
-	line-height: 100px;
-	margin:auto;
+	width: 80px;
+	height: 50px;
+	line-height: 50px;
 }
 
 /* Position and styles for the right part (subsections) of the TOC-Progress */

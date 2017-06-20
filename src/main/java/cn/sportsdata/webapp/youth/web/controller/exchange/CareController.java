@@ -956,4 +956,12 @@ public class CareController extends BaseController{
 		}
 
 	}
+	
+	
+	@RequestMapping(value = "/operation_request_list",method = RequestMethod.GET)
+    public String toOperationRequestListPage(HttpServletRequest request, Model model, FormCondition condition,String registId) {
+		
+		model.addAttribute("condition", condition);
+		return "care/operation_request_list";
+	}
 }

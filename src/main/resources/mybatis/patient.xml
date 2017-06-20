@@ -214,7 +214,7 @@
         select A.*, C.meeting_date, B.dept_code as department_id from operation A
         	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
-	       	where A.operating_date > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	       	where date_format(A.operating_date,'%Y%m%d') >= date_format(B.ADMISSION_DATE_TIME,'%Y%m%d') and A.hospital_id=#{hospital_id} and B.id=#{record_id}
 	        and A.patient_id =#{patient_id} and A.status = 'active' order by OPERATING_DATE desc
     </select>
     

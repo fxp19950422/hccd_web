@@ -360,9 +360,7 @@ pre, code {
 	}
 	
 	function actionHistoryFormatter(value, row, index){
-		console.log(row)
-		return  actionPhotoFormatter(value, row, index) +
-		'<span onclick=handleHistory("'+value+'","'+row.recordType+'","'+monthFormatter(row.visitDate, row, index)+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return  '<span onclick=handleHistory("'+value+'","'+row.recordType+'","'+monthFormatter(row.visitDate, row, index)+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
 	}
 	
 	function handlePhoto(record_id,recordType){
