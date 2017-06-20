@@ -7,11 +7,13 @@
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="location" property="location" jdbcType="VARCHAR"/>
         <result column="grade" property="grade" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="website" property="website" jdbcType="VARCHAR"/>
         <result column="description" property="description" jdbcType="VARCHAR"/>
     </resultMap>
     
     <select id="getHospitalInfoById" resultMap="HospitalResultMap" parameterType="java.lang.String">
-    	SELECT id, name, code, location, grade, description FROM hospital where id=#{id}
+    	SELECT id, name, code, location, grade, phone, website, description FROM hospital where id=#{id}
     </select>
     
 </mapper>

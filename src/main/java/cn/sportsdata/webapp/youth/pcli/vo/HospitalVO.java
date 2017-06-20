@@ -13,6 +13,8 @@ public class HospitalVO extends BaseVO implements Serializable {
 	private String location;
 	private String grade;
 	private String description;
+	private String phone;
+	private String website;
 	private List<String> assets;
 	
 	public String getId() {
@@ -56,6 +58,18 @@ public class HospitalVO extends BaseVO implements Serializable {
 	}
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getWebsite() {
+		return website;
+	}
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 	
 }
