@@ -27,6 +27,7 @@
 	type="text/javascript"></script>
 <script src="<%=serverUrl%>resources/js/jquery-1.11.1.min.js"
 	type="text/javascript"></script>
+	<script src="<%=serverUrl%>resources/js/bootstrap.js" type="text/javascript"></script>
 </head>
 
 <style>
@@ -41,159 +42,39 @@
 	<div class="reveal">
 		<!-- Wrap all slides in a single "slides" class -->
 		<div class="slides">
-			<!-- Each section element contains an individual slide -->
-<%-- 			<c:if test="${medicalrecords != null&& fn:length(medicalrecords)>0}"> --%>
-<!-- 				<section> -->
-<!-- 					<H1>门诊记录</H1> -->
-<!-- 				</section> -->
-<%-- 				<c:forEach items="${medicalrecords}" var="record"> --%>
-<!-- 					<section> -->
-<!-- 						<table> -->
-<!-- 							<tbody> -->
-<!-- 								<tr> -->
-<!-- 									<td>主诉</td> -->
-<%-- 									<td>${record.illnessDesc}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>病史</td> -->
-<%-- 									<td>${record.medHistory}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>专科查体</td> -->
-<%-- 									<td>${record.bodyExam}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>辅助检查</td> -->
-<%-- 									<td>${record.accExam}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>诊断</td> -->
-<%-- 									<td>${record.diagDesc}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>建议</td> -->
-<%-- 									<td>${record.suggestion}</td> --%>
-<!-- 								</tr> -->
-<!-- 							</tbody> -->
-<!-- 						</table> -->
-<!-- 					</section> -->
-
-
-<%-- 				</c:forEach> --%>
-<%-- 			</c:if> --%>
-<%-- 			<c:if --%>
-<%-- 				test="${residentrecords != null&& fn:length(residentrecords)>0}"> --%>
-<!-- 				<section> -->
-<!-- 					<H1>住院病历资料</H1> -->
-<!-- 				</section> -->
-
-<%-- 				<c:forEach items="${residentrecords}" var="record"> --%>
-<!-- 					<section> -->
-<!-- 						<table> -->
-<!-- 							<tbody> -->
-<!-- 								<tr> -->
-<!-- 									<td>入院情况</td> -->
-<%-- 									<td>${record.inState}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>入院中医诊断</td> -->
-<%-- 									<td>${record.inChiDiagnosis}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>入院西医诊断</td> -->
-<%-- 									<td>${record.inWesDiagnosis}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>诊疗经过</td> -->
-<%-- 									<td>${record.process}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>出院中医诊断</td> -->
-<%-- 									<td>${record.outChiDiagnosis}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>出院西医诊断</td> -->
-<%-- 									<td>${record.outWesDiagnosis}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>出院情况</td> -->
-<%-- 									<td>${record.outState}</td> --%>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>出院医嘱</td> -->
-<%-- 									<td>${record.suggestion}</td> --%>
-<!-- 								</tr> -->
-
-<!-- 							</tbody> -->
-<!-- 						</table> -->
-<!-- 					</section> -->
-<%-- 				</c:forEach> --%>
-<%-- 			</c:if> --%>
-<%-- 			<c:if --%>
-<%-- 				test="${operationRecords != null && fn:length(operationRecords)>0}"> --%>
-<!-- 				<section> -->
-<!-- 					<H1>手术记录</H1> -->
-<!-- 				</section> -->
-
-<%-- 				<c:forEach items="${operationRecords}" var="operation"> --%>
-<%-- 					<c:if test="${operation.id != null}"> --%>
-<!-- 						<section> -->
-<!-- 							<H2> -->
-<!-- 								手术情况<br />( -->
-<%-- 								<fmt:formatDate value="${ operation.operatingDate }" --%>
-<%-- 									pattern="yyyy年MM月dd日 HH时" /> --%>
-<!-- 								) -->
-<!-- 							</H2> -->
-<!-- 							<table> -->
-<!-- 								<tbody> -->
-<!-- 									<tr> -->
-<!-- 										<td>麻醉方法</td> -->
-<%-- 										<td>${ operation.anaesthesiaMethod }</td> --%>
-<!-- 									</tr> -->
-<!-- 									<tr> -->
-<!-- 										<td>手术名称</td> -->
-<!-- 										<td> -->
-<%-- 											<p>${ operation.operationDesc }</p> --%>
-
-<!-- 										</td> -->
-<!-- 									</tr> -->
-<!-- 									<tr> -->
-<!-- 										<td>术者</td> -->
-<!-- 										<td> -->
-<%-- 											<p>${operation.operatorName}</p> --%>
-
-<!-- 										</td> -->
-<!-- 									</tr> -->
-<!-- 								</tbody> -->
-<!-- 							</table> -->
-
-<!-- 						</section> -->
-<%-- 						<c:forEach items="${operation.assetTypes}" var="assetType"> --%>
-<!-- 							<section> -->
-<%-- 								<H1>${assetType.assetTypeName}</H1> --%>
-<!-- 							</section> -->
-<%-- 							<c:forEach items="${assetType.assets}" var="asset"> --%>
-<!-- 								<section> -->
-<!-- 									<img class="starterAvator" -->
-<%-- 										src="<%=serverUrl%>file/asset?id=${asset.id}"></img> --%>
-<!-- 								</section> -->
-<%-- 							</c:forEach> --%>
-<%-- 						</c:forEach> --%>
-<%-- 					</c:if> --%>
-<%-- 				</c:forEach> --%>
-<%-- 			</c:if> --%>
 				<section>
 					<H1>住院病历资料</H1>
 				</section>
 			<c:forEach items="${docList}" var="doc">
 				<section class="scrollable">
 					<H6>  </H6>
-					<img class="docImg" 
-						src="<%=serverUrl%>file/downloadFile?fileName=${doc.filePath}"></img>
+						<c:if test="${doc.storage_name eq 'oss'}">
+							<img class="docImg" onclick="showBigPic(this);" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${doc.filePath}"></img>
+						</c:if>
+						<c:if test="${asset.storage_name != 'oss'}">
+							<img class="docImg"  onclick="showBigPic(this);"
+								src="<%=serverUrl%>file/downloadFile?fileName=${doc.filePath}"></img>
+						</c:if>
 				</section>
 			</c:forEach>
 		</div>
 	</div>
+	
+	
+	<div class="modal fade" id="imgClassModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" style="z-index: 100001; display: none;padding-right:5px;padding-left:5px;">
+	<div class="modal-dialog" role="document" style="width: 100%;">
+			<button type="button" class="close" data-dismiss="modal"
+				style="border: 1px solid #000;background-color:#000;  opacity:0.5; -moz-border-radius: 20px; -webkit-border-radius: 20px; border-radius: 20px; z-index: 100011; width: 40px; height: 40px; position: fixed; right: 20px; top: 20px;"
+				aria-label="Close">
+				<span aria-hidden="true" style="color: #fff;">&times;</span>
+			</button>
+
+			<div class="modal-body" id="class_main_body" style="padding: 0px;overflow: auto;height: 700px;">
+				<img id="image_big" style="height: auto; width: 100%;" />
+			</div>
+	</div>
+</div>
 </body>
 <style>
 <!--
@@ -211,6 +92,16 @@
 	$(function() {
 		initEvent();
 	});
+	
+	function showBigPic(obj) {
+		var url = obj.getAttribute("src");
+		if(url){
+			console.log(Reveal.getConfig())
+			Reveal.getConfig().mouseWheel=false;
+			$("#image_big").attr('src', url);
+			$("#imgClassModal").modal('show');
+		}
+	}
 
 	function initEvent() {
 		Reveal.initialize({

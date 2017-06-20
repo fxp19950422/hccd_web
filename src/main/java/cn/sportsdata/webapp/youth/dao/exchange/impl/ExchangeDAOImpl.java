@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital;
 import cn.sportsdata.webapp.youth.common.vo.patient.PatientVO;
@@ -107,6 +108,14 @@ public class ExchangeDAOImpl extends BaseDAO implements ExchangeDAO {
 		map.put("doctorId", doctorId);
 		map.put("uids", uids);
 		return sqlSessionTemplate.selectList(getSqlNameSpace(GET_EXCHANGE_RESIDENT_RECORD), map);
+	}
+
+	@Override
+	public List<AssetVO> getMedicalAsset(List<String> uids) {
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("uids", uids);
+		return sqlSessionTemplate.selectList(getSqlNameSpace("getMedicalAssetRecords"), map);
 	}
 	
 }

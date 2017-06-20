@@ -71,7 +71,17 @@
 						</sa-panel>
 					</div>
 				</div>
-				
+				<c:forEach items="${assets}" var="asset">
+						<sa-panel title="${asset.assetTypeName}">
+								<c:if test="${asset.storage_name eq 'oss'}">
+									<img class="starterAvator" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${asset.id}"></img>
+								</c:if>
+								<c:if test="${asset.storage_name != 'oss'}">
+									<img class="starterAvator" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+								</c:if>
+						</sa-panel>
+					
+				</c:forEach>
 				<input type="hidden" name="id" value="${id}" />
 			</div>
 		</form>
@@ -86,7 +96,10 @@
 				<tr>
 					<td width="33%">姓名: ${record.realName}</td>
 					
-					<td  width="33%">性别: ${gender}</td>
+					<td  width="33%">性别: 
+					<c:if test="${record.gender=='female'}">女</c:if>
+					<c:if test="${record.gender=='male'}">男</c:if>
+					</td>
 					
 					<td  width="33%">年龄: ${age}岁</td>
 				</tr>
@@ -130,7 +143,7 @@
 				建议:<span id="spnSuggestion"></span>
 			</div>
 			<div id="bottomDiv" style=" margin:0 auto;width:95%;margin-top:10px">
-				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
+<%-- 				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>   --%>
 				<span style="float:right">医生：${record.name}</span>
 			</div>
 	</div>
