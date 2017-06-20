@@ -624,22 +624,23 @@
     </select>
     
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select A.*,A.operating_date operatingDate,
+    	select distinct(A.id) uuid,A.*,A.operating_date operatingDate,
     	A.operation_desc operationDescription, b.real_name patientName from operation A 
     	left join patient b on A.patient_id=b.patient_number
     	left join doctor C on C.name = A.operator
     	left join doctor D on D.name = A.FIRST_ASSISTANT
     	left join doctor E on E.name = A.SECOND_ASSISTANT
-	       	where (A.doctor_id=#{doctor_code} or C.user_id=#{doctor_code} or D.user_id=#{doctor_code} or E.user_id=#{doctor_code}) 
+    	left join patient_in_hospital F on A.patient_id=F.patient_id and A.VISIT_ID=F.VISIT_ID
+	       	where (A.doctor_id=#{doctor_code} or C.user_id=#{doctor_code} or D.user_id=#{doctor_code} or E.user_id=#{doctor_code} or F.doctor_id=#{doctor_code}) 
 	       	and A.hospital_id=#{hospital_id} and b.status='active' and A.status = 'active' 
 	       	<if test="patName == null or patName ==''">
-		       	and year(operating_date) = #{year} 
-		       	and month(operating_date) =#{month} and day(operating_date) = #{day}
+		       	and year(A.operating_date) = #{year} 
+		       	and month(A.operating_date) =#{month} and day(A.operating_date) = #{day}
 	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
-	       	order by operating_date desc
+	       	order by A.operating_date desc
     </select>
     
     <select id="searchDirectorOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
