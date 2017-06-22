@@ -10,6 +10,9 @@
 <jsp:useBean id="now" class="java.util.Date" />
 <%@ page import="java.util.Date"%>
 
+<%@ page import="org.apache.log4j.Logger" %>  
+<%@ page import="java.util.*,java.io.*,java.text.*,java.net.*" %> 
+
 <%
 	String serverUrl = CommonUtils.getServerUrl(request);
 %>
@@ -19,7 +22,39 @@
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
 		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
+		
 	</div>
+	<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">上传图片</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">上传图片</h4>
+			</div>
+			<div class="modal-body">
+			<div id="file-upload-img-area" style="border: 1px solid rgb(204, 204, 204); width: 100%; height: 200px; 
+				background-size: contain; background-repeat: no-repeat; background-position: center;" >图片预览
+			</div>
+				
+				<div id="file-info"></div>
+				
+				<div id="file-upload-btn-area" class="text-center" style="margin-top: 20px;">
+    				<input type="file" name="fileField" class="file" id="fileField" size="28" onchange="preview(this)" multiple />
+					<button id="file-upload-temp-upload-btn" type="submit" class="btn btn-success" style="width: 100%;" onclick="uploadImage()">上传</button>
+					<button id="file-upload-normal-upload-btn" class="btn btn-success" style="width: 100%; display:none;">保存</button>
+					<button id="file-upload-cancel-btn" type="button" class="btn btn-normal" data-dismiss="modal" 
+						style="width: 100%; margin-top: 10px;">取消</button>
+					
+				</div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+	
 	<div class="clearfix"></div>
 	<div class="profileEditContent">
 		<form id="player_form">
@@ -257,7 +292,6 @@ pre, code {
 	}
 	
 	function initEvent() {
-		
 		$('#cancle_btn').click(function(){
 			if('${condition}'){
 				$('#content').loadAngular("<%=serverUrl%>register/register_list?" + $("#condition_form").serialize() );
@@ -267,6 +301,10 @@ pre, code {
 		});
 		$("#add_medical_btn").click(function(){
 			$('#content').loadAngular("<%=serverUrl%>care/add_care?registId=${record.id }" );
+			
+		});
+		$('#upload_btn').click(function(){
+			$('#content').loadAngular("<%=serverUrl%>WEB-INF/jsp/user/load_test.jsp" );
 		});
 
 		$("#btable").bootstrapTable();
@@ -302,5 +340,65 @@ pre, code {
 // 									+ $("#player_form").serialize()
 // 						})
 	}
+
+	
+
+function preview(file)  
+{  
+	var prevArea = document.getElementById('file-upload-img-area');
+	var info = document.getElementById('file-info');
+	var fileInput = document.getElementById('fileField');
+    // 检查文件是否选择:
+    if (!fileInput.value) {
+        info.innerHTML = '没有选择文件';
+        return;
+    }
+    prevArea.style.backgroundImage = '';
+    // 获取File引用:
+    var file = fileInput.files[0];
+    // 获取File信息:
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+        alert('不是有效的图片文件!');
+        return;
+    }
+    // 读取文件:
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var
+            data = e.target.result; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)...'      
+        image = data;
+        prevArea.style.backgroundImage = 'url(' + data + ')';
+    };
+    // 以DataURL的形式读取文件:
+    reader.readAsDataURL(file);
+}
+
+function uploadImage(){
+	var data = new FormData();
+	var inputFile = document.getElementById('fileField');
+	var file = inputFile.files[0];
+	data.append(file.name, file);
+	console.log(file.name, file.type);
+	
+	$.ajax({
+		type:'POST',
+		url: '', 
+	 	data: data,
+	 	async: true,
+	 	dataType: file.type,
+	 	contentType: false,    //不可缺
+	 	processData: false,    //不可缺
+	 	success: function(data){
+			if(data.success){
+				alert('上传成功');
+			}else{
+				alert('上传失败');
+			}
+		},
+		error: function(err){
+			alert('网络故障');
+		}
+	});
+}
 
 </script>

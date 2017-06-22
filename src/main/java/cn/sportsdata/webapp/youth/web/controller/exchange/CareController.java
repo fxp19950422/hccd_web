@@ -549,9 +549,7 @@ public class CareController extends BaseController{
 		dbRecord.setDrainage(record.getDrainage());
 		dbRecord.setFinishedCondition(record.getFinishedCondition());
 		patientService.updateOperationRecord(dbRecord);
-		if (!StringUtils.isEmpty(avatar)){
-			assetservice.insertAsset(vo, login.getHospitalUserInfo().getHospitalId(), id, type, assetTypeId, stageTypeId);
-		}
+		assetservice.insertAsset(vo, login.getHospitalUserInfo().getHospitalId(), id, type, assetTypeId, stageTypeId);
 		return record;
 	}
 	
@@ -792,9 +790,7 @@ public class CareController extends BaseController{
 		ResidentRecord dbRecord = patientService.getResidentRecordById(id);
 		dbRecord.setDiagnose(record.getDiagnose());
 		patientService.updateResidentRecord(dbRecord);
-		if (!StringUtils.isEmpty(avatar)){
-			assetservice.insertAsset(vo, login.getHospitalUserInfo().getHospitalId(), id, type, assetTypeId, stageTypeId);
-		}
+		assetservice.insertAsset(vo, login.getHospitalUserInfo().getHospitalId(), id, type, assetTypeId, stageTypeId);
 		return record;
 	}
 	
