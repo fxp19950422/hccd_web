@@ -33,10 +33,9 @@
 						</div>
 						
 					</sa-panel>
-					<sa-panel title="主诉">
+					<%-- <sa-panel title="主诉">
 							<pre style="background:white;border-width:0px;">${record.diagnose}</pre>
-					
-					</sa-panel>
+					</sa-panel> --%>
 					<c:forEach items="${record.assetTypes}" var="assetType">
 						<sa-panel title="${assetType.assetTypeName}">
 							<c:forEach items="${assetType.assets}" var="asset">

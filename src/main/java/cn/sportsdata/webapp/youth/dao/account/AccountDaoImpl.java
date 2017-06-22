@@ -11,6 +11,7 @@ import cn.sportsdata.webapp.youth.dao.BaseDAO;
 import org.springframework.stereotype.Repository;
 
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
+import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
 
@@ -56,19 +57,25 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	private static final String SELECT_MAPPED_PATIENT_COUNT = "getMappedPatientCount";
 	
 	private static final String getHospitalUserInfoByUserId = "getHospitalUserInfoByUserId";
+	
+	private static final String SELECT_PATIENT_ACCOUNT_BY_USER_NAME = "getPatientAccountByUserName";
+	
+	private static final String SELECT_PATIENT_ACCOUNT_BY_MOBILE_PHONE = "getPatientAccountByMobilePhone";
+	
+	private static final String SELECT_PATIENT_ACCOUNT_BY_USER_ID = "getPatientAccountByUserId";
+	
+	private static final String CREATE_PATIENT_ACCOUNT_ROLE_MAPPING = "insertPatientAccountRoleMapping";
 
 	@Override
 	public List<AccountVO> getAccounts(String orgID) {
-	
 		return sqlSessionTemplate.selectList(getSqlNameSpace(SELECT_ACCOUNTS_BY_ORG), orgID);
-    	
 	}
 
 	@Override
 	public int insertAccount(AccountVO account) {
 		return sqlSessionTemplate.insert(getSqlNameSpace(INSERT_ACCOUNT), account);
 	}
-
+	
 	@Override
 	public int insertAccountOrgRoleMapping(String loginId, String orgId, long accountRoleId) {
 		Map<String, Object> map = new HashMap<String,Object>();
@@ -145,6 +152,29 @@ public class AccountDaoImpl extends BaseDAO implements AccountDao {
 	@Override
 	public int getMappedPaitentCount(String userId) {
 		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_MAPPED_PATIENT_COUNT), userId);
+	}
+
+	@Override
+	public AccountVO getPatientAccountByMobilePhone(String mobile) {
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_PATIENT_ACCOUNT_BY_MOBILE_PHONE), mobile);
+	}
+
+	@Override
+	public AccountVO getPatientAccountByUserName(String username) {
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_PATIENT_ACCOUNT_BY_USER_NAME), username);
+	}
+
+	@Override
+	public int createPatientAccountRoleMapping(String userId, Long roleId) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("userId", userId);
+		paramMap.put("roleId", roleId);
+		return sqlSessionTemplate.insert(getSqlNameSpace(CREATE_PATIENT_ACCOUNT_ROLE_MAPPING), paramMap);
+	}
+
+	@Override
+	public AccountVO getPatientAccountByUserId(String userId) {
+		return sqlSessionTemplate.selectOne(getSqlNameSpace(SELECT_PATIENT_ACCOUNT_BY_USER_ID), userId);
 	}
 
 }

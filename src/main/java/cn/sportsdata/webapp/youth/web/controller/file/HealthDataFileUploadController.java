@@ -42,6 +42,7 @@ import cn.sportsdata.webapp.youth.common.vo.AssetVO;
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
 import cn.sportsdata.webapp.youth.common.vo.Response;
 import cn.sportsdata.webapp.youth.common.vo.login.LoginVO;
+import cn.sportsdata.webapp.youth.common.vo.patient.RecordImageInfoVO;
 import cn.sportsdata.webapp.youth.service.account.AccountService;
 import cn.sportsdata.webapp.youth.service.asset.AssetService;
 import cn.sportsdata.webapp.youth.web.controller.BaseController;
@@ -191,10 +192,20 @@ public class HealthDataFileUploadController extends BaseController {
 	// below upload/download methods are used by pure PlUpload plugin
 	@ResponseBody
 	@RequestMapping(value="/setOssFileAsset", method = RequestMethod.POST)
-	public String setOssFileAsset(HttpServletRequest request, String fileName, String stageTypeId, 
-			String assetTypeId, String hospitalId, String hospitalRecordId, String type) {
+	public String setOssFileAsset(HttpServletRequest request, String hospitalId, 
+			String hospitalRecordId, String recordType, @RequestBody ArrayList<RecordImageInfoVO>fileList) {
 		try {
-			return assetservice.insertHospitalRecordOSSAsset(fileName, hospitalId, hospitalRecordId, type, assetTypeId, stageTypeId, "oss");
+			for (RecordImageInfoVO imageInfo: fileList) {
+				String fileName = imageInfo.getFileName();
+				String assetTypeId = imageInfo.getAssetTypeId();
+				String assetStageId = imageInfo.getAssetStageId();
+				String createdTime = imageInfo.getCreatedTime();
+				String index = imageInfo.getIndex();
+				
+				assetservice.insertHospitalRecordOSSAsset(fileName, hospitalId, hospitalRecordId, recordType, 
+						assetTypeId, assetStageId, createdTime, index, "oss");
+			}
+			return "";
 		} catch(Exception e) {
 			logger.error("Error occurs while uploading file", e);
 		}

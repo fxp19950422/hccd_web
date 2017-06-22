@@ -52,10 +52,12 @@
 		<selectKey keyProperty="id" resultType="String" order="BEFORE">  
             select UUID() from dual  
         </selectKey>
-		insert into hospital_record_asset(id, hospital_id, hospital_record_id, asset_id, created_time, last_updated, record_type,
+		insert into hospital_record_asset(id, hospital_id, hospital_record_id, asset_id,
+		 created_time, storage_index, last_updated, record_type,
 		record_asset_type_id, asset_stage_type_id, storage_type, status)
 		values(#{id}, #{hospital_id}, #{hospital_record_id}, #{asset_id},
-		current_timestamp(), current_timestamp(), #{record_type}, #{record_asset_type_id}, #{stage_type_id}, #{storage_type}, 'active')
+		current_timestamp(), #{index}, current_timestamp(), #{record_type}, 
+		#{record_asset_type_id}, #{stage_type_id}, #{storage_type}, 'active')
 	</insert>
 
 	<update id="deleteHospitalRecordAsset" parameterType="java.util.Map">

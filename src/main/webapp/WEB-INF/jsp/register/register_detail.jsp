@@ -21,39 +21,11 @@
 	<div class="coach_edit_button_area">
 		<button id="add_medical_btn" class="btn btn-primary"
 			style="float: right; margin-left: 10px;">新增门诊记录</button>
-		<button id="cancle_btn" class="btn btn-default" style="float: right;">返回</button>
-		
+
+		<button id="cancle_btn" class="btn btn-default" style="float: right;margin-left: 10px;">返回</button>
 	</div>
 	<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">上传图片</button>
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">上传图片</h4>
-			</div>
-			<div class="modal-body">
-			<div id="file-upload-img-area" style="border: 1px solid rgb(204, 204, 204); width: 100%; height: 200px; 
-				background-size: contain; background-repeat: no-repeat; background-position: center;" >图片预览
-			</div>
-				
-				<div id="file-info"></div>
-				
-				<div id="file-upload-btn-area" class="text-center" style="margin-top: 20px;">
-    				<input type="file" name="fileField" class="file" id="fileField" size="28" onchange="preview(this)" multiple />
-					<button id="file-upload-temp-upload-btn" type="submit" class="btn btn-success" style="width: 100%;" onclick="uploadImage()">上传</button>
-					<button id="file-upload-normal-upload-btn" class="btn btn-success" style="width: 100%; display:none;">保存</button>
-					<button id="file-upload-cancel-btn" type="button" class="btn btn-normal" data-dismiss="modal" 
-						style="width: 100%; margin-top: 10px;">取消</button>
-					
-				</div>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
+
 	
 	<div class="clearfix"></div>
 	<div class="profileEditContent">
@@ -143,7 +115,7 @@
 		<table style="clear: both" id="btable"
 			data-classes="table table-no-bordered sprotsdatatable"
 			data-toggle="table" data-striped="true" data-pagination="true"
-			data-page-size="7" data-page-list="[7,10,15,20]"
+			data-page-size="20" data-page-list="[7,10,15,20]"
 			data-pagination-first-text="第一页" data-pagination-pre-text="上页"
 			data-pagination-next-text="下页" data-pagination-last-text="最后页">
 			<thead>
@@ -203,6 +175,36 @@
 		</div>
 	</form>
 </div>
+
+
+<div class="modal fade" id="changeDateModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" style="z-index: 100001; display: none;">
+	<div class="modal-dialog" role="document" style="width: 50%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">图像上传</h4>
+			</div>
+			<span class="btn btn-success fileinput-button"> <i
+			class="glyphicon glyphicon-plus"></i> <span>添加文件</span> <!-- The file input field used as target for the file upload widget -->
+			<input id="fileupload" type="file" name="files[]" multiple>
+		</span> <br> <br>
+		<!-- The global progress bar -->
+		<div id="progress" class="progress">
+			<div class="progress-bar progress-bar-success"></div>
+		</div>
+		<!-- The container for the uploaded files -->
+		<div id="files" class="files"></div>
+		<br>
+			<div class="modal-footer">
+				<div id="template_cont"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <style>
 pre, code {
 	white-space: pre-line;
@@ -213,6 +215,10 @@ pre, code {
 		setTimeout(function() {
 			initData();
 			initEvent();
+			
+			initUpload();
+			
+			
 		}, 50);  // if using angular widget like sa-panel, since the real dom loaded is after the Angular.compile method, which is behind the document ready event, so add a little timeout to hack this
 	});
 	
@@ -221,14 +227,151 @@ pre, code {
 		$('.nav-pills a:first').focus();  // fix issues of first tab is not focused after loading
 	}
 	
-	
+	function initUpload(){
+		var url = "<%=serverUrl%>/api/vi/fileUpload",
+        uploadButton = $('<button/>')
+            .addClass('btn btn-primary')
+            .prop('disabled', true)
+            .text('Processing...')
+            .on('click', function () {
+                var $this = $(this),
+                    data = $this.data();
+                $this
+                    .off('click')
+                    .text('取消')
+                    .on('click', function () {
+                        $this.remove();
+                        data.abort();
+                    });
+                data.submit().always(function () {
+                    $this.remove();
+                });
+            });
+		$('#fileupload')
+				.fileupload(
+						{
+							url : url,
+							dataType : 'json',
+							autoUpload : false,
+							acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+							// Enable image resizing, except for Android and Opera,
+							// which actually support image resizing, but fail to
+							// send Blob objects via XHR requests:
+							disableImageResize : /Android(?!.*Chrome)|Opera/
+									.test(window.navigator.userAgent),
+							previewMaxWidth : 100,
+							previewMaxHeight : 100,
+							previewCrop : true
+						})
+				.on(
+						'fileuploadadd',
+						function(e, data) {
+							data.context = $('<div/>').appendTo('#files');
+							$.each(data.files, function(index, file) {
+								var node = $('<p/>').append(
+										$('<span/>').text(file.name));
+								if (!index) {
+									node.append('<br>').append(
+											uploadButton.clone(true).data(
+													data));
+								}
+								node.appendTo(data.context);
+							});
+						})
+				.on(
+						'fileuploadprocessalways',
+						function(e, data) {
+							var index = data.index, file = data.files[index], node = $(data.context
+									.children()[index]);
+							if (file.preview) {
+								node.prepend('<br>').prepend(file.preview);
+							}
+							if (file.error) {
+								node.append('<br>').append(
+										$('<span class="text-danger"/>')
+												.text(file.error));
+							}
+							if (index + 1 === data.files.length) {
+								data.context.find('button').text('上传')
+										.prop('disabled',
+												!!data.files.error);
+							}
+						})
+				.on(
+						'fileuploadprogressall',
+						function(e, data) {
+							var progress = parseInt(data.loaded
+									/ data.total * 100, 10);
+							$('#progress .progress-bar').css('width',
+									progress + '%');
+						})
+				.on(
+						'fileuploaddone',
+						function(e, data) {
+							$
+									.each(
+											data.result.files,
+											function(index, file) {
+												if (file.url) {
+													var link = $('<a>')
+															.attr('target',
+																	'_blank')
+															.prop(
+																	'href',
+																	file.url);
+													$(
+															data.context
+																	.children()[index])
+															.wrap(link);
+												} else if (file.error) {
+													var error = $(
+															'<span class="text-danger"/>')
+															.text(
+																	file.error);
+													$(
+															data.context
+																	.children()[index])
+															.append('<br>')
+															.append(error);
+												}
+											});
+						})
+				.on(
+						'fileuploadfail',
+						function(e, data) {
+							$
+									.each(
+											data.files,
+											function(index) {
+												var error = $(
+														'<span class="text-danger"/>')
+														.text(
+																'文件上传失败.');
+												$(
+														data.context
+																.children()[index])
+														.append('<br>')
+														.append(error);
+											});
+						}).prop('disabled', !$.support.fileInput).parent()
+				.addClass($.support.fileInput ? undefined : 'disabled');
+	}
 	
 	function actionFormatter(value, row, index){
-		return '<span onclick=handleNow("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return  actionPhotoFormatter(value, row, index) +
+		'<span onclick=handleNow("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+	}
+	
+	function actionPhotoFormatter(value, row, index){
+		return '<span onclick=handlePhoto("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-camera content-color"></i></span>';
 	}
 	
 	function actionHistoryFormatter(value, row, index){
-		return '<span onclick=handleHistory("'+value+'","'+row.recordType+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+		return  '<span onclick=handleHistory("'+value+'","'+row.recordType+'","'+monthFormatter(row.visitDate, row, index)+'") style="margin-left:10px;cursor:pointer" ><i class="glyphicon glyphicon-search content-color"></i></span>';
+	}
+	
+	function handlePhoto(record_id,recordType){
+		window.open("<%=serverUrl%>care/upload_photo?recordId="+record_id+"&recordType="+recordType);
 	}
 	
 	function handleNow(recordId,recordType) {
@@ -256,15 +399,32 @@ pre, code {
 		});
 	}
 	
-	function handleHistory(recordId,recordType) {
-		window.open("<%=serverUrl%>care/pat_history_document?registId="+$("#recordId").val());
+	function handleHistory(recordId,recordType,row) {
+		if(recordType=='medical'){
+			url ="<%=serverUrl%>care/care_edit?id=" + recordId+"&"+$("#condition_form").serialize();
+			sa.ajax({
+				type : "get",
+				url : url,
+				data :{registId:$("#recordId").val()},
+				success : function(data) {
+					AngularHelper.Compile($('#content'), data);
+				},
+				error: function() {
+					alert("页面打开失败");
+				}
+			});
+		}else {
+			console.log(row)
+			window.open("<%=serverUrl%>care/pat_history_document?recordId="+recordId+"&registId="+$("#recordId").val());
+		}
+		
 	}
 	
 	function typeFormatter(value, row, index){
 		if('medical' == value){
 			return "门诊记录";
 		} else if ('resident' == value) {
-			return '出院记录';
+			return "住院病历资料";
 		} else if ('operation' == value) {
 			return '手术记录';
 		}
@@ -290,6 +450,24 @@ pre, code {
 		}
 		return "-";
 	}
+	function monthFormatter(value, row, index){
+		if(value){
+			if(value.indexOf(";")>0){
+				var start = new Date(value.split(";")[0]).Format("yyyy-MM")
+				var end ;
+				if(value.split(";")[1]){
+					 end = new Date(value.split(";")[1]).Format("yyyy-MM")
+					 return end;
+				} else {
+					return start;
+				}
+			} else {
+				return ""
+			}
+			
+		}
+		return "";
+	}
 	
 	function initEvent() {
 		$('#cancle_btn').click(function(){
@@ -306,6 +484,15 @@ pre, code {
 		$('#upload_btn').click(function(){
 			$('#content').loadAngular("<%=serverUrl%>WEB-INF/jsp/user/load_test.jsp" );
 		});
+		
+		$("#add_review_photo").click(function(){
+			showUploadPhoto()
+		})
+		
+		function showUploadPhoto(){
+// 			$("#changeDateModal").modal({backdrop:false,show:true});
+			window.open("<%=serverUrl%>care/upload_photo?registId="+$("#recordId").val());
+		}
 
 		$("#btable").bootstrapTable();
 		var msg = '当日记录尚未同步完成，请稍后';
@@ -328,6 +515,8 @@ pre, code {
 			  }
 		});
 		
+		
+		
 		/* $("#todaytable tr").click(function(event){
 			var td = event.target;
 			var dataTd = $(td).parent().children()[3];
@@ -339,66 +528,10 @@ pre, code {
 <%-- 		$("#btable").bootstrapTable('refresh', {url: "<%=request.getContextPath()%>/register/register_detail_his_list?" --%>
 // 									+ $("#player_form").serialize()
 // 						})
-	}
+//	};
 
 	
 
-function preview(file)  
-{  
-	var prevArea = document.getElementById('file-upload-img-area');
-	var info = document.getElementById('file-info');
-	var fileInput = document.getElementById('fileField');
-    // 检查文件是否选择:
-    if (!fileInput.value) {
-        info.innerHTML = '没有选择文件';
-        return;
-    }
-    prevArea.style.backgroundImage = '';
-    // 获取File引用:
-    var file = fileInput.files[0];
-    // 获取File信息:
-    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-        alert('不是有效的图片文件!');
-        return;
-    }
-    // 读取文件:
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        var
-            data = e.target.result; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)...'      
-        image = data;
-        prevArea.style.backgroundImage = 'url(' + data + ')';
-    };
-    // 以DataURL的形式读取文件:
-    reader.readAsDataURL(file);
-}
 
-function uploadImage(){
-	var data = new FormData();
-	var inputFile = document.getElementById('fileField');
-	var file = inputFile.files[0];
-	data.append(file.name, file);
-	console.log(file.name, file.type);
-	
-	$.ajax({
-		type:'POST',
-		url: '', 
-	 	data: data,
-	 	async: true,
-	 	dataType: file.type,
-	 	contentType: false,    //不可缺
-	 	processData: false,    //不可缺
-	 	success: function(data){
-			if(data.success){
-				alert('上传成功');
-			}else{
-				alert('上传失败');
-			}
-		},
-		error: function(err){
-			alert('网络故障');
-		}
-	});
-}
 
 </script>

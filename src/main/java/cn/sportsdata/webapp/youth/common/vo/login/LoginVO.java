@@ -26,6 +26,7 @@ public class LoginVO extends BaseVO implements UserDetails,Serializable{
     private int type;
     private String avatar;
     private String avatar_id;
+    private String mobile;
     
     private HospitalUserInfo hospitalUserInfo;
     
@@ -235,6 +236,14 @@ public class LoginVO extends BaseVO implements UserDetails,Serializable{
 
 	public void setHospitalUserInfo(HospitalUserInfo hospitalUserInfo) {
 		this.hospitalUserInfo = hospitalUserInfo;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 }

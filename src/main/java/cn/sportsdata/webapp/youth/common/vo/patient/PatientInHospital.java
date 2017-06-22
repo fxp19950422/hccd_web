@@ -1237,12 +1237,12 @@ public class PatientInHospital implements Serializable {
 
 	public String getAge(Date birthDay) {
 		if (birthDay == null)
-			return "未知";
+			return "0";
 
 		Calendar cal = Calendar.getInstance();
 
 		if (cal.before(birthDay)) {
-			return "未知";
+			return "0";
 		}
 		int yearNow = cal.get(Calendar.YEAR);
 		int monthNow = cal.get(Calendar.MONTH);

@@ -71,7 +71,17 @@
 						</sa-panel>
 					</div>
 				</div>
-				
+				<c:forEach items="${assets}" var="asset">
+						<sa-panel title="${asset.assetTypeName}">
+								<c:if test="${asset.storage_name eq 'oss'}">
+									<img class="starterAvator" style="width: 100%" src="http://hospital-image.oss-cn-shanghai.aliyuncs.com/${asset.id}"></img>
+								</c:if>
+								<c:if test="${asset.storage_name != 'oss'}">
+									<img class="starterAvator" style="width: 100%" src="<%=serverUrl%>file/asset?id=${asset.id}"></img>
+								</c:if>
+						</sa-panel>
+					
+				</c:forEach>
 				<input type="hidden" name="id" value="${id}" />
 			</div>
 		</form>
@@ -86,7 +96,10 @@
 				<tr>
 					<td width="33%">姓名: ${record.realName}</td>
 					
-					<td  width="33%">性别: ${gender}</td>
+					<td  width="33%">性别: 
+					<c:if test="${record.gender=='female'}">女</c:if>
+					<c:if test="${record.gender=='male'}">男</c:if>
+					</td>
 					
 					<td  width="33%">年龄: ${age}岁</td>
 				</tr>
@@ -130,7 +143,7 @@
 				建议:<span id="spnSuggestion"></span>
 			</div>
 			<div id="bottomDiv" style=" margin:0 auto;width:95%;margin-top:10px">
-				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>  
+<%-- 				<span style="float:left">打印日期:<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd "/></span>   --%>
 				<span style="float:right">医生：${record.name}</span>
 			</div>
 	</div>
@@ -224,8 +237,8 @@
 			$("#diagDesc").val("左手外伤术后。");
 			$("#diagDesc").text("左手外伤术后。");
 		} else if('suggestion' == obj){
-			$("#suggestion").val("1.摄左手正斜位片，拆除石膏外固定；\n2.患肢避免过度用力、外伤，防止内固定断裂；\n3.患肢适度功能锻炼；\n4.如有不适，我科随诊。");
-			$("#suggestion").text("1.摄左手正斜位片，拆除石膏外固定；\n2.患肢避免过度用力、外伤，防止内固定断裂；\n3.患肢适度功能锻炼；\n4.如有不适，我科随诊。");
+			$("#suggestion").val("1、更换敷料，拆除缝线，拔除克氏针；\n2、休息一月，避免外伤、过度用力，禁止站立、负重行走，防止内固定物断裂或再骨折，防止肌腱再断裂。\n3、继续石膏外固定，如出现骨折处疼痛、畸形、骨擦感，随时就诊；\n4、保持针眼、创口清洁干燥，隔日更换敷料，如出现红肿、发热、渗液渗血，随时就诊；\n5、适度功能锻炼；\n6、中药熏洗治疗；\n7、一月后复查，如有其他不适，门诊随诊。");
+			$("#suggestion").text("1、更换敷料，拆除缝线，拔除克氏针；\n2、休息一月，避免外伤、过度用力，禁止站立、负重行走，防止内固定物断裂或再骨折，防止肌腱再断裂。\n3、继续石膏外固定，如出现骨折处疼痛、畸形、骨擦感，随时就诊；\n4、保持针眼、创口清洁干燥，隔日更换敷料，如出现红肿、发热、渗液渗血，随时就诊；\n5、适度功能锻炼；\n6、中药熏洗治疗；\n7、一月后复查，如有其他不适，门诊随诊。");
 		} 
 	}
 	

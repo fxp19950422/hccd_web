@@ -52,7 +52,17 @@
         where A.id = #{id} order by A.id desc
     </select>
     
-  
+  	<select id="getPatientAccountByMobilePhone" resultMap="AccountResultMap" parameterType="java.lang.String">
+  		select A.* from user A, user_role_mapping M where A.id=M.user_id and A.mobile=#{mobile} and M.role_id=6 and A.status='active'
+  	</select>
+  	
+  	<select id="getPatientAccountByUserName" resultMap="AccountResultMap" parameterType="java.lang.String">
+  		select A.* from user A, user_role_mapping M where A.id=M.user_id and A.user_name=#{username} and M.role_id=6 and A.status='active'
+  	</select>
+  	
+  	<select id="getPatientAccountByUserId" resultMap="AccountResultMap" parameterType="java.lang.String">
+  		select A.* from user A, user_role_mapping M where A.id=M.user_id and A.id=#{userId} and M.role_id=6 and A.status='active'
+  	</select>
     
      <select id="getAccountByUsername" resultMap="AccountResultMap" parameterType="java.lang.String">
         select A.*
@@ -71,6 +81,10 @@
     	insert into login(id, account, password, email, birthday, name, avatar,avatar_id, status, created_time) values (#{id},
 			#{username}, #{password}, #{email}, #{birthday}, #{name}, #{avatar},#{avatarId}, 'active', now()
 		)
+    </insert>
+    
+    <insert id="insertPatientAccountRoleMapping" parameterType="java.util.Map">
+    	insert into user_role_mapping(user_id, hospital_id, role_id, created_time) values (#{userId}, '0', #{roleId}, now())
     </insert>
     
     <update id="updateAccount" parameterType="cn.sportsdata.webapp.youth.common.vo.account.AccountVO">

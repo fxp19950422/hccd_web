@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.bo.hospital.PatientRecordBO;
 import cn.sportsdata.webapp.youth.common.exceptions.SoccerProException;
-import cn.sportsdata.webapp.youth.common.utils.ConfigProps;
+import cn.sportsdata.webapp.youth.common.utils.StringUtil;
 import cn.sportsdata.webapp.youth.common.vo.patient.DoctorVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO;
 import cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord;
@@ -40,19 +42,21 @@ public class PatientServiceImpl implements PatientService {
 	private static Logger logger = Logger.getLogger(PatientServiceImpl.class);
 	@Autowired
 	private PatientDAO patientDAO;
-	
+
 	@Autowired
 	private AssetDAO assetDAO;
-	
+
 	@Override
-	public List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode, 
-			String doctorName, long year, long month, long day) {
+	public List<PatientRecordBO> getMedicalRecordList(String hospitalId, String doctorCode, String doctorName,
+			long year, long month, long day) {
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		try {
-			List<MedicalRecordVO> medicalRecordList = patientDAO.getMedicalRecordList(hospitalId, doctorCode, year, month, day);
-			List<PatientRegistRecord> registeRecordList = patientDAO.getRegisteRecordList(hospitalId, doctorCode, year, month, day);
+			List<MedicalRecordVO> medicalRecordList = patientDAO.getMedicalRecordList(hospitalId, doctorCode, year,
+					month, day);
+			List<PatientRegistRecord> registeRecordList = patientDAO.getRegisteRecordList(hospitalId, doctorCode, year,
+					month, day);
 			List<String> patientIdList = new ArrayList<String>();
-			for (MedicalRecordVO record:medicalRecordList) {
+			for (MedicalRecordVO record : medicalRecordList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("medical");
 				patientRecord.setDepartmentId("0309");
@@ -61,12 +65,13 @@ public class PatientServiceImpl implements PatientService {
 				patientIdList.add(record.getPatientId());
 				patientRecordList.add(patientRecord);
 			}
-			
-			for (PatientRegistRecord record:registeRecordList) {
+
+			for (PatientRegistRecord record : registeRecordList) {
 				String patientId = record.getPatientId();
 				if (patientIdList.contains(patientId)) {
-					for (PatientRecordBO patientRecord:patientRecordList) {
-						if (patientRecord.getMedicalRecord()!=null&&patientRecord.getMedicalRecord().getPatientId().equalsIgnoreCase(patientId)) {
+					for (PatientRecordBO patientRecord : patientRecordList) {
+						if (patientRecord.getMedicalRecord() != null
+								&& patientRecord.getMedicalRecord().getPatientId().equalsIgnoreCase(patientId)) {
 							patientRecord.setRegistRecord(record);
 						}
 					}
@@ -79,11 +84,11 @@ public class PatientServiceImpl implements PatientService {
 					patientRecordList.add(patientRecord);
 				}
 			}
-			
+
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
-				for (PatientRecordBO patientRecord:patientRecordList) {
-					for (PatientInfoVO patient:patientList) {
+				for (PatientRecordBO patientRecord : patientRecordList) {
+					for (PatientInfoVO patient : patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -91,8 +96,7 @@ public class PatientServiceImpl implements PatientService {
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return patientRecordList;
 		}
@@ -104,11 +108,10 @@ public class PatientServiceImpl implements PatientService {
 		List<RecordAssetVO> assetTypeList = null;
 		try {
 			assetTypeList = patientDAO.getRecordAssetList(recordId);
-			if(assetTypeList == null) {
+			if (assetTypeList == null) {
 				assetTypeList = new ArrayList<RecordAssetVO>();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			assetTypeList = new ArrayList<RecordAssetVO>();
 		}
@@ -120,27 +123,25 @@ public class PatientServiceImpl implements PatientService {
 		List<RecordAssetTypeVO> assetTypeList = null;
 		try {
 			assetTypeList = patientDAO.getRecordAssetTypeList(recordType);
-			if(assetTypeList == null) {
+			if (assetTypeList == null) {
 				assetTypeList = new ArrayList<RecordAssetTypeVO>();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			assetTypeList = new ArrayList<RecordAssetTypeVO>();
 		}
 		return assetTypeList;
 	}
-	
+
 	@Override
 	public List<RecordAssetStageVO> getAssetStageList(String recordType) {
 		List<RecordAssetStageVO> assetStageList = null;
 		try {
 			assetStageList = patientDAO.getAssetStageList(recordType);
-			if(assetStageList == null) {
+			if (assetStageList == null) {
 				assetStageList = new ArrayList<RecordAssetStageVO>();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			assetStageList = new ArrayList<RecordAssetStageVO>();
 		}
@@ -159,9 +160,10 @@ public class PatientServiceImpl implements PatientService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
-			List<OpertaionRecord> operationList = patientDAO.getOperationRecordList(hospitalId, departmentIdList, doctorName, doctorCode, year, month, day);
+			List<OpertaionRecord> operationList = patientDAO.getOperationRecordList(hospitalId, departmentIdList,
+					doctorName, doctorCode, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
-			for (OpertaionRecord operationRecord:operationList) {
+			for (OpertaionRecord operationRecord : operationList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("operation");
 				patientRecord.setDepartmentId(operationRecord.getDepartmentId());
@@ -170,12 +172,12 @@ public class PatientServiceImpl implements PatientService {
 				patientIdList.add(patientRecord.getPatientId());
 				patientRecordList1.add(patientRecord);
 			}
-			
+
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
 
-				for (PatientRecordBO patientRecord:patientRecordList1) {
-					for (PatientInfoVO patient:patientList) {
+				for (PatientRecordBO patientRecord : patientRecordList1) {
+					for (PatientInfoVO patient : patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -184,23 +186,23 @@ public class PatientServiceImpl implements PatientService {
 				}
 			}
 			result.put("operationList", patientRecordList1);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 
 	@Override
-	public Map<String, Object> getResidentRecordList(String hospitalId, String doctorCode, String doctorName,
-			long year, long month, long day) {
+	public Map<String, Object> getResidentRecordList(String hospitalId, String doctorCode, String doctorName, long year,
+			long month, long day) {
 		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
-			List<ResidentRecord> residentRecordList = patientDAO.getResidentRecordList(hospitalId, doctorCode, departmentIdList, year, month, day);
+			List<ResidentRecord> residentRecordList = patientDAO.getResidentRecordList(hospitalId, doctorCode,
+					departmentIdList, year, month, day);
 			List<String> patientIdList = new ArrayList<String>();
-			for (ResidentRecord residentRecord:residentRecordList) {
+			for (ResidentRecord residentRecord : residentRecordList) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setDepartmentId(residentRecord.getDepartmentId());
 				patientRecord.setRecordType("resident");
@@ -209,11 +211,11 @@ public class PatientServiceImpl implements PatientService {
 				patientIdList.add(patientRecord.getPatientId());
 				patientRecordList.add(patientRecord);
 			}
-			
+
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
-				for (PatientRecordBO patientRecord:patientRecordList) {
-					for (PatientInfoVO patient:patientList) {
+				for (PatientRecordBO patientRecord : patientRecordList) {
+					for (PatientInfoVO patient : patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -223,71 +225,58 @@ public class PatientServiceImpl implements PatientService {
 			}
 			result.put("residentList", patientRecordList);
 			/*
-			List<PatientRecordBO> patientRecordList1 = new ArrayList<PatientRecordBO>();
-			List<ResidentRecord> chargedList = patientDAO.getMyResidentRecordList(hospitalId, doctorCode, year, month, day);
-			List<String> patientIdList = new ArrayList<String>();
-			for (ResidentRecord residentRecord:chargedList) {
-				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("resident");
-				patientRecord.setResidentRecord(residentRecord);
-				patientRecord.setPatientId(residentRecord.getPatientId());
-				patientIdList.add(patientRecord.getPatientId());
-				patientRecordList1.add(patientRecord);
-			}
-
-			List<PatientRecordBO> patientRecordList2 = new ArrayList<PatientRecordBO>();
-			List<ResidentRecord> directList = patientDAO.getDirectResidentRecordList(hospitalId, doctorName, year, month, day);
-			for (ResidentRecord residentRecord:directList) {
-				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("resident");
-				patientRecord.setResidentRecord(residentRecord);
-				patientRecord.setPatientId(residentRecord.getPatientId());
-				patientIdList.add(patientRecord.getPatientId());
-				patientRecordList2.add(patientRecord);
-			}
-			
-			List<PatientRecordBO> patientRecordList3 = new ArrayList<PatientRecordBO>();
-			List<ResidentRecord> attendingList = patientDAO.getAttendingResidentRecordList(hospitalId, doctorName, year, month, day);
-			for (ResidentRecord residentRecord:attendingList) {
-				PatientRecordBO patientRecord = new PatientRecordBO();
-				patientRecord.setRecordType("resident");
-				patientRecord.setResidentRecord(residentRecord);
-				patientRecord.setPatientId(residentRecord.getPatientId());
-				patientIdList.add(patientRecord.getPatientId());
-				patientRecordList3.add(patientRecord);
-			}
-			
-			if (!patientIdList.isEmpty()) {
-				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
-
-				for (PatientRecordBO patientRecord:patientRecordList1) {
-					for (PatientInfoVO patient:patientList) {
-						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
-							patientRecord.setPatient(patient);
-							break;
-						}
-					}
-				}
-				for (PatientRecordBO patientRecord:patientRecordList2) {
-					for (PatientInfoVO patient:patientList) {
-						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
-							patientRecord.setPatient(patient);
-							break;
-						}
-					}
-				}
-				for (PatientRecordBO patientRecord:patientRecordList3) {
-					for (PatientInfoVO patient:patientList) {
-						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
-							patientRecord.setPatient(patient);
-							break;
-						}
-					}
-				}
-			}
-			*/
-		}
-		catch (Exception e) {
+			 * List<PatientRecordBO> patientRecordList1 = new
+			 * ArrayList<PatientRecordBO>(); List<ResidentRecord> chargedList =
+			 * patientDAO.getMyResidentRecordList(hospitalId, doctorCode, year,
+			 * month, day); List<String> patientIdList = new
+			 * ArrayList<String>(); for (ResidentRecord
+			 * residentRecord:chargedList) { PatientRecordBO patientRecord = new
+			 * PatientRecordBO(); patientRecord.setRecordType("resident");
+			 * patientRecord.setResidentRecord(residentRecord);
+			 * patientRecord.setPatientId(residentRecord.getPatientId());
+			 * patientIdList.add(patientRecord.getPatientId());
+			 * patientRecordList1.add(patientRecord); }
+			 * 
+			 * List<PatientRecordBO> patientRecordList2 = new
+			 * ArrayList<PatientRecordBO>(); List<ResidentRecord> directList =
+			 * patientDAO.getDirectResidentRecordList(hospitalId, doctorName,
+			 * year, month, day); for (ResidentRecord residentRecord:directList)
+			 * { PatientRecordBO patientRecord = new PatientRecordBO();
+			 * patientRecord.setRecordType("resident");
+			 * patientRecord.setResidentRecord(residentRecord);
+			 * patientRecord.setPatientId(residentRecord.getPatientId());
+			 * patientIdList.add(patientRecord.getPatientId());
+			 * patientRecordList2.add(patientRecord); }
+			 * 
+			 * List<PatientRecordBO> patientRecordList3 = new
+			 * ArrayList<PatientRecordBO>(); List<ResidentRecord> attendingList
+			 * = patientDAO.getAttendingResidentRecordList(hospitalId,
+			 * doctorName, year, month, day); for (ResidentRecord
+			 * residentRecord:attendingList) { PatientRecordBO patientRecord =
+			 * new PatientRecordBO(); patientRecord.setRecordType("resident");
+			 * patientRecord.setResidentRecord(residentRecord);
+			 * patientRecord.setPatientId(residentRecord.getPatientId());
+			 * patientIdList.add(patientRecord.getPatientId());
+			 * patientRecordList3.add(patientRecord); }
+			 * 
+			 * if (!patientIdList.isEmpty()) { List<PatientInfoVO> patientList =
+			 * patientDAO.getPatients(patientIdList);
+			 * 
+			 * for (PatientRecordBO patientRecord:patientRecordList1) { for
+			 * (PatientInfoVO patient:patientList) { if
+			 * (patient.getPatientNumber().equalsIgnoreCase(patientRecord.
+			 * getPatientId())) { patientRecord.setPatient(patient); break; } }
+			 * } for (PatientRecordBO patientRecord:patientRecordList2) { for
+			 * (PatientInfoVO patient:patientList) { if
+			 * (patient.getPatientNumber().equalsIgnoreCase(patientRecord.
+			 * getPatientId())) { patientRecord.setPatient(patient); break; } }
+			 * } for (PatientRecordBO patientRecord:patientRecordList3) { for
+			 * (PatientInfoVO patient:patientList) { if
+			 * (patient.getPatientNumber().equalsIgnoreCase(patientRecord.
+			 * getPatientId())) { patientRecord.setPatient(patient); break; } }
+			 * } }
+			 */
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
@@ -298,10 +287,11 @@ public class PatientServiceImpl implements PatientService {
 			String doctorCode, String recordType) {
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		List<String> patientIdList = new ArrayList<String>();
-		
+
 		if (recordType.equalsIgnoreCase("medical")) {
-			List<MedicalRecordVO> list = patientDAO.searchPatientMedicalRecord(hospitalId, patientName, doctorName, doctorCode);
-			for (MedicalRecordVO record:list) {
+			List<MedicalRecordVO> list = patientDAO.searchPatientMedicalRecord(hospitalId, patientName, doctorName,
+					doctorCode);
+			for (MedicalRecordVO record : list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setDepartmentId(patientRecord.getDepartmentId());
 				patientRecord.setRecordType("medical");
@@ -312,8 +302,9 @@ public class PatientServiceImpl implements PatientService {
 			}
 		}
 		if (recordType.equalsIgnoreCase("operation")) {
-			List<OpertaionRecord> list = patientDAO.searchPatientOperationRecord(hospitalId, patientName, doctorName, doctorCode);
-			for (OpertaionRecord record:list) {
+			List<OpertaionRecord> list = patientDAO.searchPatientOperationRecord(hospitalId, patientName, doctorName,
+					doctorCode);
+			for (OpertaionRecord record : list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(record);
@@ -323,8 +314,9 @@ public class PatientServiceImpl implements PatientService {
 			}
 		}
 		if (recordType.equalsIgnoreCase("resident")) {
-			List<ResidentRecord> list = patientDAO.searchPatientResidentRecord(hospitalId, patientName, doctorName, doctorCode);
-			for (ResidentRecord record:list) {
+			List<ResidentRecord> list = patientDAO.searchPatientResidentRecord(hospitalId, patientName, doctorName,
+					doctorCode);
+			for (ResidentRecord record : list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("resident");
 				patientRecord.setResidentRecord(record);
@@ -334,8 +326,9 @@ public class PatientServiceImpl implements PatientService {
 			}
 		}
 		if (recordType.equalsIgnoreCase("patientInhospital")) {
-			List<PatientInHospital> list = patientDAO.searchPatientInhospital(hospitalId, patientName, doctorName, doctorCode);
-			for (PatientInHospital record:list) {
+			List<PatientInHospital> list = patientDAO.searchPatientInhospital(hospitalId, patientName, doctorName,
+					doctorCode);
+			for (PatientInHospital record : list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("patientInhospital");
 				patientRecord.setPatientInhospital(record);
@@ -344,12 +337,12 @@ public class PatientServiceImpl implements PatientService {
 				patientIdList.add(record.getPatientId());
 			}
 		}
-		
+
 		if (!patientIdList.isEmpty()) {
 			List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
 
-			for (PatientRecordBO patientRecord:patientRecordList) {
-				for (PatientInfoVO patient:patientList) {
+			for (PatientRecordBO patientRecord : patientRecordList) {
+				for (PatientInfoVO patient : patientList) {
 					if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 						patientRecord.setPatient(patient);
 						break;
@@ -357,19 +350,23 @@ public class PatientServiceImpl implements PatientService {
 				}
 			}
 		}
-		
+
 		return patientRecordList;
 	}
 
 	@Override
-	public List<PatientRecordBO> getPatientRecords(String recordId, String patientName, String patientId, String hospitalId) {
+	public List<PatientRecordBO> getPatientRecords(String recordId, String patientName, String patientId,
+			String hospitalId) {
 		try {
-			List<MedicalRecordVO> medicalRecords = patientDAO.getPatientMedicalRecords(recordId, patientName, patientId, hospitalId);
-			List<ResidentRecord> residentRecords = patientDAO.getPatientResidentRecords(recordId, patientName, patientId, hospitalId);
-			List<OpertaionRecord> operationRecords = patientDAO.getPatientOperationRecords(recordId, patientName, patientId, hospitalId);
+			List<MedicalRecordVO> medicalRecords = patientDAO.getPatientMedicalRecords(recordId, patientName, patientId,
+					hospitalId);
+			List<ResidentRecord> residentRecords = patientDAO.getPatientResidentRecords(recordId, patientName,
+					patientId, hospitalId);
+			List<OpertaionRecord> operationRecords = patientDAO.getPatientOperationRecords(recordId, patientName,
+					patientId, hospitalId);
 			List<PatientRecordBO> resultList = new ArrayList<PatientRecordBO>();
 			List<String> patientIdList = new ArrayList<String>();
-			for (MedicalRecordVO record:medicalRecords) {
+			for (MedicalRecordVO record : medicalRecords) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("medical");
 				patientRecord.setMedicalRecord(record);
@@ -377,7 +374,7 @@ public class PatientServiceImpl implements PatientService {
 				resultList.add(patientRecord);
 				patientIdList.add(record.getPatientId());
 			}
-			for (ResidentRecord record:residentRecords) {
+			for (ResidentRecord record : residentRecords) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("resident");
 				patientRecord.setResidentRecord(record);
@@ -385,7 +382,7 @@ public class PatientServiceImpl implements PatientService {
 				resultList.add(patientRecord);
 				patientIdList.add(record.getPatientId());
 			}
-			for (OpertaionRecord record:operationRecords) {
+			for (OpertaionRecord record : operationRecords) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("operation");
 				patientRecord.setOperationRecord(record);
@@ -393,12 +390,12 @@ public class PatientServiceImpl implements PatientService {
 				resultList.add(patientRecord);
 				patientIdList.add(record.getPatientId());
 			}
-			
+
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
 
-				for (PatientRecordBO patientRecord:resultList) {
-					for (PatientInfoVO patient:patientList) {
+				for (PatientRecordBO patientRecord : resultList) {
+					for (PatientInfoVO patient : patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -407,22 +404,22 @@ public class PatientServiceImpl implements PatientService {
 				}
 			}
 			return resultList;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode,
-			long year, long month, long day) {
+	public List<PatientRecordBO> getPatientInHospital(String hospitalId, String doctorCode, long year, long month,
+			long day) {
 		List<String> departmentIdList = this.getDoctorDepartmentIdList(doctorCode, hospitalId);
 		List<PatientRecordBO> patientRecordList = new ArrayList<PatientRecordBO>();
 		try {
-			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode, departmentIdList);
+			List<PatientInHospital> list = patientDAO.getCurPatientsInHospital(hospitalId, doctorCode,
+					departmentIdList);
 			List<String> patientIdList = new ArrayList<String>();
-			for (PatientInHospital record:list) {
+			for (PatientInHospital record : list) {
 				PatientRecordBO patientRecord = new PatientRecordBO();
 				patientRecord.setRecordType("patientInhospital");
 				patientRecord.setDepartmentId(record.getDepartmentId());
@@ -431,11 +428,11 @@ public class PatientServiceImpl implements PatientService {
 				patientIdList.add(record.getPatientId());
 				patientRecordList.add(patientRecord);
 			}
-			
+
 			if (!patientIdList.isEmpty()) {
 				List<PatientInfoVO> patientList = patientDAO.getPatients(patientIdList);
-				for (PatientRecordBO patientRecord:patientRecordList) {
-					for (PatientInfoVO patient:patientList) {
+				for (PatientRecordBO patientRecord : patientRecordList) {
+					for (PatientInfoVO patient : patientList) {
 						if (patient.getPatientNumber().equalsIgnoreCase(patientRecord.getPatientId())) {
 							patientRecord.setPatient(patient);
 							break;
@@ -443,8 +440,7 @@ public class PatientServiceImpl implements PatientService {
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return patientRecordList;
@@ -454,12 +450,12 @@ public class PatientServiceImpl implements PatientService {
 	public ResidentRecord getResidentRecordByOperation(String recordId, String hospitalId, String patientId) {
 		try {
 			OpertaionRecord operation = patientDAO.getOperationById(recordId);
-			List<ResidentRecord> list = patientDAO.getResidentRecordByOperation(hospitalId, patientId, operation.getOperatingDate());
+			List<ResidentRecord> list = patientDAO.getResidentRecordByOperation(hospitalId, patientId,
+					operation.getOperatingDate());
 			if (list != null && !list.isEmpty()) {
 				return list.get(0);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -475,11 +471,10 @@ public class PatientServiceImpl implements PatientService {
 				dischargeDate = record.getAdmissionDate();
 				dischargeDate.setYear(2030);
 			}
-			List<OpertaionRecord> list = patientDAO.getOperationsByResident(hospitalId, 
-					patientId, record.getAdmissionDate(), record.getDischargeDateTime());
+			List<OpertaionRecord> list = patientDAO.getOperationsByResident(hospitalId, patientId,
+					record.getAdmissionDate(), record.getDischargeDateTime());
 			return list;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -490,10 +485,11 @@ public class PatientServiceImpl implements PatientService {
 	public List<MedicalRecordVO> getHospitalMedicalRecordList(String doctorId, String startDate, String endDate,
 			String name, String idNumber, String hospitalId, String departCode) {
 		// TODO Auto-generated method stub
-		return patientDAO.getHospitalMedicalRecordList(doctorId, startDate, endDate, name, idNumber, hospitalId, departCode);
+		return patientDAO.getHospitalMedicalRecordList(doctorId, startDate, endDate, name, idNumber, hospitalId,
+				departCode);
 	}
 
-	private Date getTime(String test_time_str){
+	private Date getTime(String test_time_str) {
 		SimpleDateFormat sdmf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			return sdmf.parse(test_time_str);
@@ -501,7 +497,7 @@ public class PatientServiceImpl implements PatientService {
 			return new Date();
 		}
 	}
-	
+
 	@Override
 	public MedicalRecordVO getMedicalRecordById(String recordId) {
 		// TODO Auto-generated method stub
@@ -510,20 +506,18 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public int updateMedicalRecordById(String recordId, String illness_desc, String med_history, String body_exam,
-			String diag_desc, String treatment, String suggestion,String accExam) {
+			String diag_desc, String treatment, String suggestion, String accExam) {
 		// TODO Auto-generated method stub
-		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment, suggestion,accExam);
+		return patientDAO.updateMedicalRecordById(recordId, illness_desc, med_history, body_exam, diag_desc, treatment,
+				suggestion, accExam);
 	}
-	
-	
+
 	@Override
 	public List<OpertaionRecord> getOperationsDuringInHospital(String recordId, String hospitalId, String patientId) {
 		try {
-			List<OpertaionRecord> list = patientDAO.getOperationsDuringInHospital(hospitalId, 
-					patientId, recordId);
+			List<OpertaionRecord> list = patientDAO.getOperationsDuringInHospital(hospitalId, patientId, recordId);
 			return list;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -554,7 +548,7 @@ public class PatientServiceImpl implements PatientService {
 	public OpertaionRecord getOperationRecordByIdWithoutAssset(String id) {
 		return patientDAO.getOperationByIdWithoutMapping(id);
 	}
-	
+
 	@Override
 	public ResidentRecord getResidentRecordById(String id) {
 		return patientDAO.getResidentById(id);
@@ -568,30 +562,30 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<String> getDoctorDepartmentIdList(String doctorCode, String hospitalId) {
 		if (doctorCode.equalsIgnoreCase("1701")) {
-			return Arrays.asList(new String[] {"0309", "0321", "0316", "0317", "0325", "0324"});
+			return Arrays.asList(new String[] { "0309", "0321", "0316", "0319","0317", "0325", "0324" });
 		}
 		if (doctorCode.equalsIgnoreCase("1702")) {
-			return Arrays.asList(new String[] {"0309"});
+			return Arrays.asList(new String[] { "0309" });
 		}
 		if (doctorCode.equalsIgnoreCase("1705")) {
-			return Arrays.asList(new String[] {"0317"});
+			return Arrays.asList(new String[] { "0317" });
 		}
 		if (doctorCode.equalsIgnoreCase("1703")) {
-			return Arrays.asList(new String[] {"0316"});
+			return Arrays.asList(new String[] { "0316" });
 		}
 		if (doctorCode.equalsIgnoreCase("1765")) {
-			return Arrays.asList(new String[] {"0321"});
+			return Arrays.asList(new String[] { "0321" });
 		}
 		if (doctorCode.equalsIgnoreCase("1527")) {
-			return Arrays.asList(new String[] {"0325", "0324"});
+			return Arrays.asList(new String[] { "0325", "0324" });
 		}
-		return Arrays.asList(new String[] {"-1"});
+		return Arrays.asList(new String[] { "-1" });
 	}
 
 	@Override
 	public List<PatientRegistRecord> getRegisteRecordList(String hospitalId, String doctorCode, String patName,
 			long year, long month, long day) {
-		return patientDAO.searchRegisteRecordList(hospitalId, doctorCode,patName, year, month, day);
+		return patientDAO.searchRegisteRecordList(hospitalId, doctorCode, patName, year, month, day);
 	}
 
 	@Override
@@ -620,7 +614,8 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public Boolean submitMeetingRecord(String recordType, String recordId, String patientInhospitalId, String hospitalId, String doctorId) { 
+	public Boolean submitMeetingRecord(String recordType, String recordId, String patientInhospitalId,
+			String hospitalId, String doctorId) {
 		if (patientDAO.saveShiftMeetingRecords(hospitalId, doctorId, recordId, recordType) > 0) {
 			return (patientDAO.updatePatientRecentMeetingRecord(patientInhospitalId, recordType) > 0);
 		}
@@ -631,7 +626,7 @@ public class PatientServiceImpl implements PatientService {
 	public List<ResidentRecord> getResidentDuringInHospital(String recordId, String hospitalId, String patientId) {
 		return patientDAO.getResidentDuringInHospital(hospitalId, patientId, recordId);
 	}
-	
+
 	public List<PatientInHospital> searchInHospitalRecordList(String hospitalId, String doctorCode, String name,
 			Date careStartTime, Date careEndTime) {
 		// TODO Auto-generated method stub
@@ -642,7 +637,8 @@ public class PatientServiceImpl implements PatientService {
 	public List<PatientInHospital> searchDirectorInHospitalRecordList(String hospitalId, String departmentId,
 			String name, Date careStartTime, Date careEndTime) {
 		// TODO Auto-generated method stub
-		return patientDAO.searchDirectorInHospitalRecordList(hospitalId, departmentId, name, careStartTime, careEndTime);
+		return patientDAO.searchDirectorInHospitalRecordList(hospitalId, departmentId, name, careStartTime,
+				careEndTime);
 	}
 
 	@Override
@@ -689,76 +685,104 @@ public class PatientServiceImpl implements PatientService {
 		return patientDAO.deleteShiftMeetingRecord(recordId);
 	}
 
-//	private static final String historyDocumentDir = ConfigProps.getInstance().getConfigValue("historyDocumentDir");  
-	private static final String historyDocumentDir = "/mnt/historyDocument";  
-	
+	// private static final String historyDocumentDir =
+	// ConfigProps.getInstance().getConfigValue("historyDocumentDir");
+	private static final String historyDocumentDir = "/mnt/historyDocument";
+
 	@Override
 	public List<PatientDocumentVO> getHistoryDocumentByPatientName(String patientName) throws SoccerProException {
 		List<PatientDocumentVO> docList = new ArrayList<PatientDocumentVO>();
-        File folder = new File(historyDocumentDir);// 默认目录
-        if (!folder.exists()) {// 如果文件夹不存在
-            return docList;
-        }
-        List<File> result = searchFolder(folder, patientName);// 调用方法获得文件数组
-        for (File file : result) {
-        	listSubFiles(file, docList);
-        }
-        return docList;
+		File folder = new File(historyDocumentDir);// 默认目录
+		if (!folder.exists()) {// 如果文件夹不存在
+			return docList;
+		}
+		List<File> result = searchFolder(folder, patientName);// 调用方法获得文件数组
+		for (File file : result) {
+			listSubFiles(file, docList);
+		}
+
+		// Collections.sort(docList, new docNameComparator());
+
+		return docList;
 	}
-	
+
 	private void listSubFiles(File folder, List<PatientDocumentVO> docList) throws SoccerProException {
-    	PatientDocumentVO folderVO = new PatientDocumentVO();
-    	folderVO.setDirName(folder.getName());
-    	docList.add(folderVO);
-		
+		PatientDocumentVO folderVO = new PatientDocumentVO();
+		folderVO.setDirName(folder.getName());
+		docList.add(folderVO);
+
 		File[] subFolders = folder.listFiles();
+		File accFolder = null;
 		for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
-			
+
 			if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
-				listSubFiles(subFolders[i], docList);
+				if (subFolders[i].getName().equals("检查结果") || subFolders[i].getName().equals("检验检查")
+						|| subFolders[i].getName().contains("检验") || subFolders[i].getName().contains("检查")) {
+					accFolder = subFolders[i];
+				} else {
+					listSubFiles(subFolders[i], docList);
+				}
 			} else {
 				PatientDocumentVO document = new PatientDocumentVO();
 				document.setDirName(new File(subFolders[i].getParent()).getName());
 				document.setFileName(subFolders[i].getName());
 				document.setFilePath(subFolders[i].getAbsolutePath());
 				docList.add(document);
-			}	
+			}
 		}
-    }
-	
-    static int countFiles = 0;// 声明统计文件个数的变量
-    static int countFolders = 0;// 声明统计文件夹的变量   
-    private List<File> searchFolder(File folder, final String keyWord) {// 递归查找包含关键字的文件
-    	 
-        File[] subFolders = folder.listFiles(new FileFilter() {// 运用内部匿名类获得文件
-            @Override
-            public boolean accept(File pathname) {// 实现FileFilter类的accept方法
-                if (pathname.isFile())// 如果是文件
-                    countFiles++;
-                else
-                    // 如果是目录
-                    countFolders++;
-                if (pathname.isDirectory() )// 目录包含关键字
-                    return true;
-                return false;
-            }
-        });
- 
-        List<File> result = new ArrayList<File>();// 声明一个集合
-        for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
-        	
-            if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
-                if (subFolders[i].getName().toLowerCase().contains(keyWord.toLowerCase())) {
-                	result.add(subFolders[i]);
-                } else {
-                	List<File> foldResult = searchFolder(subFolders[i], keyWord);
-                	result.addAll(foldResult);
-                }
-            }
-        }
- 
-        return result;
-    }
+
+		Collections.sort(docList, new docNameComparator());
+		if (accFolder != null) {
+			File[] fileInAcc = accFolder.listFiles();
+			if (fileInAcc != null) {
+				for (int i = 0; i < fileInAcc.length; i++) {
+					if (fileInAcc[i] != null) {
+						PatientDocumentVO document = new PatientDocumentVO();
+						document.setDirName(new File(fileInAcc[i].getParent()).getName());
+						document.setFileName(fileInAcc[i].getName());
+						document.setFilePath(fileInAcc[i].getAbsolutePath());
+						docList.add(document);
+					}
+				}
+			}
+		}
+
+	}
+
+	static int countFiles = 0;// 声明统计文件个数的变量
+	static int countFolders = 0;// 声明统计文件夹的变量
+
+	private List<File> searchFolder(File folder, final String keyWord) {// 递归查找包含关键字的文件
+
+		File[] subFolders = folder.listFiles(new FileFilter() {// 运用内部匿名类获得文件
+			@Override
+			public boolean accept(File pathname) {// 实现FileFilter类的accept方法
+				if (pathname.isFile())// 如果是文件
+					countFiles++;
+				else
+					// 如果是目录
+					countFolders++;
+				if (pathname.isDirectory())// 目录包含关键字
+					return true;
+				return false;
+			}
+		});
+
+		List<File> result = new ArrayList<File>();// 声明一个集合
+		for (int i = 0; i < subFolders.length; i++) {// 循环显示文件夹或文件
+
+			if (subFolders[i].isDirectory()) {// 如果是文件则将文件添加到结果列表中
+				if (subFolders[i].getName().toLowerCase().contains(keyWord.toLowerCase())) {
+					result.add(subFolders[i]);
+				} else {
+					List<File> foldResult = searchFolder(subFolders[i], keyWord);
+					result.addAll(foldResult);
+				}
+			}
+		}
+
+		return result;
+	}
 
 	@Override
 	public List<PatientInHospital> getInHospitalMeetingRecords(String doctorId, long year, long month, long day) {
@@ -796,5 +820,59 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<OrdersVO> getPatientOrders(List<String> patientIdList) {
 		return patientDAO.getPatientOrders(patientIdList);
+	}
+
+	class docNameComparator implements Comparator<PatientDocumentVO> {
+
+		@Override
+		public int compare(PatientDocumentVO o1, PatientDocumentVO o2) {
+			if (!StringUtil.isEmpty(o1.getFileName()) && o1.getFileName().contains("出院记录")) {
+				return -1;
+			} else if (!StringUtil.isEmpty(o2.getFileName()) && o2.getFileName().contains("出院记录")) {
+				return 1;
+			} else if (!StringUtil.isEmpty(o2.getFileName()) && o2.getFileName().contains("手术记录")) {
+				return 1;
+			} else if (!StringUtil.isEmpty(o1.getFileName()) && o1.getFileName().contains("手术记录")) {
+				return -1;
+			} else if (!StringUtil.isEmpty(o1.getFileName()) && !StringUtil.isEmpty(o2.getFileName())
+					&& withNumber(o1.getFileName()) && withNumber(o2.getFileName())) {
+				return getNumber(o1.getFileName()) - getNumber(o2.getFileName()) > 0 ? 1 : -1;
+			} else {
+				return 1;
+			}
+		}
+
+		private boolean withNumber(String name) {
+			String str = "";
+			if (name.endsWith(".jpg")) {
+				str = name.replace(".jpg", "");
+			} else if (name.endsWith(".JPG")) {
+				str = name.replace(".JPG", "");
+			}
+			if (str.contains("-")) {
+				String[] arr = str.split("-");
+				String last = arr[arr.length - 1];
+				for (int i = 0; i < last.length(); i++) {
+					if (!Character.isDigit(last.charAt(i))) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+
+		private int getNumber(String name) {
+			String str = "";
+			if (name.endsWith(".jpg")) {
+				str = name.replace(".jpg", "");
+			} else if (name.endsWith(".JPG")) {
+				str = name.replace(".JPG", "");
+			}
+			String[] arr = str.split("-");
+			String last = arr[arr.length - 1];
+			return Integer.parseInt(last);
+		}
+
 	}
 }

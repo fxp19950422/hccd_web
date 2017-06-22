@@ -40,6 +40,7 @@
 <link href="<%=basePath%>resources/css/flexslider.css" rel="stylesheet">
 <!-- END FOOTER -->
 	<script src="<%=basePath%>resources/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="<%=basePath%>resources/js/load-image.all.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/base64.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/sweet-alert.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/jquery.toolbar.js" type="text/javascript"></script>
@@ -74,6 +75,21 @@
 	<script type="text/javascript" src="<%=basePath%>resources/js/jquery.flexslider-min.js" /></script>
 	<script src="<%=basePath%>resources/js/fileupload.js" type="text/javascript"></script>
 	<script src="<%=basePath%>resources/js/jquery.PrintArea.js" type="text/javascript"></script>
+	
+		<script type="text/javascript"
+		src="<%=basePath%>resources/js/jquery.fileupload-process.js"></script>
+	<!-- The File Upload image preview & resize plugin -->
+	<script type="text/javascript"
+		src="<%=basePath%>resources/js/jquery.fileupload-image.js"></script>
+	<!-- The File Upload audio preview plugin -->
+	<script type="text/javascript"
+		src="<%=basePath%>resources/js/jquery.fileupload-audio.js"></script>
+	<!-- The File Upload video preview plugin -->
+	<script type="text/javascript"
+		src="<%=basePath%>resources/js/jquery.fileupload-video.js"></script>
+	<!-- The File Upload validation plugin -->
+	<script type="text/javascript"
+		src="<%=basePath%>resources/js/jquery.fileupload-validate.js"></script>
 	
 	<!--[if lt IE 9]>
 	<script src="<%=basePath%>resources/js/excanvas.min.js"></script>

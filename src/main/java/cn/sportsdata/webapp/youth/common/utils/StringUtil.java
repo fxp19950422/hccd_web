@@ -407,12 +407,12 @@ public class StringUtil {
 	}
 	
 	public static String getAge(Date birthDay)  {  
-		if (birthDay == null) return "未知";
+		if (birthDay == null) return "0";
 		
         Calendar cal = Calendar.getInstance();  
   
         if (cal.before(birthDay)) {  
-        	 return "未知"; 
+        	 return "0"; 
         }  
         int yearNow = cal.get(Calendar.YEAR);  
         int monthNow = cal.get(Calendar.MONTH);  

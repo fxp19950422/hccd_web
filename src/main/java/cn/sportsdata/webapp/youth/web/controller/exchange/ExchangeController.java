@@ -8,6 +8,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -178,19 +182,26 @@ public class ExchangeController extends BaseController {
 				patientInHospitalList.add(record.getRecordId());
 			}
 		}
+		
+		//test
+//		operationList.clear();
+//		residentList.clear();
+//		patientInHospitalList.clear();
+//		operationList.add("65ecda4a-528e-11e7-8f6f-00163e0ccee1");
+//		patientInHospitalList.add("44E5C449F3014B62BAE75B7AC8CE0A39");
 
-		List<PatientInHospital> operationRecordList = null;
+		List<PatientInHospital> operationRecordList = new ArrayList<PatientInHospital>();
 		if (operationList.size() > 0) {
 			operationRecordList = exchangeService.getExchangeOperationRecordList(operationList, doctorId);
 		}
 
-		List<PatientInHospital> patientInHospitalRecordList = null;
+		List<PatientInHospital> patientInHospitalRecordList = new ArrayList<PatientInHospital>();
 		if (patientInHospitalList.size() > 0) {
 			patientInHospitalRecordList = exchangeService.getExchangePatientInHospitalRecord(patientInHospitalList,
 					doctorId);
 		}
 
-		List<ResidentRecord> residentRecordList = null;
+		List<ResidentRecord> residentRecordList = new ArrayList<ResidentRecord>();
 		if (residentList.size() > 0) {
 			residentRecordList = exchangeService.getExchangeResidentRecord(residentList, doctorId);
 		}
@@ -435,24 +446,47 @@ public class ExchangeController extends BaseController {
 			}
 		}
 	}
+	
+	static private String OSS_URL = "http://hospital-image.oss-cn-shanghai.aliyuncs.com/";
+	private InputStream loadPicFromOSS(String fileName) throws IOException {
+		URL url = new URL(OSS_URL + fileName);    
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
+		        //设置超时间为3秒  
+		conn.setConnectTimeout(3*1000);  
+		//防止屏蔽程序抓取而返回403错误  
+		conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");  
+		  
+		//得到输入流  
+		InputStream inputStream = conn.getInputStream();    
+
+		return inputStream;
+	}
 
 	private void operationPic(HSLFSlideShow ppt, AssetVO asset, String typeName) throws Exception {
 		HSLFSlide slide = ppt.createSlide();
 		HSLFTextBox title = slide.addTitle();
 		title.setText(typeName);
 
-		AssetVO assetv = assetservice.getAssetByID(asset.getId());
-		String encryptedFileName = assetv.getStorage_name();
-		String filePath = SecurityUtils.decryptByAES(encryptedFileName);
-		File picture = new File(filePath);
+		BufferedImage sourceImg = null;
+		HSLFPictureData pd = null;
+		if (asset.getStorage_name().equalsIgnoreCase("oss")) {
+			InputStream inputStream = loadPicFromOSS(asset.getId());
+			sourceImg = ImageIO.read(inputStream);
+			pd = ppt.addPicture(inputStream, PictureData.PictureType.JPEG);
+		} else {
+			AssetVO assetv = assetservice.getAssetByID(asset.getId());
+			String encryptedFileName = assetv.getStorage_name();
+			String filePath = SecurityUtils.decryptByAES(encryptedFileName);
+			File picture = new File(filePath);
 
-		if (!picture.exists()) {
-			logger.error("Asset ID: " + assetv.getId() + " of related file path is not found");
-			return;
+			if (!picture.exists()) {
+				logger.error("Asset ID: " + assetv.getId() + " of related file path is not found");
+				return;
+			}
+			sourceImg = ImageIO.read(new FileInputStream(picture));
+			pd = ppt.addPicture(picture, PictureData.PictureType.JPEG);
 		}
-		BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
-		HSLFPictureData pd = ppt.addPicture(picture, PictureData.PictureType.JPEG);
-
+		
 		HSLFPictureShape pictNew = new HSLFPictureShape(pd);
 
 		// 设置图片在幻灯片中的位置
@@ -620,7 +654,7 @@ public class ExchangeController extends BaseController {
 
 	private void residentPPT(HSLFSlideShow ppt, ResidentRecord record) throws Exception {
 		PatientInHospital patientInfo = new PatientInHospital();
-		patientInfo.setAge(record.getAge() > 0?record.getAge().toString():"未知");
+		patientInfo.setAge(record.getAge() > 0?record.getAge().toString():"0");
 		patientInfo.setRealName(record.getRealName());
 		patientInfo.setAdmissionDateTime(record.getAdmissionDate());
 		patientInfo.setDoctorInCharge(record.getDoctorInCharge());

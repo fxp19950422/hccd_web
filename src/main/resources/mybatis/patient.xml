@@ -214,7 +214,7 @@
         select A.*, C.meeting_date, B.dept_code as department_id from operation A
         	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
-	       	where A.operating_date > B.ADMISSION_DATE_TIME and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	       	where date_format(A.operating_date,'%Y%m%d') >= date_format(B.ADMISSION_DATE_TIME,'%Y%m%d') and A.hospital_id=#{hospital_id} and B.id=#{record_id}
 	        and A.patient_id =#{patient_id} and A.status = 'active' order by OPERATING_DATE desc
     </select>
     
@@ -223,7 +223,7 @@
         select A.*, C.meeting_date from resident_record A
         	left join morning_shift_meeting_record C on C.record_id = A.id
         	left join patient_in_hospital B on B.patient_id = A.patient_id
-	       	where A.IN_OUT_STATUS = 0 and A.hospital_id=#{hospital_id} and B.id=#{record_id}
+	       	where A.hospital_id=#{hospital_id} and B.id=#{record_id}
 	        and A.patient_id =#{patient_id} and A.status = 'active'
     </select>
     
@@ -242,7 +242,8 @@
     <select id="getPatientInHosByDepartment" resultType="cn.sportsdata.webapp.youth.common.vo.patient.PatientInHospital" parameterType="java.util.Map">
         select A.*, A.dept_code as department_id, B.real_name as patient_name, B.gender as patient_gender from patient_in_hospital A
         	left outer join patient B on B.patient_number = A.patient_id
-	       	where (A.dept_code=#{department_id} or A.ward_code=#{department_id}) and A.hospital_id=#{hospital_id} 
+	       	where (A.dept_code=#{department_id} or A.ward_code=#{department_id}) 
+	       	and A.hospital_id=#{hospital_id} and B.status = 'active'
 	       	and A.status = 'active' order by A.bed_no desc
     </select>
     
@@ -302,7 +303,8 @@
     	(A.id = E.hospital_record_id and E.record_type='operation' and E.status='active') 
     	left outer join record_asset_type F on (E.record_asset_type_id = F.id) 
     	left outer join record_stage_in_hospital G on (E.asset_stage_type_id = G.id)
-    	where A.id = #{id}
+    	where A.id = #{id} 
+    	order by E.asset_stage_type_id asc, E.record_asset_type_id asc, E.created_time desc, E.storage_index asc
     </select>
     
     <select id="getOperationByIdWithoutMapping" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
@@ -316,7 +318,7 @@
     	left outer join record_asset_type F on (E.record_asset_type_id = F.id) 
     	left outer join record_stage_in_hospital G on (E.asset_stage_type_id = G.id)
     	where A.id = #{id}
-	    and B.status='active'
+	    and B.status='active' order by E.asset_stage_type_id asc, E.record_asset_type_id asc, E.created_time desc, E.storage_index asc
     </select>
     
     <select id="getMedicalRecordById" resultType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO" parameterType="java.util.Map">
@@ -405,7 +407,8 @@
 		left outer join asset B on B.id = A.asset_id 
 		left outer join record_asset_type C on C.id = A.record_asset_type_id
 		left outer join record_stage_in_hospital G on (A.asset_stage_type_id = G.id)
-		where A.hospital_record_id=#{record_id} and A.status = 'active' order by asset_stage_type_id, record_asset_type_id
+		where A.hospital_record_id=#{record_id} and A.status = 'active' 
+		order by A.asset_stage_type_id asc, A.record_asset_type_id asc, A.created_time desc, A.storage_index asc;
     </select>
     
     <select id="getRecordAssetTypeList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.RecordAssetTypeVO" parameterType="java.util.Map">
@@ -435,6 +438,7 @@
             open="(" close=")" separator=",">
             #{id}
         </foreach>
+        and status = 'active'
     </select>
     
     <update id="updateMedicalRecord" parameterType="cn.sportsdata.webapp.youth.common.vo.patient.MedicalRecordVO">
@@ -620,22 +624,23 @@
     </select>
     
     <select id="searchOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
-    	select A.*,A.operating_date operatingDate,
+    	select distinct(A.id) uuid,A.*,A.operating_date operatingDate,
     	A.operation_desc operationDescription, b.real_name patientName from operation A 
     	left join patient b on A.patient_id=b.patient_number
     	left join doctor C on C.name = A.operator
     	left join doctor D on D.name = A.FIRST_ASSISTANT
     	left join doctor E on E.name = A.SECOND_ASSISTANT
-	       	where (A.doctor_id=#{doctor_code} or C.user_id=#{doctor_code} or D.user_id=#{doctor_code} or E.user_id=#{doctor_code}) 
+    	left join patient_in_hospital F on A.patient_id=F.patient_id and A.VISIT_ID=F.VISIT_ID
+	       	where (A.doctor_id=#{doctor_code} or C.user_id=#{doctor_code} or D.user_id=#{doctor_code} or E.user_id=#{doctor_code} or F.doctor_id=#{doctor_code}) 
 	       	and A.hospital_id=#{hospital_id} and b.status='active' and A.status = 'active' 
 	       	<if test="patName == null or patName ==''">
-		       	and year(operating_date) = #{year} 
-		       	and month(operating_date) =#{month} and day(operating_date) = #{day}
+		       	and year(A.operating_date) = #{year} 
+		       	and month(A.operating_date) =#{month} and day(A.operating_date) = #{day}
 	       	</if>
 	       	<if test="patName != null and patName != '' ">
     			and b.real_name like '%${patName}%'
     		</if>
-	       	order by operating_date desc
+	       	order by A.operating_date desc
     </select>
     
     <select id="searchDirectorOperationRecordList" resultType="cn.sportsdata.webapp.youth.common.vo.patient.OpertaionRecord" parameterType="java.util.Map">
@@ -798,7 +803,7 @@
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
     	left join doctor D on D.user_id = B.doctor_id
-    	where B.record_type='operation' and A.status = 'active'
+    	where B.record_type='operation' and A.status = 'active' and C.status = 'active'
     	and (B.doctor_id=#{doctor_id} or D.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
@@ -813,7 +818,7 @@
     	select A.*, B.doctor_id as exchange_doctor_id, B.meeting_date, C.real_name as patient_name, C.gender as patient_gender from patient_in_hospital A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='patientInhospital' and A.status = 'active'
+    	where B.record_type='patientInhospital' and A.status = 'active' and C.status = 'active'
     	and (A.doctor_id=#{doctor_id} or A.dept_code in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">
@@ -828,7 +833,7 @@
     	select A.*, B.meeting_date, B.doctor_id as exchange_doctor_id, C.real_name as patient_name, C.gender as patient_gender from resident_record A 
     	left join morning_shift_meeting_record B on B.record_id = A.id 
     	left join patient C on C.patient_number = A.patient_id
-    	where B.record_type='resident' and A.status = 'active'
+    	where B.record_type='resident' and A.status = 'active' and C.status = 'active'
     	and (A.doctor_id=#{doctor_id} or A.department_id in 
 	       	  	<foreach collection="departmentIdList" item="id" index="index"
             		open="(" close=")" separator=",">

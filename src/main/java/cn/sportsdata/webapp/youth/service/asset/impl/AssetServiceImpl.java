@@ -1,6 +1,6 @@
 package cn.sportsdata.webapp.youth.service.asset.impl;
 
-import cn.sportsdata.webapp.youth.dao.asset.AssetDAO;
+import java.sql.Timestamp;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sportsdata.webapp.youth.common.vo.AssetVO;
+import cn.sportsdata.webapp.youth.dao.asset.AssetDAO;
 import cn.sportsdata.webapp.youth.service.asset.AssetService;
 
 @Service
@@ -27,14 +28,15 @@ public class AssetServiceImpl implements AssetService {
 			String type, String recordTypeId, String stageTypdId) {
 		String assetId = assetDAO.insertAsset(assetVo);
 		if (StringUtils.isNotEmpty(assetId)) {
-			assetDAO.insertHospitalRecordAsset(hospitalId, recordId, assetId, type, recordTypeId, stageTypdId, "local");
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			assetDAO.insertHospitalRecordAsset(hospitalId, recordId, assetId, type, recordTypeId, stageTypdId, "local", ts.toString(), "1");
 		} 
 		return assetId;
 	}
 	
 	@Override
 	public String insertHospitalRecordOSSAsset(String filename, String hospitalId, String recordId, 
-			String type, String recordTypeId, String stageTypdId, String storageType) {
+			String type, String recordTypeId, String stageTypdId, String createdTime, String index, String storageType) {
 		AssetVO assetVo = new AssetVO();
 		assetVo.setId(filename);
 		assetVo.setStorage_name(storageType);
@@ -47,9 +49,9 @@ public class AssetServiceImpl implements AssetService {
         assetVo.setSize(0);
         assetVo.setPrivacy("protected");
  
-        
 		assetDAO.insertAsset(assetVo);
-		return assetDAO.insertHospitalRecordAsset(hospitalId, recordId, filename, type, recordTypeId, stageTypdId, storageType);
+		return assetDAO.insertHospitalRecordAsset(hospitalId, recordId, filename, type, 
+				recordTypeId, stageTypdId, storageType, createdTime, index);
 	}
 
 	@Override

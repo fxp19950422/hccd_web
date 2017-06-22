@@ -3,6 +3,7 @@ package cn.sportsdata.webapp.youth.dao.account;
 import java.util.List;
 
 import cn.sportsdata.webapp.youth.common.vo.OrgVO;
+import cn.sportsdata.webapp.youth.common.vo.UserVO;
 import cn.sportsdata.webapp.youth.common.vo.account.AccountVO;
 import cn.sportsdata.webapp.youth.common.vo.login.HospitalUserInfo;
 
@@ -40,4 +41,13 @@ public interface AccountDao{
 	HospitalUserInfo getHospitalUserInfoByUserId(String id);
 
 	int getMappedPaitentCount(String userId);
+
+	AccountVO getPatientAccountByMobilePhone(String mobile);
+
+	AccountVO getPatientAccountByUserName(String username);
+	
+	AccountVO getPatientAccountByUserId(String userId);
+
+	int createPatientAccountRoleMapping(String userId, Long roleId);
+	
 }

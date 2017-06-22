@@ -12,7 +12,7 @@ public class UserVO extends BaseVO implements Serializable {
 	private static final long serialVersionUID = -5992223638569304676L;
 	
 	private String id;
-	private String name;
+	private String name; // this mapped to 'display_name'
 	private String phone;
 	private String mobile;
 	private String address;
@@ -323,4 +323,5 @@ public class UserVO extends BaseVO implements Serializable {
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
+
 }
